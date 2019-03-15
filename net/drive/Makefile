@@ -4,6 +4,7 @@
 PORTNAME=	drive
 PORTVERSION=	0.3.9.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	2
 CATEGORIES=	net
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -12,24 +13,26 @@ COMMENT=	Tiny program to pull or push Google Drive files
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USES=		go
+
 GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
 GO_TARGET=	${GO_PKGNAME}/cmd/${GH_PROJECT}
-USES=		go
 
 PLIST_FILES=	bin/drive
 
 GH_ACCOUNT=	odeke-em
 GH_TUPLE=	boltdb:bolt:v1.3.1:boltdb_bolt/../src/github.com/boltdb/bolt \
-		cheggaaa:pb:v2.0.4:cheggaaa_pb/../src/github.com/cheggaaa/pb \
-		fatih:color:v1.5.0:fatih_color/../src/github.com/fatih/color \
-		golang:crypto:6914964:golang_crypto/../src/golang.org/x/crypto \
-		golang:net:ab54850:golang_net/../src/golang.org/x/net \
-		golang:oauth2:b53b38a:golang_oauth2/../src/golang.org/x/oauth2 \
-		google:google-api-go-client:295e4bb:google_googleapigoclient/../src/google.golang.org/api \
-		GoogleCloudPlatform:google-cloud-go:v0.10.0:GoogleCloudPlatform_googlecloudgo/../src/cloud.google.com/go \
-		mattn:go-colorable:v0.0.8:mattn_gocolorable/../src/github.com/mattn/go-colorable \
-		mattn:go-isatty:v0.0.2:mattn_goisatty/../src/github.com/mattn/go-isatty \
-		mattn:go-runewidth:v0.0.2:mattn_gorunewidth/../src/github.com/mattn/go-runewidth \
+		cheggaaa:pb:v1.0.26:cheggaaa_pb/../src/github.com/cheggaaa/pb \
+		fatih:color:v1.7.0:fatih_color/../src/github.com/fatih/color \
+		golang:crypto:3d3f9f4:golang_crypto/../src/golang.org/x/crypto \
+		golang:net:adae6a3:golang_net/../src/golang.org/x/net \
+		golang:oauth2:8f65e30:golang_oauth2/../src/golang.org/x/oauth2 \
+		golang:sys:62eef0e:golang_sys/../src/golang.org/x/sys \
+		google:google-api-go-client:dde16f2:google_googleapigoclient/../src/google.golang.org/api \
+		GoogleCloudPlatform:google-cloud-go:v0.33.1:GoogleCloudPlatform_googlecloudgo/../src/cloud.google.com/go \
+		mattn:go-colorable:v0.0.9:mattn_gocolorable/../src/github.com/mattn/go-colorable \
+		mattn:go-isatty:v0.0.4:mattn_goisatty/../src/github.com/mattn/go-isatty \
+		mattn:go-runewidth:v0.0.3:mattn_gorunewidth/../src/github.com/mattn/go-runewidth \
 		odeke-em:cache:baf8e43:odekeem_cache/../src/github.com/odeke-em/cache \
 		odeke-em:cli-spinner:610063b:odekeem_clispinner/../src/github.com/odeke-em/cli-spinner \
 		odeke-em:command:91ca5ec:odekeem_command/../src/github.com/odeke-em/command \
@@ -44,12 +47,12 @@ GH_TUPLE=	boltdb:bolt:v1.3.1:boltdb_bolt/../src/github.com/boltdb/bolt \
 		odeke-em:semalim:9c88bf5:odekeem_semalim/../src/github.com/odeke-em/semalim \
 		odeke-em:statos:292960a:odekeem_statos/../src/github.com/odeke-em/statos \
 		skratchdot:open-golang:75fb7ed:skratchdot_opengolang/../src/github.com/skratchdot/open-golang \
-		VividCortex:ewma:v1.1:VividCortex_ewma/../src/github.com/VividCortex/ewma
+		VividCortex:ewma:v1.1.1:VividCortex_ewma/../src/github.com/VividCortex/ewma
 USE_GITHUB=	yes
 
 post-patch:
 	@${MKDIR} ${GO_WRKDIR_SRC}/gopkg.in/cheggaaa/
-	@${LN} -s ${GO_WRKDIR_SRC}/github.com/cheggaaa/pb ${GO_WRKDIR_SRC}/gopkg.in/cheggaaa/pb.v2
+	@${LN} -s ${GO_WRKDIR_SRC}/github.com/cheggaaa/pb ${GO_WRKDIR_SRC}/gopkg.in/cheggaaa/pb.v1
 	@${MKDIR} ${GO_WRKDIR_SRC}/gopkg.in/fatih/
 	@${LN} -s ${GO_WRKDIR_SRC}/github.com/fatih/color ${GO_WRKDIR_SRC}/gopkg.in/fatih/color.v1
 	@${MKDIR} ${GO_WRKDIR_SRC}/gopkg.in/mattn/

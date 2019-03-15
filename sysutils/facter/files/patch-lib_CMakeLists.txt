@@ -1,14 +1,19 @@
---- lib/CMakeLists.txt.orig	2017-07-18 18:49:09 UTC
+--- lib/CMakeLists.txt.orig	2018-12-17 18:05:06 UTC
 +++ lib/CMakeLists.txt
-@@ -203,6 +203,11 @@ elseif ("${CMAKE_SYSTEM_NAME}" MATCHES "
-         "src/facts/freebsd/dmi_resolver.cc"
-         "src/facts/freebsd/networking_resolver.cc"
-         "src/util/bsd/scoped_ifaddrs.cc"
-+        "src/facts/freebsd/virtualization_resolver.cc"
-+        "src/facts/freebsd/memory_resolver.cc"
-+        "src/facts/freebsd/zfs_resolver.cc"
-+        "src/facts/freebsd/zpool_resolver.cc"
-+        "src/facts/freebsd/operating_system_resolver.cc"
-     )
- elseif ("${CMAKE_SYSTEM_NAME}" MATCHES "OpenBSD")
-     set(LIBFACTER_PLATFORM_SOURCES
+@@ -306,12 +306,15 @@ endif()
+ 
+ # Set include directories
+ include_directories(
++    BEFORE
++    ${LEATHERMAN_INCLUDE_DIRS}
++)
++include_directories(
+     inc
+     ${Boost_INCLUDE_DIRS}
+     ${OPENSSL_INCLUDE_DIRS}
+     ${YAMLCPP_INCLUDE_DIRS}
+     ${CURL_INCLUDE_DIRS}
+-    ${LEATHERMAN_INCLUDE_DIRS}
+     ${CPPHOCON_INCLUDE_DIRS}
+ )
+ 

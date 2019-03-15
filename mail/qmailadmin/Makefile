@@ -3,7 +3,7 @@
 
 PORTNAME=	qmailadmin
 PORTVERSION=	1.2.15
-PORTREVISION=	7
+PORTREVISION=	8
 PORTEPOCH=	2
 CATEGORIES=	mail www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-stable/${PORTVERSION} \
@@ -86,7 +86,7 @@ CONFIGURE_ARGS+=	--enable-spam-command="${SPAM_COMMAND}"
 .if ${PORT_OPTIONS:MCRACKLIB}
 EXTRA_PATCHES+=		${FILESDIR}/cracklib.patch
 BUILD_DEPENDS+=		${LOCALBASE}/include/crack.h:security/cracklib
-CONFIGURE_ARGS+=	--enable-cracklib=${LOCALBASE}/libdata/cracklib/pw_dict
+CONFIGURE_ARGS+=	--enable-cracklib=${LOCALBASE}/libdata/cracklib/cracklib-words
 CFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib -lcrack
 .endif
@@ -108,12 +108,12 @@ INSTALL_TARGET=	install-strip
 #			  default is "|preline LOCALBASE/bin/maildrop /etc/mailfilter"
 #			  do not forget the "|" at the start
 # USER_INDEX		- might confuse earlier versions of Internet Explorer
-# CGIBINDIR     	- location of your cgi directory
-# CGIBINSUBDIR  	- subdirectory to place cgi scripts in
-# CGIBINURL     	- location of your cgi directory in a URL
-# WEBDATADIR    	- location of your html files
-# WEBDATASUBDIR 	- subdirectory to place html files in
-# WEBDATAURL    	- location of your html files in a URL
+# CGIBINDIR		- location of your cgi directory
+# CGIBINSUBDIR		- subdirectory to place cgi scripts in
+# CGIBINURL		- location of your cgi directory in a URL
+# WEBDATADIR		- location of your html files
+# WEBDATASUBDIR		- subdirectory to place html files in
+# WEBDATAURL		- location of your html files in a URL
 CGIBINDIR?=	www/cgi-bin.default
 CGIBINSUBDIR?=	qmailadmin
 CGIBINURL?=	/cgi-bin

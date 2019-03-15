@@ -10,7 +10,7 @@ MASTER_SITES=	http://ftp.edgewall.com/pub/bitten/ \
 PKGNAMEPREFIX=	trac-
 DISTNAME=	Bitten-${PORTVERSION}
 
-MAINTAINER=	tim@niemueller.de
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Continuous integration for Trac
 
 LICENSE=	BSD3CLAUSE
@@ -34,7 +34,7 @@ BITTEN_MASTER_RUN_DEPENDS=	tracd:www/trac
 
 NO_BUILD=	yes
 NO_ARCH=	yes
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	autoplist distutils
 SUB_LIST+=	PYTHON_CMD=${PYTHON_CMD} TOUCH=${TOUCH} CHOWN=${CHOWN} \
 		RM=${RM:Q} USERS=${USERS}

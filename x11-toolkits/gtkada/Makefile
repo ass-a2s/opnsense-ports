@@ -3,7 +3,7 @@
 
 PORTNAME=	gtkada
 PORTVERSION=	2.24.4.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://downloads.dragonlace.net/src/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
@@ -23,7 +23,7 @@ NO_MTREE=	yes
 PORTDOCS=	gtkada_rm gtkada_ug
 PORTEXAMPLES=	*
 
-NOPIE_PORTS=	yes
+USE_HARDENING=	pie:off
 
 MAKE_ENV+=	PROCESSORS=${MAKE_JOBS_NUMBER}
 
@@ -36,7 +36,8 @@ OPTIONS_DEFINE=		DOCS NLS EXAMPLES
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MDOCS}
-BUILD_DEPENDS+=	sphinx-build:textproc/py-sphinx
+BUILD_DEPENDS+=	sphinx-build-2.7:textproc/py-sphinx@py27
+BINARY_ALIAS+=	sphinx-build=sphinx-build-2.7
 .endif
 
 .if ${PORT_OPTIONS:MNLS}

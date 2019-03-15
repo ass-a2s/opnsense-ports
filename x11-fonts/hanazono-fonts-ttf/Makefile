@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	hanazono-fonts-ttf
-PORTVERSION=	20141012
+PORTVERSION=	20170904
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
-MASTER_SITES=	SFJP/hanazono-font/62072
+MASTER_SITES=	OSDN/hanazono-font/68253
 DISTNAME=	${PORTNAME:C/-.*//}-${PORTVERSION}
 
 MAINTAINER=	lichray@gmail.com
@@ -13,6 +14,7 @@ COMMENT=	CJK Mincho-typeface developed by Hanazono University
 LICENSE=	OFL11
 
 USES=		fonts zip
+NO_ARCH=	yes
 NO_BUILD=	yes
 NO_WRKSUBDIR=	yes
 

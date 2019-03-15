@@ -2,34 +2,40 @@
 
 PORTNAME=	xiphos
 PORTVERSION=	3.1.6
-PORTREVISION=	5
+PORTREVISION=	7
 CATEGORIES=	misc gnome
 MASTER_SITES=	SF/gnomesword/Xiphos/${PORTVERSION}
 
-MAINTAINER=	tabthorpe@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Bible interface utilizing the sword framework
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_FreeBSD_12= does not build on 12.X
-
-RUN_DEPENDS=	yelp:x11/yelp
-BUILD_DEPENDS:=	${RUN_DEPENDS} \
+BUILD_DEPENDS=	${RUN_DEPENDS} \
 		docbook2html:textproc/docbook-utils \
 		gnome-doc-tool:textproc/gnome-doc-utils \
 		nspr>=4.8:devel/nspr
 LIB_DEPENDS=	libwebkitgtk-3.0.so:www/webkit-gtk3 \
 		libdbus-glib-1.so:devel/dbus-glib  \
-		libsword.so:misc/sword
+		libsword.so:misc/sword \
+		libdbus-1.so:devel/dbus \
+		libsoup-2.4.so:devel/libsoup \
+		libenchant.so:textproc/enchant
+RUN_DEPENDS=	yelp:x11/yelp
 
-USES=		gettext pkgconfig waf
-INSTALLS_OMF=	yes
-INSTALLS_ICONS=	yes
-USE_GNOME=	gtkhtml4 intlhack gtk30 gconf2 libgsf \
+DEPRECATED=	Uses webkit-gtk3 which has security issues
+EXPIRATION_DATE=2019-03-24
+
+USES=		gettext gnome pkgconfig waf
+USE_GNOME=	cairo gtkhtml4 intlhack gtk30 gconf2 libgsf \
 		gtk-update-icon-cache
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
+USE_HARDENING=	pie:off relro:off
+
+INSTALLS_OMF=	yes
+INSTALLS_ICONS=	yes
+CXXFLAGS+=	-ftemplate-depth=1024
 
 OPTIONS_DEFINE=	DOCS
 

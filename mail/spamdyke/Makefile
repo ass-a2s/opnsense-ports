@@ -3,7 +3,7 @@
 
 PORTNAME=	spamdyke
 PORTVERSION=	5.0.1
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	mail
 MASTER_SITES=	http://www.spamdyke.org/releases/
 
@@ -12,18 +12,19 @@ COMMENT=	Qmail filter for monitoring and intercepting SMTP connections
 
 LICENSE=	GPLv2
 
+BROKEN_mips=		fails to build: error: nested functions are disabled, use -fnested-functions to re-enable
+BROKEN_mips64=		fails to build: error: nested functions are disabled, use -fnested-functions to re-enable
+BROKEN_powerpc64=	fails to build: error: nested functions are disabled, use -fnested-functions to re-enable
+
 RUN_DEPENDS=	${LOCALBASE}/bin/tcprules:sysutils/ucspi-tcp
 
-BROKEN_powerpc64=	Does not build: error: nested functions are disabled, use -fnested-functions to re-enable
+USE_HARDENING=	pie:off relro:off
 
 USES=		cpe qmail tar:tgz
 WRKSRC=		${WRKDIR}/${DISTNAME}/spamdyke
 GNU_CONFIGURE=	yes
 ALL_TARGET=	spamdyke
 USE_GCC=	any
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 OPTIONS_DEFINE=		TLS DEBUG DEBUG_EXCESSIVE DOCS
 OPTIONS_DEFAULT=	TLS

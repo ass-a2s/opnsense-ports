@@ -2,23 +2,28 @@
 # $FreeBSD$
 
 PORTNAME=	imapproxy
-PORTVERSION=	1.2.7
-PORTREVISION=	4
+DISTVERSION=	1.2.8-pre20171105
 CATEGORIES=	mail
-MASTER_SITES=	SF/squirrelmail/imap_proxy/${PORTVERSION}
 PKGNAMEPREFIX=	up-
-DISTNAME=	squirrelmail-imap_proxy-${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	brnrd@FreeBSD.org
 COMMENT=	Caching IMAP proxy server
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFINE=	DOVECOT DOCS
-DOVECOT_DESC=	Use with dovecot2
-
 USES=		autoreconf tar:bzip2 ncurses pathfix ssl
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	rlaager
+GH_PROJECT=	${PORTNAME}-pkg
+GH_TAGNAME=	upstream/1.2.8_svn20171105
+
+OPTIONS_DEFINE=	DOVECOT DOCS
+
+DOVECOT_DESC=	Use with dovecot2
+DOVECOT_RUN_DEPENDS=	dovecot:mail/dovecot
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-openssl=${OPENSSLBASE}
 
@@ -29,14 +34,8 @@ SUB_FILES=	pkg-message
 DOCS=		ChangeLog README README.debian README.known_issues README.ssl
 SBIN=		in.imapproxyd pimpstat
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOVECOT}
-SUB_LIST+=	DOVECOT="dovecot"
-RUN_DEPENDS+=	dovecot:mail/dovecot
-.else
-SUB_LIST+=	DOVECOT=""
-.endif
+post-patch:
+	${MKDIR} ${WRKSRC}/bin
 
 do-install:
 .for i in ${SBIN}
@@ -44,11 +43,11 @@ do-install:
 .endfor
 	(cd ${WRKSRC}/scripts && ${INSTALL_DATA} imapproxy.conf \
 		${STAGEDIR}${PREFIX}/etc/imapproxyd.conf.sample)
-.if ${PORT_OPTIONS:MDOCS}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${DOCS}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${i} ${STAGEDIR}${DOCSDIR})
 .endfor
-.endif
 
 .include <bsd.port.mk>

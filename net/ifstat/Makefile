@@ -7,11 +7,12 @@ PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	http://gael.roualland.free.fr/${PORTNAME}/
 
-MAINTAINER=	alexey@renatasystems.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Network interface statistics monitoring tool
 
 GNU_CONFIGURE=	yes
 USES=		ssl
+USE_HARDENING=	cfi safestack
 
 OPTIONS_DEFINE=	SNMP
 SNMP_LIB_DEPENDS=	libnetsnmp.so:net-mgmt/net-snmp

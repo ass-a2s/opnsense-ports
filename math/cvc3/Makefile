@@ -3,7 +3,7 @@
 
 PORTNAME=	cvc3
 PORTVERSION=	2.4.1
-PORTREVISION=	2
+PORTREVISION=	6
 CATEGORIES=	math
 MASTER_SITES=	http://www.cs.nyu.edu/acsys/cvc3/download/${PORTVERSION}/
 
@@ -11,6 +11,8 @@ MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Automatic theorem prover for the SMT problem
 
 LIB_DEPENDS=	libgmp.so:math/gmp
+
+USE_HARDENING=	pie:off
 
 CONFIGURE_ARGS=	--enable-dynamic \
 		--with-arith=gmp \
@@ -24,8 +26,6 @@ PATHFIX_MAKEFILEIN=	Makefile
 USE_CXXSTD=	gnu++98
 USE_GCC=	any
 USE_LDCONFIG=	yes
-
-NOPIE_PORTS=	yes
 
 post-patch:
 	${REINPLACE_CMD} -e 's,/bin/bash,/bin/sh,' ${WRKSRC}/Makefile.std

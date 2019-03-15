@@ -2,11 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	Console_Getargs
-PORTVERSION=	1.3.5
+DISTVERSION=	1.4.0
 CATEGORIES=	devel www pear
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PEAR command-line arguments parser
+
+LICENSE=	PHP301
 
 USES=		pear
 

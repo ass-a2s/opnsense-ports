@@ -11,8 +11,8 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simple class holding IRC related methods for bingo
 
-BUILD_DEPENDS=	p5-Games-Bingo>=0:games/p5-Games-Bingo
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Games-Bingo>=0:games/p5-Games-Bingo
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	bin/bingobot.pl
@@ -23,11 +23,8 @@ PORTEXAMPLES=	bingobot.pl
 
 OPTIONS_DEFINE=	EXAMPLES
 
-post-install:
+post-install-EXAMPLES-on:
 	${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/bingobot.pl ${STAGEDIR}${EXAMPLESDIR}
-
-regression-test: build
-	@cd ${WRKSRC} && ${MAKE} -s test
 
 .include <bsd.port.mk>

@@ -2,13 +2,13 @@
 
 PORTNAME=	api
 PORTVERSION=	0.5.0
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	security
 MASTER_SITES=	SF/razorbacktm/API
 PKGNAMEPREFIX=	razorback-
 DIST_SUBDIR=	razorback
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for an intelligence driven security solution - API
 
 LICENSE=	GPLv2
@@ -19,6 +19,8 @@ LIB_DEPENDS=	libconfig.so:devel/libconfig \
 		libcurl.so:ftp/curl \
 		libjson-c.so:devel/json-c
 
+USE_HARDENING=	pie:off relro:off
+
 OPTIONS_DEFINE=	DEBUG ASSERT CNC_DEBUG STOMP_DEBUG
 
 CNC_DEBUG_DESC=		Enable Command and Control Debug
@@ -27,16 +29,15 @@ STOMP_DEBUG_DESC=	Enable STOMP Debug
 GNU_CONFIGURE=	yes
 USES=		libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
-USE_AUTOTOOLS=	autoconf
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 DEBUG_CONFIGURE_ENABLE=		debug
 ASSERT_CONFIGURE_ENABLE=	assert
 CNC_DEBUG_CONFIGURE_ENABLE=	cnc-debug
 STOMP_DEBUG_CONFIGURE_ENABLE=	stomp-debug
+
+post-patch:
+	@${REINPLACE_CMD} -e s/json/json-c/ -e s/-Werror// ${WRKSRC}/configure
 
 .include <bsd.port.mk>

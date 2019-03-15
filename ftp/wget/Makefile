@@ -2,18 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	wget
-DISTVERSION=	1.19.1
-PORTREVISION=	1
+DISTVERSION=	1.20
+PORTREVISION=	2
 CATEGORIES=	ftp www ipv6
 MASTER_SITES=	GNU
+EXTRACT_SUFX=	.tar.lz
 
 MAINTAINER=	vd@FreeBSD.org
 COMMENT=	Retrieve files from the Net via HTTP(S) and FTP
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-EXPLICIT_SAFESTACK=	yes
 
 TEST_DEPENDS=	p5-HTTP-Daemon>=0:www/p5-HTTP-Daemon \
 		p5-IO-Socket-SSL>=0:security/p5-IO-Socket-SSL
@@ -23,10 +22,12 @@ CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 OPTIONS_SUB=	yes
 
+USE_HARDENING=	cfi safestack
+
 OPTIONS_RADIO=	SSL
 OPTIONS_RADIO_SSL=GNUTLS OPENSSL
 OPTIONS_DEFINE=	DOCS IDN IPV6 MANPAGES METALINK NLS PCRE PSL
-OPTIONS_DEFAULT=DOCS IDN IPV6 MANPAGES NLS OPENSSL
+OPTIONS_DEFAULT=IDN MANPAGES OPENSSL
 
 DOCS_DESC=	Install info page
 DOCS_CONFIGURE_ENV=	MAKEINFO="${MAKEINFO}"
@@ -99,10 +100,4 @@ post-patch-DOCS-off:
 		-e '/^install-data-am:/ s, install-info-am,,' \
 		${WRKSRC}/doc/Makefile.in
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MOPENSSL} && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	xapian
-PORTVERSION=	1.4.4
+PORTVERSION=	1.4.11
 DISTVERSIONPREFIX=	bindings-
 CATEGORIES=	databases ruby
-MASTER_SITES=	http://oligarchy.co.uk/xapian/${PORTVERSION}/ \
+MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
 		LOCAL/sunpoet
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 
@@ -18,18 +18,32 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	xapian-core>=${PORTVERSION}:databases/xapian-core
 LIB_DEPENDS=	libxapian.so:databases/xapian-core
 
+CONFLICTS_INSTALL=	xapian-bindings12
+
 OPTIONS_DEFINE=	DOCS
 
 PORTSCOUT=	limitw:1,even
 
-CONFIGURE_ARGS=	--datarootdir=${DATADIR} --docdir=${DOCSDIR} \
-		--enable-static --with-ruby \
-		--without-csharp --without-java --without-lua --without-perl \
-		--without-php --without-python --without-python3 --without-tcl
+USES=		compiler:c++11-lang libtool tar:xz
+USE_RUBY=	yes
+
+CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
+		--docdir=${DOCSDIR} \
+		--enable-shared \
+		--enable-static \
+		--with-ruby \
+		--without-csharp \
+		--without-java \
+		--without-lua \
+		--without-perl \
+		--without-php \
+		--without-php7 \
+		--without-python \
+		--without-python3 \
+		--without-tcl
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USE_RUBY=	yes
-USES=		libtool tar:xz
+USE_CXXSTD=	c++11
 
 PORTDOCS=	*
 

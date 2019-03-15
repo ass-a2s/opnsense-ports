@@ -12,14 +12,17 @@ COMMENT=	Qt-based Direct Connect client
 
 LICENSE=	GPLv2
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 LIB_DEPENDS=	libdc.so:net-p2p/dclib \
 		libxml2.so:textproc/libxml2
 
 WRKSRC=	${WRKDIR}/${DISTNAME}
 
-USE_QT4=	corelib gui network qt3support \
+USE_QT=		corelib gui network qt3support \
 		moc_build uic_build rcc_build linguisttools_build
-USES=		gmake perl5 pkgconfig tar:bzip2
+USES=		gmake perl5 pkgconfig qt:4 tar:bzip2
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes

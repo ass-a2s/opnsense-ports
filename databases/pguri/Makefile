@@ -3,6 +3,7 @@
 
 PORTNAME=	pguri
 PORTVERSION=	1.20151224
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	tz@FreeBSD.org
@@ -12,6 +13,7 @@ BUILD_DEPENDS=	uriparser>=0.8.0:net/uriparser
 RUN_DEPENDS=	uriparser>=0.8.0:net/uriparser
 
 USES=		gmake pgsql pkgconfig
+LLD_UNSAFE=	yes
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	petere

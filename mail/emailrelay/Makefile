@@ -3,7 +3,7 @@
 
 PORTNAME=	emailrelay
 PORTVERSION=	1.9
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail ipv6
 MASTER_SITES=	SF
 EXTRACT_SUFX=	-src.tar.gz
@@ -29,7 +29,8 @@ DOXYGEN_BUILD_DEPENDS=	doxygen:devel/doxygen
 
 GUI_CONFIGURE_ENABLE=	gui
 GUI_CONFIGURE_ENV=	e_qtmoc="${MOC}"
-GUI_USE=		QT4=gui,moc
+GUI_USES=		qt:4
+GUI_USE=		QT=gui,moc
 
 OPENSSL_CONFIGURE_WITH=	openssl
 OPENSSL_USES=		ssl
@@ -37,6 +38,13 @@ OPENSSL_LDFLAGS=	-L${OPENSSLLIB}
 OPENSSL_CPPFLAGS=	-I${OPENSSLINC}
 
 IPV6_CONFIGURE_ENABLE=	ipv6
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MGUI}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-install:
 	${MV} ${STAGEDIR}${PREFIX}/etc/emailrelay.auth.template \

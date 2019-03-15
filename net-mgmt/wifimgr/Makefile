@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	wifimgr
-PORTVERSION=	1.11
-PORTREVISION=	2
+PORTVERSION=	1.12
 CATEGORIES=	net-mgmt sysutils
 MASTER_SITES=	http://opal.com/freebsd/ports/net-mgmt/wifimgr/ \
 		LOCAL/ehaupt
@@ -14,12 +13,12 @@ COMMENT=	WiFi Networks Manager
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+USE_HARDENING=	pie:off
+
 USES=		desktop-file-utils pkgconfig tar:bzip2
 USE_XORG=	x11
 USE_GNOME=	gtk20
 INSTALLS_ICONS=	yes
-
-NOPIE_PORTS=	yes
 
 OPTIONS_DEFINE=	NLS
 OPTIONS_SUB=	yes

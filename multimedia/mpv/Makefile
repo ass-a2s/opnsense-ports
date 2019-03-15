@@ -2,14 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	mpv
-PORTVERSION=	0.26.0
+PORTVERSION=	0.29.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio
-
-PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
-PATCHFILES=	8c82555e41a6.patch:-p1
+MASTER_SITES=	https://waf.io/:waf
+DISTFILES=	${WAF_RELEASE}${EXTRACT_SUFX}:waf
 
 MAINTAINER=	cpm@FreeBSD.org
 COMMENT=	Free and open-source general-purpose video player
@@ -17,19 +16,21 @@ COMMENT=	Free and open-source general-purpose video player
 LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
 
-BUILD_DEPENDS=	ffmpeg>=3.3,1:multimedia/ffmpeg
+BUILD_DEPENDS=	ffmpeg>=4.0.2,1:multimedia/ffmpeg
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 
 USES=		compiler:c11 desktop-file-utils iconv jpeg localbase:ldflags \
-		pkgconfig python:build waf
+		pkgconfig python:build tar:bz2 waf
 USE_LDCONFIG=	yes
+
+USE_HARDENING=	pie:off
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	mpv-player
-# Keep in sync with bootstrap.py to avoid regressions
-GH_TUPLE=	waf-project:waf:waf-1.9.8:waf
 
-WAF_CMD=	${WRKSRC_waf}/waf-light
+# Keep in sync with bootstrap.py to avoid regressions
+WAF_CMD=	${WRKDIR}/${WAF_RELEASE}/waf-light
+WAF_RELEASE=	waf-2.0.9
 
 CONFIGURE_ENV=	BIN_PYTHON="${PYTHON_CMD}"
 CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
@@ -39,22 +40,17 @@ CONFIGURE_ARGS=	--docdir="${EXAMPLESDIR}" \
 		--disable-optimize \
 		--disable-pdf \
 		--disable-rubberband \
-		--disable-vaapi-wayland \
 		--disable-vapoursynth \
 		--disable-vapoursynth-lazy \
-		--disable-wayland \
 		--enable-libmpv-shared
 
-NOPIE_PORTS=		yes
-EXPLICIT_SAFESTACK=	yes
-
-OPTIONS_DEFINE=		ARCHIVE ASS DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET ZSH
+OPTIONS_DEFINE=		ARCHIVE ASS DOCS LCMS2 LUAJIT MANPAGES TEST UCHARDET ZSH EXAMPLES
 OPTIONS_DEFAULT=	ARCHIVE ASS DVDREAD DVDNAV MANPAGES OPENGL UCHARDET \
-			V4L VAAPI VDPAU X11 YTDL ZSH
+			V4L VAAPI VDPAU VULKAN WAYLAND X11 YTDL
 OPTIONS_GROUP=		IN VO AO
 OPTIONS_GROUP_IN=	CDIO DVDREAD DVDNAV LIBBLURAY V4L YTDL SMB
-OPTIONS_GROUP_VO=	CACA OPENGL VAAPI VDPAU X11
-OPTIONS_GROUP_AO=	ALSA JACK PULSEAUDIO SDL SNDIO
+OPTIONS_GROUP_VO=	CACA OPENGL VAAPI VDPAU VULKAN WAYLAND X11
+OPTIONS_GROUP_AO=	ALSA JACK OPENAL PULSEAUDIO SDL SNDIO
 OPTIONS_SUB=		yes
 
 ASS_DESC=		ASS/SSA subtitle and OSD rendering
@@ -62,6 +58,8 @@ DVDREAD_DESC=		DVD Playback support
 DVDNAV_DESC=		DVD menu navigation
 LUAJIT_DESC=		Use LuaJIT instead of Lua scripting language support
 UCHARDET_DESC=		Guess subtitle encoding via uchardet
+VULKAN_DESC=		Vulkan output support
+WAYLAND_DESC=		Wayland (graphics) support
 YTDL_DESC=		Install youtube-dl
 IN_DESC=		Input
 VO_DESC=		Video Output
@@ -109,6 +107,11 @@ LUAJIT_CONFIGURE_OFF=		--lua=${LUA_VER_STR}fbsd
 MANPAGES_BUILD_DEPENDS=		rst2man:textproc/py-docutils
 MANPAGES_CONFIGURE_OFF=		--disable-manpage
 
+OPENAL_CONFIGURE_ENABLE=	openal
+OPENAL_USES=			openal
+OPENAL_VARS=			LLD_UNSAFE=yes # cf. PR 226980
+
+OPENGL_USES=			gl
 OPENGL_USE=			GL=egl,gbm,gl
 OPENGL_CONFIGURE_OFF=		--disable-gl
 OPENGL_IMPLIES=			X11
@@ -135,7 +138,7 @@ UCHARDET_CONFIGURE_OFF=		--disable-uchardet
 
 V4L_BUILD_DEPENDS=		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 V4L_LIB_DEPENDS=		libv4l2.so:multimedia/libv4l
-V4L_CONFIGURE_ON=		--enable-tv
+V4L_CONFIGURE_ON=		--enable-tv --enable-dvbin
 
 VAAPI_LIB_DEPENDS=		libva.so:multimedia/libva
 VAAPI_CONFIGURE_OFF=		--disable-vaapi
@@ -143,7 +146,21 @@ VAAPI_CONFIGURE_OFF=		--disable-vaapi
 VDPAU_LIB_DEPENDS=		libvdpau.so:multimedia/libvdpau
 VDPAU_CONFIGURE_OFF=		--disable-vdpau
 
-X11_USE=			XORG=x11,xext,xinerama,xineramaproto,xrandr,xscrnsaver,xv,xxf86vm
+VULKAN_BUILD_DEPENDS=		${LOCALBASE}/include/vulkan/vulkan.h:devel/vulkan-headers
+VULKAN_LIB_DEPENDS=		libvulkan.so:graphics/vulkan-loader \
+				libshaderc_shared.so:graphics/shaderc
+VULKAN_CONFIGURE_OFF=		--disable-vulkan --disable-shaderc
+VULKAN_IMPLIES=			X11
+
+WAYLAND_BUILD_DEPENDS=		wayland-protocols>=1.14:graphics/wayland-protocols \
+				${LOCALBASE}/include/linux/input.h:devel/evdev-proto
+WAYLAND_LIB_DEPENDS=		libwayland-client.so:graphics/wayland \
+				libwayland-cursor.so:graphics/wayland \
+				libxkbcommon.so:x11/libxkbcommon
+WAYLAND_CONFIGURE_OFF=		--disable-wayland
+
+X11_USES=			gnome
+X11_USE=			XORG=x11,xext,xinerama,xorgproto,xrandr,xscrnsaver,xv,xxf86vm
 X11_VARS=			INSTALLS_ICONS=yes
 X11_CONFIGURE_OFF=		--disable-x11
 
@@ -153,6 +170,15 @@ ZSH_USES=			perl5
 ZSH_USE=			PERL5=build
 ZSH_CONFIGURE_ENV=		BIN_PERL="${PERL}"
 ZSH_CONFIGURE_ENABLE=		zsh-comp
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MVAAPI} && ${PORT_OPTIONS:MWAYLAND}
+CONFIGURE_ARGS+=	--enable-vaapi-wayland
+LIB_DEPENDS+=		libva-wayland.so:multimedia/libva
+.else
+CONFIGURE_ARGS+=	--disable-vaapi-wayland
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/pkgconfig/mpv.pc|data/pkgconfig/mpv.pc|g' \

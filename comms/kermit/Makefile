@@ -5,7 +5,7 @@ PORTNAME=	kermit
 PORTVERSION=	9.0.304
 CATEGORIES=	comms ftp net
 MASTER_SITES=	ftp://ftp.kermitproject.org/kermit/test/tar/
-DISTNAME=	cku${PORTVERSION:E}-dev20
+DISTNAME=	cku${PORTVERSION:E}-dev22
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Portable scriptable network and serial communication program
@@ -17,6 +17,8 @@ NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile
 ALL_TARGET=	freebsd+ssl
 MAKE_ARGS=	CC2="${CC}" SSLINC="-I${OPENSSLINC}" SSLLIB="-L${OPENSSLLIB}"
+
+CFLAGS=		-DOPENSSL_IS_LIBRESSL
 
 PLIST_FILES=	bin/kermit man/man1/kermit.1.gz
 PORTDOCS=	*

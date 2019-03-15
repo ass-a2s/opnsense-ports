@@ -11,9 +11,12 @@ DISTNAME=	StructureSynth-Source-v${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Rule-based 3D structure generator
 
-USES=		qmake zip dos2unix
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake qt:4 zip dos2unix
 USE_GL=		glu
-USE_QT4=	corelib gui opengl moc_build rcc_build xml script
+USE_QT=		corelib gui opengl moc_build rcc_build xml script
 WRKSRC=		${WRKDIR}/structure-synth
 DOS2UNIX_GLOB=	*.cpp *.h
 

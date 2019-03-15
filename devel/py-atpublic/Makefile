@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	atpublic
-PORTVERSION=	0.5
+PORTVERSION=	1.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,7 +11,7 @@ COMMENT=	Very simple decorator and function of module's all
 
 LICENSE=	APACHE20
 
-USES=		python:3
+USES=		python:3.3+
 USE_PYTHON=	autoplist distutils
 
 MAKE_ENV=	ATPUBLIC_BUILD_EXTENSION=1

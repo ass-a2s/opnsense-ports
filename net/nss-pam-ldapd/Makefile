@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=		nss-pam-ldapd
-PORTVERSION=		0.9.8
+PORTVERSION=		0.9.10
+PORTREVISION=		1
 CATEGORIES=		net
 MASTER_SITES=		http://arthurdejong.org/nss-pam-ldapd/ \
 			ZI
@@ -13,6 +14,8 @@ COMMENT?=		Advanced fork of nss_ldap
 LICENSE=		LGPL21 LGPL3
 LICENSE_COMB=		dual
 
+USE_HARDENING=		pie:off relro:off
+
 USES=			cpe
 CPE_VENDOR=		arthurdejong
 GNU_CONFIGURE=		yes
@@ -20,14 +23,11 @@ USE_OPENLDAP=		yes
 USE_RC_SUBR=		nslcd
 PAM_LDAP_SHMAJOR=	1
 NSS_LDAP_SHMAJOR=	1
-PKGMESSAGE=		${WRKDIR}/pkg-message
 SUB_FILES+=		pkg-message
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
 NSLCD_PIDFILE?=		/var/run/nslcd.pid
-NSLCD_SOCKET?=		/var/run/nslcd.ctl
+NSLCD_VARDIR?=		/var/run/nslcd
+NSLCD_SOCKET?=		${NSLCD_VARDIR}/nslcd.ctl
 
 OPTIONS_DEFINE=		KERBEROS
 OPTIONS_DEFAULT=	KERBEROS
@@ -69,7 +69,9 @@ PLIST_SUB+=		CONFIG="${CONFIG_FILE}" \
 			PAM_LDAP_SHMAJOR="${PAM_LDAP_SHMAJOR}" \
 			NSS_LDAP_SHMAJOR="${NSS_LDAP_SHMAJOR}"
 SUB_LIST+=		CONFIG_FILE="${PREFIX}/etc/${CONFIG_FILE}" \
-			NSLCD_PIDFILE="${NSLCD_PIDFILE}"
+			NSLCD_PIDFILE="${NSLCD_PIDFILE}" \
+			NSLCD_VARDIR="${NSLCD_VARDIR}" \
+			USERS="${USERS}" GROUPS="${GROUPS}"
 
 .if empty(PORT_OPTIONS:MKERBEROS)
 CONFIGURE_ARGS+=	--disable-kerberos

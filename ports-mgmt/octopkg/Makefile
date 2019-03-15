@@ -3,7 +3,7 @@
 
 PORTNAME=	octopkg
 PORTVERSION=	0.2.0
-PORTREVISION=	1
+PORTREVISION=	6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	ports-mgmt
 
@@ -16,9 +16,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USE_GITHUB=	yes
 GH_ACCOUNT=	aarnt
 
-USE_QT5=	core concurrent gui network xml widgets quick concurrent \
+USE_QT=		core concurrent declarative gui network xml widgets concurrent \
 		buildtools_build
-USES=		qmake compiler:c++11-lib
+USES=		qmake compiler:c++11-lib qt:5
 
 PLIST_FILES=	bin/${PORTNAME} share/pixmaps/octopi_green.png
 

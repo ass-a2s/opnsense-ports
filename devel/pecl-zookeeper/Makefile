@@ -2,20 +2,21 @@
 # $FreeBSD$
 
 PORTNAME=	zookeeper
-PORTVERSION=	0.4.0
+PORTVERSION=	0.7.1
 CATEGORIES=	devel
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP extension for interfacing with Apache ZooKeeper
 
 LICENSE=	PHP301
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libzookeeper_mt.so:devel/libzookeeper
 
-USE_PHP=	session:build
 USES=		php:pecl
+USE_PHP=	session:build
 
-PLIST_FILES=	%%DATADIR%%/zookeeper-api.php
+PORTDATA=	zookeeper-api.php
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}/

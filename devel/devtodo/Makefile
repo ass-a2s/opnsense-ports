@@ -10,7 +10,7 @@ MASTER_SITES=	http://swapoff.org/files/devtodo/
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tool to effectively maintain todo lists aimed at developers
 
-CONFLICTS=	tdl-[0-9]* todo-[0-9]*
+CONFLICTS_INSTALL=	deforaos-todo tdl todo
 
 GNU_CONFIGURE=	yes
 USES=		ncurses readline
@@ -21,9 +21,6 @@ OPTIONS_DEFINE=	EXAMPLES
 # of malloc and realloc functions. Adding this define was the simplest
 # (although not elegant) solution.
 CFLAGS+=	-DSTDC_HEADERS
-
-post-patch:
-	@${REINPLACE_CMD} -e 's/^\ttest -f.*todorc.*\n//' ${WRKSRC}/doc/Makefile.in
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

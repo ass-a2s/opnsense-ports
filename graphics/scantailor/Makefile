@@ -3,28 +3,33 @@
 
 PORTNAME=	scantailor
 PORTVERSION=	0.9.11.1
-PORTREVISION=	9
+PORTREVISION=	15
 CATEGORIES=	graphics
 MASTER_SITES=	SF
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Interactive post-processing tool for scanned pages
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libtiff.so:graphics/tiff \
-		libjbig.so:graphics/jbigkit \
-		libpng.so:graphics/png \
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+BROKEN_powerpc64=	fails to compile: core.hpp:69: boost::lambda::<unnamed>::_1 causes a section type conflict
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
+LIB_DEPENDS=	libtiff.so:graphics/tiff \
+		libjbig.so:graphics/jbigkit \
+		libpng.so:graphics/png
+
+USE_HARDENING=	pie:off
 
 #MAKE_JOBS_UNSAFE=	yes
-USES=		cmake gettext jpeg
-USE_QT4=	corelib gui xml qmake_build uic_build moc_build rcc_build \
+USES=		cmake gettext jpeg qt:4
+USE_CXXSTD=	gnu++98
+USE_QT=		corelib gui xml qmake_build uic_build moc_build rcc_build \
 		linguist_build
 USE_XORG+=	xrender
-
-NOPIE_PORTS=	yes
 
 DESKTOP_ENTRIES="Scan Tailor" "${COMMENT}" "${PORTNAME}" \
 		"${PORTNAME}" "Graphics;Scanning;" false

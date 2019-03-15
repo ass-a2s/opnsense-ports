@@ -10,10 +10,13 @@ PKGNAMESUFFIX=	5-designerplugin
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Qt Designer plugin for Qwt
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 LIB_DEPENDS=	libqwt.so:x11-toolkits/qwt5
 
-USES=		gmake qmake tar:bzip2
-USE_QT4=	designer moc_build rcc_build
+USES=		gmake qmake qt:4 tar:bzip2
+USE_QT=		designer moc_build rcc_build
 QMAKE_ARGS+=	CONFIG+=QwtDesigner \
 		PLUGINDIR=${PREFIX}/${QT_PLUGINDIR_REL}
 PORTSCOUT=	limit:^5\.

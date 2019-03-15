@@ -3,6 +3,7 @@
 
 PORTNAME=	exaddos
 PORTVERSION=	0.4.0
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	ZI
 
@@ -12,12 +13,12 @@ COMMENT=	Monitor your network for DDoS
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}snmp4-mibs>=0.1.4:net-mgmt/py-snmp4-mibs \
-		${PYTHON_PKGNAMEPREFIX}snmp4>=4.2.3:net-mgmt/py-snmp4
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pysnmp-mibs>=0.1.4:net-mgmt/py-pysnmp-mibs@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pysnmp>=4.2.3:net-mgmt/py-pysnmp@${PY_FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	Exa-Networks
-USES=		python
+USES=		python:2.7
 SUB_FILES=	pkg-message exaddos.sh exaddos.conf.sample
 SUB_LIST=	PYTHON_LIBDIR=${PYTHON_LIBDIR} PYTHON_CMD=${PYTHON_CMD} \
 		PYTHON_SITELIBDIR=${PYTHON_SITELIBDIR}

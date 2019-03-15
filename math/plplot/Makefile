@@ -3,7 +3,7 @@
 
 PORTNAME=	plplot
 PORTVERSION=	5.12.0
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	math science
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTVERSION}%20Source
 
@@ -21,9 +21,10 @@ LIB_DEPENDS=	libLASi.so:devel/lasi \
 RUN_DEPENDS=	bash:shells/bash \
 		${FREEFONT_DIR}/FreeMono.ttf:x11-fonts/freefont-ttf
 
+USES=		compiler:c11 cmake gettext-runtime ghostscript gnome \
+		localbase perl5 pathfix pkgconfig
 USE_GNOME=	cairo pango
 USE_PERL5=	build
-USES=		cmake:outsource gettext-runtime ghostscript localbase perl5 pathfix pkgconfig
 CMAKE_ARGS=	-DENABLE_java:BOOL=OFF \
 		-DENABLE_octave:BOOL=OFF \
 		-DENABLE_pdl:BOOL=OFF \
@@ -50,7 +51,7 @@ FORTRAN_CMAKE_BOOL=	ENABLE_f95
 FORTRAN_CONFIGURE_ENV=	CMAKE_Fortran_COMPILER="${FC}"
 
 GD_LIB_DEPENDS=		libgd.so:graphics/gd \
-			libpng16.so:graphics/png
+			libpng.so:graphics/png
 GD_USES=		jpeg
 GD_CMAKE_BOOL=		PLD_png
 
@@ -58,12 +59,14 @@ LUA_USES=		lua:51
 LUA_CMAKE_BOOL=		ENABLE_lua
 LUA_CMAKE_ON=		-DLUA_EXECUTABLE:FILEPATH="${LUA_CMD}"
 
-PYTHON_USES=		python
-PYTHON_BUILD_DEPENDS=	swig:devel/swig13 \
+PYTHON_USES=		python:2.7
+PYTHON_BUILD_DEPENDS=	swig3.0:devel/swig30 \
 			${PYNUMPY}
+PYTHON_BINARY_ALIAS=	swig=swig3.0
 PYTHON_RUN_DEPENDS=	${PYNUMPY}
 PYTHON_CMAKE_BOOL=	ENABLE_python
 PYTHON_CONFIGURE_ENV=	PYTHON_VERSION="${PYTHON_VERSION}"
+PYTHON_BROKEN=		Does not package
 
 QHULL2003_DESC=		Legacy Qhull support
 QHULL2015_DESC=		Latest Qhull support
@@ -93,7 +96,8 @@ TCLTK_CMAKE_ON=		-DPLPLOT_TK_VERSION:STRING="${TK_VER}" \
 
 THREADS_CMAKE_BOOL=	THREADS_HAVE_PTHREAD_ARG
 
-QT4_USE=		QT4=corelib,gui,svg,xml,moc_build,qmake_build,rcc_build,uic_build
+QT4_USES=		qt:4
+QT4_USE=		QT=corelib,gui,svg,xml,moc_build,qmake_build,rcc_build,uic_build
 QT4_CMAKE_BOOL=		ENABLE_qt
 QT4_CMAKE_BOOL_OFF=	DEFAULT_NO_QT_DEVICES
 
@@ -104,6 +108,13 @@ WXGTK_CMAKE_ON=		-DwxWidgets_CONFIG_EXECUTABLE:FILEPATH="${WX_CONFIG}"
 
 X11_USE=		XORG=ice,sm,x11,xext
 X11_CMAKE_BOOL=		PLD_xcairo PLD_xwin
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 	${REINPLACE_CMD} -e \

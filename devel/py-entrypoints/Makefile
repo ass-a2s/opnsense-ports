@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	entrypoints
-PORTVERSION=	0.2.3
+PORTVERSION=	0.3
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,7 +12,7 @@ COMMENT=	Discover and load entry points from installed packages
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	autoplist distutils
@@ -21,7 +21,7 @@ NO_ARCH=	yes
 .include <bsd.port.pre.mk>
 
 .if ${PYTHON_REL} < 3000
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}configparser>=3.5:devel/py-configparser
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}configparser>=3.5:devel/py-configparser@${PY_FLAVOR}
 .endif
 
 do-test:

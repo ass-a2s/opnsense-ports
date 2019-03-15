@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tvnamer
-PORTVERSION=	2.4
+PORTVERSION=	2.5
 CATEGORIES=	multimedia python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,10 +12,11 @@ COMMENT=	Automatically names downloaded/recorded TV-episode
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tvdb_api>=1.5:www/py-tvdb_api
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tvdb_api>=1.5:www/py-tvdb_api
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tvdb_api>=1.5:www/py-tvdb_api@${PY_FLAVOR}
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tvdb_api>=1.5:www/py-tvdb_api@${PY_FLAVOR}
 
-USES=		python
+USES=		python:2.7
+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

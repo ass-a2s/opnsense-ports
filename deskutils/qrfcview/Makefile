@@ -13,8 +13,11 @@ COMMENT=	Graphical RFC viewer
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		qmake tar:tgz
-USE_QT4=	gui network corelib uic_build moc_build rcc_build
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake qt:4 tar:tgz
+USE_QT=		gui network corelib uic_build moc_build rcc_build
 
 SUB_FILES=	qRFCView
 

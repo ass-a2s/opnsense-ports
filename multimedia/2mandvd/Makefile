@@ -3,7 +3,7 @@
 
 PORTNAME=	2ManDVD
 PORTVERSION=	1.8.5
-PORTREVISION=	6
+PORTREVISION=	9
 CATEGORIES=	multimedia
 MASTER_SITES=	http://download.tuxfamily.org/2mandvd/
 
@@ -11,6 +11,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	DVD authoring and slideshow tool
 
 LICENSE=	GPLv2
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
 RUN_DEPENDS=	sox:audio/sox \
@@ -30,9 +33,9 @@ RUN_DEPENDS=	sox:audio/sox \
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		desktop-file-utils gmake perl5 qmake:norecursive shebangfix
+USES=		desktop-file-utils gmake perl5 qmake:norecursive qt:4 shebangfix
 SHEBANG_FILES=	fake.pl
-USE_QT4=	corelib gui opengl \
+USE_QT=		corelib gui opengl \
 		linguisttools_build moc_build rcc_build uic_build
 USE_GL=		glu
 USE_SDL=	sdl

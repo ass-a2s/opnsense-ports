@@ -6,11 +6,16 @@ PORTVERSION=	1.1
 PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	textproc
-MASTER_SITES=	http://www.oasis-open.org/docbook/xml/simple/${PORTVERSION}/
+MASTER_SITES=	https://www.oasis-open.org/docbook/xml/simple/${PORTVERSION}/
 DISTNAME=	docbook-simple-${PORTVERSION}
 
-MAINTAINER=	gabor@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	"Simplified" DocBook XML DTD
+
+LICENSE=	OASIS
+LICENSE_NAME=	OASIS License
+LICENSE_TEXT=	License text is available in all files installed by this port
+LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 RUN_DEPENDS+=	xmlcatmgr:textproc/xmlcatmgr
 

@@ -2,7 +2,7 @@
 
 PORTNAME=	klayout
 PORTVERSION=	0.24.9
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	cad
 MASTER_SITES=	http://www.klayout.org/downloads/source/
 
@@ -11,9 +11,12 @@ COMMENT=	Qt-based GDS2 Viewer
 
 LICENSE=	GPLv2
 
-USES=		compiler:c++0x execinfo gmake python
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		compiler:c++0x gmake python qt:4
 USE_RUBY=	yes
-USE_QT4=	corelib designer gui network moc_build sql uic_build \
+USE_QT=		corelib designer gui network moc_build sql uic_build \
 		rcc_build qt3support xml
 USE_LDCONFIG=	yes
 PLIST_FILES=	bin/klayout \

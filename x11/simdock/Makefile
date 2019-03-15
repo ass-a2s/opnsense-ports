@@ -3,7 +3,7 @@
 
 PORTNAME=	simdock
 PORTVERSION=	1.2
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	x11
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -15,13 +15,13 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 GNU_CONFIGURE=	yes
-USES=		desktop-file-utils pathfix pkgconfig
+USES=		compiler:c++11-lang desktop-file-utils pathfix pkgconfig
 USE_GNOME=	gnomeprefix gconf2 libwnck
 USE_WX=		2.8
 USE_XORG=	x11
 WX_CONF_ARGS=	absolute
 
-NOPIE_PORTS=	yes
+USE_HARDENING=	pie:off
 
 WRKSRC=		${WRKDIR}/trunk
 

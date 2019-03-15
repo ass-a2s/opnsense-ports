@@ -12,8 +12,11 @@ COMMENT=	Comprehensive and easy to use graphical front end for Synergy
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		qmake
-USE_QT4=	moc_build rcc_build uic_build gui network
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake qt:4
+USE_QT=		moc_build rcc_build uic_build corelib gui network
 
 PLIST_FILES=	bin/qsynergy \
 		share/pixmaps/qsynergy.xpm

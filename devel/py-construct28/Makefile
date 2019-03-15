@@ -14,10 +14,14 @@ COMMENT=	Python module for parsing and building of data structures
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six
+DEPRECATED=	Latest upstream version is in ports tree devel/py-construct
+EXPIRATION_DATE=2019-03-20
 
-NO_ARCH=	yes
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
+
 USES=		python
 USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

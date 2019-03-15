@@ -3,7 +3,7 @@
 
 PORTNAME=	beautify
 PORTVERSION=	2012.08.12.00
-PORTREVISION=	4
+PORTREVISION=	8
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	gimp-
 PKGNAMESUFFIX=	-plugin
@@ -35,8 +35,6 @@ PLUGINS=	beautify \
 		border \
 		simple-border \
 		skin-whitening
-
-EXPLICIT_SAFESTACK=	yes
 
 # installed files
 .for plugin in ${PLUGINS}

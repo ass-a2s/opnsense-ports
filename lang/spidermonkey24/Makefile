@@ -3,7 +3,7 @@
 
 PORTNAME=		spidermonkey24
 PORTVERSION=		24.2.0
-PORTREVISION=	6
+PORTREVISION=		10
 CATEGORIES=		lang
 MASTER_SITES=		MOZILLA/js
 #http://people.mozilla.org/~sstangl/
@@ -17,8 +17,10 @@ LIB_DEPENDS=		libnspr4.so:devel/nspr
 
 CONFLICTS=		njs-[0-9]*
 
+USE_HARDENING=		pie:off relro:off
+
 GNU_CONFIGURE=		yes
-USES=			compiler:c++11-lib gmake pathfix perl5 python:2,build \
+USES=			compiler:c++11-lib gmake pathfix perl5 python:2.7,build \
 			readline tar:bzip2
 USE_PERL5=		build
 USE_LDCONFIG=		yes
@@ -31,10 +33,14 @@ CONFIGURE_ARGS=		--with-pthreads \
 OPTIONS_DEFINE=		DEBUG GCZEAL JEMALLOC METHODJIT OPTIMIZE READLINE \
 			THREADSAFE TRACEJIT UTF8 DTRACE
 OPTIONS_DEFAULT=	METHODJIT OPTIMIZE READLINE THREADSAFE TRACEJIT
+# ld(1) fails to link probes: Relocations in generic ELF (EM: 0)
+OPTIONS_EXCLUDE_aarch64=	DTRACE
+# dt_modtext:opensolaris/lib/libdtrace/common/dt_link.c: arm not implemented
+OPTIONS_EXCLUDE_armv6=	DTRACE
+OPTIONS_EXCLUDE_armv7=	DTRACE
 OPTIONS_SUB=	yes
 
 DEBUG_CONFIGURE_ENABLE=	debug debug-symbols
-DEBUG_CONFIGURE_DISABLE=debug
 DTRACE_CONFIGURE_ENABLE=dtrace profiling
 DTRACE_LIBS=		-lelf
 GCZEAL_DESC=		Enable Zealous garbage collecting
@@ -54,16 +60,13 @@ TRACEJIT_CONFIGURE_ENABLE=	tracejit
 UTF8_DESC=		Treat strings as UTF8 instead of ISO-8859-1
 UTF8_CFLAGS=		-DJS_C_STRINGS_ARE_UTF8
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64
 CONFIGURE_TARGET=	x86_64-portbld-freebsd${OSREL}
 .endif
 
-regression-test: build
+do-test:
 	@${ECHO_MSG} -n "===> Running jstests.py: "
 	@cd ${WRKSRC} && ${SETENV} TZ=PST8PDT ${PYTHON_CMD} tests/jstests.py \
 	--no-progress ./js24

@@ -19,7 +19,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}-src
 
-USES=		gmake desthack
+USES=		desthack gl gmake gnome sdl
+USE_CXXSTD=	c++98
 USE_GL=		gl
 USE_SDL=	image mixer sdl ttf
 MAKE_ARGS=	HC_BASE=${PREFIX}/share/${PORTNAME}/ \
@@ -41,12 +42,8 @@ OPTIONS_SUB=	yes
 
 SOLUTIONS_RUN_DEPENDS=	mplayer:multimedia/mplayer
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSOLUTIONS}
-DISTFILES+=	${PORTNAME}_solutions${EXTRACT_SUFX}
-EXTRACT_ONLY+=	${PORTNAME}_solutions${EXTRACT_SUFX}
-.endif
+SOLUTIONS_DISTFILES=	${PORTNAME}_solutions${EXTRACT_SUFX}
+SOLUTIONS_EXTRACT_ONLY=	${PORTNAME}_solutions${EXTRACT_SUFX}
 
 post-install:
 .for f in ${PORTNAME} ${PORTNAME}-editor
@@ -62,12 +59,11 @@ post-install:
 	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.desktop ${STAGEDIR}${DESKTOPDIR}
 	(cd ${WRKSRC}/man && ${INSTALL_MAN} *.6 ${STAGEDIR}${MAN6PREFIX}/man/man6/)
 
-.if ${PORT_OPTIONS:MSOLUTIONS}
+post-install-SOLUTIONS-on:
 	${INSTALL_SCRIPT} ${WRKDIR}/${PORTNAME}-solutions ${STAGEDIR}${PREFIX}/bin/
 	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}-solutions.desktop \
 		${STAGEDIR}${DESKTOPDIR}
 	@${MKDIR} ${STAGEDIR}${DATADIR}/solutions
 	@(cd ${WRKDIR} && ${INSTALL_DATA} *.avi ${STAGEDIR}${DATADIR}/solutions)
-.endif
 
 .include <bsd.port.mk>

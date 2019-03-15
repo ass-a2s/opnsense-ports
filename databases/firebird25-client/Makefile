@@ -1,4 +1,3 @@
-# Created by: Alonso Cárdenas Márquez <acm@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	firebird

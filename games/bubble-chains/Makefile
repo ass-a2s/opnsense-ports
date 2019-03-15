@@ -11,17 +11,20 @@ COMMENT=	2D arcade-puzzle game based on Qt/SDL
 
 LICENSE=	GPLv2
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 BUILD_DEPENDS=	icotool:graphics/icoutils
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	SanskritFritz
 
-USES=		dos2unix qmake
+USES=		dos2unix qmake qt:4
 DOS2UNIX_GLOB=	*.pro *.cpp  *.h *.ui *.rc *.htm *.dat *.css
 USE_SDL=	mixer sdl
 USE_GL=		gl
 USE_XORG=	xrandr
-USE_QT4=	moc_build rcc_build uic_build iconengines_run imageformats_run \
+USE_QT=		moc_build rcc_build uic_build iconengines_run imageformats_run \
 		corelib svg xml opengl network
 QMAKE_SOURCE_PATH=	${WRKSRC}/Game.pro
 

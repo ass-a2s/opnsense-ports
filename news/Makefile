@@ -5,7 +5,6 @@
 
     SUBDIR += atp
     SUBDIR += aub
-    SUBDIR += brag
     SUBDIR += c-nocem
     SUBDIR += cg
     SUBDIR += cleanfeed
@@ -47,6 +46,7 @@
     SUBDIR += nntpcache
     SUBDIR += noffle
     SUBDIR += nzbget
+    SUBDIR += nzbhydra2
     SUBDIR += nzbperl
     SUBDIR += p5-NNTPClient
     SUBDIR += p5-News-Article
@@ -60,7 +60,6 @@
     SUBDIR += plor
     SUBDIR += py-pynzb
     SUBDIR += py-sabyenc
-    SUBDIR += py-twistedNews
     SUBDIR += py-yenc
     SUBDIR += rawdog
     SUBDIR += s-news

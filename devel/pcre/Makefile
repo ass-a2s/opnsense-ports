@@ -2,21 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	pcre
-PORTVERSION=	8.40
-PORTREVISION=	1
+PORTVERSION=	8.43
 CATEGORIES=	devel
-MASTER_SITES=	SF \
-		ftp://ftp.csx.cam.ac.uk/pub/software/programming/${PORTNAME}/ \
-		ftp://ftp.fu-berlin.de/unix/misc/${PORTNAME}/ \
-		ftp://ftp.tin.org/pub/libs/${PORTNAME}/
+MASTER_SITES=	https://ftp.pcre.org/pub/pcre/ \
+		SF
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Perl Compatible Regular Expressions library
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENCE
 
-USES=		cpe libtool pathfix tar:bzip2
+USES=		${USES_${ARCH}} cpe libtool pathfix tar:bzip2
+USES_powerpc=	compiler:c++11-lang
+USES_powerpcspe=	compiler:c++11-lang
+USES_powerpc64=	compiler:c++11-lang
+USES_sparc64=	compiler:c++11-lang
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

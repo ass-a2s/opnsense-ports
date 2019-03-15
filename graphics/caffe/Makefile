@@ -2,7 +2,7 @@
 
 PORTNAME=	caffe
 PORTVERSION=	1.0
-PORTREVISION=	2
+PORTREVISION=	19
 CATEGORIES=	graphics
 
 MAINTAINER=	eric@camachat.org
@@ -14,14 +14,13 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 CONFLICTS_INSTALL=	caffe2-*
 
 BUILD_DEPENDS=	${PYNUMPY} \
-		${LOCALBASE}/bin/cython:lang/cython \
 		${LOCALBASE}/include/cblas.h:math/cblas \
 		bash:shells/bash
 LIB_DEPENDS=	libsnappy.so:archivers/snappy \
 		libleveldb.so:databases/leveldb \
 		liblmdb.so:databases/lmdb \
 		libboost_system.so:devel/boost-libs \
-		libboost_python.so:devel/boost-python-libs \
+		${PY_BOOST} \
 		libgflags.so:devel/gflags \
 		libglog.so:devel/glog \
 		libprotobuf.so:devel/protobuf \
@@ -30,19 +29,22 @@ LIB_DEPENDS=	libsnappy.so:archivers/snappy \
 		libopenblas.so:math/openblas \
 		libhdf5.so:science/hdf5
 RUN_DEPENDS=	${PYNUMPY} \
-		${PYTHON_PKGNAMEPREFIX}protobuf>=2.5.0:devel/py-protobuf \
-		${PYTHON_PKGNAMEPREFIX}scikit-image>=0.12:graphics/py-scikit-image \
-		${PYTHON_PKGNAMEPREFIX}pillow>=1.7:graphics/py-pillow \
-		${PYTHON_PKGNAMEPREFIX}networkx>=1.8:math/py-networkx \
-		${PYTHON_PKGNAMEPREFIX}matplotlib>=1.1:math/py-matplotlib \
-		${PYTHON_PKGNAMEPREFIX}PyWavelets>=0.4:math/py-PyWavelets
+		${PYTHON_PKGNAMEPREFIX}protobuf>=2.5.0:devel/py-protobuf@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}scikit-image>=0.12:graphics/py-scikit-image@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pillow>=1.7:graphics/py-pillow@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}networkx>=1.8:math/py-networkx@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}matplotlib>=1.1:math/py-matplotlib@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}PyWavelets>=0.4:math/py-PyWavelets@${PY_FLAVOR}
 
+USES=		compiler:c++11-lib fortran gmake pkgconfig python:2.7
+USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
-USES=		gmake python fortran compiler:c++11-lib pkgconfig
+USE_PYTHON=	flavors cython
 
 CXXFLAGS+=	-DGTEST_USE_OWN_TR1_TUPLE=1
 LDFLAGS+=	-DGTEST_USE_OWN_TR1_TUPLE=1
 LDFLAGS+=	-lboost_thread
+MAKE_ENV+=	PYTHON_LIBRARIES="${PY_BOOST_LIB} ${PYTHON_VERSION}"
 MAKE_ARGS+=	DISTRIBUTE_DIR=${STAGEDIR}${PREFIX}
 ALL_TARGET=	all py
 INSTALL_TARGET=	dist

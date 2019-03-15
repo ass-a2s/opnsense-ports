@@ -11,11 +11,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	noc-ports@biglist.com
 COMMENT=	Flexible SMTP daemon written in Perl and featuring a plugin API
 
-BUILD_DEPENDS=	spamd:mail/spamassassin \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	spamd:mail/spamassassin \
 		p5-Mail-Tools>=0:mail/p5-Mail-Tools \
 		p5-Net-DNS>=0.39:dns/p5-Net-DNS \
 		p5-Net-IP>=0:net-mgmt/p5-Net-IP
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 OPTIONS_DEFINE=	MODPERL DOCS EXAMPLES
 OPTIONS_DEFAULT=MODPERL
@@ -27,11 +27,11 @@ GH_ACCOUNT=	smtpd
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MMODPERL}
-USE_APACHE_RUN=	22+
+USES+=		apache:run,2.2+
 RUN_DEPENDS+=	${APACHE_PKGNAMEPREFIX}mod_perl2>=0:www/mod_perl2
 .endif
 
-USES=		perl5
+USES+=		perl5
 USE_PERL5=	configure
 NO_ARCH=	yes
 

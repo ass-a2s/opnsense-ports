@@ -3,15 +3,17 @@
 
 PORTNAME=	mysql_fdw
 PORTVERSION=	2.2.0
+PORTREVISION=	1
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	PostgreSQL foreign data wrapper for MySQL
 
 LICENSE=	PostgreSQL
 
 USES=		gmake pgsql:9.3+ mysql
+LLD_UNSAFE=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	EnterpriseDB
 GH_TAGNAME=	c14ee1d

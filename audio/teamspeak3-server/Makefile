@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	teamspeak3-server
-PORTVERSION=	3.0.13.8
-PORTREVISION=	1
+PORTVERSION=	3.6.1
 PORTEPOCH=	1
 CATEGORIES=	audio net
 MASTER_SITES=	http://dl.4players.de/ts/releases/${PORTVERSION}/ \
@@ -19,6 +18,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	no-dist-mirror no-dist-sell no-pkg-mirror no-pkg-sell
 
 ONLY_FOR_ARCHS=		amd64 i386
+
+RUN_DEPENDS=	ca_root_nss>=0:security/ca_root_nss
 
 USES=		tar:bz2
 USE_LDCONFIG=	${LIBDIR}
@@ -54,12 +55,6 @@ MYSQL_VARS=	SUB_LIST+=MYSQL=mysql
 MYSQL_VARS_OFF=	SUB_LIST+=MYSQL=
 
 .include <bsd.port.options.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100000 && ${OSVERSION} < 1100507
-SUB_LIST+=	CD="cd \$$db_dir"
-.else
-SUB_LIST+=	CD=
-.endif
 
 .if ${ARCH} == "i386"
 TEAMSPEAK_ARCH=	x86

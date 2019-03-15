@@ -1,12 +1,13 @@
 # Created by: John Merryweather Cooper et al
 # $FreeBSD$
 
+PORTREVISION=	1
 CATEGORIES=	databases lang
 PKGNAMESUFFIX=	-postgres
 
 COMMENT=	Free Pascal interface to PostGreSQL
 
-USE_FPC=	yes
+USES=		fpc
 
 MASTERDIR=	${.CURDIR}/../../lang/fpc
 WRKUNITDIR=	${FPCSRCDIR}/packages/${PKGNAMESUFFIX:S/-//}

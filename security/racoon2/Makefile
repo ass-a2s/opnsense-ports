@@ -2,63 +2,58 @@
 # $FreeBSD$
 
 PORTNAME=	racoon2
-PORTVERSION=	20100526a
-PORTREVISION=	12
+PORTVERSION=	${RACOON2_COMMIT_DATE}
 CATEGORIES=	security net ipv6
-MASTER_SITES=	ftp://ftp.racoon2.wide.ad.jp/pub/racoon2/
+HASH=		5c4af73
+RACOON2_COMMIT_DATE=20181215
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Racoon2 IPsec daemon
 
-USES=		perl5 tar:tgz ssl
-CONFIGURE_ARGS+=	--disable-kinkd
-PLIST_SUB+=	KINK="@comment "
+CONFLICTS=	racoon2-legacy-*
 
-NOPIE_PORTS=	yes
+USE_GITHUB=     yes
+GH_ACCOUNT=     zoulasc
+GH_TAGNAME=     ${HASH}
 
-USE_AUTOTOOLS=	autoconf
+USE_HARDENING=	pie:off
+
+USES=		autoreconf:build perl5 tar:tgz ssl
+CONFIGURE_ARGS+=	--enable-natt \
+			--prefix=${PREFIX}
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--prefix=${STAGEDIR}${PREFIX}
-CONFIGURE_ARGS+=	--sysconfdir=${PREFIX}/etc/racoon2
 CONFIGURE_ENV=	YACC=/usr/bin/yacc perl_bindir=${LOCALBASE}/bin/perl5
 
+# MAKE_ENV=	DESTDIR=${DESTDIR}
+
+CFLAGS=		-DHAVE_CONFIG_H
+
 OPTIONS_DEFINE=	DOCS
-OPTIONS_RADIO=	KERBEROS
-OPTIONS_RADIO_KERBEROS=	KRB5 KRB5_113 KRB5_114 \
-		HEIMDAL_PORTS HEIMDAL_BASE
+OPTIONS_DEFAULT=	DOCS NO_KRB
+OPTIONS_SINGLE=	KERBEROS
+OPTIONS_SINGLE_KERBEROS=	NO_KRB KRB5 HEIMDAL_PORT HEIMDAL_BASE
+NO_KRB_DESC=	No Kerberos support
 KRB5_DESC=	Build with Kerberos (security/krb5)
-KRB5_113_DESC=	Build with Kerberos (security/krb5-113)
-KRB5_114_DESC=	Build with Kerberos (security/krb5-114)
-HEIM_AL_PORTS_DESC=	Build with Heimdal in ports (security/heimdal)
+HEIMDAL_PORT_DESC=	Build with Heimdal in ports (security/heimdal)
 HEIMDAL_BASE_DESC=	Build with Heimdal in base
+
+NO_KRB_CONFIGURE_ON=	--disable-kinkd
+NO_KRB_MAKE_ENV=	WITH_KINK=no
+NO_KRB_PLIST_SUB=	KINK="@comment "
+NO_KRB_VARS=		KINK=no
 
 KRB5_USES=		gssapi:mit
 KRB5_CONFIGURE_ON=	--enable-kinkd
-KRB5_MAKE_ENV=	WITH_KINK=yes
+KRB5_MAKE_ENV=		WITH_KINK=yes
 KRB5_PLIST_SUB=		KINK=""
 KRB5_LIB_DEPENDS=	libkrb5support.so:security/krb5
 KRB5_RUN_DEPENDS=	kinit:security/krb5
 KRB5_VARS=		KINK=yes
 
-KRB5_113_USES=		gssapi:mit
-KRB5_113_CONFIGURE_ON=	--enable-kinkd
-KRB5_113_MAKE_ENV=	WITH_KINK=yes
-KRB5_113_PLIST_SUB=	KINK=""
-KRB5_113_LIB_DEPENDS=	libkrb5support.so:security/krb5-113
-KRB5_113_RUN_DEPENDS=	kinit:security/krb5-113
-KRB5_113_VARS=		KINK=yes
-
-KRB5_114_USES=		gssapi:mit
-KRB5_114_CONFIGURE_ON=	--enable-kinkd
-KRB5_114_MAKE_ENV=	WITH_KINK=yes
-KRB5_114_PLIST_SUB=	KINK=""
-KRB5_114_LIB_DEPENDS=	libkrb5support.so:security/krb5-114
-KRB5_114_RUN_DEPENDS=	kinit:security/krb5-113
-KRB5_114_VARS=		KINK=yes
-
 HEIMDAL_PORT_USES=	gssapi:heimdal
-HEIMDAL_PORTS_CONFIGURE_ON=	--enable-kinkd
-HEIMDAL_PORTS_MAKE_ENV=	WITH_KINK=yes
+HEIMDAL_PORT_CONFIGURE_ON=	--enable-kinkd
+HEIMDAL_PORT_MAKE_ENV=	WITH_KINK=yes
 HEIMDAL_PORT_PLIST_SUB=	KINK=""
 HEIMDAL_PORT_VARS=	KINK=yes
 
@@ -80,18 +75,17 @@ PORTDOCS+=	kinkd-install.ja.txt kinkd-state-txn.obj
 .endif
 .endif
 
+post-patch:
+	# @${REINPLACE_CMD} 's|/var/run/racoon2|$$(STAGEDIR)&|' \
+		${WRKSRC}/samples/Makefile.in
+	@${LN} -sf ${LOCALBASE}/share/automake-1.16/ylwrap ${WRKSRC}/lib
+
 post-patch-DOCS-on:
 .for FILE in ${PORTDOCS}
 	@${REINPLACE_CMD} -e 's|/usr/local/racoon2|${PREFIX}|' ${WRKSRC}/doc/${FILE}
 .endfor
 
-post-configure:
-	@${FIND} ${WRKSRC} -name Makefile | ${XARGS} ${REINPLACE_CMD} -e '/INSTALL/s|\$$([a-z].*dir)|${STAGEDIR}&|'
-	@${REINPLACE_CMD} -e '/INSTALL/s|\$$(prefix)|${STAGEDIR}&|' ${WRKSRC}/pskgen/Makefile
-	@${REINPLACE_CMD} -e '/^prefix=/s|/usr/local|${STAGEDIR}${PREFIX}|;/\/var\/run\/racoon2/d' ${WRKSRC}/samples/Makefile
-
 post-install:
-	${MKDIR} ${STAGEDIR}/var/run/racoon2
 	@if [ -z `/sbin/sysctl -a | ${GREP} -q ipsec && echo ipsec` ]; then \
 	    ${ECHO_MSG} "WARNING: IPsec feature is disabled on this host"; \
 	    ${ECHO_MSG} "         You must build the kernel if you want to run racoon on the host"; \

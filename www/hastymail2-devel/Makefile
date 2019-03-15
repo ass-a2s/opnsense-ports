@@ -8,7 +8,7 @@ MASTER_SITES=	http://files.bsdroot.lv/my/FreeBSD/distfiles/hastymail2-devel/
 PKGNAMESUFFIX=	-devel
 DISTNAME=	${PORTNAME}-devel-${HASTYMAIL_REV}
 
-MAINTAINER=	graudeejs@gmail.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Small, fast and secure yet powerful IMAP webmail
 
 LICENSE=	GPLv2+
@@ -17,11 +17,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 NO_BUILD=	yes
 SUB_FILES=	pkg-message
 
-WANT_PHP_WEB=	yes
+USES=		php:web
 USE_PHP=	session imap pcre
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
-NO_BUILD=	yes
 FIND_SKIP_OPTS=	-not -name hastymail2.conf.example -not -name '*.orig'
 
 CONFLICTS_INSTALL=	hastymail2-[0-9]*
@@ -38,19 +37,19 @@ DB_DESC=	Use older pear DB (instead of MDB2)
 .if ${PORT_OPTIONS:MMYSQL}
 USE_MYSQL=	yes
 .if ! ${PORT_OPTIONS:MDB}
-RUN_DEPENDS+=	${LOCALBASE}/share/pear/MDB2/Driver/mysql.php:databases/pear-MDB2_Driver_mysql
+RUN_DEPENDS+=	${LOCALBASE}/share/pear/MDB2/Driver/mysql.php:databases/pear-MDB2_Driver_mysql@${PHP_FLAVOR}
 .endif
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}
 USES+=	pgsql
 .if ! ${PORT_OPTIONS:MDB}
-RUN_DEPENDS+=	${LOCALBASE}/share/pear/MDB2/Driver/pgsql.php:databases/pear-MDB2_Driver_pgsql
+RUN_DEPENDS+=	${LOCALBASE}/share/pear/MDB2/Driver/pgsql.php:databases/pear-MDB2_Driver_pgsql@${PHP_FLAVOR}
 .endif
 .endif
 
 .if ${PORT_OPTIONS:MDB} && (${PORT_OPTIONS:MMYSQL} || ${PORT_OPTIONS:MPGSQL}}
-RUN_DEPENDS+=	${LOCALBASE}/share/pear/DB.php:databases/pear-DB
+RUN_DEPENDS+=	${LOCALBASE}/share/pear/DB.php:databases/pear-DB@${PHP_FLAVOR}
 .endif
 
 post-patch:

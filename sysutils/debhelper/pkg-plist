@@ -8,6 +8,7 @@ bin/dh_bugfiles
 bin/dh_builddeb
 bin/dh_clean
 bin/dh_compress
+bin/dh_dwz
 bin/dh_fixperms
 bin/dh_gconf
 bin/dh_gencontrol
@@ -26,6 +27,7 @@ bin/dh_installgsettings
 bin/dh_installifupdown
 bin/dh_installinfo
 bin/dh_installinit
+bin/dh_installinitramfs
 bin/dh_installlogcheck
 bin/dh_installlogrotate
 bin/dh_installman
@@ -35,6 +37,8 @@ bin/dh_installmime
 bin/dh_installmodules
 bin/dh_installpam
 bin/dh_installppp
+bin/dh_installsystemd
+bin/dh_installsystemduser
 bin/dh_installudev
 bin/dh_installwm
 bin/dh_installxfonts
@@ -63,6 +67,7 @@ bin/postinst-init
 bin/postinst-init-nostart
 bin/postinst-init-restart
 bin/postinst-init-tmpfiles
+bin/postinst-initramfs-hook
 bin/postinst-menu
 bin/postinst-menu-method
 bin/postinst-modules
@@ -71,6 +76,8 @@ bin/postinst-systemd-enable
 bin/postinst-systemd-restart
 bin/postinst-systemd-restartnostart
 bin/postinst-systemd-start
+bin/postinst-systemd-user-dont-enable
+bin/postinst-systemd-user-enable
 bin/postinst-ucf
 bin/postinst-usrlocal
 bin/postinst-wm
@@ -79,12 +86,14 @@ bin/postinst-xfonts
 bin/postrm-debconf
 bin/postrm-icons
 bin/postrm-init
+bin/postrm-initramfs-hook
 bin/postrm-menu
 bin/postrm-menu-method
 bin/postrm-modules
 bin/postrm-sgmlcatalog
 bin/postrm-systemd
 bin/postrm-systemd-reload-only
+bin/postrm-systemd-user
 bin/postrm-ucf
 bin/postrm-xfonts
 bin/preinst-emacsen
@@ -111,5 +120,8 @@ bin/prerm-wm
 %%SITE_PERL%%/Debian/Debhelper/Dh_Getopt.pm
 %%SITE_PERL%%/Debian/Debhelper/Dh_Lib.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/build_stamp.pm
+%%SITE_PERL%%/Debian/Debhelper/Sequence/dwz.pm
+%%SITE_PERL%%/Debian/Debhelper/Sequence/installinitramfs.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/python_support.pm
 %%SITE_PERL%%/Debian/Debhelper/Sequence/systemd.pm
+%%SITE_PERL%%/Debian/Debhelper/SequencerUtil.pm

@@ -1,4 +1,5 @@
 bin/preparetips5
+etc/xdg/kconfigwidgets.categories
 include/KF5/KConfigWidgets/KCModule
 include/KF5/KConfigWidgets/KCodecAction
 include/KF5/KConfigWidgets/KColorScheme
@@ -8,6 +9,7 @@ include/KF5/KConfigWidgets/KConfigDialogManager
 include/KF5/KConfigWidgets/KConfigViewStateSaver
 include/KF5/KConfigWidgets/KHelpClient
 include/KF5/KConfigWidgets/KLanguageButton
+include/KF5/KConfigWidgets/KLanguageName
 include/KF5/KConfigWidgets/KPasteTextAction
 include/KF5/KConfigWidgets/KRecentFilesAction
 include/KF5/KConfigWidgets/KStandardAction
@@ -23,6 +25,7 @@ include/KF5/KConfigWidgets/kconfigviewstatesaver.h
 include/KF5/KConfigWidgets/kconfigwidgets_export.h
 include/KF5/KConfigWidgets/khelpclient.h
 include/KF5/KConfigWidgets/klanguagebutton.h
+include/KF5/KConfigWidgets/klanguagename.h
 include/KF5/KConfigWidgets/kpastetextaction.h
 include/KF5/KConfigWidgets/krecentfilesaction.h
 include/KF5/KConfigWidgets/kstandardaction.h
@@ -55,8 +58,6 @@ share/locale/ar/LC_MESSAGES/kconfigwidgets5.mo
 share/locale/ar/kf5_entry.desktop
 share/locale/as/LC_MESSAGES/kconfigwidgets5.mo
 share/locale/as/kf5_entry.desktop
-share/locale/ast/LC_MESSAGES/kconfigwidgets5.mo
-share/locale/ast/kf5_entry.desktop
 share/locale/be/LC_MESSAGES/kconfigwidgets5.mo
 share/locale/be/kf5_entry.desktop
 share/locale/be@latin/LC_MESSAGES/kconfigwidgets5.mo
@@ -201,6 +202,7 @@ share/locale/se/kf5_entry.desktop
 share/locale/si/LC_MESSAGES/kconfigwidgets5.mo
 share/locale/si/kf5_entry.desktop
 share/locale/sk/LC_MESSAGES/kconfigwidgets5.mo
+share/locale/sk/kf5_entry.desktop
 share/locale/sl/LC_MESSAGES/kconfigwidgets5.mo
 share/locale/sl/kf5_entry.desktop
 share/locale/sq/LC_MESSAGES/kconfigwidgets5.mo

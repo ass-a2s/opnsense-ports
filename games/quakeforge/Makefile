@@ -3,7 +3,7 @@
 
 PORTNAME=	quakeforge
 PORTVERSION=	0.7.2
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	games
 MASTER_SITES=	SF/quake/quake/${PORTVERSION}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -17,6 +17,8 @@ LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png
+
+USE_HARDENING=	pie:off
 
 USES=		bison compiler:c11 gmake libtool localbase python:run shebangfix tar:bzip2
 SHEBANG_FILES=	tools/qfcc/source/qfpreqcc
@@ -34,13 +36,12 @@ CONFIGURE_ARGS=	--disable-alsa \
 USE_CSTD=	gnu89
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-
-NOPIE_PORTS=	yes
+LDFLAGS_i386=	-Wl,-znotext
 
 SUB_FILES=	pkg-message
 
 OPTIONS_DEFINE=		CLIENTS DOCS FLAC JACK OPTIMIZED_CFLAGS SDL SERVERS \
-			SKYBOXES VORBIS XMMS XXF86DGA XXF86VM
+			SKYBOXES VORBIS XXF86DGA XXF86VM
 OPTIONS_DEFAULT=	CLIENTS SERVERS
 OPTIONS_SUB=		yes
 
@@ -76,10 +77,6 @@ VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 VORBIS_CONFIGURE_ON=	--with-ogg=${LOCALBASE} --with-vorbis=${LOCALBASE}
 VORBIS_CONFIGURE_OFF=	--disable-vorbis
 VORBIS_IMPLIES=		CLIENTS
-XMMS_DESC=		Sound support via XMMS
-XMMS_LIB_DEPENDS=	libxmms.so:multimedia/xmms
-XMMS_CONFIGURE_ON=	--enable-xmms --with-xmms-prefix=${LOCALBASE}
-XMMS_IMPLIES=		CLIENTS
 XXF86DGA_DESC=		XFree86 DGA Extension support
 XXF86DGA_USE=		xorg=xxf86dga
 XXF86DGA_CONFIGURE_OFF=	--disable-dga

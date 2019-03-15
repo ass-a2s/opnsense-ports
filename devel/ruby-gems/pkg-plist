@@ -3,6 +3,7 @@ bin/gem%%RUBY_VER_SHORT%%
 %%RUBY_SITELIBDIR%%/rubygems.rb
 %%RUBY_SITELIBDIR%%/rubygems/available_set.rb
 %%RUBY_SITELIBDIR%%/rubygems/basic_specification.rb
+%%RUBY_SITELIBDIR%%/rubygems/bundler_version_finder.rb
 %%RUBY_SITELIBDIR%%/rubygems/command.rb
 %%RUBY_SITELIBDIR%%/rubygems/command_manager.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/build_command.rb
@@ -15,6 +16,7 @@ bin/gem%%RUBY_VER_SHORT%%
 %%RUBY_SITELIBDIR%%/rubygems/commands/fetch_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/generate_index_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/help_command.rb
+%%RUBY_SITELIBDIR%%/rubygems/commands/info_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/install_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/list_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/lock_command.rb
@@ -29,6 +31,8 @@ bin/gem%%RUBY_VER_SHORT%%
 %%RUBY_SITELIBDIR%%/rubygems/commands/search_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/server_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/setup_command.rb
+%%RUBY_SITELIBDIR%%/rubygems/commands/signin_command.rb
+%%RUBY_SITELIBDIR%%/rubygems/commands/signout_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/sources_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/specification_command.rb
 %%RUBY_SITELIBDIR%%/rubygems/commands/stale_command.rb
@@ -41,6 +45,7 @@ bin/gem%%RUBY_VER_SHORT%%
 %%RUBY_SITELIBDIR%%/rubygems/config_file.rb
 %%RUBY_SITELIBDIR%%/rubygems/core_ext/kernel_gem.rb
 %%RUBY_SITELIBDIR%%/rubygems/core_ext/kernel_require.rb
+%%RUBY_SITELIBDIR%%/rubygems/core_ext/kernel_warn.rb
 %%RUBY_SITELIBDIR%%/rubygems/defaults.rb
 %%RUBY_SITELIBDIR%%/rubygems/dependency.rb
 %%RUBY_SITELIBDIR%%/rubygems/dependency_installer.rb
@@ -142,11 +147,13 @@ bin/gem%%RUBY_VER_SHORT%%
 %%RUBY_SITELIBDIR%%/rubygems/resolver/stats.rb
 %%RUBY_SITELIBDIR%%/rubygems/resolver/vendor_set.rb
 %%RUBY_SITELIBDIR%%/rubygems/resolver/vendor_specification.rb
+%%RUBY_SITELIBDIR%%/rubygems/safe_yaml.rb
 %%RUBY_SITELIBDIR%%/rubygems/security.rb
 %%RUBY_SITELIBDIR%%/rubygems/security/policies.rb
 %%RUBY_SITELIBDIR%%/rubygems/security/policy.rb
 %%RUBY_SITELIBDIR%%/rubygems/security/signer.rb
 %%RUBY_SITELIBDIR%%/rubygems/security/trust_dir.rb
+%%RUBY_SITELIBDIR%%/rubygems/security_option.rb
 %%RUBY_SITELIBDIR%%/rubygems/server.rb
 %%RUBY_SITELIBDIR%%/rubygems/source.rb
 %%RUBY_SITELIBDIR%%/rubygems/source/git.rb
@@ -160,6 +167,7 @@ bin/gem%%RUBY_VER_SHORT%%
 %%RUBY_SITELIBDIR%%/rubygems/source_specific_file.rb
 %%RUBY_SITELIBDIR%%/rubygems/spec_fetcher.rb
 %%RUBY_SITELIBDIR%%/rubygems/specification.rb
+%%RUBY_SITELIBDIR%%/rubygems/specification_policy.rb
 %%RUBY_SITELIBDIR%%/rubygems/ssl_certs/index.rubygems.org/GlobalSignRootCA.pem
 %%RUBY_SITELIBDIR%%/rubygems/ssl_certs/rubygems.global.ssl.fastly.net/DigiCertHighAssuranceEVRootCA.pem
 %%RUBY_SITELIBDIR%%/rubygems/ssl_certs/rubygems.org/AddTrustExternalCARoot.pem

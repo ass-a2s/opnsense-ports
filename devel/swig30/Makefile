@@ -10,12 +10,12 @@ PKGNAMESUFFIX=	30
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Generate wrappers for calling C/C++ code from other languages
 
-EXPLICIT_SAFESTACK=		yes
-
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE-GPL
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
+
+USE_HARDENING=	safestack
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -29,11 +29,7 @@ GNU_CONFIGURE=	yes
 TEST_TARGET=	check
 USES=		gmake lua
 
-PLIST_FILES=	bin/ccache-swig${PORTVERSION:R} \
-		bin/swig${PORTVERSION:R}
-PORTDATA=	*
-PORTDOCS=	*
-PORTEXAMPLES=	*
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
 
 OCTAVE_VER_CMD=	${LOCALBASE}/bin/octave-config -v 2>/dev/null || ${TRUE}
 

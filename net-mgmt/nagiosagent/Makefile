@@ -12,11 +12,14 @@ DISTNAME=	${PORTNAME}-${DISTVERSION}-src
 MAINTAINER=	myc@barev.net
 COMMENT=	Qt-based frontend to Nagios
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 PLIST_FILES=	bin/NagiosAgent \
 		share/pixmaps/NagiosAgent.png
 
-USES=		qmake zip
-USE_QT4=	gui network corelib uic_build rcc_build moc_build
+USES=		qmake qt:4 zip
+USE_QT=		gui network corelib uic_build rcc_build moc_build
 
 DESKTOP_ENTRIES=	"NagiosAgent" "GUI client for Nagios" \
 			"${PREFIX}/share/pixmaps/NagiosAgent.png" \

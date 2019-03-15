@@ -3,7 +3,8 @@
 
 MASTERDIR=	${.CURDIR}/../qt4-qtsolutions-singleapplication
 
-USE_QT4=	qmake_build moc_build rcc_build uic_build network xml gui
+USES=	qt:4
+USE_QT=		qmake_build moc_build rcc_build uic_build network xml gui
 
 .include	"${MASTERDIR}/Makefile"
 
@@ -11,6 +12,9 @@ PORTNAME=	qt4-qtsolutions-soap
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	QT4 Solutions SOAP Component
+
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
 DESCR=		${.CURDIR}/pkg-descr
 

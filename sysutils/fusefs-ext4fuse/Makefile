@@ -4,20 +4,21 @@
 PORTNAME=	ext4fuse
 PORTVERSION=	0.1.3
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	fusefs-
 
 MAINTAINER=	ehaupt@FreeBSD.org
-COMMENT=	EXT4 implementation for FUSE
+COMMENT=	Read-only ext4 implementation for FUSE
 
 LICENSE=	GPLv2
 
-NOPIE_PORTS=	yes
-
-USES=		execinfo fuse pkgconfig gmake
+USES=		fuse pkgconfig gmake
 USE_GITHUB=	yes
 GH_ACCOUNT=	gerard
+
+USE_HARDENING=	pie:off
 
 # explicitly empty to fix a cross compiling related issue (PR: 165480)
 MAKE_ENV+=	TARGET_ARCH=

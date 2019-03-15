@@ -3,14 +3,16 @@
 
 PORTNAME=	docker-freebsd
 PORTVERSION=	20150625
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	sysutils
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Docker containment system
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	go>=1.4:lang/go \
 		bash:shells/bash \
@@ -28,7 +30,7 @@ PLIST_FILES=	bin/docker
 USE_RC_SUBR=	docker
 
 do-build:
-	@cd ${WRKSRC} && export AUTO_GOPATH=1 && export DOCKER_GITCOMMIT=${GH_TAGNAME} && ./hack/make.sh binary
+	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} AUTO_GOPATH=1 DOCKER_GITCOMMIT=${GH_TAGNAME} ./hack/make.sh binary
 
 do-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/bin

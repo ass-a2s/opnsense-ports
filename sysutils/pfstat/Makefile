@@ -3,36 +3,36 @@
 
 PORTNAME=	pfstat
 PORTVERSION=	2.5
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	sysutils net
-MASTER_SITES=	http://www.benzedrine.cx/
+MASTER_SITES=	https://www.benzedrine.ch/
 
 MAINTAINER=	araujo@FreeBSD.org
 COMMENT=	Utility to render graphical statistics for pf
 
-LIB_DEPENDS=	libgd.so:graphics/gd
+LICENSE=	BSD2CLAUSE
+
+LIB_DEPENDS=	libgd.so:graphics/gd \
+		libpng.so:graphics/png
+
+USES=		iconv jpeg
+
+USE_RC_SUBR=	pfstatd
 
 MAKE_ARGS=	"LD_GD=gd"
 MAKE_ENV+=	__MAKE_CONF=/dev/null
-USES=		iconv
-
-USE_RC_SUBR=	pfstatd
 
 PLIST_FILES=	bin/pfstat \
 		bin/pfstatd \
 		man/man8/pfstat.8.gz \
 		man/man8/pfstatd.8.gz
 
-.include <bsd.port.pre.mk>
-
 post-patch:
 	@${REINPLACE_CMD} -e 's|-lgd|-l$${LD_GD}|; s| -lttf||' \
 		${WRKSRC}/Makefile
 	@${REINPLACE_CMD} -e "s|/etc/|${PREFIX}/etc/|" \
 		${WRKSRC}/pfstat.[c8]
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100070
 	@${REINPLACE_CMD} 's|altq/|net/&|' ${WRKSRC}/pf.c
-.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pfstat ${STAGEDIR}/${PREFIX}/bin
@@ -40,4 +40,4 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/pfstat.8 ${STAGEDIR}/${PREFIX}/man/man8
 	${INSTALL_MAN} ${WRKSRC}/pfstatd/pfstatd.8 ${STAGEDIR}/${PREFIX}/man/man8
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

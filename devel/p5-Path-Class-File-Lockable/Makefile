@@ -12,12 +12,12 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	ml+freebsd@tatsuya.info
 COMMENT=	Lock your files with Path::Class::File
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-File-NFSLock>0:devel/p5-File-NFSLock \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-File-NFSLock>0:devel/p5-File-NFSLock \
 		p5-Path-Class>0:devel/p5-Path-Class
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

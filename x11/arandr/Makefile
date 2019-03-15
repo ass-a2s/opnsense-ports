@@ -10,18 +10,18 @@ MASTER_SITES=	http://christian.amsuess.com/tools/arandr/files/ \
 MAINTAINER=	sbz@FreeBSD.org
 COMMENT=	Another XRandR GUI
 
-EXPLICIT_SAFESTACK=		yes
-
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docutils>0.6:textproc/py-docutils
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}docutils>0.6:textproc/py-docutils@${PY_FLAVOR}
 RUN_DEPENDS=	xrandr>0:x11/xrandr \
-		${PYTHON_PKGNAMEPREFIX}gtk2>0:x11-toolkits/py-gtk2
+		${PYTHON_PKGNAMEPREFIX}gtk2>0:x11-toolkits/py-gtk2@${PY_FLAVOR}
 
 OPTIONS_DEFINE=	DOCS
 
 USE_PYTHON=	distutils
-USES+=		gettext desktop-file-utils python
+USES+=		gettext desktop-file-utils python:2.7
+
+USE_HARDENING=	safestack
 
 PORTDOCS=	ChangeLog NEWS README TODO
 

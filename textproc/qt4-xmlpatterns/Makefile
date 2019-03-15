@@ -10,8 +10,11 @@ PKGNAMEPREFIX=	qt4-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt support for XPath, XQuery, XSLT and XML Schema
 
-USE_QT4=	qmake_build moc_build rcc_build corelib network
-QT_DIST=	yes
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake:no_env qt-dist:4
+USE_QT=		moc_build rcc_build corelib network
 
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}

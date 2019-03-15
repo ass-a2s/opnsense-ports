@@ -3,7 +3,7 @@
 
 PORTNAME=	brainparty
 PORTVERSION=	0.61
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	games
 MASTER_SITES=	https://launchpad.net/brainparty/trunk/${PORTVERSION}/+download/ \
 		http://mirror.amdmi3.ru/distfiles/
@@ -18,6 +18,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		gmake
 USE_SDL=	sdl mixer ttf gfx image
 USE_GL=		gl glu
+
+CXXFLAGS+=	-Wno-c++11-narrowing
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

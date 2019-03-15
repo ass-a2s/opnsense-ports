@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	afl
-PORTVERSION=	2.51
+PORTVERSION=	2.52
 DISTVERSIONSUFFIX=	b
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	http://lcamtuf.coredump.cx/afl/releases/
 
@@ -29,14 +30,12 @@ OPTIONS_SUB=	yes
 
 LLVM_DESC=	LLVM-based instrumentation
 
-LLVM_VERSION=	40
-
 LLVM_ALL_TARGET=	llvm_mode
-LLVM_BUILD_DEPENDS=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
-LLVM_RUN_DEPENDS=	clang${LLVM_VERSION}:devel/llvm${LLVM_VERSION}
+LLVM_BUILD_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
+LLVM_RUN_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT}
 LLVM_TEST_TARGET=	test_llvm_mode
-LLVM_VARS=	CC=clang${LLVM_VERSION} CXX=clang++${LLVM_VERSION} \
-		MAKE_ARGS=LLVM_CONFIG=llvm-config${LLVM_VERSION}
+LLVM_MAKE_ARGS=		LLVM_CONFIG=llvm-config${LLVM_DEFAULT}
+LLVM_VARS=	CC=clang${LLVM_DEFAULT} CXX=clang++${LLVM_DEFAULT}
 
 .include <bsd.port.options.mk>
 
@@ -60,8 +59,8 @@ post-patch:
 
 post-patch-LLVM-on:
 	@${REINPLACE_CMD} \
-		-e 's|"clang"|"clang${LLVM_VERSION}"|g' \
-		-e 's|"clang\+\+"|"clang\+\+${LLVM_VERSION}"|g' \
+		-e 's|"clang"|"clang${LLVM_DEFAULT}"|g' \
+		-e 's|"clang\+\+"|"clang\+\+${LLVM_DEFAULT}"|g' \
 		${WRKSRC}/llvm_mode/afl-clang-fast.c
 
 post-install:

@@ -4,18 +4,15 @@
 PORTNAME=	valgrind
 PORTVERSION=	3.10.1.20160113
 DISTVERSIONPREFIX=	freebsd-
-PORTREVISION=	4
+PORTREVISION=	6
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	https://bitbucket.org/${BB_ACCOUNT}/${BB_PROJECT}/get/${BB_COMMIT}.tar.gz?dummy=/ \
 		http://mirror.shatow.net/freebsd/${PORTNAME}/
 PKGNAMESUFFIX=	-devel
 
-MAINTAINER=	bdrewery@FreeBSD.org
+MAINTAINER=	zeising@FreeBSD.org
 COMMENT=	Memory debugging and profiling tool
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 BB_COMMIT=	ce1acb28953f
 BB_ACCOUNT=	stass
@@ -29,6 +26,8 @@ ONLY_FOR_ARCHS=	i386 amd64
 
 LIB32_PATH?=	${DESTDIR}/usr/lib32/libc.so
 
+USE_HARDENING=	pie:off relro:off
+
 OPTIONS_DEFINE=		DOCS MANPAGES MPI
 OPTIONS_DEFINE_amd64=	32BIT
 OPTIONS_DEFAULT=	MANPAGES
@@ -38,12 +37,11 @@ OPTIONS_DEFAULT_amd64=	32BIT
 32BIT_DESC=	Enable debugging of 32-bit programs (requires lib32)
 MPI_DESC=	Enable build of MPI wrappers
 
-
 DOCS_BUILD_DEPENDS=    docbook-xsl>=0:textproc/docbook-xsl \
                        xsltproc:textproc/libxslt
 MANPAGES_BUILD_DEPENDS=        docbook-xsl>=0:textproc/docbook-xsl \
                        xsltproc:textproc/libxslt
-MPI_LIB_DEPENDS=	libmpich.so:net/mpich2
+MPI_LIB_DEPENDS=	libmpich.so:net/mpich
 
 OPTIONS_SUB=	yes
 USES=		pathfix pkgconfig gmake perl5 shebangfix autoreconf
@@ -65,6 +63,10 @@ WRKSRC=		${WRKDIR}/${BB_ACCOUNT}-${BB_PROJECT}-${BB_COMMIT}
 CONFIGURE_ENV+=	ac_cv_path_PERL=${PERL}
 
 .include <bsd.port.options.mk>
+
+.if ${OSVERSION} > 1200030
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-ino64:-p1
+.endif
 
 .if ${ARCH} == "amd64"
 PLIST_SUB+=	AMD64="" ARCH=amd64

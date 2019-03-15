@@ -1,4 +1,5 @@
 bin/squirrel-sql
+%%DATADIR%%/icons/acorn.icns
 %%DATADIR%%/icons/acorn.ico
 %%DATADIR%%/icons/acorn.png
 %%DATADIR%%/icons/acorn.xpm
@@ -14,7 +15,7 @@ bin/squirrel-sql
 %%DATADIR%%/lib/axis.jar
 %%DATADIR%%/lib/cglib.jar
 %%DATADIR%%/lib/common.jar
-%%DATADIR%%/lib/commons-cli.jar
+%%DATADIR%%/lib/commons-cli-1.4.jar
 %%DATADIR%%/lib/commons-codec.jar
 %%DATADIR%%/lib/commons-collections-3.2.1.jar
 %%DATADIR%%/lib/commons-discovery.jar
@@ -29,12 +30,16 @@ bin/squirrel-sql
 %%DATADIR%%/lib/hibernate-entitymanager.jar
 %%DATADIR%%/lib/hibernate.jar
 %%DATADIR%%/lib/icu4j.jar
+%%DATADIR%%/lib/jackson-annotations-2.6.3.jar
+%%DATADIR%%/lib/jackson-core-2.6.3.jar
+%%DATADIR%%/lib/jackson-databind-2.6.3.jar
 %%DATADIR%%/lib/javahelp.jar
-%%DATADIR%%/lib/jcommon.jar
-%%DATADIR%%/lib/jfreechart.jar
+%%DATADIR%%/lib/javax.activation.jar
+%%DATADIR%%/lib/jfreechart-1.5.0.jar
 %%DATADIR%%/lib/jide-oss.jar
 %%DATADIR%%/lib/jmeld.jar
 %%DATADIR%%/lib/log4j.jar
+%%DATADIR%%/lib/markdowngeneratorJava1_6.jar
 %%DATADIR%%/lib/nanoxml.jar
 %%DATADIR%%/lib/org.eclipse.equinox.common.jar
 %%DATADIR%%/lib/osgi.jar
@@ -431,6 +436,7 @@ bin/squirrel-sql
 %%DATADIR%%/plugins/sqlreplace.jar
 %%DATADIR%%/plugins/sqlreplace/doc/changes.txt
 %%DATADIR%%/plugins/sqlreplace/doc/licence.txt
+%%DATADIR%%/plugins/sqlreplace/doc/readme.html
 %%DATADIR%%/plugins/sqlreplace/doc/readme.txt
 %%DATADIR%%/plugins/sqlscript.jar
 %%DATADIR%%/plugins/sqlscript/doc/changes.txt
@@ -464,10 +470,6 @@ bin/squirrel-sql
 %%DATADIR%%/plugins/syntax/doc/readme.html
 %%DATADIR%%/plugins/syntax/doc/standard-nbm-license.txt
 %%DATADIR%%/plugins/syntax/doc/toolspopup.jpg
-%%DATADIR%%/plugins/userscript.jar
-%%DATADIR%%/plugins/userscript/doc/changes.txt
-%%DATADIR%%/plugins/userscript/doc/licence.txt
-%%DATADIR%%/plugins/userscript/doc/readme.txt
 %%DATADIR%%/plugins/vertica.jar
 %%DATADIR%%/plugins/vertica/doc/changes.txt
 %%DATADIR%%/plugins/vertica/doc/images/1-db-objects.png

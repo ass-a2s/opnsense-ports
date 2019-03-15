@@ -14,6 +14,7 @@ COMMENT=	100% Java PDF renderer and viewer
 LICENSE=	LGPL21
 
 BROKEN_armv6=		fails to install: swinglabs-build-impl.xml: Javadoc returned 1
+BROKEN_armv7=		fails to install: swinglabs-build-impl.xml: Javadoc returned 1
 
 USES=		dos2unix zip
 NO_WRKSUBDIR=	yes
@@ -39,7 +40,7 @@ ALL_TARGET+=	javadoc
 .include <bsd.port.pre.mk>
 
 .if ${JAVA_PORT_VERSION:M1.8.*}
-EXTRA_PATCHES=	${PATCHDIR}/extra-patch-swinglabs-build-impl.xml
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-swinglabs-build-impl.xml
 .endif
 
 do-install:

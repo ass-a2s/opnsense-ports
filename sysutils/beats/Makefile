@@ -2,11 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	beats
-PORTVERSION=	5.5.2
+PORTVERSION=	6.6.0
+PORTREVISION=	0
 DISTVERSIONPREFIX=v
 CATEGORIES=	sysutils
 
-MAINTAINER=	girgen@FreeBSD.org
+MAINTAINER=	elastic@FreeBSD.org
 COMMENT=	Collect logs locally and send to remote logstash
 
 LICENSE=	APACHE20
@@ -19,7 +20,8 @@ GO_PKGNAME=	github.com/${GH_ACCOUNT}/${GH_PROJECT}
 
 USE_RC_SUBR=	${GO_TARGETS}
 
-OPTIONS_DEFAULT=FILEBEAT PACKETBEAT METRICBEAT HEARTBEAT
+OPTIONS_DEFAULT=FILEBEAT HEARTBEAT METRICBEAT
+OPTIONS_DEFINE=	FILEBEAT HEARTBEAT METRICBEAT PACKETBEAT
 OPTIONS_SUB=	yes
 
 OPTIONS_MULTI=	BEATS
@@ -37,25 +39,25 @@ METRICBEAT_VARS=GO_TARGETS+=metricbeat
 HEARTBEAT_DESC=	Heartbeat
 HEARTBEAT_VARS=GO_TARGETS+=heartbeat
 
+MAKE_ENV+=	GOBUILD_FLAGS=""
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MPACKETBEAT}
+BROKEN=		An underlying library is currently broken under FreeBSD
+.endif
+
 do-build:
-	@for GO_TARGET in libbeat/dashboards ${GO_TARGETS}; do \
+	@for GO_TARGET in ${GO_TARGETS}; do \
 		cd ${GO_WRKSRC}; ${SETENV} ${MAKE_ENV} ${GO_ENV} ${GMAKE} -C $${GO_TARGET} ;\
 	done
 
 do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	${INSTALL_PROGRAM} \
-		${GO_WRKSRC}/libbeat/dashboards/import_dashboards \
-		${STAGEDIR}${DATADIR}
 	for GO_TARGET in ${GO_TARGETS}; do \
 		${INSTALL_PROGRAM} ${GO_WRKSRC}/$${GO_TARGET}/$${GO_TARGET} \
 			${STAGEDIR}${PREFIX}/sbin ;\
 		${INSTALL_DATA} ${WRKSRC}/$${GO_TARGET}/$${GO_TARGET}.yml \
 			${STAGEDIR}${PREFIX}/etc/$${GO_TARGET}.yml.sample ;\
-		${INSTALL_DATA} ${WRKSRC}/$${GO_TARGET}/$${GO_TARGET}.template.json \
-			${STAGEDIR}${PREFIX}/etc/$${GO_TARGET}.template.json.sample ;\
-		${INSTALL_DATA} ${WRKSRC}/$${GO_TARGET}/$${GO_TARGET}.template-es2x.json \
-			${STAGEDIR}${PREFIX}/etc/$${GO_TARGET}.template-es2x.json.sample ;\
 		${MKDIR} ${STAGEDIR}/var/db/beats/$${GO_TARGET} ;\
 	done
 

@@ -7,13 +7,14 @@ CATEGORIES=	graphics perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	jeremybbaggs@gmail.com
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Easily create Google DataTable objects for the Google Visulization API
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-JSON-XS>=2.0:converters/p5-JSON-XS
+BUILD_DEPENDS=	${RUN_DEPENDS}
 RUN_DEPENDS=	p5-JSON-XS>=2.0:converters/p5-JSON-XS
 
 USES=		perl5

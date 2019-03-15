@@ -3,7 +3,7 @@
 
 PORTNAME=	phonon
 PORTVERSION=	4.4.4
-PORTREVISION=	10
+PORTREVISION=	13
 CATEGORIES=	multimedia kde
 MASTER_SITES=	KDE/stable/${PORTNAME}/${PORTNAME}-backend${PKGNAMESUFFIX}/${PORTVERSION}/src
 PKGNAMESUFFIX=	-xine
@@ -13,11 +13,14 @@ DIST_SUBDIR=	KDE
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	The xine backend for Phonon
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+BUILD_DEPENDS=	automoc4:devel/automoc4
 LIB_DEPENDS=	libxine.so:multimedia/libxine
 
-USES=		cmake kde:4 pkgconfig tar:bzip2
-USE_KDE=	automoc4
-USE_QT4=	corelib dbus gui phonon \
+USES=		cmake pkgconfig qt:4 tar:bzip2
+USE_QT=		corelib dbus gui phonon \
 		qmake_build moc_build rcc_build uic_build
 USE_XORG=	xcb
 

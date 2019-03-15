@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	patch
-PORTVERSION=	2.7.5
+PORTVERSION=	2.7.6
 CATEGORIES=	devel
 MASTER_SITES=	GNU
 
@@ -10,6 +10,8 @@ MAINTAINER=	johans@FreeBSD.org
 COMMENT=	GNU patch utility
 
 LICENSE=	GPLv3
+
+USE_HARDENING=	safestack
 
 USES=		cpe charsetfix gmake tar:xz
 GNU_CONFIGURE=	yes

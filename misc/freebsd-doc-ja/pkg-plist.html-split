@@ -1,4 +1,5 @@
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributing/contrib-how.html
+%%DOCSDIR%%/%%DOCLANG%%/articles/contributing/ideas-contributing.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributing/index.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributing/ix01.html
 %%DOCSDIR%%/%%DOCLANG%%/articles/contributing/trademarks.html
@@ -165,7 +166,6 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/ipsec.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/ix01.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/kerberos5.html
-%%DOCSDIR%%/%%DOCLANG%%/books/handbook/kerberosIV.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/kernelconfig-building.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/kernelconfig-config.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/kernelconfig-custom-kernel.html
@@ -236,8 +236,11 @@
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/raid.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/scanners.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/securing-freebsd.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/security-accounting.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/security-advisories.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/security-intro.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/security-portaudit.html
+%%DOCSDIR%%/%%DOCLANG%%/books/handbook/security-resourcelimits.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/security.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/sendmail.html
 %%DOCSDIR%%/%%DOCLANG%%/books/handbook/serial.html

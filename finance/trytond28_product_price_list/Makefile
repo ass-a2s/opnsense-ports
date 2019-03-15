@@ -3,7 +3,7 @@
 
 PORTNAME=	trytond28_product_price_list
 PORTVERSION=	2.8.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	finance python
 MASTER_SITES=	https://pypi.python.org/packages/source/t/trytond_product_price_list/ \
 		http://downloads.tryton.org/${PORTVERSION:R}/
@@ -20,7 +20,7 @@ RUN_DEPENDS=	trytond28_product>=2.8.0:finance/trytond28_product \
 
 CONFLICTS=	trytond_product_price_list-2.[46].*
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

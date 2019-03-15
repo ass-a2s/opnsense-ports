@@ -3,7 +3,7 @@
 
 PORTNAME=	openwebmail
 PORTVERSION=	2.53
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	mail
 MASTER_SITES=	http://openwebmail.acatysmoof.com/download/release/ \
 		http://openwebmail.org/openwebmail/download/release/
@@ -42,7 +42,7 @@ LEARNSPAM_DESC=	Learn HAM/SPAM
 LEARNSPAM_IMPLIES=	SPAMCHECK
 LSOF_DESC=	lsof
 LSOF_RUN_DEPENDS=	${LOCALBASE}/sbin/lsof:sysutils/lsof
-MAGICK_RUN_DEPENDS=	convert:graphics/ImageMagick
+MAGICK_RUN_DEPENDS=	convert:graphics/ImageMagick6
 PAM_DESC=	PAM
 PAM_RUN_DEPENDS=	p5-Authen-PAM>=0:security/p5-Authen-PAM
 POP3_OVER_SSL_DESC=	POP3 Over SSL

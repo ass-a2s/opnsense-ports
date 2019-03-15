@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	passenger
-PORTVERSION=	5.1.8
+PORTVERSION=	6.0.2
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMEPREFIX=	rubygem-
@@ -15,34 +15,42 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	rake:devel/rubygem-rake
 
+USE_HARDENING=	pie:off relro:off
+
 CPE_VENDOR=	phusion
 CPE_PRODUCT=	passenger
 
+FLAVORS=	apache nginx
+FLAVOR?=	${FLAVORS:[1]}
+
+apache_PKGNAMESUFFIX=	-apache
+nginx_PKGNAMESUFFIX=	-nginx
+
+apache_CONFLICTS_INSTALL=	${PKGNAMEPREFIX}${PORTNAME}-nginx
+nginx_CONFLICTS_INSTALL=	${PKGNAMEPREFIX}${PORTNAME}-apache
+
 OPTIONS_DEFINE=	DEBUG SYMLINK
-OPTIONS_SINGLE=	SERVER
-OPTIONS_SINGLE_SERVER=	APACHE22 NGINX
-APACHE22_DESC=	Build with apache22 support
-NGINX_DESC=	Build with nginx support
+OPTIONS_EXCLUDE=DOCS
 SYMLINK_DESC=	Create passenger symlink
-OPTIONS_DEFAULT=	APACHE22
+
+.if ${FLAVOR} == apache
+USES+=		apache:2.2+
+.endif
 
 USE_RUBY=	yes
 RAKE_BIN=	${LOCALBASE}/bin/rake
-USES=		cpe gem
-NOPORTDOCS=	yes
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
-APACHE22_USE=	APACHE=22+
+USES+=		cpe gem libtool python:env shebangfix ssl
+SHEBANG_FILES=	src/cxx_supportlib/vendor-copy/libuv/gyp_uv.py
 
 LIB_DEPENDS+=	libuv.so:devel/libuv \
-		libcurl.so:ftp/curl
-BUILD_DEPENDS+=	rubygem-rack16>=0:www/rubygem-rack16
+		libcurl.so:ftp/curl \
+		libapr-1.so:devel/apr1
+
+BUILD_DEPENDS+=	rubygem-rack>=0:www/rubygem-rack
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 SUB_LIST+=	GEM_LIB_DIR=${GEM_LIB_DIR} RUBY=${RUBY}
-SUB_FILES=	pkg-message
+SUB_FILES=	pkg-message-${FLAVOR}
 
 PLIST_FILES=	bin/passenger \
 		bin/passenger-config \
@@ -63,34 +71,40 @@ pre-patch:
 		s!#{PlatformInfo.debugging_cflags}!${CFLAGS}!g; \
 		s!-O2!!g; \
 		s! -feliminate-unused-debug-symbols -feliminate-unused-debug-types!!g; \
-		166s!true!false!' \
+		170s!true!false!' \
 		${WRKSRC}/build/basics.rb
+	@${REINPLACE_CMD} '1s:python:python2:' \
+		${WRKSRC}/src/cxx_supportlib/vendor-copy/libuv/gyp_uv.py
 
 pre-patch-DEBUG-off:
 	@${REINPLACE_CMD} \
 		's!-DPASSENGER_DEBUG!-DNDEBUG!g' \
 		${WRKSRC}/build/basics.rb
 
-pre-patch-NGINX-on:
-	@${ECHO_CMD}
-	@${ECHO_CMD} "Do not forget compile www/nginx"
-	@${ECHO_CMD} "with PASSENGER_MODULE support"
-	@${ECHO_CMD}
-
 post-build:
+.if ${FLAVOR} == apache
+	(CC=${CC} CXX=${CXX} ${WRKSRC}/bin/passenger-install-apache2-module --auto)
+.endif
+
+.if ${FLAVOR} == nginx
+	(cd ${WRKSRC} && CC=${CC} CXX=${CXX} ${RAKE_BIN} nginx)
+.endif
 	${FIND} ${WRKSRC} -name '*.o' -delete
 	${FIND} ${WRKSRC} -name '*.bak' -delete
-
-post-build-APACHE22-on:
-	(CC=${CC} CXX=${CXX} ${WRKSRC}/bin/passenger-install-apache2-module --auto)
-
-post-build-NGINX-on:
-	(cd ${WRKSRC} && CC=${CC} CXX=${CXX} ${RAKE_BIN} nginx)
 
 post-install:
 	( cd ${WRKSRC} && \
 	${COPYTREE_SHARE} buildout ${STAGEDIR}${PREFIX}/${GEMS_DIR}/${PORTNAME}-${PORTVERSION} )
 	${CHMOD} +x ${STAGEDIR}${PREFIX}/${GEMS_DIR}/${PORTNAME}-${PORTVERSION}/buildout/support-binaries/*
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/buildout/ruby/*/passenger_native_support.so
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/buildout/support-binaries/PassengerAgent
+	${FIND} ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR} -type d -empty -delete
+.if ${FLAVOR} == apache
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${GEM_LIB_DIR}/buildout/apache2/mod_passenger.so
+	${MKDIR} ${STAGEDIR}${PREFIX}/${APACHEMODDIR}
+	${LN} -sf ../../${GEM_LIB_DIR}/buildout/apache2/mod_passenger.so ${STAGEDIR}${PREFIX}/${APACHEMODDIR}/mod_passenger.so
+	@${ECHO} "${APACHEMODDIR}/mod_passenger.so" >> ${TMPPLIST}
+.endif
 
 post-install-SYMLINK-on:
 	${LN} -s ${GEM_NAME} ${STAGEDIR}${PREFIX}/${GEMS_DIR}/${PORTNAME}

@@ -3,7 +3,7 @@
 
 PORTNAME=	libbfd
 PORTVERSION=	2.19.1
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	SOURCEWARE/binutils/releases
 DISTNAME=	binutils-${PORTVERSION}
@@ -27,6 +27,7 @@ INFO=		bfd
 
 BROKEN_aarch64=		Fails to configure: machine aarch64-portbld not recognized
 BROKEN_armv6=		Fails to configure: BFD does not support target armv6-portbld-freebsd12.0
+BROKEN_armv7=		Fails to configure: BFD does not support target armv7-portbld-freebsd12.0
 BROKEN_mips64=		Fails to configure: BFD does not support target mips64-portbld-freebsd12.0
 
 pre-configure:

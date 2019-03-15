@@ -5,7 +5,7 @@ PORTNAME=	qdbm
 PORTVERSION=	1.8.78
 PORTREVISION=	5
 CATEGORIES=	databases
-MASTER_SITES=	http://fallabs.com/qdbm/
+MASTER_SITES=	https://fallabs.com/qdbm/
 PKGNAMESUFFIX=	-plus
 
 MAINTAINER=	hrs@FreeBSD.org
@@ -27,7 +27,7 @@ CXXFLAGS+=	-fsigned-char -fPIC
 INSTALL_TARGET=	install-strip
 
 post-patch:
-.if defined(WITH_DEBUG) && !defined(WITHOUT_DEBUG)
+.if defined(WITH_DEBUG)
 	@${REINPLACE_CMD} 's/-DNDEBUG//' ${WRKSRC}/Makefile.in
 .endif
 

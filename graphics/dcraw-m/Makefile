@@ -3,7 +3,7 @@
 
 PORTNAME=	dcraw-m
 PORTVERSION=	9.22
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	graphics
 
 MAINTAINER=	waitman@waitman.net
@@ -13,7 +13,7 @@ LICENSE=	GPLv2
 
 LIB_DEPENDS=	libjasper.so:graphics/jasper \
 		liblcms2.so:graphics/lcms2 \
-		libMagickWand-6.so:graphics/ImageMagick
+		libMagickWand-6.so:graphics/ImageMagick6
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	waitman
@@ -21,13 +21,13 @@ GH_TAGNAME=	1392579
 
 USES=		jpeg pkgconfig
 
-CFLAGS += 	-Wall -I${LOCALBASE}/include \
+CFLAGS+=	-Wall -I${LOCALBASE}/include \
 		`MagickWand-config --cflags --cppflags` \
 		-DMAGICKCORE_HDRI_ENABLE=0 \
 		-DMAGICKCORE_QUANTUM_DEPTH=16
-LDFLAGS +=	`MagickWand-config --ldflags --libs` -lm -llcms2 -ljpeg \
+LDFLAGS+=	`MagickWand-config --ldflags --libs` -lm -llcms2 -ljpeg \
 		-ljasper
-LIBS    +=      -L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib
 
 PLIST_FILES=	bin/dcraw-m
 

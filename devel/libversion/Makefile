@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libversion
-PORTVERSION=	1.2.0
+PORTVERSION=	2.9.0
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,6 +15,8 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	repology
 
 USES=		cmake
+USE_LDCONFIG=	yes
+TEST_TARGET=	test
 PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS

@@ -1,4 +1,5 @@
 %%PYTHON_SITELIBDIR%%/PyQt5/QtDesigner.so
+%%PYTHON_SITELIBDIR%%/PyQt5/QtDesigner.pyi
 %%PYQT_SIPDIR%%/QtDesigner/QtDesignermod.sip
 %%PYQT_SIPDIR%%/QtDesigner/abstractactioneditor.sip
 %%PYQT_SIPDIR%%/QtDesigner/abstractformbuilder.sip
@@ -24,4 +25,4 @@
 %%PYQT_SIPDIR%%/QtDesigner/qpydesignerpropertysheetextension.sip
 %%PYQT_SIPDIR%%/QtDesigner/qpydesignertaskmenuextension.sip
 %%PYQT_SIPDIR%%/QtDesigner/taskmenu.sip
-%%API%%share/qt5/qsci/api/python/QtDesigner.api
+%%API%%%%PYQT_APIDIR%%/api/python/QtDesigner.api

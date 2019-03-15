@@ -2,7 +2,7 @@
 
 PORTNAME=	growl-for-linux
 PORTVERSION=	0.8.5
-PORTREVISION=	0
+PORTREVISION=	4
 CATEGORIES=	deskutils
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -11,6 +11,8 @@ COMMENT=	Notification system compatible with Growl
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USE_HARDENING=	pie:off
+
 BUILD_DEPENDS=	desktop-file-install:devel/desktop-file-utils
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libdbus-1.so:devel/dbus \
@@ -18,14 +20,10 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2
 
-BROKEN_powerpc64=	fails to compile: balloon.c:160: error: nested functions are disabled, use -fnested-functions to re-enable
-
 CONFIGURE_ARGS=	OPENSSL_CFLAGS="-I${OPENSSLINC}" OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto"
 
 GH_ACCOUNT=	mattn
 GNU_CONFIGURE=	yes
-
-NOPIE_PORTS=	yes
 
 INSTALL_TARGET=	install-strip
 
@@ -38,11 +36,17 @@ OPTIONS_DEFINE=	LIBNOTIFY
 
 PLIST_SUB=	DESKTOPDIR=${DESKTOPDIR:S,^${PREFIX}/,,}
 
-USES=		autoreconf compiler:nestedfct libtool pkgconfig sqlite:3 ssl
+USES=		autoreconf compiler:nestedfct gnome libtool pkgconfig sqlite:3 \
+		ssl
 USE_GITHUB=	yes
 USE_GNOME=	cairo gdkpixbuf2 gtk20 libxml2
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}/display \
 		${PREFIX}/lib/${PORTNAME}/subscribe
+
+.if exists(/usr/lib/libstdc++.so)
+CFLAGS+=	-fnested-functions
+.endif
+
 post-patch:
 	@${REINPLACE_CMD} '/^gol_LDADD =/s/$$/ -lgmodule-2.0/' \
 		${WRKSRC}/Makefile.am

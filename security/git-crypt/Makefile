@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	git-crypt
-PORTVERSION=	0.5.0
+PORTVERSION=	0.6.0
 CATEGORIES=	security
 MASTER_SITES=	https://www.agwa.name/projects/git-crypt/downloads/ \
 		LOCAL/ashish/
@@ -18,6 +18,7 @@ RUN_DEPENDS=	git:devel/git \
 
 OPTIONS_DEFINE=	MANPAGES
 
+CXXFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 MAKE_ENV+=	PREFIX=${PREFIX} "CXXFLAGS=${CXXFLAGS}" \
 		"LDFLAGS=${LDFLAGS}"

@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	gap
-PORTVERSION=	4.8.6.${GAP_DISTDATE}
-PORTREVISION=	1
+PORTVERSION=	4.8.10.${GAP_DISTDATE}
 CATEGORIES=	math
-MASTER_SITES=	ftp://ftp.gap-system.org/pub/gap/gap48/tar.bz2/ \
+MASTER_SITES=	http://www.gap-system.org/pub/gap/gap48/tar.bz2/ \
 		ftp://ftp.stack.nl/pub/users/johans/gap/ \
 		ftp://ftp.gap-system.org/pub/gap/gap48/old/
 DISTNAME=	${GAP_VERSION}p${PORTVERSION:R:E}_${GAP_DISTTIME}
@@ -15,10 +14,9 @@ COMMENT=	GAP is a system for computational discrete algebra
 
 LICENSE=	GPLv2+
 
-LIB_DEPENDS=	libgmp.so:math/gmp
-
 BROKEN_aarch64=		fails to link: undefined reference to SyAllocBags
-BROKEN_powerpc64=	fails to package: 2_manifolds_54.scb: No such file or directory
+
+LIB_DEPENDS=	libgmp.so:math/gmp
 
 USES=		gmake shebangfix tar:bzip2
 SHEBANG_FILES=	configure \
@@ -28,7 +26,7 @@ SHEBANG_FILES=	configure \
 		pkg/*/doc/convert.pl \
 		pkg/anupq-*/tst/make_anupqeg \
 		pkg/crime/gap/print.pl \
-		pkg/fr-*/cnf/config.status \
+		pkg/io-*/tst/sleep.sh \
 		pkg/pargap/mpinu/thwap
 
 GNU_CONFIGURE=	yes
@@ -39,7 +37,7 @@ INSTALL_TARGET=	install-strip
 MAKE_JOBS_UNSAFE=yes
 
 GAP_VERSION=	${PORTNAME}${PORTVERSION:R:R:S/./r/}	# gap4r5
-GAP_DISTTIME=	2016_11_12-14_25
+GAP_DISTTIME=	2018_01_15-13_02
 GAP_DISTDATE=	${GAP_DISTTIME:C/-.*//:S/_//g}
 GAP_LIBDIR=	${PREFIX}/lib/${GAP_VERSION}
 WRKSRC=		${WRKDIR}/${GAP_VERSION}
@@ -48,6 +46,9 @@ PLIST_FILES=	bin/gap
 post-patch:
 	@${REINPLACE_CMD} -i '' -e '1s|/usr/bin/sh|/bin/sh|' \
 	    ${WRKSRC}/pkg/happrime/make_tarball
+# Avoid conflict with C++20 <version> by ignoring <...> under WRKSRC
+	@${REINPLACE_CMD} -i .c++20 's/-I/-iquote/' \
+		${WRKSRC}/pkg/*/Makefile.in
 
 post-build:
 	cd ${WRKSRC}/pkg/simpcomp && \
@@ -72,6 +73,7 @@ do-install:
 
 post-install:
 	@${FIND} ${STAGEDIR}${GAP_LIBDIR} -type d -empty -delete
+	@${FIND} ${STAGEDIR}${GAP_LIBDIR} -name \*.py -delete
 	@${FIND} ${STAGEDIR}${GAP_LIBDIR} ! -type d | \
 		${SED} 's,${STAGEDIR}${PREFIX}/,,' >> ${TMPPLIST}
 

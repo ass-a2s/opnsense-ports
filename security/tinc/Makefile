@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tinc
-PORTVERSION=	1.0.32
+PORTVERSION=	1.0.35
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.tinc-vpn.org/packages/ \
 		http://www.tinc-vpn.org/packages/
@@ -24,5 +25,7 @@ USE_RC_SUBR=	tincd
 INFO=		tinc
 PLIST_FILES=	sbin/tincd \
 		man/man5/tinc.conf.5.gz man/man8/tincd.8.gz
+
+USE_HARDENING=	safestack
 
 .include <bsd.port.mk>

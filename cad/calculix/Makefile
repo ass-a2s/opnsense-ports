@@ -1,12 +1,11 @@
 # Created by: Pedro Giffuni
 # $FreeBSD$
 
-PORTNAME=	CalculiX
-PORTVERSION=	2.12
+PORTNAME=	calculix
+PORTVERSION=	2.14
 PORTREVISION=	2
 CATEGORIES=	cad
 MASTER_SITES=	http://www.dhondt.de/
-PKGNAMEPREFIX=	CalculiX-
 DISTFILES=	${DIST_SOURCES}
 DIST_SUBDIR=	calculix
 EXTRACT_ONLY=	${DIST_SOURCES}
@@ -15,6 +14,11 @@ MAINTAINER=	pfg@FreeBSD.org
 COMMENT=	Three-Dimensional Structural Finite Element Program
 
 LICENSE=	GPLv2
+
+BROKEN=		checksum and size mismatch
+DEPRECATED=	Broken for more than 6 months
+EXPIRATION_DATE=	2019-03-05
+BROKEN_aarch64=		fails to link: shapeFunctions.c:(function attach_new): relocation R_AARCH64_CALL26 out of range
 
 RUN_DEPENDS=	ccx:cad/calculix-ccx
 
@@ -26,15 +30,16 @@ DIST_EXAMPLES=	cgx_${PORTVERSION}.exa${EXTRACT_SUFX}
 WRKSRC=		${WRKDIR}/CalculiX
 CGX_VER=	cgx_${PORTVERSION}
 
-USES=		gmake tar:bzip2
-USE_XORG=	ice sm x11 xext xi xmu xt
-USE_GL= 	gl glu # uses its own glut
+USE_HARDENING=	pie:off relro:off
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
+USES=		gmake tar:bzip2 compiler:c++11-lib
+USE_XORG=	ice sm x11 xext xi xmu xt
+USE_GL=		gl glu # uses its own glut
 
 BROWSER?=	firefox
 PSVIEWER?=	gv
+
+CXXFLAGS+=	-std=c++98
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -60,7 +65,7 @@ FFLAGS+=	-fpic
 .endif
 
 pre-build:
-	@${REINPLACE_CMD} -e 's/c++/${CXX}/g;' \
+	@${REINPLACE_CMD} -e 's!c++!${CXX}!g;' \
 		${WRKSRC}/libSNL/src/makefile
 	@${REINPLACE_CMD} -e 's+%%DOCSDIR%%+${DOCSDIR}+g; \
 	s+"firefox"+"${BROWSER}"+ ; \
@@ -82,6 +87,11 @@ do-install:
 	  ${STAGEDIR}${DOCSDIR}
 .endif
 .if ${PORT_OPTIONS:MEXAMPLES}
+	# Some garbage crept in
+	@${RM} ${WRKSRC}/${CGX_VER}/examples/OpenFOAM/couette/constant/polyMesh/*~
+	@${RM} ${WRKSRC}/${CGX_VER}/examples/OpenFOAM/couette/constant/*~
+	@${RM} ${WRKSRC}/${CGX_VER}/examples/OpenFOAM/couette/system/*~
+	@${RM} ${WRKSRC}/${CGX_VER}/examples/ifwhiledemo/*.*~
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	@(cd ${WRKSRC}/${CGX_VER}/examples && ${COPYTREE_SHARE} . \
 	  ${STAGEDIR}${EXAMPLESDIR})

@@ -2,29 +2,40 @@
 # $FreeBSD$
 
 PORTNAME=	gnudatalanguage
-DISTVERSION=	0.9.7
-PORTREVISION=	7
+PORTVERSION=	0.9.9
+DISTVERSIONPREFIX=	v
+PORTREVISION=	5
 CATEGORIES=	science lang
-MASTER_SITES=	SF/${PORTNAME}/gdl/${PORTVERSION}
 .if defined(BUILD_PYTHON_MODULE)
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 .endif
-DISTNAME=	gdl-${DISTVERSION}
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT?=	GDL, a free IDL compatible incremental compiler
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS+=	libplplot.so:math/plplot	\
+LIB_DEPENDS+=	libgeotiff.so:graphics/libgeotiff\
+		libplplot.so:math/plplot	\
+		libtiff.so:graphics/tiff	\
 		libpng.so:graphics/png		\
 		libsz.so:science/szip		\
 		libps.so:print/pslib		\
 		libgsl.so:math/gsl
 
+USE_GITHUB=	yes
+GH_PROJECT=	gdl
+
+USES=		cmake compiler:c++11-lang fortran ncurses pkgconfig readline tar:tgz
 USE_WX=		3.0+
 USE_XORG=	x11 sm ice xext
-USES=		cmake:outsource compiler:gcc-c++11-lib dos2unix ncurses pkgconfig readline tar:tgz
+
+# On FreeBSD < 11 libc++ lacks support for sized delete operators.
+# GCC dropped the builtin version of these operators in 6+ by
+# defaulting to gnu++14. Force c++11 instead.
+# For a more detailed discussion see:
+# https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=219484
+USE_CXXSTD=	gnu++11
 
 # Disable ncurses and readline from ports
 # Disable ImageMagick (does'nt work with plplot because dynamic drivers
@@ -34,20 +45,21 @@ USES=		cmake:outsource compiler:gcc-c++11-lib dos2unix ncurses pkgconfig readlin
 # TODO:	create a port for Astron http://idlastro.gsfc.nasa.gov/ftp/astron.tar.gz
 # TODO:	create a port for TexToIdl http://physics.mnstate.edu/mcraig/textoidl/textoidl-2-1-2.tar
 
-CMAKE_ARGS=	-DREADLINEDIR:STRING="/usr"		\
-		-DNCURSESDIR:STRING="/usr"		\
-		-DMPICH:BOOL=NO				\
-		-DMAGICK:BOOL=NO
+CMAKE_ARGS=	-DREADLINEDIR:STRING="/usr"	\
+		-DOPENMP:BOOL=NO		\
+		-DNCURSESDIR:STRING="/usr"	\
+		-DMAGICK:BOOL=OFF
 CPPFLAGS+=	${CFLAGS} -fno-inline -DNPY_NO_DEPRECATED_API -DNPY_1_7_API_VERSION
+CXXFLAGS+=	-std=gnu++11
 LDFLAGS+=	-lpthread -L${LOCALBASE}/lib
 
 SLAVEDIRS=	science/py-gnudatalanguage
 
-OPTIONS_DEFINE=	EIGEN EXAMPLES FFTW GRAPHICSMAGICK GRIB HDF5 LIBPROJ4 MPICH2 NETCDF PYTHON QHULL UDUNITS
-OPTIONS_DEFAULT=EIGEN FFTW GRAPHICSMAGICK GRIB HDF5 LIBPROJ4 NETCDF PYTHON UDUNITS
+OPTIONS_DEFINE=	EIGEN EXAMPLES FFTW GLPK GRAPHICSMAGICK GRIB HDF5 LIBPROJ4 MPI NETCDF PYTHON UDUNITS
+OPTIONS_DEFAULT=EIGEN FFTW GLPK GRAPHICSMAGICK GRIB HDF5 LIBPROJ4 NETCDF PYTHON UDUNITS
 
-EIGEN_DESC=	Eigen3 support (boost performance)
-EIGEN_BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/eigen3.pc:math/eigen3
+EIGEN_DESC=		Eigen3 support (boost performance)
+EIGEN_USES=		eigen:3
 EIGEN_CMAKE_ON=		-DEIGEN3:BOOL=YES
 EIGEN_CMAKE_OFF=	-DEIGEN3:BOOL=NO
 
@@ -55,6 +67,11 @@ FFTW_LIB_DEPENDS=	libfftw3.so:math/fftw3		\
 			libfftw3f.so:math/fftw3-float
 FFTW_CMAKE_ON=		-DFFTW:BOOL=YES
 FFTW_CMAKE_OFF=		-DFFTW:BOOL=NO
+
+GLPK_DESC=		Support GLPK for Simplex (Linear programming)
+GLPK_LIB_DEPENDS=	libglpk.so:math/glpk
+GLPK_CMAKE_ON=		-DGLPK=ON:BOOL=YES
+GLPK_CMAKE_OFF=		-DGLPK=OFF:BOOL=NO
 
 GRAPHICSMAGICK_DESC=		Support GraphicsMagick
 GRAPHICSMAGICK_LIB_DEPENDS=	libGraphicsMagick.so:graphics/GraphicsMagick
@@ -75,25 +92,26 @@ LIBPROJ4_LIB_DEPENDS=	libproj.so:graphics/proj
 LIBPROJ4_CMAKE_ON=	-DLIBPROJ4:BOOL=YES
 LIBPROJ4_CMAKE_OFF=	-DLIBPROJ4:BOOL=NO
 
-MPICH2_LIB_DEPENDS=	libmpich.so.8:net/mpich2
-MPICH2_CMAKE_ON=	-DMPICH:BOOL=YES
-MPICH2_CMAKE_OFF=	-DMPICH:BOOL=NO
+MPI_LIB_DEPENDS=	libmpich.so:net/mpich
+MPI_CMAKE_ON=		-DMPICH:BOOL=ON
+MPI_CMAKE_OFF=		-DMPICH:BOOL=OFF
 
 NETCDF_LIB_DEPENDS=	libnetcdf.so:science/netcdf
 NETCDF_CMAKE_ON=	-DNETCDF:BOOL=YES -DHDF:BOOL=NO
 NETCDF_CMAKE_OFF=	-DNETCDF:BOOL=NO
 
-PYTHON_USES=		python
+PYTHON_USES=		python:2.7
 PYTHON_BUILD_DEPENDS=	${PYNUMPY}
 PYTHON_RUN_DEPENDS=	${PYNUMPY} \
-			${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib
+			${PYTHON_PKGNAMEPREFIX}matplotlib>0:math/py-matplotlib@${PY_FLAVOR}
 PYTHON_CMAKE_ON=	-DPYTHON:BOOL=YES -DPYTHONVERSION:STRING="${PYTHON_VER}"
 PYTHON_CMAKE_OFF=	-DPYTHON:BOOL=NO
 
-QHULL_DESC=		Enable Qhull support
-QHULL_LIB_DEPENDS=	libqhull.so:math/qhull
-QHULL_CMAKE_ON=		-DQHULL:BOOL=YES
-QHULL_CMAKE_OFF=	-DQHULL:BOOL=NO
+# QHULL IS NOT NEEDED YET!
+#QHULL_DESC=		Enable Triangulate and Qhull support
+#QHULL_LIB_DEPENDS=	libqhull.so:math/qhull
+#QHULL_CMAKE_ON=		-DQHULL:BOOL=YES
+#QHULL_CMAKE_OFF=	-DQHULL:BOOL=NO
 
 UDUNITS_LIB_DEPENDS=	libudunits2.so:science/udunits
 UDUNITS_CMAKE_ON=	-DUDUNITS:BOOL=YES
@@ -101,8 +119,8 @@ UDUNITS_CMAKE_OFF=	-DUDUNITS:BOOL=NO
 
 .if defined(BUILD_PYTHON_MODULE)
 CATEGORIES+=	python
-CMAKE_ARGS+=	-DPYTHON_MODULE:BOOL=YES -DOPENMP:BOOL=NO
-PLIST=		pkg-plist.pymod
+CMAKE_ARGS+=	-DPYTHON_MODULE:BOOL=YES
+PLIST=		${.CURDIR}/pkg-plist.pymod
 .else
 CMAKE_ARGS+=	-DPYTHON_MODULE:BOOL=NO
 .endif
@@ -110,7 +128,7 @@ CMAKE_ARGS+=	-DPYTHON_MODULE:BOOL=NO
 .if defined(BUILD_PYTHON_MODULE)
 do-install:
 	${MKDIR} ${STAGEDIR}${PYTHON_SITELIBDIR}
-	${INSTALL_DATA} ${INSTALL_WRKSRC}/src/libgdl.so ${STAGEDIR}${PYTHON_SITELIBDIR}/GDL.so
+	${INSTALL_DATA} ${INSTALL_WRKSRC}/src/GDL.so ${STAGEDIR}${PYTHON_SITELIBDIR}/
 .endif
 
 .if !defined(BUILD_PYTHON_MODULE)

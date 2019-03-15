@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	proxychains-ng
-PORTVERSION=	4.12
+PORTVERSION=	4.13
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net security
 
-MAINTAINER=	nemysis@FreeBSD.org
+MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Redirect connection through proxy servers
 
-EXPLICIT_SAFESTACK=		yes
-
 LICENSE=	GPLv2
+
+USE_HARDENING=	safestack
 
 USES=		gmake tar:bzip2
 GNU_CONFIGURE=	yes

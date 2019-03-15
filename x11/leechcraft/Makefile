@@ -3,31 +3,35 @@
 
 PORTNAME=	leechcraft
 PORTVERSION=	0.6.70
-PORTREVISION=	22
+PORTREVISION=	41
 CATEGORIES=	x11
 MASTER_SITES=	http://dist.leechcraft.org/LeechCraft/0.6.70/
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform modular live environment
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKDIR}/${DISTNAME}/LICENSE
 
-LIB_DEPENDS=	libqwt6.so:x11-toolkits/qwt6 \
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+LIB_DEPENDS=	libqwt6.so:x11-toolkits/qwt6@qt4 \
 		libpcre.so:devel/pcre \
 		libboost_program_options.so:devel/boost-libs
 
 #LC_REV=		1526-g7fdb92a
 INSTALLS_ICONS=	yes
 USE_LDCONFIG=	yes
-USES=		cmake pkgconfig tar:xz
-USE_QT4=	corelib declarative gui network script sql sql-sqlite3_run \
+USES=		cmake:insource pkgconfig qt:4 tar:xz
+USE_QT=		corelib declarative gui network script sql sql-sqlite3_run \
 		webkit xml qmake_build moc_build rcc_build uic_build \
 		linguisttools_build
 USE_XORG=	x11
-CMAKE_ARGS+=	-DENABLE_LADS=OFF \
-		-DENABLE_SYNCER=OFF \
-		-DLEECHCRAFT_VERSION=${PORTVERSION}
+CMAKE_OFF=	ENABLE_LADS \
+		ENABLE_SYNCER \
+		ENABLE_MONOCLE
+CMAKE_ARGS=	-DLEECHCRAFT_VERSION=${PORTVERSION}
 
 WRKSRC_SUBDIR=	src
 
@@ -36,7 +40,7 @@ OPTIONS_DEFINE=	AGGREGATOR ANHERO ANOTIFI AUSCRIE AZOTH BITTORRENT BLASQ BLOGIQU
 		ELEEMINATOR FENET GACTS GLANCE GNOTIFI HARBINGER HISTORYHOLDER \
 		HOTSENSORS HOTSTREAMS HTTHARE IMGASTE KBSWITCH KINOTIFY KNOWHOW KRIGSTASK \
 		LACKMAN LASTFMSCROBBLE LAUGHTY LAUNCHY LEMON LHTR LIZNOO LMP MELLONETRAY \
-		MONOCLE MUSICZOMBIE NACHEKU NETSTOREMANAGER NETWORKMONITOR \
+		MUSICZOMBIE NACHEKU NETSTOREMANAGER NETWORKMONITOR \
 		NEWLIFE OORONEE OTLOZHU PINTAB POGOOGLUE POLEEMERY POPISHU POSHUKU QROSP \
 		ROSENTHAL SB2 SCROBLIBRE SECMAN SEEKTHRU SUMMARY SYSNOTIFY TABSESSMANAGER \
 		TABSLIST TEXTOGROOSE TOUCHSTREAMS TPI VGRABBER VROOBY VTYULC \
@@ -69,7 +73,7 @@ AZOTH_LIB_DEPENDS=	libQtMultimediaKit.so:multimedia/qt4-mobility \
 			libkqoauth.so:security/kqoauth \
 			libotr.so.5:security/libotr \
 			libpurple.so:net-im/libpurple \
-			libqca.so:devel/qca \
+			libqca.so:devel/qca@qt4 \
 			libqxmpp.so:net-im/qxmpp \
 			libspeex.so:audio/speex
 AZOTH_USES=		desktop-file-utils
@@ -78,6 +82,7 @@ BITTORRENT_DESC=	Full-featured BitTorrent client plugin
 BITTORRENT_CMAKE_ON=	-DENABLE_TORRENT:BOOL=true
 BITTORRENT_CMAKE_OFF=	-DENABLE_TORRENT:BOOL=false
 BITTORRENT_LIB_DEPENDS=	libtorrent-rasterbar.so:net-p2p/libtorrent-rasterbar
+BITTORRENT_BROKEN=	see https://dev.leechcraft.org/issues/2062
 
 BLASQ_DESC=		Cloud image storage services client (like Flickr or Picasa)
 BLASQ_CMAKE_ON=		-DENABLE_BLASQ:BOOL=true
@@ -221,12 +226,6 @@ MELLONETRAY_CMAKE_ON=	-DENABLE_MELLONETRAY:BOOL=true
 MELLONETRAY_CMAKE_OFF=	-DENABLE_MELLONETRAY:BOOL=false
 MELLONETRAY_USE=	xorg=xdamage
 
-MONOCLE_DESC=		Monocle, the modular document viewer
-MONOCLE_CMAKE_ON=	-DENABLE_MONOCLE:BOOL=true
-MONOCLE_CMAKE_OFF=	-DENABLE_MONOCLE:BOOL=false
-MONOCLE_LIB_DEPENDS=	libdjvulibre.so:graphics/djvulibre \
-			libpoppler-qt4.so:graphics/poppler-qt4
-
 MUSICZOMBIE_DESC=	MusicBrainz client plugin
 MUSICZOMBIE_CMAKE_ON=	-DENABLE_MUSICZOMBIE:BOOL=true
 MUSICZOMBIE_CMAKE_OFF=	-DENABLE_MUSICZOMBIE:BOOL=false
@@ -255,7 +254,7 @@ OORONEE_CMAKE_ON=	-DENABLE_OORONEE:BOOL=true
 OORONEE_CMAKE_OFF=	-DENABLE_OORONEE:BOOL=false
 
 OTLOZHU_DESC=		(BROKEN) Otlozhu, a GTD-inspired ToDo manager
-OTLOZHU_CMAKE_OFF=	-DENABLE_OTLOZHU:BOOL=true
+OTLOZHU_CMAKE_ON=	-DENABLE_OTLOZHU:BOOL=true
 OTLOZHU_CMAKE_OFF=	-DENABLE_OTLOZHU:BOOL=false
 
 PINTAB_DESC=		Provides support for pinning tabs
@@ -273,7 +272,7 @@ POLEEMERY_CMAKE_OFF=	-DENABLE_POLEEMERY:BOOL=false
 POPISHU_DESC=		Text editor with IDE features
 POPISHU_CMAKE_ON=	-DENABLE_POPISHU:BOOL=true
 POPISHU_CMAKE_OFF=	-DENABLE_POPISHU:BOOL=false
-POPISHU_LIB_DEPENDS=	libqscintilla2.so:devel/qscintilla2
+POPISHU_LIB_DEPENDS=	libqscintilla2_qt4.so:devel/qscintilla2
 
 POSHUKU_DESC=		The full-featured web browser plugin
 POSHUKU_CMAKE_ON=	-DENABLE_POSHUKU:BOOL=true
@@ -287,7 +286,7 @@ QROSP_LIB_DEPENDS=	libqrosscore.so:devel/qross
 ROSENTHAL_DESC=		Spellchecking support
 ROSENTHAL_CMAKE_ON=	-DENABLE_ROSENTHAL:BOOL=true
 ROSENTHAL_CMAKE_OFF=	-DENABLE_ROSENTHAL:BOOL=false
-ROSENTHAL_LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell
+ROSENTHAL_LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 
 SB2_DESC=		Sidebar for LeechCraft with combined launcher and tab switcher
 SB2_CMAKE_ON=		-DENABLE_SB2:BOOL=true
@@ -359,10 +358,10 @@ OPTIONS_DEFAULT=AGGREGATOR ANHERO ANOTIFI AUSCRIE AZOTH BLASQ BLOGIQUE CERTMGR \
 		CPULOAD CSTP DBUSMANAGER DEADLYRICS DOLOZHEE FENET GACTS GLANCE GNOTIFI \
 		HARBINGER HISTORYHOLDER HOTSTREAMS HTTHARE IMGASTE KBSWITCH KINOTIFY \
 		KNOWHOW KRIGSTASK LACKMAN LASTFMSCROBBLE LAUGHTY LAUNCHY LHTR LIZNOO \
-		LMP MELLONETRAY MONOCLE MUSICZOMBIE NACHEKU NETSTOREMANAGER NETWORKMONITOR \
+		LMP MELLONETRAY MUSICZOMBIE NACHEKU NETSTOREMANAGER NETWORKMONITOR \
 		NEWLIFE OORONEE PINTAB POGOOGLUE POLEEMERY POPISHU POSHUKU QROSP ROSENTHAL \
 		SB2 SCROBLIBRE SECMAN SEEKTHRU SUMMARY SYSNOTIFY TABSESSMANAGER TABSLIST \
-		TEXTOGROOSE TOUCHSTREAMS TPI VGRABBER VROOBY VTYULC XPROXY XTAZY
+		TEXTOGROOSE TOUCHSTREAMS TPI VGRABBER VROOBY XPROXY XTAZY
 
 .include <bsd.port.options.mk>
 
@@ -370,12 +369,12 @@ OPTIONS_DEFAULT=AGGREGATOR ANHERO ANOTIFI AUSCRIE AZOTH BLASQ BLOGIQUE CERTMGR \
     ${PORT_OPTIONS:MLAUGHTY} || ${PORT_OPTIONS:MLIZNOO} || \
     ${PORT_OPTIONS:MLMP}     || ${PORT_OPTIONS:MSYSNOTIFY} || \
     ${PORT_OPTIONS:MVROOBY}  || ${PORT_OPTIONS:MXTAZY}
-USE_QT4+=	dbus
+USE_QT+=	dbus
 .endif
 
 .if ${PORT_OPTIONS:MBLASQ} || ${PORT_OPTIONS:MBLOGIQUE} || \
     ${PORT_OPTIONS:MLACKMAN}
-USE_QT4+=	xmlpatterns
+USE_QT+=	xmlpatterns
 .endif
 
 .if ${PORT_OPTIONS:MAZOTH} || ${PORT_OPTIONS:MBLASQ} || \
@@ -383,7 +382,7 @@ USE_QT4+=	xmlpatterns
     ${PORT_OPTIONS:MNETSTOREMANAGER} || ${PORT_OPTIONS:MPOSHUKU} || \
     ${PORT_OPTIONS:MQROSP} || ${PORT_OPTIONS:MSB2} || \
     ${PORT_OPTIONS:MTOUCHSTREAMS}
-LIB_DEPENDS+=	libqjson.so:devel/qjson
+LIB_DEPENDS+=	libqjson.so:devel/qjson@qt4
 .endif
 
 .if ${PORT_OPTIONS:MELEEMINATOR}
@@ -406,6 +405,14 @@ BROKEN=		Lemon has not supported yet because depended by libnl
 BROKEN=		Otlozhu has not supported yet (not ported liblaretz)
 .endif
 
+.if ${PORT_OPTIONS:MVTYULC}
+BROKEN=		VtyuLC plugin does not build with vlc 3.x
+.endif
+
+post-patch:
+	@${REINPLACE_CMD} -e 's|%%QT_INCDIR%%|${QT_INCDIR}|g' \
+                        -e 's|%%QT_LIBDIR%%|${QT_LIBDIR}|g' \
+                        ${WRKSRC}/cmake/FindQwt.cmake
 post-install:
 	@${FIND} -d ${STAGEDIR}${PREFIX}/include/leechcraft \
 		-type d -empty -exec ${RMDIR} {} \;

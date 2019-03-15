@@ -13,6 +13,9 @@ COMMENT=	Music file player for Apple Airport Express
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_SSL=	openssl111
+BROKEN_SSL_REASON_openssl111=	bin/raop_play:No such file or directory
+
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
 		libfltk.so:x11-toolkits/fltk \
 		libid3tag.so:audio/libid3tag
@@ -21,13 +24,13 @@ RUN_DEPENDS=	mpg321:audio/mpg321 \
 		faad:audio/faad \
 		flac:audio/flac
 
+USE_HARDENING=	pie:off
+
 GNU_CONFIGURE=	yes
 CFLAGS+=	-D_WITH_GETLINE
 LDFLAGS+=	`fltk-config --ldflags`
-USES=		gmake
+USES=		gmake ssl
 USE_GNOME=	glib20
-
-NOPIE_PORTS=	yes
 
 post-patch:
 	@${REINPLACE_CMD} 's/-lssl/-lcrypto/' \

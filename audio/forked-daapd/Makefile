@@ -3,7 +3,7 @@
 
 PORTNAME=	forked-daapd
 PORTVERSION=	24.1
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	audio
 
 MAINTAINER=	takumiiinn@gmail.com
@@ -26,14 +26,14 @@ LIB_DEPENDS=	libantlr3c.so:devel/libantlr3c \
 USE_GITHUB=	yes
 GH_ACCOUNT=	ejurgensen
 
+USE_HARDENING=	pie:off
+
 USES=		autoreconf gettext gmake gperf iconv libtool localbase pathfix pkgconfig sqlite
 
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	${LOCALBASE}/lib/forked-daapd
 CONFIGURE_ARGS+=--localstatedir=/var
-
-NOPIE_PORTS=	yes
 
 USE_RC_SUBR=	${PORTNAME}
 SUB_FILES=	pkg-message

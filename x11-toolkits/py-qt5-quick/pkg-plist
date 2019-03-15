@@ -1,4 +1,5 @@
 %%PYTHON_SITELIBDIR%%/PyQt5/QtQuick.so
+%%PYTHON_SITELIBDIR%%/PyQt5/QtQuick.pyi
 %%PYQT_SIPDIR%%/QtQuick/QtQuickmod.sip
 %%PYQT_SIPDIR%%/QtQuick/qquickframebufferobject.sip
 %%PYQT_SIPDIR%%/QtQuick/qquickimageprovider.sip
@@ -15,10 +16,14 @@
 %%PYQT_SIPDIR%%/QtQuick/qsggeometry.sip
 %%PYQT_SIPDIR%%/QtQuick/qsgmaterial.sip
 %%PYQT_SIPDIR%%/QtQuick/qsgnode.sip
+%%PYQT_SIPDIR%%/QtQuick/qsgimagenode.sip
+%%PYQT_SIPDIR%%/QtQuick/qsgrectanglenode.sip
+%%PYQT_SIPDIR%%/QtQuick/qsgrendererinterface.sip
+%%PYQT_SIPDIR%%/QtQuick/qsgrendernode.sip
 %%PYQT_SIPDIR%%/QtQuick/qsgsimplerectnode.sip
 %%PYQT_SIPDIR%%/QtQuick/qsgsimpletexturenode.sip
 %%PYQT_SIPDIR%%/QtQuick/qsgtexture.sip
 %%PYQT_SIPDIR%%/QtQuick/qsgtexturematerial.sip
 %%PYQT_SIPDIR%%/QtQuick/qsgtextureprovider.sip
 %%PYQT_SIPDIR%%/QtQuick/qsgvertexcolormaterial.sip
-%%API%%share/qt5/qsci/api/python/QtQuick.api
+%%API%%%%PYQT_APIDIR%%/api/python/QtQuick.api

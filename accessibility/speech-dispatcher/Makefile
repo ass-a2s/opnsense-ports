@@ -2,11 +2,11 @@
 
 PORTNAME=	speech-dispatcher
 PORTVERSION=	0.8.6
-PORTREVISION?=	0
+PORTREVISION?=	1
 CATEGORIES?=	accessibility audio
 MASTER_SITES=	http://devel.freebsoft.org/pub/projects/speechd/
 
-MAINTAINER=	avilla@FreeBSD.org
+MAINTAINER=	multimedia@FreeBSD.org
 COMMENT?=	Common interface to speech synthesis
 
 LICENSE=	GPLv2 LGPL21
@@ -91,9 +91,11 @@ post-install:
 PORTSCOUT=	ignore:1
 
 NO_ARCH=	yes
-USES+=		python:3.3+
+USES+=		python:3.3+ shebangfix
+SHEBANG_FILES=	src/api/python/speechd_config/spd-conf
+USE_PYTHON=	flavors
 LIB_DEPENDS+=	libspeechd.so:accessibility/speech-dispatcher
-RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/xdg/__init__.py:devel/py3-xdg
+RUN_DEPENDS+=	${PYTHON_SITELIBDIR}/xdg/__init__.py:devel/py-xdg@${PY_FLAVOR}
 
 .endif
 

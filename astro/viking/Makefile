@@ -2,18 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	viking
-PORTVERSION=	1.6.2
-PORTREVISION=	4
+PORTVERSION=	1.7
 CATEGORIES=	astro
 MASTER_SITES=	SF/${PORTNAME}/
 
-MAINTAINER=	koalative@gmail.com
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Program to manage GPS data (tracks, waypoints, etc.)
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
-
-BROKEN=		wrong LIB_DEPENDS
 
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
 LIB_DEPENDS=	libcurl.so:ftp/curl \
@@ -22,7 +19,9 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libfreetype.so:print/freetype2 \
 		libgexiv2.so:graphics/gexiv2 \
 		libpcre.so:devel/pcre \
-		libpng.so:graphics/png
+		libpng.so:graphics/png \
+		libgeoclue-2.so:net/geoclue \
+		liboauth.so:net/liboauth
 RUN_DEPENDS=	gpsbabel:astro/gpsbabel
 
 USES=		compiler:c++11-lib gmake iconv desktop-file-utils perl5 pkgconfig tar:bzip2
@@ -63,7 +62,7 @@ NLS_USES=		gettext
 GEOTAG_LIB_DEPENDS=	libexif.so:graphics/libexif
 GEOTAG_CONFIGURE_ENABLE=geotag
 
-GPSD_LIB_DEPENDS=	libgpsd.so:astro/gpsd
+GPSD_LIB_DEPENDS=	libgps.so:astro/gpsd
 GPSD_CONFIGURE_ENABLE=	realtime-gps-tracking
 
 MAPNIK_LIB_DEPENDS=	libmapnik.so:graphics/mapnik

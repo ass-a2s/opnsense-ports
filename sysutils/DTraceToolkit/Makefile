@@ -3,17 +3,21 @@
 
 PORTNAME=	dtrace-toolkit
 PORTVERSION=	1.0
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	sysutils
 
-MAINTAINER=	skreuzer@FreeBSD.org
+MAINTAINER=	dteske@FreeBSD.org
 COMMENT=	Collection of useful scripts for DTrace
 
+LICENSE=	CDDL
+LICENSE_FILE=	${WRKSRC}/Docs/cddl1.txt
+
+USES=		perl5 python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	opendtrace
 GH_PROJECT=	toolkit
 GH_TAGNAME=	f36d00b
-USES=		shebangfix
+USE_RUBY=	yes
 SHEBANG_LANG=	sh
 sh_OLD_CMD=	/usr/bin/sh ./sh
 sh_CMD=		${SH}
@@ -73,16 +77,24 @@ SHEBANG_FILES=	Apps/shellsnoop \
 
 NO_BUILD=	yes
 
-do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
-	(cd ${WRKSRC}; ${TAR} --exclude '*.orig' -cf - . ) | \
-		(cd ${STAGEDIR}${DATADIR}/; ${TAR} xvf -)
-	${LN} -fs ${DATADIR}/hotkernel ${STAGEDIR}${PREFIX}/bin/hotkernel
-	${LN} -fs ${DATADIR}/procsystime ${STAGEDIR}${PREFIX}/bin/procsystime
-	${LN} -fs ${DATADIR}/opensnoop ${STAGEDIR}${PREFIX}/bin/opensnoop
-	${LN} -fs ${DATADIR}/Apps/shellsnoop ${STAGEDIR}${PREFIX}/bin/shellsnoop
+.include <bsd.port.options.mk>
 
-.for MANPAGE in hotkernel procsystime opensnoop shellsnoop
+.if ${OPSYS} == FreeBSD && ${OSVERSION} > 1200031
+# lstat calls are no longer available on 12.0+
+EXTRA_PATCHES=	${PATCHDIR}/extra-patch-dtruss
+.endif
+
+do-install:
+	@${MKDIR} ${STAGEDIR}${DATADIR}
+	(cd ${WRKSRC} && ${TAR} --exclude '*.orig' -cf - . ) | \
+		(cd ${STAGEDIR}${DATADIR}/ && ${TAR} xvf -)
+	${RLN} ${STAGEDIR}${DATADIR}/dtruss ${STAGEDIR}${PREFIX}/bin/dtruss
+	${RLN} ${STAGEDIR}${DATADIR}/hotkernel ${STAGEDIR}${PREFIX}/bin/hotkernel
+	${RLN} ${STAGEDIR}${DATADIR}/procsystime ${STAGEDIR}${PREFIX}/bin/procsystime
+	${RLN} ${STAGEDIR}${DATADIR}/opensnoop ${STAGEDIR}${PREFIX}/bin/opensnoop
+	${RLN} ${STAGEDIR}${DATADIR}/Apps/shellsnoop ${STAGEDIR}${PREFIX}/bin/shellsnoop
+
+.for MANPAGE in dtruss hotkernel procsystime opensnoop shellsnoop
 	${INSTALL_MAN} ${WRKSRC}/Man/man1m/${MANPAGE}.1m \
 		${STAGEDIR}${MAN1PREFIX}/man/man1/${MANPAGE}.1
 .endfor

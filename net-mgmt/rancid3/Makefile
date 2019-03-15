@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	rancid
-PORTVERSION=	3.6.2
-PORTREVISION=	4
+PORTVERSION=	3.9
+PORTREVISION=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	ftp://ftp.shrubbery.net/pub/rancid/
 PKGNAMESUFFIX=	3
@@ -21,14 +21,14 @@ SHEBANG_FILES=	bin/*
 USERS=		rancid
 GROUPS=		rancid
 
+USE_HARDENING=	pie:off
+
 SUB_FILES=	pkg-message 200.rancid
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	--localstatedir=${LOCALBASE}/var/${PORTNAME}/ \
 		--bindir=${LOCALBASE}/libexec/${PORTNAME}/ \
 		--sysconfdir=${LOCALBASE}/etc/${PORTNAME}/
-
-NOPIE_PORTS=	yes
 
 OLDCONFIG_FILE1=	bin/env
 OLDCONFIG_FILE2=	util/lg/lg.conf

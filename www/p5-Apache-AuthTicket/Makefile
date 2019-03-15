@@ -10,11 +10,12 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl modules that implement a cookie-based authentication system
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_perl2>=1.9922:www/mod_perl2 \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_perl2>=1.9922:www/mod_perl2 \
 		p5-Apache-AuthCookie>=3.0:www/p5-Apache-AuthCookie \
 		p5-CGI>=3.12:www/p5-CGI \
 		p5-Class-Accessor>=0:devel/p5-Class-Accessor \
@@ -22,11 +23,9 @@ BUILD_DEPENDS=	${APACHE_PKGNAMEPREFIX}mod_perl2>=1.9922:www/mod_perl2 \
 		p5-MRO-Compat>=0:devel/p5-MRO-Compat \
 		p5-ModPerl-VersionUtil>=0:www/p5-ModPerl-VersionUtil \
 		p5-SQL-Abstract>=0:databases/p5-SQL-Abstract
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
-USE_APACHE=	22+
-USES=		perl5
+USES=		apache:2.2+ perl5
 USE_PERL5=	configure
 
 # Remove README.apache-2.4.pod to avoid conflicts with p5-Apache-AuthCookie

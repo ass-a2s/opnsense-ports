@@ -3,22 +3,20 @@
 
 PORTNAME=	nut
 PORTVERSION=	2.7.4
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.networkupstools.org/source/${PORTVERSION:R}/
-DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${DISTNAME}${EXTRACT_SUFX}.sig
+DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Network UPS Tools
 
-USE_AUTOTOOLS=	autoconf
+USE_HARDENING=	pie:off relro:off
+
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		gmake pkgconfig libtool
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
+USES=		autoreconf gmake pkgconfig libtool
 
 NUT_USER?=	uucp
 NUT_GROUP?=	uucp
@@ -26,10 +24,11 @@ STATEDIR?=	/var/db/nut
 PLIST_SUB+=	NUT_USER=${NUT_USER}
 PLIST_SUB+=	NUT_GROUP=${NUT_GROUP}
 
-OPTIONS_DEFAULT=SERIAL USB SNMP NEON IPMI_OFF
-OPTIONS_DEFINE=	SERIAL USB SNMP NEON PDU CGI BASH AVAHI OPENSSL DOCS
-OPTIONS_SINGLE=	IPMI
+OPTIONS_DEFAULT=SERIAL USB SNMP NEON IPMI_OFF SSL_OFF
+OPTIONS_DEFINE=	SERIAL USB SNMP NEON PDU CGI BASH AVAHI DOCS
+OPTIONS_SINGLE=	IPMI SSL
 OPTIONS_SINGLE_IPMI=	IPMI_OFF IPMIPSU FREEIPMI
+OPTIONS_SINGLE_SSL=	SSL_OFF OPENSSL NSS
 
 SERIAL_DESC=	SERIAL support
 USB_DESC=	USB support
@@ -42,6 +41,7 @@ AVAHI_DESC=	Avahi support
 IPMI_OFF_DESC=	No IPMI support
 FREEIPMI_DESC=	freeipmi support
 IPMIPSU_DESC=	Use nut-ipmipsu support (experimental)
+SSL_OFF_DESC=	No SSL support
 
 USE_RC_SUBR=	nut nut_upsmon nut_upslog
 SUB_LIST+=	STATEDIR=${STATEDIR}
@@ -109,11 +109,11 @@ PLIST_SUB+=	NUT_SNMP="@comment "
 
 .if ${PORT_OPTIONS:MNEON}
 LIB_DEPENDS+=	libneon.so:www/neon
-CONFIGURE_ARGS+=	--with-neonxml
+CONFIGURE_ARGS+=	--with-neon
 PLIST_SUB+=	NUT_NEON=""
 .else
-CONFIGURE_ARGS+=	--without-neonxml
-CONFIGURE_ARGS+=	--disable-neonxml
+CONFIGURE_ARGS+=	--without-neon
+CONFIGURE_ARGS+=	--disable-neon
 PLIST_SUB+=	NUT_NEON="@comment "
 .endif
 
@@ -164,6 +164,9 @@ PLIST_SUB+=	NUT_IPMIPSU="@comment "
 .if ${PORT_OPTIONS:MOPENSSL}
 USES+=	ssl
 CONFIGURE_ARGS+=	--with-openssl
+.elif ${PORT_OPTIONS:MNSS}
+LIB_DEPENDS=		libnss3.so:security/nss
+CONFIGURE_ARGS+=	--with-nss
 .else
 CONFIGURE_ARGS+=	--without-openssl --without-ssl
 .endif

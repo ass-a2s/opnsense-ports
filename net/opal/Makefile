@@ -3,23 +3,22 @@
 
 PORTNAME=	opal
 PORTVERSION=	3.10.10
-PORTREVISION=	13
+PORTREVISION=	20
 CATEGORIES=	net
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	VoIP abstraction library
 
-LICENSE=	MPL
+LICENSE=	MPL10
 
 LIB_DEPENDS=	libpt.so:devel/ptlib
 
-USES=		gmake pathfix pkgconfig tar:xz
+USE_HARDENING=	pie:off relro:off
+
+USES=		compiler:c11 gmake pathfix pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 CXXFLAGS+=	-I${LOCALBASE}/include
 CPPFLAGS+=	-I${LOCALBASE}/include

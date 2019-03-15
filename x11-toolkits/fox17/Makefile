@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fox
-PORTVERSION=	1.7.60
+PORTVERSION=	1.7.64
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://ftp.fox-toolkit.org/pub/ \
 		ftp://ftp.fox-toolkit.org/pub/
@@ -30,7 +31,7 @@ CONFIGURE_ARGS=	--with-opengl=yes \
 		--bindir=${PREFIX}/bin/${PORTNAME}-${MAJORVER}
 INSTALL_TARGET=	install-strip
 
-NOPIE_PORTS=	yes
+USE_HARDENING=	pie:off
 
 MAJORVER=	${PORTVERSION:R}
 PLIST_SUB+=	MAJORVER=${MAJORVER}
@@ -70,7 +71,7 @@ CXXFLAGS+=	-O2 -ffast-math
 .  if !${PORT_OPTIONS:MPROFILE}
 CXXFLAGS+=	-fomit-frame-pointer
 .  endif
-.  if ${COMPILER_TYPE} == "gcc"
+.  if ${CHOSEN_COMPILER_TYPE} == gcc
 CXXFLAGS+=	-fexpensive-optimizations -finline-functions
 .  endif
 .endif

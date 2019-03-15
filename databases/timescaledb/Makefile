@@ -2,35 +2,35 @@
 # $FreeBSD$
 
 PORTNAME=	timescaledb
-PORTVERSION=	0.4.1
+PORTVERSION=	1.2.1
 CATEGORIES=	databases
 
 MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Time-series database built on PostgreSQL
 
-LICENSE=	APACHE20
-LICENSE_FILE=	${WRKSRC}/LICENSE
+LICENSE=		APACHE20 TSL
+LICENSE_COMB=		multi
+LICENSE_NAME_TSL=	Timescale License Agreement
+LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
+LICENSE_FILE_TSL=	${WRKSRC}/tsl/LICENSE-TIMESCALE
+LICENSE_PERMS_TSL=	dist-mirror pkg-mirror auto-accept
 
-USES=		compiler:c11 gmake pgsql:9.6
-USE_LDCONFIG=	yes
+USES=		compiler:c11 cmake pgsql:9.6,10,11 ssl
 
 USE_GITHUB=	YES
 GH_ACCOUNT=	timescale
 
-MAKE_ARGS=	PG_CONFIG=${LOCALBASE}/bin/pg_config USE_PGXS=1 \
-		install_bin=/usr/bin/install
+PLIST_SUB=	PORTVERSION=${PORTVERSION}
+SUB_FILES=	pkg-message
+SUB_LIST=	PORTVERSION=${PORTVERSION}
 
 WANT_PGSQL=	server
 
-PLIST_FILES=	lib/postgresql/timescaledb.so \
-		share/postgresql/extension/timescaledb--0.1.0--0.2.0.sql \
-		share/postgresql/extension/timescaledb--0.2.0--0.3.0.sql \
-		share/postgresql/extension/timescaledb--0.3.0--0.4.0.sql \
-		share/postgresql/extension/timescaledb--0.4.0--0.4.1.sql \
-		share/postgresql/extension/timescaledb--0.4.1.sql \
-		share/postgresql/extension/timescaledb.control
+OPTIONS_DEFINE=		TSL
+OPTIONS_DEFAULT=	TSL
+OPTIONS_SUB=		yes
 
-post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/postgresql/timescaledb.so
+TSL_DESC=		Enables TSL licensed code in additon to Apache license code
+TSL_CMAKE_BOOL_OFF=	APACHE_ONLY
 
 .include <bsd.port.mk>

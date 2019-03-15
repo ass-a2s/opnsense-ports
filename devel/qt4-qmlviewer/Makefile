@@ -10,9 +10,12 @@ PKGNAMEPREFIX=	qt4-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 4 utility for QML application testing
 
-USE_QT4=	qmake_build moc_build rcc_build uic_build declarative script \
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake:no_env qt-dist:4
+USE_QT=		moc_build rcc_build uic_build declarative script \
 		svg xmlpatterns sql opengl network corelib
-QT_DIST=	yes
 
 HAS_CONFIGURE=	yes
 

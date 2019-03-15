@@ -1,7 +1,7 @@
-TIMESTAMP = 1504738054
-SHA256 (op_freebsd_amd64_v0.1.zip) = ea0272132580269ba515b078024f99200ebcebe039779ee104a4abc1d034a5c5
-SIZE (op_freebsd_amd64_v0.1.zip) = 2190194
-SHA256 (op_freebsd_arm_v0.1.zip) = d0155036027b83e3c2097d9fc84bfbe42abf4ce69a90a66152c969c73e5208cd
-SIZE (op_freebsd_arm_v0.1.zip) = 2044076
-SHA256 (op_freebsd_386_v0.1.zip) = 4ff645ae808aa5332a69c6e124685d6db1ac35b9f9548c2d017f8d20f7e0a7dc
-SIZE (op_freebsd_386_v0.1.zip) = 2028491
+TIMESTAMP = 1546313798
+SHA256 (op_freebsd_amd64_v0.5.5.zip) = a2757efe2fdf1ac31c40e32674ebebbcd24686569580d4c2c1435b6740966af6
+SIZE (op_freebsd_amd64_v0.5.5.zip) = 2536765
+SHA256 (op_freebsd_arm_v0.5.5.zip) = e1e764e712c49e7d0786e29da45b751c9a3b9f96ccb7d3c5ceba4c92db0f4303
+SIZE (op_freebsd_arm_v0.5.5.zip) = 2392274
+SHA256 (op_freebsd_386_v0.5.5.zip) = da14a33ce623a392ca24b68cad7ea66feef0f615454216aa9f97a90c6cd2c9a3
+SIZE (op_freebsd_386_v0.5.5.zip) = 2401683

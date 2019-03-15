@@ -1,36 +1,35 @@
---- CMakeLists.txt.orig	2016-03-28 18:06:12 UTC
+--- CMakeLists.txt.orig	2019-01-21 18:42:44 UTC
 +++ CMakeLists.txt
-@@ -606,8 +606,8 @@ ENDIF()
- 
- ADD_SUBDIRECTORY(extra)
- ADD_SUBDIRECTORY(client)
--ADD_SUBDIRECTORY(sql/share)
- ADD_SUBDIRECTORY(libservices)
+@@ -1011,6 +1011,7 @@ ADD_SUBDIRECTORY(extra/regex)
+ ADD_SUBDIRECTORY(libmysql)
+ ADD_SUBDIRECTORY(libbinlogevents)
+ ADD_SUBDIRECTORY(libbinlogstandalone)
 +ADD_SUBDIRECTORY(support-files)
  
- IF(UNIX)
-   ADD_SUBDIRECTORY(man)
-@@ -676,14 +676,13 @@ ELSE()
-   SET(CPACK_GENERATOR "TGZ")
- ENDIF() 
+ IF(NOT WITHOUT_SERVER)
+   SET (MYSQLD_STATIC_PLUGIN_LIBS "" CACHE INTERNAL "")
+@@ -1146,12 +1147,13 @@ ENDIF() 
  ADD_SUBDIRECTORY(packaging/WiX)
--ADD_SUBDIRECTORY(packaging/solaris)
+ ADD_SUBDIRECTORY(packaging/solaris)
  
- IF(UNIX)
+-IF(UNIX)
 -  INSTALL(FILES Docs/mysql.info DESTINATION ${INSTALL_INFODIR} OPTIONAL COMPONENT Info)
- ENDIF()
+-ENDIF()
++#IF(UNIX)
++#  INSTALL(FILES Docs/mysql.info DESTINATION ${INSTALL_INFODIR} OPTIONAL COMPONENT Info)
++#ENDIF()
  #
  # RPM installs documentation directly from the source tree
  #
 +IF(FALSE)
  IF(NOT INSTALL_LAYOUT MATCHES "RPM")
-   INSTALL(FILES COPYING LICENSE.mysql 
-   DESTINATION ${INSTALL_DOCREADMEDIR} 
-@@ -706,6 +705,7 @@ IF(NOT INSTALL_LAYOUT MATCHES "RPM")
-     PATTERN "sp-imp-spec.txt" EXCLUDE
+   INSTALL(FILES README LICENSE DESTINATION ${INSTALL_DOCREADMEDIR} COMPONENT Readme)
+   INSTALL(FILES ${CMAKE_BINARY_DIR}/Docs/INFO_SRC ${CMAKE_BINARY_DIR}/Docs/INFO_BIN DESTINATION ${INSTALL_DOCDIR})
+@@ -1170,6 +1172,7 @@ IF(NOT INSTALL_LAYOUT MATCHES "RPM")
+     PATTERN "README.build" EXCLUDE
    )
  ENDIF()
 +ENDIF()
  
- INCLUDE(CPack)
- 
+ # Now that we're done with all ADD_SUBDIRECTORY and thus all feature tests,
+ # we can safely enable ASan on Clang/Win32 if needed.

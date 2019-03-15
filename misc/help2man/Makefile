@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	help2man
-PORTVERSION=	1.47.4
+PORTVERSION=	1.47.8
+PORTREVISION=	1
 CATEGORIES=	misc
-MASTER_SITES=	GNU/${PORTNAME}
+MASTER_SITES=	GNU
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Automatically generating simple manual pages from program output
@@ -12,10 +13,13 @@ COMMENT=	Automatically generating simple manual pages from program output
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USE_HARDENING=	safestack
+
 OPTIONS_DEFINE=	NLS
 
-GNU_CONFIGURE=	yes
 USES=		gmake localbase perl5 tar:xz
+
+GNU_CONFIGURE=	yes
 
 INFO=		${PORTNAME}
 PLIST_FILES=	bin/${PORTNAME} \
@@ -26,8 +30,9 @@ NLS_CONFIGURE_ENABLE=	nls
 NLS_PLIST_FILES=	lib/bindtextdomain.so
 NLS_RUN_DEPENDS=	p5-Locale-gettext>=0:devel/p5-Locale-gettext
 NLS_USES=		gettext
+NLS_VARS=		CONFIGURE_FAIL_MESSAGE="Rebuild lang/${PERL_PORT} and devel/p5-Locale-gettext manually before contacting maintainer."
 
-.for lang in de es fr pl uk zh_CN
+.for lang in de es fr pl pt_BR sv uk zh_CN
 NLS_INFO+=		${PORTNAME}-${lang}
 .endfor
 

@@ -3,6 +3,7 @@
 
 PORTNAME=	darts
 PORTVERSION=	0.32
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	http://www.chasen.org/~taku/software/darts/src/
 
@@ -14,6 +15,9 @@ LICENSE_COMB=	dual
 LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/BSD
 LICENSE_FILE_LGPL21+ =	${WRKSRC}/LGPL
 
+USE_HARDENING=	pie:off
+
+USES=		autoreconf
 GNU_CONFIGURE=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
@@ -21,7 +25,9 @@ OPTIONS_DEFINE=	DOCS EXAMPLES
 PORTEXAMPLES=	darts.cpp mkdarts.cpp
 PORTDOCS=	AUTHORS ChangeLog README doc
 
-NOPIE_PORTS=	yes
+PLIST_FILES=	include/darts.h \
+		libexec/darts/darts \
+		libexec/darts/mkdarts
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

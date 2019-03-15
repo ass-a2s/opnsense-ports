@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-taskmanager
-PORTVERSION=	1.2.0
-PORTREVISION=	1
+PORTVERSION=	1.2.2
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/src/apps/${PORTNAME}/${PORTVERSION:R}
 DIST_SUBDIR=	xfce4
@@ -15,15 +14,22 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
-	libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2
 
-GNU_CONFIGURE=	yes
-USES=		gettext gmake localbase pkgconfig tar:bzip2
-USE_GNOME=	gtk20 glib20 cairo gdkpixbuf2 intltool libwnck
+USES=		gettext-tools gmake gnome localbase pkgconfig tar:bzip2
+USE_GNOME=	cairo gdkpixbuf2 glib20 gtk30 intltool libwnck
 USE_XORG=	ice sm x11 xmu xt
 
-CONFIGURE_ARGS+=	--disable-gksu \
-	--disable-gtk3 --disable-wnck3 \
-	--enable-wnck
+GNU_CONFIGURE=	yes
+INSTALLS_ICONS=	yes
+
+CONFIGURE_ARGS+=	--disable-silent-rules --disable-gksu \
+			--disable-wnck3 --enable-wnck --disable-gtk2
+
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
+
+NLS_CONFIGURE_ENABLE=	nls
+NLS_USES=		gettext-runtime
 
 .include <bsd.port.mk>

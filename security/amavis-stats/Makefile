@@ -7,7 +7,7 @@ PORTREVISION=	5
 CATEGORIES=	security
 MASTER_SITES=	LOCAL/feld
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Simple AMaViS statistics generator based on rrdtool
 
 RUN_DEPENDS=	rrdtool>=0:databases/rrdtool
@@ -28,8 +28,6 @@ AMAVISGROUP?=	amavis
 USERS=		${AMAVISUSER}
 GROUPS=		${AMAVISGROUP}
 PLIST_SUB+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP} USERS=${USERS} GROUPS=${GROUPS}
-
-PKGMESSAGE=	${WRKDIR}/pkg-message
 
 SUB_FILES=	pkg-message
 

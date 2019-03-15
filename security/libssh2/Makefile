@@ -3,6 +3,7 @@
 
 PORTNAME=	libssh2
 PORTVERSION=	1.8.0
+PORTREVISION=	1
 PORTEPOCH=	3
 CATEGORIES=	security devel
 MASTER_SITES=	http://www.libssh2.org/download/ \
@@ -34,10 +35,6 @@ GCRYPT_USES_OFF=	ssl
 ZLIB_CONFIGURE_WITH=	libz
 
 .include <bsd.port.pre.mk>
-
-.if empty(PORT_OPTIONS:MGCRYPT) && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
 
 post-patch:
 	@${REINPLACE_CMD} -e '/Libs:/s/@LIBS@//' \

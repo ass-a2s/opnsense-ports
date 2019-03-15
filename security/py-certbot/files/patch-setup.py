@@ -1,18 +1,18 @@
---- setup.py.orig	2017-06-26 10:13:14 UTC
+--- setup.py.orig	2019-02-07 21:20:31 UTC
 +++ setup.py
-@@ -42,7 +42,6 @@ install_requires = [
-     'ConfigArgParse>=0.9.3',
+@@ -39,7 +39,6 @@ install_requires = [
      'configobj',
-     'cryptography>=1.2',  # load_pem_x509_certificate
+     'cryptography>=1.2.3',  # load_pem_x509_certificate
+     'josepy',
 -    'mock',
      'parsedatetime>=1.3',  # Calendar.parseDT
-     'PyOpenSSL',
      'pyrfc3339',
-@@ -67,6 +66,7 @@ dev_extras = [
+     'pytz',
+@@ -53,6 +52,7 @@ dev_extras = [
      'astroid==1.3.5',
      'coverage',
      'ipdb',
 +    'mock',
-     'nose',
-     'pylint==1.4.2',  # upstream #248
-     'tox',
+     'pytest',
+     'pytest-cov',
+     'pytest-xdist',

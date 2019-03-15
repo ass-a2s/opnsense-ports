@@ -1,4 +1,4 @@
---- go/base/Config.php.orig	2016-10-07 11:58:58 UTC
+--- go/base/Config.php.orig	2018-12-04 16:00:23 UTC
 +++ go/base/Config.php
 @@ -22,7 +22,7 @@
   * This class holds the main configuration options of Group-Office
@@ -9,7 +9,41 @@
   *
   * To edit these options use install.php.
   *
-@@ -786,7 +786,7 @@ class Config {
+@@ -760,21 +760,21 @@ var $billing_clear_payment_method_on_duplicate = true;
+ 	 * @var     StringHelper
+ 	 * @access  public
+ 	 */
+-	var $cmd_zip = '/usr/bin/zip';
++	var $cmd_zip = '/usr/local/bin/zip';
+ 
+ 	/**
+ 	 * Command to unpack ZIP archive
+ 	 * @var     StringHelper
+ 	 * @access  public
+ 	 */
+-	var $cmd_unzip = '/usr/bin/unzip';
++	var $cmd_unzip = '/usr/local/bin/unzip';
+ 
+ 	/**
+ 	 * Command to control TAR archives
+ 	 * @var     StringHelper
+ 	 * @access  public
+ 	 */
+-	var $cmd_tar = '/bin/tar';
++	var $cmd_tar = '/usr/local/bin/tar';
+ 
+ 	/**
+ 	 * Command to set system passwords. Used by passwd.users.class.inc.
+@@ -790,7 +790,7 @@ var $billing_clear_payment_method_on_duplicate = true;
+ 	 * @var     StringHelper
+ 	 * @access  public
+ 	 */
+-	var $cmd_sudo = '/usr/bin/sudo';
++	var $cmd_sudo = '/usr/local/bin/sudo';
+ 
+ 	/**
+ 	 * Command to convert xml to wbxml
+@@ -798,7 +798,7 @@ var $billing_clear_payment_method_on_duplicate = true;
  	 * @var     StringHelper
  	 * @access  public
  	 */
@@ -18,7 +52,7 @@
  
  	/**
  	 * Command to convert wbxml to xml
-@@ -794,7 +794,7 @@ class Config {
+@@ -806,7 +806,7 @@ var $billing_clear_payment_method_on_duplicate = true;
  	 * @var     StringHelper
  	 * @access  public
  	 */
@@ -27,7 +61,7 @@
  
  	/**
  	 * Command to unpack winmail.dat files
-@@ -802,7 +802,7 @@ class Config {
+@@ -814,7 +814,7 @@ var $billing_clear_payment_method_on_duplicate = true;
  	 * @var     StringHelper
  	 * @access  public
  	 */
@@ -36,7 +70,7 @@
  
  	/**
  	 * Command to execute the php command line interface
-@@ -810,7 +810,7 @@ class Config {
+@@ -822,7 +822,7 @@ var $billing_clear_payment_method_on_duplicate = true;
  	 * @var     StringHelper
  	 * @access  public
  	 */
@@ -45,30 +79,12 @@
  
  
  	/**
-@@ -1290,8 +1290,8 @@ class Config {
- 		$this->root_path = str_replace('\\','/',dirname(dirname(dirname(__FILE__)))).'/';
- 
- 		//suppress error for open_basedir warnings etc
--		if(@file_exists('/etc/groupoffice/globalconfig.inc.php')) {
--			require('/etc/groupoffice/globalconfig.inc.php');
-+		if(@file_exists('/usr/local/usr/local/etc/groupoffice/globalconfig.inc.php')) {
-+			require('/usr/local/usr/local/etc/groupoffice/globalconfig.inc.php');
+@@ -1350,7 +1350,7 @@ var $billing_clear_payment_method_on_duplicate = true;
+ 	}
+ 	
+ 	private function getGlobalConfig() {
+-		$globalConfigFile = '/etc/groupoffice/globalconfig.inc.php';
++		$globalConfigFile = '/usr/local/usr/local/etc/groupoffice/globalconfig.inc.php';
+ 		if (file_exists($globalConfigFile)) {
+ 			require($globalConfigFile);
  		}
- 
- 		$config_file = $this->get_config_file();
-@@ -1615,13 +1615,13 @@ class Config {
- 				}
- 			}*/
- 			if(!empty($_SERVER['SERVER_NAME'])){
--				$config_file = '/etc/groupoffice/'.$_SERVER['SERVER_NAME'].'/config.php';
-+				$config_file = '/usr/local/usr/local/etc/groupoffice/'.$_SERVER['SERVER_NAME'].'/config.php';
- 				if(@file_exists($config_file)) {
- 					$_SESSION['GO_SESSION']['config_file']=$config_file;
- 					return $config_file;
- 				}
- 			}
--			$config_file = '/etc/groupoffice/config.php';
-+			$config_file = '/usr/local/usr/local/etc/groupoffice/config.php';
- 			if(@file_exists($config_file)) {
- 				$_SESSION['GO_SESSION']['config_file']=$config_file;
- 				return $config_file;

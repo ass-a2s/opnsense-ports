@@ -1,34 +1,35 @@
 # $FreeBSD$
 
 PORTNAME=	qemu
-PORTVERSION=	2.7.50
-PORTREVISION=	20170306
+PORTVERSION=	2.13.0
+PORTREVISION=	20180622
 CATEGORIES=	emulators
-PKGNAMESUFFIX?=	-riscv
+PKGNAMESUFFIX=	-riscv
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	QEMU with RISC-V (RV64GC, RV32GC) emulation support
 
 LICENSE=	GPLv2
 
+ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64
 BROKEN_powerpc64=	fails to compile: async.c: internal compiler error: Segmentation fault
 
+USES=	gmake libtool makeinfo pkgconfig python:2.7,build
+
+USE_HARDENING=	pie:off relro:off
+
 USE_GITHUB=	yes
-GH_ACCOUNT=	riscv
-GH_PROJECT=	riscv-qemu
-GH_TAGNAME=	2094f39
+GH_TUPLE=	riscv:riscv-qemu:360a780 \
+		qemu:dtc:e543880:dtc/dtc \
+		qemu:keycodemapdb:6b3d716:keycodemapdb/ui/keycodemapdb
 
 HAS_CONFIGURE=	yes
-USES=	gmake libtool makeinfo pkgconfig python:2,build
 USE_XORG=	pixman
-USE_GNOME+=	glib20
-ONLY_FOR_ARCHS=	amd64 i386 powerpc powerpc64
+USE_GNOME=	glib20
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
-CONFIGURE_ARGS+=--target-list=riscv64-softmmu,riscv32-softmmu \
+CONFIGURE_ARGS=--target-list=riscv64-softmmu,riscv32-softmmu \
 		--cc=${CC} \
+		--enable-fdt \
 		--disable-curl \
 		--disable-docs \
 		--disable-gtk \
@@ -51,14 +52,8 @@ CONFIGURE_ARGS+=--target-list=riscv64-softmmu,riscv32-softmmu \
 PLIST_FILES=	bin/qemu-system-riscv32 \
 		bin/qemu-system-riscv64
 
-.include <bsd.port.pre.mk>
-
-.if ${OSVERSION} < 1100000
-IGNORE=	does not build
-.endif
-
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/riscv32-softmmu/qemu-system-riscv32 ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/riscv64-softmmu/qemu-system-riscv64 ${STAGEDIR}${PREFIX}/bin
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

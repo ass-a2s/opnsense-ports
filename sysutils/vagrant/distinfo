@@ -1,3 +1,3 @@
-TIMESTAMP = 1495370416
-SHA256 (mitchellh-vagrant-v1.9.5_GH0.tar.gz) = 69eb8ede3148b6f94389be5fd2d6cb2b6c79ba78cbcacdc354d2c73f12eccc2a
-SIZE (mitchellh-vagrant-v1.9.5_GH0.tar.gz) = 1100561
+TIMESTAMP = 1551304532
+SHA256 (hashicorp-vagrant-v2.2.4_GH0.tar.gz) = 4f8ce6ede5d47a2be1ce46a29d22d41d1f4ba9d99fe9496b2424f98ae4dab2d6
+SIZE (hashicorp-vagrant-v2.2.4_GH0.tar.gz) = 1244111

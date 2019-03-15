@@ -26,29 +26,23 @@ CONFLICTS_INSTALL=	panda-imap-20*
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}${PKGNAMESUFFIX}
 SUB_FILES=	pkg-message
 
-MAKE_JOBS_UNSAFE=	yes
+USE_HARDENING=	pie:off
 
-NOPIE_PORTS=	yes
+MAKE_JOBS_UNSAFE=	yes
 
 ALL_TARGET=	bsf
 
 # This port must have the same SSL settings as mail/cclient, which it depends on
 # To make MBX format the default mailbox format, change the settings of cclient
 
-OPTIONS_DEFINE=	SSL SSL_AND_PLAINTEXT DRAC NETSCAPE_BRAIN_DAMAGE DOCS
+OPTIONS_DEFINE=	SSL SSL_AND_PLAINTEXT NETSCAPE_BRAIN_DAMAGE DOCS
 OPTIONS_DEFAULT=	SSL
 OPTIONS_SUB=	yes
 
 SSL_AND_PLAINTEXT_DESC=	Allow plain text passwords and SSL
-DRAC_DESC=		Dynamically open MTA for relaying
 NETSCAPE_BRAIN_DAMAGE_DESC=	See Makefile for documentation
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDRAC}
-BUILD_DEPENDS=	${LOCALBASE}/lib/libdrac.a:mail/drac
-MAKE_ARGS+=	WITH_DRAC=yes
-.endif
 
 .if ! ${PORT_OPTIONS:MSSL}
 MAKE_ARGS+=	SSLTYPE=none SSLDIR=${OPENSSLBASE}

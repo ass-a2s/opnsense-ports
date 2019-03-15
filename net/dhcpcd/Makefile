@@ -3,6 +3,7 @@
 
 PORTNAME=	dhcpcd
 PORTVERSION=	6.11.5
+PORTREVISION=	1
 CATEGORIES=	net
 MASTER_SITES=	http://roy.marples.name/downloads/dhcpcd/ \
 		ftp://roy.marples.name/pub/dhcpcd/\
@@ -13,9 +14,9 @@ MASTER_SITES=	http://roy.marples.name/downloads/dhcpcd/ \
 MAINTAINER=	roy@marples.name
 COMMENT=	DHCP/IPv4LL/IPv6RS/DHCPv6 client
 
-EXPLICIT_SAFESTACK=		yes
-
 LICENSE=	BSD2CLAUSE
+
+USE_HARDENING=	safestack
 
 USES=		cpe tar:xz
 CPE_VENDOR=	dhcpcd_project

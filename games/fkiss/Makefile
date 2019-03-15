@@ -3,7 +3,7 @@
 
 PORTNAME=	fkiss
 PORTVERSION=	0.33a
-PORTREVISION=	3
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	http://www2s.biglobe.ne.jp/~yav/soft/fkiss/
 DISTNAME=	${PORTNAME}-${PORTVERSION:S/a//}
@@ -20,11 +20,12 @@ RUN_DEPENDS=	lha:archivers/lha
 
 BROKEN_aarch64=		fails to compile: passing char * to parameter of incompatible type __builtin_va_list
 BROKEN_armv6=		fails to compile: passing char * to parameter of incompatible type __builtin_va_list
+BROKEN_armv7=		fails to compile: passing char * to parameter of incompatible type __builtin_va_list
 
 EXTRA_PATCHES=	${WRKDIR}/${PORTNAME}-${PORTVERSION}.diff
 
 USES=		gmake
-USE_XORG=	x11 xproto
+USE_XORG=	x11 xorgproto
 GNU_CONFIGURE=	yes
 MAKE_ARGS=	ACLOCAL="${TRUE}" AUTOCONF="${TRUE}" AUTOHEADER="${TRUE}" \
 		AUTOMAKE="${TRUE}"
@@ -33,14 +34,7 @@ PLIST_FILES=	bin/fkiss man/man1/fkiss.1.gz
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-OPTIONS_DEFINE=	DOCS EXAMPLES ESOUND
-
-ESOUND_USES=	pkgconfig
-ESOUND_USE=	GNOME=esound
-ESOUND_CPPFLAGS=	`pkgconf --cflags-only-I esound`
-ESOUND_LDFLAGS=		`pkgconf --libs-only-L esound `
-ESOUND_CONFIGURE_ENV_OFF=	ac_cv_lib_esd_esd_open_sound=no \
-				ac_cv_header_esd_h=no
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|= @X_LIBS@|= @LDFLAGS@ @X_LIBS@|g' \

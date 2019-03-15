@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	xlapack
-PORTREVISION=	3
+PORTREVISION=	5
 
-MAINTAINER=	maho@FreeBSD.org
+MAINTAINER=	fortran@FreeBSD.org
 COMMENT=	Extended Precision LAPACK
 
 XLAPACK_SLAVEPORT=	yes

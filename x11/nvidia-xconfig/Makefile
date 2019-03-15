@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nvidia-xconfig
-PORTVERSION=	384.59
+PORTVERSION=	415.25
 CATEGORIES=	x11
 
 MAINTAINER=	bland@FreeBSD.org

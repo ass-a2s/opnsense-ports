@@ -1,13 +1,13 @@
-# Created by: Koichiro IWAO <meta+ports@vmeta.jp>
+# Created by: Koichiro IWAO <meta@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	koruri
-PORTVERSION=	20161105
+PORTVERSION=	20180915
 DISTVERSIONPREFIX=	Koruri-
 CATEGORIES=	japanese x11-fonts
 PKGNAMEPREFIX=	ja-font-
 
-MAINTAINER=	meta+ports@vmeta.jp
+MAINTAINER=	meta@FreeBSD.org
 COMMENT=	Koruri Japanese TrueType fonts
 
 LICENSE=	APACHE20

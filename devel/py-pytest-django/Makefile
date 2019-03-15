@@ -2,25 +2,23 @@
 # $FreeBSD$
 
 PORTNAME=	pytest-django
-PORTVERSION=	2.9.1
+PORTVERSION=	3.3.0
 CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	python@FreeBSD.org
 COMMENT=	Django plugin for py.test
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django18>=0:www/py-django18 \
-		${PYTHON_PKGNAMEPREFIX}django-configurations>=0:www/py-django-configurations \
-		${PYTHON_PKGNAMEPREFIX}pytest-xdist>=0:devel/py-pytest-xdist \
-		${PYTHON_PKGNAMEPREFIX}tox>=0:devel/py-tox \
-		${PYTHON_PKGNAMEPREFIX}wheel>=0:devel/py-wheel \
-		${PYTHON_PKGNAMEPREFIX}twine>=0:devel/py-twine \
-		${PYTHON_PKGNAMEPREFIX}setuptools_scm>=0:devel/py-setuptools_scm \
-		${PYTHON_PKGNAMEPREFIX}south>=0:databases/py-south
-BUILD_DEPENDS=	${RUN_DEPENDS}
+LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}setuptools_scm>=1.11.1:devel/py-setuptools_scm@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=3.6:devel/py-pytest@${PY_FLAVOR}
 
 USES=		python
-USE_PYTHON=	distutils autoplist
+USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

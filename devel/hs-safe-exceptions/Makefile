@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	safe-exceptions
-PORTVERSION=	0.1.6.0
+PORTVERSION=	0.1.7.0
+PORTREVISION=	3
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

@@ -1,12 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	shotcut
-PORTVERSION=	${FULLVERSION:R}
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+DISTVERSION=	${FULLVERSION}
 CATEGORIES=	multimedia
 
-MAINTAINER=	avilla@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free, open source, cross-platform video editor
 
 LICENSE=	GPLv3
@@ -19,13 +18,14 @@ RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg \
 USE_GITHUB=	yes
 GH_ACCOUNT=	mltframework
 # Needed to be able to correctly check for updates in-app.
-FULLVERSION=	17.02.01
+FULLVERSION=	19.02.28
 
-USES=		pkgconfig qmake
-USE_QT5=	buildtools_build concurrent_build core \
+USES=		pkgconfig qmake qt:5
+USE_QT=		buildtools_build concurrent_build core declarative \
 		graphicaleffects_run gui multimedia network opengl \
-		printsupport qml quick quickcontrols_run sql \
+		printsupport quickcontrols_run sql \
 		sql-sqlite3_run webkit websockets widgets x11extras xml
+USE_SDL=	sdl2
 USE_XORG=	x11
 QMAKE_ARGS=	${PORTNAME:tu}_VERSION="${FULLVERSION}"
 DESKTOP_ENTRIES="Shotcut" \
@@ -45,7 +45,8 @@ FREI0R_RUN_DEPENDS=	frei0r-plugins>=0:graphics/frei0r-plugins
 
 LADSPA_RUN_DEPENDS=	swhplugins>=0:audio/swhplugins
 
-NLS_USE=		QT5=linguisttools_build
+NLS_USES=	qt:5
+NLS_USE=		QT=linguisttools_build
 
 WEBVFX_RUN_DEPENDS=	${LOCALBASE}/lib/mlt/libmltwebvfx.so:multimedia/webvfx-qt5
 
@@ -63,10 +64,5 @@ post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps
 	${INSTALL_DATA} ${WRKSRC}/icons/${PORTNAME}-logo-64.png \
 		${STAGEDIR}${PREFIX}/share/icons/hicolor/64x64/apps/${PORTNAME}.png
-
-post-install-NLS-on:
-	${MKDIR} ${STAGEDIR}${DATADIR}/translations
-	${INSTALL_DATA} ${WRKSRC}/translations/*.qm \
-		${STAGEDIR}${DATADIR}/translations
 
 .include <bsd.port.mk>

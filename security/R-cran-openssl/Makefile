@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	openssl
-PORTVERSION=	0.9.7
+PORTVERSION=	1.1
+PORTREVISION=	1
 CATEGORIES=	security
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -17,15 +18,4 @@ USES=		cran:auto-plist,compiles shebangfix ssl
 
 SHEBANG_FILES=	${WRKSRC}/tests/google.dk/generate.bash
 
-R_POSTCMD_INSTALL_OPTIONS+=	--configure-vars="INCLUDE_DIR=${OPENSSLINC} LIB_DIR=${OPENSSLLIB}"
-
-post-patch:
-	${REINPLACE_CMD} -e '1,5d' ${WRKSRC}/src/ssl.c
-
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mlibressl*}
-IGNORE=	detected LibreSSL (missing RSA_get0_key and others)
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

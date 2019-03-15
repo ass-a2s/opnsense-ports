@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	Catalyst-Controller-HTML-FormFu
-PORTVERSION=	2.02
+PORTVERSION=	2.04
+PORTREVISION=	1
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,20 +11,21 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Catalyst FormFu Base Controller
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-Catalyst-Component-InstancePerContext>=0:www/p5-Catalyst-Component-InstancePerContext \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Catalyst-Component-InstancePerContext>=0:www/p5-Catalyst-Component-InstancePerContext \
 		p5-Catalyst-Runtime>=5.71001:www/p5-Catalyst-Runtime \
 		p5-Config-Any>=0:devel/p5-Config-Any \
-		p5-HTML-FormFu>=2:www/p5-HTML-FormFu \
-		p5-Moose>=1:devel/p5-Moose \
+		p5-HTML-FormFu>=2.06:www/p5-HTML-FormFu \
+		p5-HTML-FormFu-MultiForm>=1.02:www/p5-HTML-FormFu-MultiForm \
+		p5-Moose>=0:devel/p5-Moose \
 		p5-MooseX-Attribute-Chained>=1.0.1:devel/p5-MooseX-Attribute-Chained \
 		p5-Regexp-Assemble>=0:devel/p5-Regexp-Assemble \
 		p5-Task-Weaken>=0:devel/p5-Task-Weaken \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Catalyst-Action-RenderView>=0:www/p5-Catalyst-Action-RenderView \
 		p5-Catalyst-Plugin-Session>=0:www/p5-Catalyst-Plugin-Session \
 		p5-Catalyst-Plugin-Session-State-Cookie>=0:www/p5-Catalyst-Plugin-Session-State-Cookie \

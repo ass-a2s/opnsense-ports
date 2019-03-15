@@ -1,11 +1,13 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
+PORTREVISION=	1
 CATEGORIES=	devel lang
 PKGNAMESUFFIX=	-fcl-db
 
 COMMENT=	Free Pascal Database Library (FCL)
 
+USES=		fpc
 USE_FPC=	fcl-base fcl-xml rtl-objpas rtl-extra ibase mysql odbc \
 		oracle postgres sqlite dblib pxlib fcl-json
 

@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	nip2
-PORTVERSION=	8.4.0
-PORTREVISION=	2
+PORTVERSION=	8.7.1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.vips.ecs.soton.ac.uk/supported/${PORTVERSION:R}/
+MASTER_SITES=	https://github.com/libvips/${PORTNAME}/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Graphical user interface for VIPS
@@ -18,12 +17,15 @@ LIB_DEPENDS=	libvips.so:graphics/vips \
 		libfreetype.so:print/freetype2
 RUN_DEPENDS=	xdg-open:devel/xdg-utils
 
-USES=		bison desktop-file-utils dos2unix gettext gmake pkgconfig \
+USE_HARDENING=	safestack
+
+USES=		bison desktop-file-utils dos2unix gettext gmake gnome pkgconfig \
 		shared-mime-info
+
 DOS2UNIX_GLOB=	*.def
 USE_GNOME=	cairo gdkpixbuf2 gnomemimedata gtk20 libxml2
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-update-desktop
+CONFIGURE_ARGS+=	--disable-update-desktop
 LDFLAGS+=	-lm
 
 SUB_FILES=	run-nip2.sh
@@ -45,8 +47,6 @@ GSF_CONFIGURE_WITH=	libgsf
 GSL_DESC=		Use gsl for numeric functions
 GSL_LIB_DEPENDS=	libgsl.so:math/gsl
 GSL_CONFIGURE_WITH=	gsl
-
-EXPLICIT_SAFESTACK=	yes
 
 post-install:
 	(cd ${WRKDIR} && ${INSTALL_SCRIPT} run-nip2.sh \

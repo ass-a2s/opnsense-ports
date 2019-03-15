@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Ipopt
-PORTVERSION=	3.12.7
+DISTVERSION=	3.12.12
 PORTREVISION=	1
 CATEGORIES=	math
 MASTER_SITES=	http://www.coin-or.org/download/source/Ipopt/ \
@@ -12,7 +12,7 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX} \
 		metis-4.0.3.tar.gz:metis MUMPS_4.10.0.tar.gz:mumps
 EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Software package for large-scale nonlinear optimization
 
 LICENSE=	EPL
@@ -46,19 +46,16 @@ pre-patch:
 	@(cd ${WRKSRC}/ThirdParty/Mumps && ${PATCH} -p0 < mumps.patch && ${PATCH} -p0 < mumps_mpi.patch )
 	@(${MV} ${WRKSRC}/ThirdParty/Mumps/MUMPS/libseq/mpi.h ${WRKSRC}/ThirdParty/Mumps/MUMPS/libseq/mumps_mpi.h);
 
+pre-build: # workaround: configure fails to find the 'rand' function on 12, need to investigate. This patch unbreaks the build.
+	@${REINPLACE_CMD} -e 's|.*HAVE_RAND.*|#define HAVE_RAND 1|' ${WRKSRC}/Ipopt/src/Common/config.h
+
 post-install-DOCS-off:
-	${RM} -r ${STAGEDIR}${PREFIX}/share/coin
+	@${RM} -r ${STAGEDIR}${PREFIX}/share/coin
 
 post-install-DOCS-on:
-	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${WRKSRC}/Ipopt/doc/documentation.pdf\
-	   ${STAGEDIR}${DOCSDIR}
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/Ipopt/doc/documentation.pdf ${STAGEDIR}${DOCSDIR}
 	${MV} ${STAGEDIR}${PREFIX}/share/coin/doc ${STAGEDIR}${DOCSDIR}
-	${RM} -r ${STAGEDIR}${PREFIX}/share/coin
-
-.if defined(MAINTAINER_MODE)
-regression-test:
-	(cd ${WRKSRC}; ${MAKE_CMD} test)
-.endif
+	@${RM} -r ${STAGEDIR}${PREFIX}/share/coin
 
 .include <bsd.port.mk>

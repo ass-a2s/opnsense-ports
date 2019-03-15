@@ -10,16 +10,21 @@ MASTER_SITES=	APACHE/${PORTNAME}/core/${PORTNAME}-${PORTVERSION} \
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} jetty-6.1.14.zip:jetty
 DIST_SUBDIR=	hadoop
 
-MAINTAINER=	demon@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Apache Map/Reduce framework
 
 LICENSE=	APACHE20
+
+BROKEN_SSL=	openssl111
+BROKEN_SSL_REASON_openssl111=	variable has incomplete type 'HMAC_CTX' (aka 'hmac_ctx_st')
 
 BUILD_DEPENDS=	gmake:devel/gmake \
 		gsed:textproc/gsed
 RUN_DEPENDS=	bash:shells/bash
 
 CONFLICTS_INSTALL=	hadoop2-2*
+
+USE_HARDENING=	pie:off relro:off
 
 USES=		cpe libtool ssl:build
 CPE_VENDOR=	apache
@@ -30,9 +35,6 @@ ONLY_FOR_ARCHS=	amd64 i386
 USE_LDCONFIG=	yes
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 OPTIONS_DEFINE=	DOCS
 

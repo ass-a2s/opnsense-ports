@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	darktable
-PORTVERSION=	2.2.5
-PORTREVISION=	1
+PORTVERSION=	2.6.1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/darktable-org/${PORTNAME}/releases/download/release-${PORTVERSION:C/\.rc/rc/}/
 
@@ -12,14 +11,15 @@ COMMENT=	Virtual lighttable and darkroom for photographers
 
 LICENSE=	GPLv3
 
-BUILD_DEPENDS=	xsltproc:textproc/libxslt \
+BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/iso-codes.pc:misc/iso-codes \
+		xsltproc:textproc/libxslt \
 		po4a-translate:textproc/po4a
 LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libexiv2.so:graphics/exiv2 \
 		libjson-glib-1.0.so:devel/json-glib \
 		liblcms2.so:graphics/lcms2 \
 		liblensfun.so:graphics/lensfun \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libpugixml.so:textproc/pugixml \
 		libsoup-2.4.so:devel/libsoup \
 		libtiff.so:graphics/tiff
@@ -27,8 +27,8 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 ONLY_FOR_ARCHS=		amd64
 ONLY_FOR_ARCHS_REASON=	uses SSE instructions and 64-bit address space
 
-USES=		cmake:outsource compiler:c++11-lib desktop-file-utils	\
-		jpeg pkgconfig sqlite tar:xz
+USES=		cmake compiler:c++11-lib desktop-file-utils	\
+		gl gnome jpeg pkgconfig sqlite tar:xz
 USE_GL=		glu
 USE_GNOME=	cairo gtk30 intltool librsvg2 libxml2
 USE_XORG=	ice sm x11 xext xrandr
@@ -51,6 +51,7 @@ CMAKE_ARGS+=	-DBINARY_PACKAGE_BUILD=1
 CMAKE_ARGS+=	-DBUILD_CMSTEST:BOOL=ON
 CMAKE_ARGS+=	-DUSE_KWALLET:BOOL=ON
 LDFLAGS+=	-L${LOCALBASE}/lib
+CFLAGS+=	-fopenmp
 
 COLORD_LIB_DEPENDS=	libcolord.so:graphics/colord \
 			libcolord-gtk.so:graphics/colord-gtk
@@ -71,7 +72,7 @@ GRAPHMAGICK_CMAKE_OFF=	-DUSE_GRAPHICSMAGICK:BOOL=OFF
 LIBSECRET_LIB_DEPENDS=	libsecret-1.so:security/libsecret
 LIBSECRET_CMAKE_OFF=	-DUSE_LIBSECRET:BOOL=OFF
 
-LUA_USES=		lua:52
+LUA_USES=		lua:53
 LUA_CMAKE_OFF=		-DUSE_LUA:BOOL=OFF
 
 # FIXME: Even with NLS turned off, darktable(1) is still linked to
@@ -81,8 +82,8 @@ NLS_USES_OFF=		gettext-runtime
 NLS_CMAKE_OFF=		-DUSE_NLS:BOOL=OFF
 NLS_LDFLAGS=		-L${LOCALBASE}/lib -lintl
 
-OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/OpenEXR \
-			libIlmThread-2_2.so:graphics/ilmbase
+OPENEXR_LIB_DEPENDS=	libIlmImf.so:graphics/openexr \
+			libIlmThread.so:graphics/ilmbase
 OPENEXR_CMAKE_OFF=	-DUSE_OPENEXR:BOOL=OFF
 
 OPENJPEG_LIB_DEPENDS=	libopenjp2.so:graphics/openjpeg
@@ -97,31 +98,17 @@ WEBP_CMAKE_OFF=		-DUSE_WEBP:BOOL=OFF
 .include <bsd.port.pre.mk>
 
 .if ${ARCH} == amd64 && ${CHOSEN_COMPILER_TYPE} == clang
-# Enable OpenMP support with Clang 4.0.
-LLVM_VER=	40
+# Enable OpenMP support with Clang 6.0.
+LLVM_VER=	60
 BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
 
 CPP=		clang-cpp${LLVM_VER}
 CC=		clang${LLVM_VER}
 CXX=		clang++${LLVM_VER}
 
-# FIXME: At least in 3.7.0 and 3.7.1, Clang doesn't find libomp.so
-# itself. Furthermore, there may be a regression in 3.7.1 because we now
-# need to explicitly link to libm.so as well. This remains true with
-# Clang 3.9.1.
-OPENMP_FLAGS=	-L${LOCALBASE}/llvm${LLVM_VER}/lib -lm -lomp
-LDFLAGS+=	${OPENMP_FLAGS}
-
 # Depend on devel/openmp instead of the full LLVM at runtime. Required
 # for a consistent libomp experience.
 LIB_DEPENDS+=	libomp.so.0:devel/openmp
-
-# Last but not least, there is a second change or regression in CMake
-# 3.4.x: CMAKE_EXE_LINKER_FLAGS is not passed to TRY_COMPILE by default
-# anymore. The CMP0056 policy must be explicitly set to NEW to ensure
-# linker flags are passed.
-# See: https://cmake.org/cmake/help/v3.4/policy/CMP0056.html
-CMAKE_ARGS+=	-DCMAKE_POLICY_DEFAULT_CMP0056:STRING=NEW
 .endif
 
 .if defined(WITH_DEBUG)

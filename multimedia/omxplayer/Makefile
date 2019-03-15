@@ -3,10 +3,13 @@
 
 PORTNAME=	omxplayer
 PORTVERSION=	20161004
-PORTREVISION=	2
+PORTREVISION=	11
 CATEGORIES=	multimedia
 
-MAINTAINER=	mikael.urankar@gmail.com
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES=	96800576209b.patch:-p1
+
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Raspberry Pi video player
 
 LICENSE=	GPLv2
@@ -22,7 +25,7 @@ LIB_DEPENDS=	libasound.so:audio/alsa-lib \
 RUN_DEPENDS=	bash:shells/bash \
 		${LOCALBASE}/share/fonts/freefont-ttf/FreeSans.ttf:x11-fonts/freefont-ttf
 
-ONLY_FOR_ARCHS=	armv6
+ONLY_FOR_ARCHS=	armv6 armv7
 
 CFLAGS+=	-Dfopen64=fopen -Dfseeko64=fseeko -Dftello64=ftello
 ALL_TARGET=	omxplayer.bin

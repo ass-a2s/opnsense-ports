@@ -7,15 +7,17 @@ PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://axel.sjostedt.no/misc/files/
 PKGNAMEPREFIX=	roundcube-
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 DISTNAME=	rcube_plg_veximaccountadmin
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Roundcube vexim account admin plugin
 
 LICENSE=	GPLv3
 
-RUN_DEPENDS=	roundcube>=0.9:mail/roundcube
+RUN_DEPENDS=	roundcube${PHP_PKGNAMESUFFIX}>=0.9:mail/roundcube@${PHP_FLAVOR}
 
+USES=	php:flavors
 NO_BUILD=	yes
 
 PLIST_SUB+=	PLUGINDIR="${PLUGINDIR}"

@@ -12,10 +12,13 @@ COMMENT=	Command-line utility to capture WebKit's rendering of a web page
 
 LICENSE=	GPLv2
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 WRKSRC=		${WRKDIR}/CutyCapt
 
-USES=		qmake
-USE_QT4=	moc_build imageformats_run webkit
+USES=		qmake qt:4
+USE_QT=		moc_build imageformats_run webkit
 
 PLIST_FILES=	bin/CutyCapt
 

@@ -5,6 +5,7 @@ man/man8/lynis.8.gz
 %%DATADIR%%/db/fileperms.db
 %%DATADIR%%/db/hints.db
 %%DATADIR%%/db/integrity.db
+%%DATADIR%%/db/languages/az
 %%DATADIR%%/db/languages/br
 %%DATADIR%%/db/languages/cn
 %%DATADIR%%/db/languages/de
@@ -14,10 +15,13 @@ man/man8/lynis.8.gz
 %%DATADIR%%/db/languages/es
 %%DATADIR%%/db/languages/fi
 %%DATADIR%%/db/languages/fr
+%%DATADIR%%/db/languages/gr
 %%DATADIR%%/db/languages/he
 %%DATADIR%%/db/languages/hu
 %%DATADIR%%/db/languages/it
 %%DATADIR%%/db/languages/ja
+%%DATADIR%%/db/languages/ko
+%%DATADIR%%/db/languages/nb-NO
 %%DATADIR%%/db/languages/nl
 %%DATADIR%%/db/languages/nl-BE
 %%DATADIR%%/db/languages/nl-NL
@@ -25,10 +29,12 @@ man/man8/lynis.8.gz
 %%DATADIR%%/db/languages/pt
 %%DATADIR%%/db/languages/ru
 %%DATADIR%%/db/languages/se
+%%DATADIR%%/db/languages/sk
 %%DATADIR%%/db/languages/tr
 %%DATADIR%%/db/malware-susp.db
 %%DATADIR%%/db/malware.db
 %%DATADIR%%/db/sbl.db
+%%DATADIR%%/db/software-eol.db
 %%DATADIR%%/db/tests.db
 @mode 0400
 %%DATADIR%%/include/binaries
@@ -52,6 +58,7 @@ man/man8/lynis.8.gz
 %%DATADIR%%/include/tests_crypto
 %%DATADIR%%/include/tests_custom.template
 %%DATADIR%%/include/tests_databases
+%%DATADIR%%/include/tests_dns
 %%DATADIR%%/include/tests_file_integrity
 %%DATADIR%%/include/tests_file_permissions
 %%DATADIR%%/include/tests_filesystems
@@ -82,6 +89,7 @@ man/man8/lynis.8.gz
 %%DATADIR%%/include/tests_system_integrity
 %%DATADIR%%/include/tests_time
 %%DATADIR%%/include/tests_tooling
+%%DATADIR%%/include/tests_usb
 %%DATADIR%%/include/tests_virtualization
 %%DATADIR%%/include/tests_webservers
 %%DATADIR%%/include/tool_tips

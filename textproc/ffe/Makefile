@@ -2,27 +2,26 @@
 # $FreeBSD$
 
 PORTNAME=	ffe
-DISTVERSION=	0.3.7-1
+DISTVERSION=	0.3.9
 CATEGORIES=	textproc
 MASTER_SITES=	SF/ff-extractor/ff-extractor/${DISTVERSION}
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Flat file extractor
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
-		libgpg-error.so:security/libgpg-error
-
 USES=		makeinfo localbase
+
 GNU_CONFIGURE=	yes
-CONFIGURE_ENV=	ac_cv_func_setmode=no # looks for wrong kind of setmode()
 
 INFO=		ffe
 PORTDOCS=	ffe.html
 PLIST_FILES=	bin/ffe man/man1/ffe.1.gz
 
-OPTIONS_DEFINE=	DOCS
+OPTIONS_DEFINE=		DOCS GCRYPT
+GCRYPT_CONFIGURE_WITH=	libgcrypt-prefix="${LOCALBASE}"
+GCRYPT_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
 .include <bsd.port.mk>

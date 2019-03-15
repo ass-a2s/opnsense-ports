@@ -1,11 +1,11 @@
---- services/service_manager/public/cpp/standalone_service/BUILD.gn.orig	2017-04-19 19:06:37 UTC
-+++ services/service_manager/public/cpp/standalone_service/BUILD.gn
-@@ -23,7 +23,7 @@ source_set("standalone_service") {
-     "//services/service_manager/public/interfaces",
+--- services/service_manager/public/cpp/standalone_service/BUILD.gn.orig	2018-12-03 21:17:09.000000000 +0100
++++ services/service_manager/public/cpp/standalone_service/BUILD.gn	2018-12-15 14:44:25.857780000 +0100
+@@ -25,7 +25,7 @@
+     "//services/service_manager/public/mojom",
    ]
  
--  if (is_linux && !is_android) {
-+  if (is_linux && !is_android && !is_bsd) {
-     sources += [
-       "linux_sandbox.cc",
-       "linux_sandbox.h",
+-  if (is_linux) {
++  if (is_linux && !is_bsd) {
+     deps += [
+       "//sandbox/linux:sandbox",
+       "//sandbox/linux:sandbox_services",

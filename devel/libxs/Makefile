@@ -4,10 +4,10 @@
 PORTNAME=	libxs
 PORTVERSION=	1.2.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Open source lightweight messaging layer
 
 LICENSE=	GPLv3

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	libsearpc
-PORTVERSION=	3.0.8
+PORTVERSION=	3.1.0
 PORTEPOCH=	1
 CATEGORIES=	devel
 
@@ -16,9 +16,10 @@ LIB_DEPENDS=	libjansson.so:devel/jansson \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	haiwen
-GH_TAGNAME=	12a0126
+GH_TAGNAME=	85127bef
 
-USES=		autoreconf gettext libtool pathfix pkgconfig python:2
+USES=		autoreconf gettext libtool pathfix pkgconfig python:2.7 shebangfix
+SHEBANG_FILES=	lib/searpc-codegen.py
 USE_LDCONFIG=	yes
 
 GNU_CONFIGURE=	yes

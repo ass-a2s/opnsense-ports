@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	cfengine-masterfiles
-PORTVERSION=	3.7.3
-PORTREVISION=	1
+PORTVERSION=	3.7.7
 CATEGORIES=	sysutils
 MASTER_SITES=	https://cfengine-package-repos.s3.amazonaws.com/tarballs/
 
@@ -14,17 +13,20 @@ COMMENT=	cfengine sample policies for installations and upgrades
 
 LICENSE=	GPLv3
 
+DEPRECATED=		cfengine37 will retire at FreeBSD 11 EOL
+EXPIRATION_DATE=	2021-09-30
+
 CPE_VENDOR=	gnu
 
+CONFLICTS=	cfengine-masterfiles3[0-68-9]-* cfengine-masterfiles31[0-9]-*
 .if !defined(MASTERDIR)
 PKGNAMESUFFIX=	37
+CONFLICTS+=	cfengine-masterfiles-3.*
 .endif
 
 RUN_DEPENDS=	cf-agent:sysutils/cfengine${PKGNAMESUFFIX}
 
 FETCH_BEFORE_ARGS=	-o ${DISTDIR}/${DISTFILES}
-
-CONFLICTS=	cfengine-masterfiles[1689]*
 
 MAKE_JOBS_UNSAFE=	yes
 USES=		cpe python:build shebangfix

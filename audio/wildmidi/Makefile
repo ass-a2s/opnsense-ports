@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	wildmidi
-PORTVERSION=	0.4.1
+PORTVERSION=	0.4.2
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	audio
 
@@ -11,7 +11,7 @@ COMMENT=	Simple software midi player and core softsynth library
 # player: GPLv3, library: LGPL3
 LICENSE=	LGPL3
 
-USES=		cmake:outsource
+USES=		cmake
 USE_LDCONFIG=	yes
 
 USE_GITHUB=	yes
@@ -45,11 +45,6 @@ USES+=	openal:al
 .  elif ${PORT_OPTIONS:MALSA}
 LIB_DEPENDS+=	libasound.so:audio/alsa-lib
 .  endif
-.endif
-
-# base: r318780, r319651, r319653
-.if ${OPSYS} == FreeBSD && (${OSVERSION} >= 1200031 || (${OSVERSION} >= 1100514 && ${OSVERSION} < 1200000) || (${OSVERSION} >= 1003514 && ${OSVERSION} < 1100000))
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-src_wm__tty.c
 .endif
 
 post-patch:

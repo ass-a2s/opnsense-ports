@@ -1,3 +1,3 @@
-TIMESTAMP = 1499624836
-SHA256 (cabal/pandoc-citeproc-0.10.5.1.tar.gz) = 49038b80ad802098169852b0bc7fc7c9878a85a9091eee4c32211844fecda783
-SIZE (cabal/pandoc-citeproc-0.10.5.1.tar.gz) = 262993
+TIMESTAMP = 1546182397
+SHA256 (cabal/pandoc-citeproc-0.15.0.1.tar.gz) = 29db5f2aad3225859727271855461724574f3695ab3856ceac33b24a55ae92f8
+SIZE (cabal/pandoc-citeproc-0.15.0.1.tar.gz) = 325491

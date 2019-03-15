@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	libav
-PORTVERSION=	12.1
+PORTVERSION=	12.3
+PORTREVISION=	1
 CATEGORIES=	multimedia audio ipv6 net
 MASTER_SITES=	http://libav.org/releases/
 
@@ -10,6 +11,7 @@ COMMENT=	Realtime audio/video conversion library
 
 LICENSE=	GPLv2+
 
+BROKEN_aarch64=		fails to link: can't create dynamic relocation R_AARCH64_ABS64 against local symbol in readonly segment
 BROKEN_armv6=		fails to compile: cc: warning: joined argument expects additional value: -mcpu=
 
 BUILD_DEPENDS=	yasm:devel/yasm
@@ -18,14 +20,15 @@ LIB_DEPENDS=	libopencv_core.so:graphics/opencv-core \
 		libvdpau.so:multimedia/libvdpau \
 		libhogweed.so:security/nettle
 
-USES=		cpe gmake perl5 pkgconfig tar:xz
+USES=		cpe gmake localbase perl5 pkgconfig tar:xz
+
 USE_XORG=	x11
-HAS_CONFIGURE=	yes
 USE_PERL5=	build
 USE_LDCONFIG=	${PREFIX}/lib/${PORTNAME}
+
+HAS_CONFIGURE=	yes
 NOPRECIOUSMAKEVARS=	yes # ARCH
 
-CPPFLAGS+=	-I${LOCALBASE}/include
 CONFIGURE_ARGS=	--prefix="${PREFIX}" \
 		--libdir="${PREFIX}/lib/${PORTNAME}" \
 		--shlibdir="${PREFIX}/lib/${PORTNAME}" \
@@ -103,7 +106,7 @@ JACK_CONFIGURE_OFF=		--disable-indev=jack
 LAME_LIB_DEPENDS=		libmp3lame.so:audio/lame
 LAME_CONFIGURE_ENABLE=		libmp3lame
 
-OPENCV_LIB_DEPENDS=		libopencv_gpu.so:graphics/opencv
+OPENCV_LIB_DEPENDS=		libopencv_video.so:graphics/opencv
 OPENCV_CONFIGURE_ENABLE=	libopencv
 
 OPENJPEG_LIB_DEPENDS=		libopenjpeg.so:graphics/openjpeg15
@@ -179,6 +182,7 @@ CONFIGURE_ENV+=	ASFLAGS=-no-integrated-as
 
 .if ${ARCH} == "i386"
 CONFIGURE_ARGS+=	--extra-cflags=-m32
+LLD_UNSAFE=	yes
 .endif
 
 # License definitions

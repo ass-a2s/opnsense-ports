@@ -3,7 +3,7 @@
 
 PORTNAME=	timidity++
 PORTVERSION=	2.14.0
-PORTREVISION?=	2
+PORTREVISION?=	4
 CATEGORIES+=	audio
 MASTER_SITES=	SF/timidity/TiMidity%2B%2B/TiMidity%2B%2B-${PORTVERSION}
 DISTNAME=	TiMidity++-${PORTVERSION}
@@ -15,7 +15,8 @@ LICENSE=	GPLv2+
 
 .if !defined(PKGNAMESUFFIX)
 LIB_DEPENDS=	libarc.so:archivers/libarc \
-		libvorbis.so:audio/libvorbis
+		libvorbis.so:audio/libvorbis \
+		libogg.so:audio/libogg
 RUN_DEPENDS=	eawpats>0:audio/eawpats
 .endif
 
@@ -29,14 +30,11 @@ LDFLAGS+=	-L${LOCALBASE}/lib -Wl,--export-dynamic
 PLIST_SUB+=	TIMID_LIBDIR="${TIMID_LIBDIR}" EUCJP_LOCALE="${EUCJP_LOCALE}"
 
 .if !defined(PKGNAMESUFFIX)
-OPTIONS_DEFINE=		DOCS EAWPLUS ESOUND X11
+OPTIONS_DEFINE=		DOCS EAWPLUS X11
 OPTIONS_DEFAULT=	X11
-
+CONFIGURE_ARGS+=	--enable-audio=oss,vorbis
 EAWPLUS_DESC=		Collection of Gravis Ultrasound MIDI patches
 EAWPLUS_RUN_DEPENDS=	eawplus>0:audio/eawplus
-ESOUND_USE=		gnome=esound
-ESOUND_CONFIGURE_ON=	--enable-audio=oss,esd,vorbis
-ESOUND_CONFIGURE_OFF=	--enable-audio=oss,vorbis
 X11_LIB_DEPENDS=	libpng.so:graphics/png
 X11_USE=		xorg=x11,xext
 X11_CONFIGURE_ON=	--with-x --enable-spectrogram --enable-wrd \
@@ -81,6 +79,7 @@ post-install::
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/doc/ja/${PORTNAME}
 	(cd ${WRKSRC}/doc/ja_JP.eucJP && ${INSTALL_DATA} ${DOCFILES} \
 		${STAGEDIR}${PREFIX}/share/doc/ja/${PORTNAME})
+	@${RMDIR} ${STAGEDIR}${PREFIX}/share/timidity
 
 .endif # PKGNAMESUFFIX
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	metalink
 PORTVERSION=	1.2.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	misc
 MASTER_SITES=	SF/${PORTNAME}s/Metalink%20Editor/${PORTVERSION}
 PKGNAMESUFFIX?=	-editor
@@ -15,7 +15,7 @@ COMMENT=	GUI editor to create and edit metalinks
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/license.txt
 
-USES=		dos2unix python zip
+USES=		dos2unix python:2.7 zip
 DOS2UNIX_REGEX=	.*\.txt
 NO_WRKSUBDIR=	yes
 USE_PYTHON=	distutils

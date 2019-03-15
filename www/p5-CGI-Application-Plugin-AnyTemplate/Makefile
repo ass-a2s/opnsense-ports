@@ -11,13 +11,13 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Use any templating system in CGI::Application
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-CGI-Application-Plugin-Forward>=0:www/p5-CGI-Application-Plugin-Forward \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-CGI-Application-Plugin-Forward>=0:www/p5-CGI-Application-Plugin-Forward \
 		p5-CGI-Application>=0:www/p5-CGI-Application \
 		p5-Clone>=0.23:devel/p5-Clone
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	modbuild

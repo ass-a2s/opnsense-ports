@@ -2,7 +2,7 @@
 
 PORTNAME=	gcc
 PORTVERSION=	4.9.2
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	GCC/releases/gcc-${DISTVERSION}
 PKGNAMEPREFIX?=	arm-none-eabi-
@@ -20,6 +20,8 @@ LIB_DEPENDS=	libgmp.so:math/gmp \
 BUILD_DEPENDS=	${BU_PREFIX}-as:devel/${PKGNAMEPREFIX}binutils
 RUN_DEPENDS=	${BU_PREFIX}-as:devel/${PKGNAMEPREFIX}binutils
 
+USE_HARDENING=	pie:off relro:off
+
 USES=	compiler gmake iconv libtool makeinfo tar:bzip2
 PLIST_SUB=	TARGETARCH=${PKGNAMEPREFIX:C/-//g} \
 		OPSYS=${OPSYS:tl} \
@@ -27,9 +29,6 @@ PLIST_SUB=	TARGETARCH=${PKGNAMEPREFIX:C/-//g} \
 
 GCC_TARGET=	arm-none-eabi
 BU_PREFIX?=	${GCC_TARGET}
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 GNU_CONFIGURE=	yes
 CONFIGURE_OUTSOURCE=	yes
@@ -72,7 +71,6 @@ MAKE_ARGS+=	CXXFLAGS=-fbracket-depth=512
 .endif
 
 BROKEN_aarch64=		fails to package
-BROKEN_armv6=		error: no member named 'fancy_abort' in namespace 'std::__1'; did you mean simply 'fancy_abort'?
 BROKEN_mips=		configure: error: cannot compute suffix of object files: cannot compile
 BROKEN_mips64=		configure: error: cannot compute suffix of object files: cannot compile
 

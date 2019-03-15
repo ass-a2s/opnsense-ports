@@ -1,6 +1,6 @@
---- chrome/app/shutdown_signal_handlers_posix.cc.orig	2017-06-05 19:03:01 UTC
-+++ chrome/app/shutdown_signal_handlers_posix.cc
-@@ -183,6 +183,11 @@ void InstallShutdownSignalHandlers(
+--- chrome/app/shutdown_signal_handlers_posix.cc.orig	2018-12-12 22:56:02.000000000 +0100
++++ chrome/app/shutdown_signal_handlers_posix.cc	2019-01-13 01:50:13.594124000 +0100
+@@ -183,12 +183,18 @@
    g_pipe_pid = getpid();
    g_shutdown_pipe_read_fd = pipefd[0];
    g_shutdown_pipe_write_fd = pipefd[1];
@@ -8,13 +8,12 @@
 +  // PTHREAD_STACK_MIN causes chromium to crash under FreeBSD,
 +  // we request the default pthread stack size by specifying 0 here.
 +  const size_t kShutdownDetectorThreadStackSize = 0;
-+#else 
- #if !defined(ADDRESS_SANITIZER) && !defined(KEEP_SHADOW_STACKS)
++#else
+ #if !defined(ADDRESS_SANITIZER)
    const size_t kShutdownDetectorThreadStackSize = PTHREAD_STACK_MIN * 2;
  #else
-@@ -190,6 +195,7 @@ void InstallShutdownSignalHandlers(
-   // shadow stacks) bloat the stack frames, so we need to increase the stack
-   // size to avoid hitting the guard page.
+   // ASan instrumentation bloats the stack frames, so we need to increase the
+   // stack size to avoid hitting the guard page.
    const size_t kShutdownDetectorThreadStackSize = PTHREAD_STACK_MIN * 4;
 +#endif
  #endif

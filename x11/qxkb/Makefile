@@ -11,10 +11,13 @@ COMMENT=	Qt4-based advanced keyboard layout switcher
 
 LICENSE=	GPLv2+
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 LIB_DEPENDS=	libxkbfile.so:x11/libxkbfile
 
-USES=		cmake
-USE_QT4=	linguisttools_build moc_build qmake_build rcc_build uic_build \
+USES=		cmake:insource qt:4
+USE_QT=		linguisttools_build moc_build qmake_build rcc_build uic_build \
 		corelib gui svg
 
 USE_GITHUB=	yes

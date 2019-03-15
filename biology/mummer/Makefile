@@ -2,30 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	mummer
-PORTVERSION=	3.23
+DISTVERSIONPREFIX=	v
+DISTVERSION=	4.0.0beta2-2
 PORTREVISION=	1
+DISTVERSIONSUFFIX=	-g277dac5
 CATEGORIES=	biology
-MASTER_SITES=	SF
-DISTNAME=	MUMmer${PORTVERSION}
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Modular system for rapid whole genome alignment
 
-USES=		gmake perl5
+LICENSE=	ART10
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-PROGRAMS=	annotate combineMUMs delta-filter gaps \
-		mgaps mummer repeat-match show-aligns \
-		show-coords show-diff show-snps show-tiling
-SCRIPTS=	dnadiff exact-tandems mapview mummerplot nucmer \
-		nucmer2xfig promer run-mummer1 run-mummer3
-DOCUMENTS=	COPYRIGHT INSTALL LICENSE README
+BUILD_DEPENDS=	yaggo:devel/yaggo
 
-OPTIONS_DEFINE=	DOCS
+USES=		autoreconf compiler:c++11-lang gmake libtool perl5 shebangfix
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--disable-static
+USE_GITHUB=	yes
+GH_ACCOUNT=	${PORTNAME}4
+USE_LDCONFIG=	yes
 
-do-install:
-	${INSTALL_PROGRAM} ${PROGRAMS:S|^|${WRKSRC}/|} ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_SCRIPT} ${SCRIPTS:S|^|${WRKSRC}/|} ${STAGEDIR}${PREFIX}/bin
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${DOCUMENTS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
+SHEBANG_FILES=	scripts/*.pl
+perl_OLD_CMD=	__PERL_PATH
+_SHEBANG_REINPLACE_ARGS+=	-e "s|__BIN_DIR|${PREFIX}/bin|g;s|__AUX_BIN_DIR|${PREFIX}/libexec/mummer|g;s|__SCRIPT_DIR|${PREFIX}/libexec/mummer|g"
 
 .include <bsd.port.mk>

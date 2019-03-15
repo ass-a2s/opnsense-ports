@@ -64,7 +64,7 @@ mythtv:*:119:
 pdns:*:120:
 otrs:*:121:
 zabbix:*:122:
-_ntp:*:123:
+ntpd:*:123:
 fetchmail:*:124:
 postfix:*:125:
 maildrop:*:126:
@@ -150,7 +150,6 @@ gnugk:*:205:
 gini:*:206:
 _mixminion:*:207:
 _dnsdist:*:208:
-gogs:*:209:
 shoutcast:*:210:
 git:*:211:
 hg:*:212:
@@ -162,22 +161,22 @@ anvil:*:217:
 zap:*:218:
 sddm:*:219:
 bs:*:220:
-# free: 221
+opensips:*:221:
 rtpproxy:*:222:
-# free: 223
-# free: 224
+mqttwarn:*:223:
+payara:*:224:
 postgrey:*:225:
 sqlgrey:*:226:
 _hfm:*:227:
-# free: 228
+osrm:*:228:
 kismet:*:229:
-# free: 230
-# free: 231
-# free: 232
-# free: 233
+carbon:*:230:
+foundationdb:*:231:
+archiva:*:232:
+_ntp:*:233:
 kafka:*:234:
-# free: 235
-# free: 236
+openhab:*:235:
+rspamd:*:236:
 # free: 237
 # free: 238
 # free: 239
@@ -296,7 +295,7 @@ sonarr:*:351:
 radarr:*:352:
 _iodined:*:353:
 jackett:*:354:
-# free: 355
+nzbhydra2:*:355:
 # free: 356
 # free: 357
 # free: 358
@@ -416,9 +415,9 @@ vault:*:471:
 nomad:*:472:
 minio:*:473:
 gitlab-runner:*:474:
-# free: 475
-# free: 476
-# free: 477
+traefik:*:475:
+gitlab-pages:*:476:
+fiche:*:477:
 prometheus:*:478:
 alertmanager:*:479:
 # free: 480
@@ -443,7 +442,7 @@ alertmanager:*:479:
 # free: 499
 # free: 500
 # free: 501
-# free: 502
+birdvty:*:502:
 # free: 503
 # free: 504
 _bbstored:*:505:
@@ -461,7 +460,7 @@ pwhois:*:512:
 # free: 517
 # free: 518
 # free: 519
-# free: 520
+libvirtdbus:*:520:
 davmail:*:521:
 nullmail:*:522:
 freevo:*:523:
@@ -544,9 +543,9 @@ avahi-autoipd:*:588:
 _xsi:*:600:
 _tss:*:601:
 _pkcs11:*:602:
-# free: 603
+_acme:*:603:
 # free: 604
-# free: 605
+_hockeypuck:*:605:
 # free: 606
 # free: 607
 # free: 608
@@ -719,10 +718,10 @@ cockroach:*:771:
 # free: 775
 # free: 776
 openxpki:*:777:
-# free: 778
+litecoin:*:778:
 bitcoin:*:779:
 zetacoin:*:780:
-# free: 781
+monero:*:781:
 # free: 782
 # free: 783
 # free: 784
@@ -754,11 +753,11 @@ clickhouse:*:800:
 # free: 810
 # free: 811
 foreman_proxy:*:812:
-# free: 813
+hitch:*:813:
 puppet:*:814:
 uchiwa:*:815:
 # free: 816
-btsync:*:817:
+rslsync:*:817:
 jenkins:*:818:
 rundeck:*:819:
 openacs:*:820:
@@ -791,10 +790,10 @@ sogod:*:846:
 domoticz:*:847:
 graylog:*:848:
 chronyd:*:849:
-# free: 850
-# free: 851
+qbittorrent:*:850:
+cassandra:*:851:
 # free: 852
-# free: 853
+_geodns:*:853:
 # free: 854
 # free: 855
 # free: 856
@@ -823,19 +822,19 @@ chronyd:*:849:
 # free: 879
 # free: 880
 # free: 881
-# free: 882
-# free: 883
-# free: 884
-# free: 885
-# free: 886
-# free: 887
+midpoint:*:882:
+ipfs-go:*:883:
+telegraf:*:884:
+tcpdump:*:885:
+miniflux:*:886:
+pdagent:*:887:
 vuls:*:888:
-# free: 889
-# free: 890
-# free: 891
-# free: 892
-# free: 893
-# free: 894
+mattermost:*:889:
+matterircd:*:890:
+urbackup:*:891:
+tautulli:*:892:
+logstash:*:893:
+arangodb:*:894:
 snmptt:*:895:
 istat:*:896:
 znc:*:897:

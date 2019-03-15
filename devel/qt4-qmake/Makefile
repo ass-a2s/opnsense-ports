@@ -10,8 +10,11 @@ PKGNAMEPREFIX=	qt4-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt Makefile generator
 
-USE_QT4=	# empty
-QT_DIST=	yes
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=	qt-dist:4
+USE_QT=		# empty
 REINPLACE_ARGS=	-i ""
 WRKSRC_SUBDIR=	${PORTNAME}
 MAKEFILE=	${FILESDIR}/Makefile.bsd

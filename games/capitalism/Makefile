@@ -14,6 +14,9 @@ COMMENT=	Qt client for the Monopd server
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/copying.txt
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libpng.so:graphics/png \
@@ -23,9 +26,9 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 
 WRKSRC=		${WRKDIR}/Capitalism-${PORTVERSION}
 
-USES=		iconv qmake
+USES=		iconv qmake qt:4
 USE_XORG=	ice sm x11 xau xcb xdmcp xext xrender
-USE_QT4=	moc_build rcc_build uic_build iconengines_run imageformats_run \
+USE_QT=		moc_build rcc_build uic_build iconengines_run imageformats_run \
 		corelib gui network script xml
 
 PORTDOCS=	README changelog readme.txt
@@ -36,7 +39,7 @@ ICON_SIZES=	16x16 22x22 24x24 32x32 48x48 64x64
 DESKTOP_ENTRIES="Capitalism" "" "${PORTNAME}" \
 		"${PORTNAME}" "Game;BoardGame;" ""
 
-OPTIONS_DEFINE=	NLS
+OPTIONS_DEFINE=	NLS DOCS
 OPTIONS_SUB=	yes
 
 NLS_CONFIGURE_ENABLE=	nls

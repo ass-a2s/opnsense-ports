@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	dnsmasq
-DISTVERSION=	2.77
-PORTREVISION=	1	# leave this in even if 0 to avoid PORTEPOCH bumps
+DISTVERSION=	2.80
+PORTREVISION=	2	# leave this in even if 0 to avoid PORTEPOCH bumps
 PORTEPOCH=	1
 CATEGORIES=	dns ipv6
 MASTER_SITES=	http://www.thekelleys.org.uk/dnsmasq/ \
@@ -15,6 +15,8 @@ COMMENT=	Lightweight DNS forwarder, DHCP, and TFTP server
 LICENSE=	GPLv2
 
 CONFLICTS_INSTALL=dnsmasq-devel-*
+
+USE_HARDENING=	cfi safestack
 
 PORTDOCS=	CHANGELOG CHANGELOG.archive FAQ doc.html setup.html
 
@@ -32,7 +34,7 @@ OPTIONS_RADIO_INTL=	IDN NLS
 INTL_DESC=	Internationalization Support Level
 NLS_DESC=	IDN+NLS: Int'l Domain Names & National Language support
 IDN_DESC=	IDN: Int'l Domain Names WITHOUT full NLS
-IPSET_DESC=	Dynamic firewall managment of resolved names (require PF)
+IPSET_DESC=	Dynamic firewall management of resolved names (needs PF)
 LUA_DESC=	Support lease-change scripts written in Lua
 DNSSEC_DESC=	Enable DNSSEC caching and validation
 USES=		cpe shebangfix tar:xz
@@ -79,7 +81,7 @@ USES+=		lua
 .endif
 
 .if ${PORT_OPTIONS:MDNSSEC}
-CFLAGS+=	-DHAVE_DNSSEC
+CFLAGS+=	-DHAVE_DNSSEC -I${LOCALBASE}/include
 USES+=		pkgconfig
 LIB_DEPENDS+=	libnettle.so:security/nettle
 LIB_DEPENDS+=	libgmp.so:math/gmp
@@ -92,7 +94,7 @@ USE_RC_SUBR=	dnsmasq
 LDFLAGS+=	-L${LOCALBASE}/lib ${_intllibs} ${ICONV_LIB}
 
 post-patch:
-	${REINPLACE_CMD} -e "s/lua5\.1/lua-${LUA_VER}/" ${WRKSRC}/Makefile
+	${REINPLACE_CMD} -e 's/lua5\.1/lua-${LUA_VER}/' ${WRKSRC}/Makefile
 
 pre-configure: pretty-print-config
 .if ${PORT_OPTIONS:MIDN}

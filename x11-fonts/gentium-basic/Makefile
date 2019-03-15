@@ -3,6 +3,7 @@
 
 PORTNAME=	GentiumBasic
 PORTVERSION=	1102
+PORTREVISION=	1
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://software.sil.org/downloads/gentium/
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -35,6 +36,8 @@ OPTIONS_DEFINE=	DOCS
 do-install:
 	@${MKDIR} ${STAGEDIR}${FONTSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.ttf ${STAGEDIR}${FONTSDIR}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCSLIST:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

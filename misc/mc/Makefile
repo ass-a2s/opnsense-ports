@@ -2,42 +2,39 @@
 # $FreeBSD$
 
 PORTNAME=	mc
-PORTVERSION=	4.8.19
-PORTREVISION=	3
+PORTVERSION=	4.8.22
+PORTREVISION=	1
 CATEGORIES=	misc shells
 MASTER_SITES=	http://ftp.midnight-commander.org/ \
-		http://ftp.osuosl.org/pub/midnightcommander/
+		https://ftp.osuosl.org/pub/midnightcommander/
 
 MAINTAINER=	woodsb02@FreeBSD.org
 COMMENT=	Midnight Commander, a free Norton Commander Clone
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 CONFLICTS=	mc-light-4*
 
-USES=		gmake shebangfix perl5 pkgconfig tar:xz libtool
-SHEBANG_FILES=	misc/mcedit.menu.in configure configure.ac \
-		${WRKSRC}/src/vfs/extfs/helpers/Makefile.in \
-		${WRKSRC}/src/vfs/extfs/helpers/s3+.in \
+USES=		gmake gnome libtool perl5 pkgconfig python:2.7,run shebangfix tar:xz
+SHEBANG_FILES=	${WRKSRC}/src/vfs/extfs/helpers/s3+.in \
 		${WRKSRC}/src/vfs/extfs/helpers/uc1541.in
-python_CMD=	${LOCALBASE}/bin/python2
 python_OLD_CMD=	@PYTHON@
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ZIP=${ZIP_CMD} UNZIP=${UNZIP_CMD}
 
-OPTIONS_DEFINE=	DOCS EDITOR ICONV NLS SFTP SMB SUBSHELL X11
+USE_HARDENING=	safestack
 
+OPTIONS_DEFINE=	DOCS EDITOR ICONV NLS SFTP SMB SUBSHELL X11
+OPTIONS_DEFAULT=EDITOR ICONV SFTP SLANG SMB SUBSHELL X11
 OPTIONS_SINGLE=	SCREEN
 OPTIONS_SINGLE_SCREEN=	SLANG NCURSES
-
-OPTIONS_DEFAULT=EDITOR ICONV SFTP SLANG SMB SUBSHELL X11
+OPTIONS_SUB=	yes
 
 EDITOR_DESC=	Build with internal editor
 SFTP_DESC=	Support for SFTP (via libssh)
 SUBSHELL_DESC=	Build with subshell support
-
-OPTIONS_SUB=	yes
 
 EDITOR_CONFIGURE_WITH=	internal-edit
 
@@ -86,6 +83,7 @@ post-install:
 	${INSTALL_DATA} ${DOC_FILES1:S|^|${DOCSRCDIR1}/|} ${STAGEDIR}${DOCSDIR}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR2}
 	${INSTALL_DATA} ${DOC_FILES2:S|^|${DOCSRCDIR2}/|} ${STAGEDIR}${DOCSDIR2}
+
 post-install-X11-on:
 	${INSTALL_DATA} ${FILESDIR}/${PORTNAME}.png \
 		${STAGEDIR}${PREFIX}/share/pixmaps/
@@ -94,8 +92,8 @@ post-install-X11-on:
 .include <bsd.port.pre.mk>
 
 .if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200030
-EXTRA_PATCHES=	${FILESDIR}/extra-patch-src_diffviewer_ydiff.c
-RUN_DEPENDS=    gdiff:textproc/diffutils
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-src_diffviewer_ydiff.c
+RUN_DEPENDS+=	gdiff:textproc/diffutils
 .endif
 
 .include <bsd.port.post.mk>

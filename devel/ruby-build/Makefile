@@ -1,11 +1,11 @@
 # $FreeBSD$
 
 PORTNAME=	ruby-build
-PORTVERSION=	20170726
+PORTVERSION=	20190314
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel ruby
 
-MAINTAINER=	meta+ports@vmeta.jp
+MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Compile and install different ruby versions
 
 LICENSE=	MIT
@@ -20,8 +20,8 @@ RUN_DEPENDS=	autoconf>0:devel/autoconf \
 USE_GITHUB=	yes
 GH_ACCOUNT=	rbenv
 
-NO_BUILD=	yes
 NO_ARCH=	yes
+NO_BUILD=	yes
 
 PLIST_FILES=	bin/ruby-build \
 		libexec/rbenv-install \
@@ -29,8 +29,8 @@ PLIST_FILES=	bin/ruby-build \
 PORTDATA=	*
 
 OPTIONS_DEFINE=	RBENV
+OPTIONS_DEFAULT=RBENV
 RBENV_DESC=	Install rbenv for installation support
-OPTIONS_DEFAULT=	RBENV
 RBENV_RUN_DEPENDS=	rbenv:devel/rbenv
 
 do-install:
@@ -38,6 +38,6 @@ do-install:
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/rbenv-install ${STAGEDIR}${PREFIX}/libexec
 	${INSTALL_SCRIPT} ${WRKSRC}/bin/rbenv-uninstall ${STAGEDIR}${PREFIX}/libexec
 	@${MKDIR} ${STAGEDIR}${DATADIR}
-	( cd ${WRKSRC}/share/ruby-build && ${COPYTREE_BIN} . ${STAGEDIR}${DATADIR} )
+	(cd ${WRKSRC}/share/ruby-build && ${COPYTREE_BIN} . ${STAGEDIR}${DATADIR})
 
 .include <bsd.port.mk>

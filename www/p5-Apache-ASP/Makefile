@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Apache-ASP
-PORTVERSION=	2.62
-PORTREVISION=	1
+PORTVERSION=	2.63
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -14,7 +13,8 @@ COMMENT=	Active Server Pages for Apache
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	p5-Devel-Symdump>=0:devel/p5-Devel-Symdump \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Devel-Symdump>=0:devel/p5-Devel-Symdump \
 		p5-HTML-Clean>=0:www/p5-HTML-Clean \
 		p5-HTML-FillInForm>=0:www/p5-HTML-FillInForm \
 		p5-HTTP-Date>=0:www/p5-HTTP-Date \
@@ -22,7 +22,6 @@ BUILD_DEPENDS=	p5-Devel-Symdump>=0:devel/p5-Devel-Symdump \
 		p5-MLDBM-Sync>=0.25:databases/p5-MLDBM-Sync \
 		p5-Tie-Cache>=0:devel/p5-Tie-Cache \
 		p5-XML-LibXSLT>=0:textproc/p5-XML-LibXSLT
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 # XXX not tested with mod_perl2, but mod_perl was removed ...
 #.if !defined(WITHOUT_MODPERL)
@@ -32,6 +31,7 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 #MODPERL_SUFFIX?=+mod_perl
 #.endif
 
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 

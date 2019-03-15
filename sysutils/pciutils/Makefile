@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pciutils
-PORTVERSION=	3.5.5
+PORTVERSION=	3.6.2
 CATEGORIES=	sysutils
 MASTER_SITES=	KERNEL_ORG/software/utils/pciutils \
 		ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/ \
@@ -21,6 +21,8 @@ ALL_TARGET=	lspci lspci.8 setpci setpci.8
 CFLAGS+=	-fPIC
 LDFLAGS+=	-lpci
 USES=		gmake localbase:ldflags tar:xz
+
+USE_HARDENING=	cfi safestack
 
 PLIST_FILES=	bin/lspci \
 		bin/setpci \

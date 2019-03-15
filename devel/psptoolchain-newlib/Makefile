@@ -3,7 +3,7 @@
 
 PORTNAME=		newlib
 PORTVERSION=		1.20.0
-PORTREVISION=		1
+PORTREVISION=		2
 CATEGORIES=		devel
 MASTER_SITES=		ftp://sources.redhat.com/pub/ \
 			SOURCEWARE/${PORTNAME}
@@ -23,10 +23,12 @@ BUILD_DEPENDS+=		${LOCALBASE}/${PSP_SDK_STAGE_PREFIX}/sdk/include/pspsdk.h:devel
 
 USES=			gmake makeinfo
 HAS_CONFIGURE=		yes
-CONFIGURE_ENV=		PATH=${LOCALBASE}/${PSP_GCC_STAGE_PREFIX}/bin:${PATH}
+
+# psp-gcc doesn't need -march=... in CFLAGS (e.g. set by CPUTYPE in make.conf); also need -g on psp for some reason
+CONFIGURE_ENV=		PATH=${LOCALBASE}/${PSP_GCC_STAGE_PREFIX}/bin:${PATH} \
+			CFLAGS="${CFLAGS:C/(^|[[:space:]])-march=[^[:space:]]*//g} -g"
 MAKE_ENV=		PATH=${LOCALBASE}/${PSP_GCC_STAGE_PREFIX}/bin:${PATH}
 CONFIGURE_ARGS=		--prefix=${PREFIX} --target="psp"
-MAKE_ARGS+=		CC="${CC}" CFLAGS="${CFLAGS} -g" # Apparently, it doesn't work on the PSP without debug information
 
 # Disable installation of .info files and fix includedir reference.
 post-patch:

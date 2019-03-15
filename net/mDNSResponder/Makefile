@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	mDNSResponder
-PORTVERSION=	765.50.9
-PORTREVISION=	2
+PORTVERSION=	878.200.35
 CATEGORIES=	net dns
-MASTER_SITES=	http://opensource.apple.com/tarballs/${PORTNAME}/
+MASTER_SITES=	https://opensource.apple.com/tarballs/mDNSResponder/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Bonjour (zero-configuration networking) by Apple
@@ -18,6 +17,8 @@ CONFLICTS_INSTALL=	avahi-libdns openmdns
 
 OPTIONS_DEFINE=	IPV6
 
+USES=		cpe gmake
+
 ALL_TARGET=	all dnsextd
 BUILD_WRKSRC=	${WRKSRC}/mDNSPosix
 INSTALL_WRKSRC=	${WRKSRC}/mDNSPosix
@@ -25,7 +26,6 @@ MAKE_ARGS=	LDCONFIG=${TRUE} LOCALBASE=${PREFIX} MAN_PATH=${MANPREFIX}/man STRIP=
 MAKE_JOBS_UNSAFE=	yes
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	mdnsd mdnsresponderposix
-USES=		cpe gmake
 
 CPE_VENDOR=	apple
 CPE_PRODUCT=	${PORTNAME:tl}

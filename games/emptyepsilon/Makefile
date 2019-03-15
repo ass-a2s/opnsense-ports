@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	emptyepsilon
-PORTVERSION=	2017.05.06
 DISTVERSIONPREFIX=	EE-
+DISTVERSION=	2019.01.19
 CATEGORIES=	games
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Spaceship bridge simulator game
 
 LICENSE=	GPLv2
@@ -14,13 +14,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libsfml-system.so:devel/sfml
 
-BROKEN_powerpc64=	fails to compile: scienceDatabase.cpp: call of overloaded 'abs(float)' is ambiguous
-
+USES=		cmake compiler:c++11-lib gl
 USE_GITHUB=	yes
 GH_ACCOUNT=	daid
 GH_PROJECT=	EmptyEpsilon SeriousProton:sproton
-
-USES=		cmake compiler:c++11-lib
 USE_GL=		gl glu
 CMAKE_ARGS=	-DSERIOUS_PROTON_DIR="${WRKSRC_sproton}/"
 

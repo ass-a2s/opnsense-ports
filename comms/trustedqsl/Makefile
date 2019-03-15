@@ -1,8 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	trustedqsl
-PORTVERSION=	2.2.1
-PORTREVISION=	1
+DISTVERSION=	2.4
+PORTREVISION=	2
 CATEGORIES=	comms hamradio
 MASTER_SITES=	http://www.arrl.org/files/file/LoTW%20Instructions/ \
 		LOCAL/shurd
@@ -17,7 +17,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 
 LIB_DEPENDS=	libcurl.so:ftp/curl \
-		libexpat.so:textproc/expat2
+		libexpat.so:textproc/expat2 \
+		liblmdb.so:databases/lmdb
 
 PKGMESSAGE=	${WRKDIR}/pkg-message
 

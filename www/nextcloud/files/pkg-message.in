@@ -1,18 +1,5 @@
-
-***********************************************************************
-*                         MIGRATION FROM OWNCLOUD                     *
-***********************************************************************
-
-If you are migrating from existing owncloud instance, you should do
-the following steps:
-
-- Copy/Move owncloud/data directory to nextcloud/data (don't forget
-        hidden files)
-- Copy/Move owncloud/config/config.php to nextcloud/config/config.php
-- Change the datadirectory in nextcloud/config/config.php
-- Ensure nextcloud/data and nextcloud/config/config.php are owned by 
-        www user and group
-
+/!\ The FreeBSD package REQUIRES the apps_paths configuration as    /!\
+/!\ seen in config/config.sample.php to function                    /!\
 
 ***********************************************************************
 *                         POST INSTALL CONFIGURATION                  *
@@ -20,8 +7,8 @@ the following steps:
 
 Please note that everything has been installed in %%WWWDIR%%.
 
-You will probably want to add an alias to your httpd.conf file, something
-like this:
+You will probably want to add an alias to your httpd.conf file,
+something like this:
 
     	Alias /nextcloud %%WWWDIR%%
 	AcceptPathInfo On
@@ -30,7 +17,19 @@ like this:
 	    Require all granted
 	</Directory>
 
-And restart Apache.
+And restart Apache. Nextcloud will start the bundled installer on first
+access. Once the bundled installer finishes, further configuration can
+be done via 'Settings', 'Administration'. Additional configuration
+options are available in
+
+	%%WWWDIR%%/config/config.php
+
+You can find annotated configuration options in config.documented.php
+in the same directory. Nextcloud's configuration documentation is at 
+
+	https://docs.nextcloud.com/server/14/admin_manual/configuration_server
+
+The caching options require additional Nextcloud configuration.
 
 ***********************************************************************
 *                       NEXTCLOUD VERSION UPGRADE                     *
@@ -39,5 +38,6 @@ And restart Apache.
 After a version migration you should upgrade your nextcloud instance
 using command line:
 
-* cd /usr/local/www/nextcloud
-* su -m www -c "php ./occ upgrade"
+  cd %%WWWDIR%%
+  su -m www -c "php ./occ upgrade"
+

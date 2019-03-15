@@ -3,6 +3,7 @@
 
 PORTNAME=	d-feet
 PORTVERSION=	0.3.11
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNOME
 
@@ -15,8 +16,9 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	itstool:textproc/itstool
 
 NO_ARCH=	yes
-USES=		gettext gmake gnome perl5 pkgconfig python:2.7+ tar:xz
-USE_GNOME=	gtk30 intlhack introspection:build libxml2:build libwnck3
+USES=		gettext gmake gnome perl5 pkgconfig python tar:xz
+USE_GNOME=	gtk30 pygobject3 intlhack introspection:build libxml2:build libwnck3
+USE_PYTHON=	py3kplist
 GNU_CONFIGURE=	yes
 USE_PERL5=	build
 INSTALLS_ICONS=	yes

@@ -12,6 +12,9 @@ COMMENT=	Word game to test your English vocabulary skills
 
 LICENSE=	BSD2CLAUSE
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/pthread-stubs.pc:devel/libpthread-stubs
 LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libpng.so:graphics/png \
@@ -20,9 +23,9 @@ LIB_DEPENDS=	libpcre.so:devel/pcre \
 		libfontconfig.so:x11-fonts/fontconfig
 
 CXXFLAGS+=	-fPIC
-USES=		gettext iconv qmake
+USES=		gettext iconv qmake qt:4
 USE_GNOME=	glib20
-USE_QT4=	corelib gui moc_build rcc_build uic_build
+USE_QT=		corelib gui moc_build rcc_build uic_build
 USE_XORG=	ice sm x11 xau xcb xdmcp xext xrender
 USE_LDCONFIG=	yes
 

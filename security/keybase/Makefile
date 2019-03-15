@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	keybase
-PORTVERSION=	1.0.29
+PORTVERSION=	3.0.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security
 
@@ -11,9 +11,10 @@ COMMENT=	Keybase.io client
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
+USES=		go
+
 GO_PKGNAME=	github.com/keybase/client/go
 GO_TARGET=	-tags production ${GO_PKGNAME}/keybase
-USES=		go
 WRKSRC_SUBDIR=	go
 
 PLIST_FILES=	bin/keybase
@@ -22,6 +23,7 @@ GH_PROJECT=	client
 USE_GITHUB=	yes
 
 post-patch:
-	@${REINPLACE_CMD} -e '1 s|,amd64||' ${WRKSRC}/vendor/github.com/keybase/go-ps/process_freebsd.go
+	@${REINPLACE_CMD} -e '/+build/ s|$$| freebsd|' ${WRKSRC}/client/platform_specific_ctl_commands_other.go
+	@${REINPLACE_CMD} -e '/+build/ s|,amd64||' ${WRKSRC}/vendor/github.com/keybase/go-ps/process_freebsd.go
 
 .include <bsd.port.mk>

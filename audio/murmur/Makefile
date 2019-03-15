@@ -3,7 +3,7 @@
 
 PORTNAME=	murmur
 PORTVERSION=	1.2.19
-PORTREVISION=	4
+PORTREVISION=	18
 CATEGORIES=	audio net
 
 MAINTAINER=	feld@FreeBSD.org
@@ -12,13 +12,17 @@ COMMENT=	Murmur is the server component of Mumble
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/function.hpp:devel/boost-libs
 LIB_DEPENDS=	libprotobuf.so:devel/protobuf
 
 USERS=		murmur
 GROUPS=		murmur
-USES=		compiler:c++11-lang qmake pkgconfig ssl
-USE_QT4=	moc_build corelib network xml sql sql-sqlite3_run
+USES=		compiler:c++11-lang qmake pkgconfig qt:4 ssl
+USE_CXXSTD=	c++11
+USE_QT=		moc_build corelib network sql xml
 
 USE_GITHUB=	YES
 GH_ACCOUNT=	mumble-voip
@@ -30,8 +34,10 @@ QMAKE_ARGS=	"CONFIG+=${CONFIG}"
 USE_RC_SUBR=	murmur
 SUB_LIST+=	USERS="${USERS}" GROUPS="${GROUPS}"
 
-OPTIONS_DEFINE=	ICE DBUS BONJOUR DOCS
-OPTIONS_DEFAULT=	BONJOUR
+OPTIONS_DEFINE=	BONJOUR DBUS DOCS ICE
+OPTIONS_DEFAULT=	BONJOUR MYSQL SQLITE
+OPTIONS_MULTI=	SQL
+OPTIONS_MULTI_SQL=	MYSQL SQLITE
 ICE_DESC=	Ice Support
 BONJOUR_DESC=	Bonjour Support
 
@@ -44,7 +50,7 @@ CONFIG+=	no-ice
 .endif
 
 .if ${PORT_OPTIONS:MDBUS}
-USE_QT4+=	dbus
+USE_QT+=	dbus
 .else
 CONFIG+=	no-dbus
 .endif
@@ -53,6 +59,18 @@ CONFIG+=	no-dbus
 LIB_DEPENDS+=	libdns_sd.so:net/mDNSResponder
 .else
 CONFIG+=	no-bonjour
+.endif
+
+.if ${PORT_OPTIONS:MMYSQL}
+USE_QT+=	sql-mysql
+.else
+CONFIG+=	no-sql-mysql
+.endif
+
+.if ${PORT_OPTIONS:MSQLITE}
+USE_QT+=	sql-sqlite3_run
+.else
+CONFIG+=	no-sqlite3_run
 .endif
 
 .include <bsd.port.pre.mk>

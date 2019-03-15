@@ -2,7 +2,7 @@
 
 PORTNAME=	dvipsk
 PORTVERSION=	5.995
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	print
 MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
 PKGNAMEPREFIX=	tex-
@@ -53,7 +53,7 @@ CONFIGURE_ARGS= --with-paper \
 		--with-system-libpng \
 		--with-system-zlib
 CFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+= 	-lpaper -L${LOCALBASE}/lib
+LDFLAGS+=	-lpaper -L${LOCALBASE}/lib
 
 INFO=	dvips
 

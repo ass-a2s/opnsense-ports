@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	mednafen
-PORTVERSION=	0.9.45.1
+PORTVERSION=	1.21.3
+PORTREVISION=	2
 PORTEPOCH=	1
 CATEGORIES=	emulators games
 MASTER_SITES=	https://mednafen.github.io/releases/files/
@@ -16,19 +17,17 @@ LIB_DEPENDS=	libcdio.so:sysutils/libcdio \
 		libsndfile.so:audio/libsndfile \
 		libvorbis.so:audio/libvorbis
 
-BROKEN_powerpc64=	fails to compile: mednafen.cpp: 'to_string' is not a member of 'std'
 BROKEN_sparc64=		fails to compile due to internal compiler error
 
+USE_HARDENING=	pie:off relro:off
+
 GNU_CONFIGURE=	yes
-USE_SDL=	sdl net
+USE_SDL=	sdl2 net2
 USE_GL=		gl glu
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 WRKSRC=	${WRKDIR}/${PORTNAME}
 SUB_FILES=	pkg-message
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 CONFIGURE_ARGS+=--disable-alsa --disable-alsatest \
 		--with-sdl-prefix=${LOCALBASE}
@@ -80,8 +79,6 @@ pre-configure:
 	@${REINPLACE_CMD} -e 's|/usr/local|${LOCALBASE}|g' \
 		-e 's|/usr/X11R6|${LOCALBASE}|g' \
 		${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's|NetBSD|FreeBSD|' \
-		${WRKSRC}/include/trio/triodef.h
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

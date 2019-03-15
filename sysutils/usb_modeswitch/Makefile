@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	usb_modeswitch
-PORTVERSION=	2.5.1
+PORTVERSION=	2.5.2
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.draisberghof.de/usb_modeswitch/
 DISTNAME=	${PORTNAME:S|_|-|}-${PORTVERSION}
@@ -17,6 +17,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 DATAVERSION=	20170806
 DATANAME=	${PORTNAME:S|_|-|}-data-${DATAVERSION}
+
+USE_HARDENING=	safestack
 
 USES=		gmake tar:bzip2
 

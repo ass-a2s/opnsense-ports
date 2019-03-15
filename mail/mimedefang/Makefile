@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mimedefang
-PORTVERSION=	2.78
+PORTVERSION=	2.83
 PORTREVISION=	2
 CATEGORIES=	mail
 MASTER_SITES=	http://www.mimedefang.org/static/ \
@@ -21,12 +21,7 @@ BUILD_DEPENDS=	\
 	spamassassin>=3.0:mail/spamassassin
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
-OPTIONS_DEFINE=	CLAMAV EXAMPLES DOCS
-OPTIONS_DEFAULT=	CLAMAV
-CLAMAV_DESC=	Enable Clamav
-
 USES=		perl5 shebangfix
-SHEBANG_FILES=	script/mimedefang-util
 perl_OLD_CMD=	perl
 GNU_CONFIGURE=	yes
 
@@ -53,24 +48,20 @@ PLIST_SUB+=	USER="${MIMEDEFANG_USER}" \
 
 CONFIG_FILES=	mimedefang-filter sa-mimedefang.cf mimedefang-ip-key
 
+OPTIONS_DEFINE=	CLAMAV EXAMPLES DOCS
+OPTIONS_DEFAULT=	CLAMAV
+
+CLAMAV_DESC=	Enable Clamav
+
+CLAMAV_BUILD_DEPENDS=		clamscan:security/clamav
+CLAMAV_RUN_DEPENDS=		clamscan:security/clamav
+CLAMAV_CONFIGURE_ENABLE=	antivirus clamav clamd
+
 .include <bsd.port.options.mk>
 
-.if !exists( /usr/include/libmilter/mfapi.h )
-BUILD_DEPENDS+=	${LOCALBASE}/include/libmilter/mfapi.h:mail/libmilter
-.endif
+.include "${PORTSDIR}/mail/sendmail/bsd.milter.mk"
 
-.if exists( ${LOCALBASE}/include/libmilter/mfapi.h )
-CONFIGURE_ARGS+=	--with-milterinc=${LOCALBASE}/include --with-milterlib=${LOCALBASE}/lib
-.endif
-
-.if defined (MIMEDEFANG_DISABLE_CLAMAV) || ! ${PORT_OPTIONS:MCLAMAV}
-CONFIGURE_ARGS+=	--disable-antivirus \
-			--disable-clamav \
-			--disable-clamd
-.else
-BUILD_DEPENDS+=	clamscan:security/clamav
-RUN_DEPENDS+=	clamscan:security/clamav
-.endif
+CONFIGURE_ARGS+=	--with-milterinc=${MILTERBASE}/include --with-milterlib=${MILTERBASE}/lib
 
 post-patch:
 	@${REINPLACE_CMD} -e '/fgrep -e/d' ${WRKSRC}/configure
@@ -91,4 +82,5 @@ post-install:
 	@cd ${WRKSRC}/examples/ && ${INSTALL_DATA} stream-by-domain-filter \
 		suggested-minimum-filter-for-windows-clients README ${STAGEDIR}${EXAMPLESDIR}/
 .endif
+
 .include <bsd.port.mk>

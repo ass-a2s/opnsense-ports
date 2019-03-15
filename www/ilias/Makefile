@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ilias
-PORTVERSION=	5.2.7
+PORTVERSION=	5.3.13
+PORTREVISION=	1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 
@@ -11,23 +12,22 @@ COMMENT=	Powerful, dynamic, PHP and MySQL based e-learning platform
 
 LICENSE=	GPLv2
 
-RUN_DEPENDS=	convert:graphics/ImageMagick \
+RUN_DEPENDS=	convert:graphics/ImageMagick6 \
 		zip:archivers/zip \
 		${UNZIP_CMD}:archivers/unzip \
-		${LOCALBASE}/share/pear/PEAR.php:devel/pear \
-		${LOCALBASE}/share/pear/Auth/Auth.php:security/pear-Auth \
-		${LOCALBASE}/share/pear/MDB2.php:databases/pear-MDB2 \
-		${LOCALBASE}/share/pear/HTML/Template/IT.php:devel/pear-HTML_Template_IT
+		${LOCALBASE}/share/pear/PEAR.php:devel/pear@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/Auth/Auth.php:security/pear-Auth@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/MDB2.php:databases/pear-MDB2@${PHP_FLAVOR} \
+		${LOCALBASE}/share/pear/HTML/Template/IT.php:devel/pear-HTML_Template_IT@${PHP_FLAVOR}
 LIB_DEPENDS=	libpng.so:graphics/png
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ILIAS-eLearning
 GH_PROJECT=	ILIAS
 
-USES=		cpe jpeg
+USES=		cpe jpeg php
 NO_BUILD=	yes
 PLIST=		${WRKDIR}/plist
-SUB_FILES=	pkg-message
 USE_PHP=	pdo_mysql session zlib gd pdf dom xsl pcre simplexml
 ILIASDIR=	www/ilias
 ILIASDATADIR=	www/iliasdata
@@ -35,10 +35,10 @@ PLIST_SUB=	ILIASDATADIR=${ILIASDATADIR}
 SUB_FILES=	pkg-message
 SUB_LIST=	ILIASDATADIR=${ILIASDATADIR}
 
-OPTIONS_DEFINE=		SCORM2004 Checker Mail
+OPTIONS_DEFINE=		SCORM2004 CHECKER MAIL
 SCORM2004_USE=		php=json
-Checker_RUN_DEPENDS=	${LOCALBASE}/share/pear/HTTP/Request.php:www/pear-HTTP_Request
-Mail_RUN_DEPENDS=	${LOCALBASE}/share/pear/Mail.php:mail/pear-Mail
+CHECKER_RUN_DEPENDS=	${LOCALBASE}/share/pear/HTTP/Request.php:www/pear-HTTP_Request@${PHP_FLAVOR}
+MAIL_RUN_DEPENDS=	${LOCALBASE}/share/pear/Mail.php:mail/pear-Mail@${PHP_FLAVOR}
 
 EXTRA_FILES=	%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/_mocha \
 		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/express \
@@ -47,7 +47,11 @@ EXTRA_FILES=	%%WWWDIR%%/Modules/Chatroom/chat/node_modules/.bin/_mocha \
 		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/mocha/node_modules/.bin/jade \
 		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/mocha/node_modules/.bin/mkdirp \
 		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/mocha/node_modules/.bin/supports-color \
-		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/supertest/node_modules/superagent/node_modules/.bin/mime
+		%%WWWDIR%%/Modules/Chatroom/chat/node_modules/supertest/node_modules/superagent/node_modules/.bin/mime \
+		%%WWWDIR%%/libs/composer/vendor/bin/export-plural-rules \
+		%%WWWDIR%%/libs/composer/vendor/bin/export-plural-rules.php \
+		%%WWWDIR%%/libs/composer/vendor/simplesamlphp/simplesamlphp/locales/no
+
 pre-install:
 	@${ECHO_CMD} "@owner ${WWWOWN}" >> ${PLIST}
 	@${ECHO_CMD} "@group ${WWWGRP}" >> ${PLIST}

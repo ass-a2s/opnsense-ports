@@ -30,16 +30,20 @@ CPE_VENDOR=	gnu
 CPE_VERSION=	${PORTVERSION:R}
 CPE_UPDATE=	${PATCHLEVEL}
 
-PATCHES=	1 2 3
+PATCHES=	1 2 3 4 5
 PATCHLEVEL=	${PATCHES:O:[-1]}
 .for patch in ${PATCHES}
-PATCHFILES+=	${PORTNAME}${PORTVERSION:R:S|.||}-${patch:S|^|00|:S|.*(...)$|\1|}
+PATCHFILES+=	${PORTNAME}${PORTVERSION:R:S|.||}-${patch:S|^|00|:C|.*(...)$|\1|}
 .endfor
 
 post-patch-TERMCAP-on:
+	# Comment out "Requires.private: tinfo" line since we do not have tinfo.pc in base system.
+	# See PR/223130 for details.
+	@${REINPLACE_CMD} -e '/^Requires.private: tinfo/ s|^|#|' ${WRKSRC}/readline.pc.in
 	@${REINPLACE_CMD} -e '/SHOBJ_LDFLAGS = / s| = |&-ltermcapw |' ${WRKSRC}/shlib/Makefile.in
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libhistory.so.7 ${STAGEDIR}${PREFIX}/lib/libreadline.so.7
+	${INSTALL_DATA} ${WRKSRC}/readline.pc ${STAGEDIR}${PREFIX}/libdata/pkgconfig
 
 .include <bsd.port.mk>

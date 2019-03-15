@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	ykpers
-PORTVERSION=	1.18.0
+PORTVERSION=	1.19.0
 CATEGORIES=	security
-MASTER_SITES=	http://opensource.yubico.com/yubikey-personalization/releases/
+MASTER_SITES=	https://developers.yubico.com/yubikey-personalization/Releases/
 
 MAINTAINER=	matt@mjslabs.com
 COMMENT=	Library and tool for personalization of Yubico's YubiKey
@@ -19,6 +19,7 @@ GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	check
 
 PLIST_FILES=	bin/ykchalresp \
 		bin/ykinfo \
@@ -41,8 +42,5 @@ OPTIONS_DEFINE=	STATIC
 
 STATIC_CONFIGURE_ENABLE=	static
 STATIC_PLIST_FILES=		lib/libykpers-1.a
-
-regression-test: build
-	@(cd ${WRKSRC}; ${MAKE} check)
 
 .include <bsd.port.mk>

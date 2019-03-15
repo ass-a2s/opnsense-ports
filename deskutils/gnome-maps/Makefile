@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	gnome-maps
-PORTVERSION=	3.24.3
+PORTVERSION=	3.28.2
 CATEGORIES=	deskutils gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Map application for GNOME 3
@@ -23,7 +23,10 @@ LIB_DEPENDS=	libgeocode-glib.so:net/geocode-glib \
 		librest-0.7.so:devel/librest \
 		libjson-glib-1.0.so:devel/json-glib \
 		libfolks.so:net-im/folks \
-		libgjs.so:lang/gjs
+		libgfbgraph-0.2.so:net/gfbgraph \
+		libgjs.so:lang/gjs \
+		libsoup-2.4.so:devel/libsoup \
+		librest-0.7.so:devel/librest
 RUN_DEPENDS=	geoclue>=0:net/geoclue
 
 PORTSCOUT=	limitw:1,even
@@ -32,8 +35,8 @@ USES=		desktop-file-utils gettext gmake gnome libtool \
 		localbase pathfix pkgconfig tar:xz
 USE_GNOME=	cairo gtk30 intltool libxml2
 USE_GL=		egl
-USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
 USE_LDCONFIG=	yes
+USE_XORG=	x11 xcomposite xdamage xext xfixes xi xrandr
 GNU_CONFIGURE=	yes
 INSTALLS_ICONS=	yes
 INSTALL_TARGET=	install-strip

@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libzen
-PORTVERSION=	0.7.98
+PORTVERSION=	18.12
 CATEGORIES=	multimedia
-MASTER_SITES=	http://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
+MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
 DISTNAME=	MediaInfo_CLI_${PORTVERSION}_GNU_FromSource
 
@@ -16,11 +16,13 @@ LICENSE_FILE=	${WRKSRC}/../../../License.txt
 
 CONFLICTS_INSTALL=	mediainfo-0.[0-6]* mediainfo-0.7.[0-5]*
 
+USES=		compiler:c++11-lang libtool pathfix tar:xz
+
 CONFIGURE_ARGS=	--enable-shared --enable-static
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
-USES=		libtool pathfix tar:xz
 
 WRKSRC=		${WRKDIR}/MediaInfo_CLI_GNU_FromSource/ZenLib/Project/GNU/Library
 

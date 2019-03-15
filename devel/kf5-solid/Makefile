@@ -1,17 +1,16 @@
-# Created by: tcberner
 # $FreeBSD$
 
 PORTNAME=	solid
-PORTVERSION=	${KDE_FRAMEWORKS_VERSION}
+DISTVERSION=	${KDE_FRAMEWORKS_VERSION}
 CATEGORIES=	devel kde kde-frameworks
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KF5 hardware integration and detection
 
-USES=		bison cmake:outsource compiler:c++11-lib kde:5 tar:xz
+USES=		bison cmake compiler:c++11-lib kde:5 qt:5 tar:xz
 USE_KDE=	ecm
-USE_QT5=	buildtools_build concurrent core dbus gui linguisttools \
-		network qmake_build qml testlib widgets xml
+USE_QT=		buildtools_build concurrent core dbus declarative gui linguisttools \
+		network qmake_build testlib widgets xml
 
 OPTIONS_DEFINE=		BSDISKS
 BSDISKS_DESC=		Use bsdisks instead of hald to mount drives

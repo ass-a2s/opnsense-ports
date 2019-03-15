@@ -12,8 +12,11 @@ COMMENT=	Blog management application based on Qt 4
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		cmake tar:bzip2 ssl
-USE_QT4=	corelib dbus gui network xml \
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		cmake qt:4 tar:bzip2 ssl
+USE_QT=		corelib dbus gui network xml \
 		moc_build qmake_build rcc_build uic_build
 CMAKE_ARGS=	-DCMAKE_CXX_FLAGS_RELEASE:STRING="-DNDEBUG" \
 		-DMANPAGE_DIRECTORY:STRING="${MANPREFIX}/man/man1" \

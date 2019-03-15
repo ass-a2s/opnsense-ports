@@ -3,7 +3,6 @@
 
 PORTNAME=	vsftpd-ext
 PORTVERSION=	${UPSTREAMVERSION}.${EXTVERSION}
-PORTREVISION=	2
 CATEGORIES=	ftp ipv6
 MASTER_SITES=	http://vsftpd.devnet.ru/files/${UPSTREAMVERSION}/ext.${EXTVERSION}/
 PKGNAMESUFFIX?=	${SSL_SUFFIX}${PKGNAMESUFFIX2}
@@ -14,7 +13,7 @@ COMMENT=	FTP daemon that aims to be "very secure". Extended build
 
 LICENSE=	GPLv2
 
-UPSTREAMVERSION=3.0.2
+UPSTREAMVERSION=3.0.3
 EXTVERSION=	1
 
 USES=		alias gmake tar:tgz
@@ -53,6 +52,9 @@ SSL_SUFFIX=	-ssl
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 .endif
+
+post-patch-VSFTPD_SSL-on:
+	@${REINPLACE_CMD} -e 's|find_func SSL_library_init ssl.o|true|' ${WRKSRC}/vsf_findlibs.sh
 
 do-configure:
 .if ${PORT_OPTIONS:MVSFTPD_SSL} && !defined(WITHOUT_SSL)
@@ -98,13 +100,13 @@ do-install:
 	${INSTALL_MAN} ${WRKSRC}/vsftpd.conf.5 ${STAGEDIR}${PREFIX}/man/man5/
 	${INSTALL_MAN} ${WRKSRC}/vsftpd.8 ${STAGEDIR}${PREFIX}/man/man8/
 	${MKDIR} ${STAGEDIR}/var/ftp ${STAGEDIR}${PREFIX}/share/vsftpd/empty
-.if ${PORT_OPTIONS:MDOCS}
+
+do-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCFILES:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}/
 .for i in EXAMPLE SECURITY
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/${i}
 	${CP} -p -R -L ${WRKSRC}/${i}/./ ${STAGEDIR}${DOCSDIR}/${i}/
 .endfor
-.endif
 
 .include <bsd.port.mk>

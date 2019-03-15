@@ -1,4 +1,5 @@
 %%PYTHON_SITELIBDIR%%/PyQt5/QtWidgets.so
+%%PYTHON_SITELIBDIR%%/PyQt5/QtWidgets.pyi
 %%PYQT_SIPDIR%%/QtWidgets/QtWidgetsmod.sip
 %%PYQT_SIPDIR%%/QtWidgets/qabstractbutton.sip
 %%PYQT_SIPDIR%%/QtWidgets/qabstractitemdelegate.sip
@@ -124,4 +125,4 @@
 %%PYQT_SIPDIR%%/QtWidgets/qwidget.sip
 %%PYQT_SIPDIR%%/QtWidgets/qwidgetaction.sip
 %%PYQT_SIPDIR%%/QtWidgets/qwizard.sip
-%%API%%share/qt5/qsci/api/python/QtWidgets.api
+%%API%%%%PYQT_APIDIR%%/api/python/QtWidgets.api

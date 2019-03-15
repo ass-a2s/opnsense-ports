@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tdiary
-PORTVERSION=	5.0.5
+PORTVERSION=	5.0.11
 CATEGORIES?=	www ruby
 MASTER_SITES=	https://github.com/tdiary/tdiary-core/releases/download/v${PORTVERSION}/
 DISTNAME=	${PORTNAME}-full-v${PORTVERSION}
@@ -10,19 +10,20 @@ DISTNAME=	${PORTNAME}-full-v${PORTVERSION}
 MAINTAINER=	yasu@utahime.org
 COMMENT=	Web-based diary system (like weblog) written in Ruby
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	rubygem-bundler>=1.14.6:sysutils/rubygem-bundler \
+RUN_DEPENDS=	rubygem-bundler>=1.16.5:sysutils/rubygem-bundler \
 		rubygem-emot>=0.0.4:textproc/rubygem-emot \
-		rubygem-fastimage>=2.1.0:graphics/rubygem-fastimage \
+		rubygem-fastimage>=2.1.5:graphics/rubygem-fastimage \
 		rubygem-hikidoc>=0.1.0:textproc/rubygem-hikidoc \
-		rubygem-mail>=2.6.6:mail/rubygem-mail \
-		rubygem-rack16>=1.6.8:www/rubygem-rack16 \
-		rubygem-rake>=12.0.0:devel/rubygem-rake
+		rubygem-mail>=2.7.1:mail/rubygem-mail \
+		rubygem-rack>=2.0.6,3:www/rubygem-rack \
+		rubygem-rake>=12.3.2:devel/rubygem-rake
 
 USES=		shebangfix
 USE_RUBY=	yes
+
 NO_ARCH=	yes
 NO_BUILD=	yes
 
@@ -51,7 +52,7 @@ PLIST_SUB=	TDIARY_SCRIPT=${TDIARY_SCRIPT} \
 SUB_FILES=	pkg-message tdiaryinst.rb
 SUB_LIST+=	TDIARY_LANG=${TDIARY_LANG} \
 		TDIARY_SCRIPT=${TDIARY_SCRIPT}
-WRKSRC=		${WRKDIR}/${PORTNAME}-v${PORTVERSION}
+WRKSRC=		${WRKDIR}/${PORTNAME}-v.${PORTVERSION}
 DOCSDIR=	${PREFIX}/share/doc/${PKGBASE}
 WWWDIR=		${PREFIX}/www/${PKGBASE}
 
@@ -80,9 +81,11 @@ pre-patch:
 	@${RM} ${WRKSRC}/tdiary.gemspec
 	@${RM} ${WRKSRC}/tmp/.gitkeep
 	@${RM} -r ${WRKSRC}/.bundle
-	@${RM} -r ${WRKSRC}/misc/lib/bundler-1.14.6
+	@${RM} -r ${WRKSRC}/.vscode
+	@${RM} -r ${WRKSRC}/misc/lib/bundler-1.17.3
 	@${RM} -r ${WRKSRC}/public
 	@${RM} -r ${WRKSRC}/spec
+	@${RM} -r ${WRKSRC}/tdiary-core
 	@${RM} -r ${WRKSRC}/test
 	@${RM} -r ${WRKSRC}/vendor
 	@${MV} ${WRKSRC}/ChangeLog ${WRKSRC}/doc

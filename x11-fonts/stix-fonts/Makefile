@@ -2,21 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	stixfonts
-PORTVERSION=	1.1.1
+PORTVERSION=	2.0.0
 PORTREVISION=	1
 CATEGORIES=	x11-fonts
-MASTER_SITES=	SF/${PORTNAME}/Current%20Release/
-DISTNAME=	STIXv${PORTVERSION}-webfonts
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	OpenType Unicode fonts for Scientific, Technical, and Math texts
 
 LICENSE=	OFL11
 
-NO_WRKSUBDIR=	yes
-
-USES=		fonts zip
+USES=		fonts
 USE_XORG=	x11
+USE_GITHUB=	yes
+GH_ACCOUNT=	stipub
+
+NO_ARCH=	yes
+NO_BUILD=	yes
 
 SUB_FILES=	pkg-message
 
@@ -24,18 +25,12 @@ FONTNAME=	stix
 
 OPTIONS_DEFINE=	DOCS
 
-PORTDOCS=	"STIX Font ${PORTVERSION}-webfonts Release Documentation.pdf"
-
-do-build:
-	${MKDIR} ${WRKDIR}/build
-.for group in stix-web STIX-MathJax/woff
-	${CP} ${WRKSRC}/${group}/*.woff ${WRKDIR}/build/
-.endfor
+PORTDOCS=	STIX_${PORTVERSION}_release_notes.txt STIX_${PORTVERSION}_stylistic_sets.pdf
 
 do-install:
 	${MKDIR} ${STAGEDIR}${FONTSDIR}
-	cd ${WRKDIR}/build && ${INSTALL_DATA} *.woff ${STAGEDIR}${FONTSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} OTF/* WOFF/* ${STAGEDIR}${FONTSDIR}
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/docs && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

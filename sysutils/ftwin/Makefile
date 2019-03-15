@@ -2,7 +2,7 @@
 
 PORTNAME=	ftwin
 PORTVERSION=	0.8.8
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	sysutils
 MASTER_SITES=	http://files.etoilebsd.net/ftwin/ \
 		http://download.meroware.org/ftwin/
@@ -17,10 +17,10 @@ LIB_DEPENDS=	libapr-1.so:devel/apr1 \
 		libpcre.so:devel/pcre \
 		libpuzzle.so:graphics/libpuzzle
 
+USE_HARDENING=	pie:off
+
 USES=		autoreconf libarchive tar:bzip2
 GNU_CONFIGURE=	yes
-
-NOPIE_PORTS=	yes
 
 PORTDOCS=	AUTHORS EXAMPLES TODO CHANGES KNOWN_BUGS VERSION README
 PLIST_FILES=	bin/ftwin man/man8/ftwin.8.gz

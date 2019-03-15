@@ -1,14 +1,10 @@
 # Created by: Alexander Novitsky <alecn2002@yandex.ru>
 # $FreeBSD$
-#
-# Do not forget to update the following gemspec patches:
-# - security/rubygem-ezcrypto/files/patch-gemspec
-# - www/rubygem-gitlab-grack/files/patch-gemspec
 
 PORTNAME=	gems
-PORTVERSION=	2.6.13
+PORTVERSION=	3.0.2
 CATEGORIES=	devel ruby
-MASTER_SITES=	http://production.cf.rubygems.org/rubygems/
+MASTER_SITES=	https://rubygems.org/rubygems/
 PKGNAMEPREFIX=	${RUBY_PKGNAMEPREFIX}
 DISTNAME=	ruby${PORTNAME}-${PORTVERSION}
 DIST_SUBDIR=	ruby
@@ -21,11 +17,12 @@ LICENSE_COMB=	dual
 LICENSE_FILE_MIT=	${WRKSRC}/MIT.txt
 LICENSE_FILE_RUBY=	${WRKSRC}/LICENSE.txt
 
+USES=		tar:tgz
+USE_RUBY=	yes
+
 NO_ARCH=	yes
 NO_BUILD=	yes
-USE_RUBY=	yes
 RUBY_SETUP=	setup.rb
-USES=		tar:tgz
 
 GEMS_BASE_DIR=		lib/ruby/gems
 GEMS_BASE_DIR_P=	${GEMS_BASE_DIR}
@@ -35,7 +32,8 @@ GEMS_DOC_BASE_DIR=	${GEMS_VER_DIR}/doc
 GEMS_DOC_BASE_DIR_P=	${GEMS_VER_DIR_P}/doc
 GEMS_DOC_DIR=		${GEMS_DOC_BASE_DIR}/${DISTNAME}
 GEMS_DOC_DIR_P=		${GEMS_DOC_BASE_DIR_P}/%%DISTNAME%%
-GEMS_ENV=		GEM_HOME=${STAGEDIR}${PREFIX}/${GEMS_VER_DIR}
+GEMS_ENV=		DONT_USE_BUNDLER_FOR_GEMDEPS=true GEM_HOME=${STAGEDIR}${PREFIX}/${GEMS_VER_DIR}
+RUBY_SETUP_OPTIONS=	--destdir=${STAGEDIR} --no-regenerate-binstubs
 RUBY_VER_SHORT=		${RUBY_VER:S/.//}
 
 GEMS_DIR=		${GEMS_VER_DIR}/gems
@@ -54,8 +52,7 @@ PLIST_SUB=	DISTNAME="${DISTNAME}" \
 
 OPTIONS_DEFINE=	DOCS
 
-DOCS_VARS_OFF=		RUBY_SETUP_OPTIONS="--destdir=${STAGEDIR} --no-ri --no-rdoc"
-DOCS_VARS=		RUBY_SETUP_OPTIONS="--destdir=${STAGEDIR}"
+DOCS_VARS_OFF=	RUBY_SETUP_OPTIONS+="--no-ri --no-rdoc"
 
 do-install:
 	cd ${WRKSRC}/ && ${SETENV} ${GEMS_ENV} ${RUBY} ${RUBY_SETUP} ${RUBY_SETUP_OPTIONS}

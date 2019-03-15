@@ -2,40 +2,51 @@
 # $FreeBSD$
 
 PORTNAME=	bbdb
-PORTVERSION=	2.35
-PORTREVISION=	11
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.2
+PORTREVISION=	1
 CATEGORIES=	databases elisp
-MASTER_SITES=	SF
-PKGNAMESUFFIX=	-${EMACS_PORT_NAME}
+PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
-MAINTAINER=	dryice@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Big Brother Database
 
-USE_EMACS=	yes
+LICENSE=	GPLv3+
 
-USES=		makeinfo
-ALL_TARGET=	bbdb info
-MAKE_ARGS=	MAKE="${MAKE} clean MAKEINFO=\"${MAKEINFO} --no-split\""
-BBDB_LISPDIR=	${EMACS_VERSION_SITE_LISPDIR}/${PORTNAME}
-PLIST_SUB+=	BBDB_LISPDIR=${BBDB_LISPDIR}
-MAKE_JOBS_UNSAFE=	yes
+BUILD_DEPENDS=	texi2dvi:print/texinfo
 
+USES=		autoreconf emacs
+USE_GITHUB=	yes
+GH_ACCOUNT=	emacsmirror
+USE_TEX=	latex:build
+
+BBDB_LISPDIR=	${EMACS_SITE_LISPDIR}/${PORTNAME}
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-emacs=${EMACS_CMD}
+# Do not install the info file.  Upstream has yet to add any real content to it.
+#INFO=		bbdb
+PORTDOCS=	bbdb.pdf
+NO_ARCH=	yes
+PLIST_SUB+=	BBDB_LISPDIR=${BBDB_LISPDIR}
 
 OPTIONS_DEFINE=	DOCS
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MDOCS}
-INFO=	bbdb
+# See http://lists.nongnu.org/archive/html/bbdb-user/2018-11/msg00003.html
+.if ${FLAVOR:U} != devel_full && ${FLAVOR:U} != devel_nox
+post-configure:
+	${REINPLACE_CMD} -e '/[[:blank:]]*--eval '\''(setq byte-compile-dest-file-function (lambda (_) "$$@"))'\'' \\/d' \
+		${WRKSRC}/lisp/Makefile
 .endif
 
 do-install:
-	${MKDIR} ${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/${PORTNAME}
-	${INSTALL_DATA} ${WRKSRC}/lisp/*.el ${WRKSRC}/lisp/*.elc ${STAGEDIR}${PREFIX}/${EMACS_VERSION_SITE_LISPDIR}/${PORTNAME}
-.if ${PORT_OPTIONS:MDOCS}
-	${INSTALL_DATA} ${WRKSRC}/texinfo/bbdb.info ${STAGEDIR}${PREFIX}/info
-.endif
+	@${MKDIR} ${STAGEDIR}${PREFIX}/${BBDB_LISPDIR}
+	${INSTALL_DATA} ${WRKSRC}/lisp/*.el ${WRKSRC}/lisp/*.elc \
+		${STAGEDIR}${PREFIX}/${BBDB_LISPDIR}
+# Do not install the info file.  Upstream has yet to add any real content to it.
+#	${INSTALL_DATA} ${WRKSRC}/doc/${PORTNAME}.info \
+#		${STAGEDIR}${PREFIX}/${INFO_PATH}
+
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/doc/bbdb.pdf ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

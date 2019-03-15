@@ -2,7 +2,7 @@
 
 PORTNAME=	swt
 PORTVERSION=	0.1.20
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	math
 MASTER_SITES=	http://atoms.scilab.org/toolboxes/swt/${PORTVERSION}/files/
 PKGNAMEPREFIX=	scilab-toolbox-
@@ -14,12 +14,11 @@ COMMENT=	Scilab 1-D and 2-D Wavelet Toolbox
 BUILD_DEPENDS=	${SCILAB_CMD}:math/scilab
 RUN_DEPENDS:=	${BUILD_DEPENDS}
 
+USE_HARDENING=	pie:off relro:off
+
 SCILAB_CMD=	${LOCALBASE}/bin/scilab-adv-cli
 SCILAB_ARGS=	-noatomsautoload -nb -nouserstartup
 MAKE_ENV=	SCI_JAVA_ENABLE_HEADLESS=1 SCI_DISABLE_TK=1
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 CONTRIBDIR?=	share/scilab/contrib
 TOOLBOXDIR_REL?=	${CONTRIBDIR}/${PORTNAME}
@@ -27,13 +26,11 @@ TOOLBOXDIR=	${PREFIX}/${TOOLBOXDIR_REL}
 PLIST_SUB=	TOOLBOXDIR=${TOOLBOXDIR_REL}
 TOOLBOX_SUBDIRS=	demos etc macros
 
-OPTIONS_DEFINE=	HELP SIVP
+OPTIONS_DEFINE=	HELP
 OPTIONS_DEFAULT=	HELP
 OPTIONS_SUB=	yes
 
 HELP_DESC=	Build help files (requires scilab with gui support)
-SIVP_DESC=	Enable Image and Video support
-SIVP_RUN_DEPENDS=	${LOCALBASE}/${CONTRIBDIR}/sivp/loader.sce:math/scilab-toolbox-sivp
 
 WRKSRC=		${WRKDIR}/swt
 

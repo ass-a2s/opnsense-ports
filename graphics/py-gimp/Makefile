@@ -2,7 +2,6 @@
 # $FreeBSD$
 
 PORTNAME=	gimp
-PORTREVISION=	0
 PORTEPOCH=	0
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 PKGNAMESUFFIX=
@@ -12,7 +11,7 @@ COMMENT=	GIMP python plugin
 
 GIMP_SLAVE=	pygimp
 
-USES=		python:2
+USES=		python:2.7
 USE_GNOME=	pygtk2
 
 CONFIGURE_ARGS=	--enable-python

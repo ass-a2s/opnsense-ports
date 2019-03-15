@@ -3,7 +3,7 @@
 
 PORTNAME=	denemo
 PORTVERSION=	2.0.6
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	audio
 MASTER_SITES=	GNU
 
@@ -11,6 +11,10 @@ MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Graphical score editor
 
 LICENSE=	GPLv3+
+
+BROKEN_armv6=	fails to package: tar: Pathname cannot be converted from UTF-8 to current locale
+BROKEN_armv7=	fails to package: tar: Pathname cannot be converted from UTF-8 to current locale
+BROKEN_mips=	fails to package: tar: Pathname cannot be converted from UTF-8 to current locale
 
 LIB_DEPENDS=	libaubio.so:audio/aubio \
 		libfluidsynth.so:audio/fluidsynth \
@@ -26,7 +30,8 @@ RUN_DEPENDS=	xdg-open:devel/xdg-utils
 EXTRACT_BEFORE_ARGS=\
 		-s '!\(/Clarinet in B\).*\(\.denemo\)$$!\1b\2!p' -xf
 
-USES=		bison desktop-file-utils gettext gmake pkgconfig
+USES=		bison compiler:c++11-lang desktop-file-utils gettext gmake \
+		pkgconfig
 USE_GNOME=	intltool librsvg2 libxml2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-jack \

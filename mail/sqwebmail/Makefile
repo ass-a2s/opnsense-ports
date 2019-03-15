@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	sqwebmail
-PORTVERSION=	5.9.0
+PORTVERSION=	6.0.0
+PORTREVISION=	2
 CATEGORIES=	mail www
 MASTER_SITES=	SF/courier/webmail/${PORTVERSION}
 
@@ -57,7 +58,7 @@ MAILGRP?=	courier
 #
 # End of user variables
 
-USES=		gettext gmake iconv perl5 tar:bzip2
+USES=		compiler:c++11-lang gettext gmake iconv perl5 tar:bzip2
 USE_RC_SUBR=	sqwebmail-sqwebmaild
 GNU_CONFIGURE=	yes
 
@@ -71,7 +72,8 @@ CONFIGURE_ARGS=	--enable-cgibindir=${PREFIX}/${CGIBINDIR}/${CGIBINSUBDIR} \
 		${ICONV_CONFIGURE_ARG} \
 		--cache-file=${WRKDIR}/sqwebmail.cache \
 		--with-mailuser=${MAILOWN} \
-		--with-mailgroup=${MAILGRP}
+		--with-mailgroup=${MAILGRP} \
+		--with-notice=unicode
 
 PLIST_SUB+=	CGIBINDIR=${CGIBINDIR} \
 		CGIBINSUBDIR=${CGIBINSUBDIR} \

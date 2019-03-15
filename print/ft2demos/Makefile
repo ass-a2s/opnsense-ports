@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	ft2demos
-PORTVERSION=	2.8
+PORTVERSION=	2.9.1
 CATEGORIES=	print
-MASTER_SITES=	http://savannah.nongnu.org/download/freetype/ \
+MASTER_SITES=	SAVANNAH/freetype/ \
 		SF/freetype/freetype-demos/${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
@@ -18,6 +18,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2
 
 USES=		gmake tar:bzip2
 USE_XORG=	x11
+
 MAKE_ARGS=	EXES="${FT_PROGRAMS}" X11_PATH="${LOCALBASE}"
 
 PLIST_FILES=	${FT_PROGRAMS:S,^,bin/,}

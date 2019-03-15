@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	s6-rc
-PORTVERSION=	0.0.2.1
+PORTVERSION=	0.4.1.0
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.skarnet.org/software/${PORTNAME}/
 
 MAINTAINER=	moo@arthepsy.eu
-COMMENT=	skarnet.org service manager
+COMMENT=	Skarnet.org service manager
 
 LICENSE=	ISCL
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	execline>=2.1.4.5:lang/execline
 RUN_DEPENDS=	execlineb:lang/execline
@@ -32,11 +33,11 @@ DOCS=		AUTHORS COPYING INSTALL README doc/*.html
 OPTIONS_DEFINE=	DOCS
 
 post-install:
-.for d in bin sbin libexec
+.for d in bin libexec
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${d}/*
 .endfor
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libs6rc.so.${PORTVERSION}
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${WRKSRC} && ${INSTALL_MAN} ${DOCS} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${DOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

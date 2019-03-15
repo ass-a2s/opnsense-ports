@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	jna
-PORTVERSION=	4.4.0
+PORTVERSION=	4.5.1
 CATEGORIES=	devel java
 
 MAINTAINER=	ports@FreeBSD.org
@@ -14,6 +14,7 @@ LICENSE_FILE_LGPL21+ =	${WRKSRC}/LICENSE.LGPL
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE.AL
 
 BROKEN_armv6=		fails to compile: build.xml: compilation failed
+BROKEN_armv7=		fails to compile: build.xml: compilation failed
 
 USES=		autoreconf:build gmake libtool
 USE_ANT=	yes
@@ -34,7 +35,7 @@ TEST_TARGET=	test
 
 OPTIONS_DEFINE=	DOCS
 
-ANT_ARCH=	${ARCH:S/amd64/x86-64/:S/i386/x86/}
+ANT_ARCH=	${ARCH:S/amd64/x86-64/:S/i386/x86/:S/powerpc64/ppc64/}
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|' \

@@ -2,62 +2,61 @@
 # $FreeBSD$
 
 PORTNAME=	seamonkey
-DISTVERSION=	2.48
-MOZILLA_VER=	51 # above + 3
-PORTREVISION=	1
+DISTVERSION=	2.49.4
+PORTREVISION=	24
+MOZILLA_VER=	52 # above + 3
 CATEGORIES?=	www mail news editors irc ipv6
 MASTER_SITES=	MOZILLA/${PORTNAME}/releases/${DISTVERSION}/source \
 		MOZILLA/${PORTNAME}/candidates/${DISTVERSION}-candidates/build1/source
-DISTFILES=	${PORTNAME}-${DISTVERSION}.source${EXTRACT_SUFX}
-EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}.source${EXTRACT_SUFX}
+DISTFILES=	${DISTNAME}.source${EXTRACT_SUFX}
 
 MAINTAINER=	gecko@FreeBSD.org
 COMMENT=	The open source, standards compliant web browser
 
 BUILD_DEPENDS=	nspr>=4.13.1:devel/nspr \
-		nss>=3.28.1:security/nss \
+		nss>=3.28.6:security/nss \
 		libevent>=2.0.21_2:devel/libevent \
-		harfbuzz>=1.3.0:print/harfbuzz \
+		harfbuzz>=1.4.1:print/harfbuzz \
 		graphite2>=1.3.8:graphics/graphite2 \
 		png>=1.6.25:graphics/png \
 		libvorbis>=1.3.5,3:audio/libvorbis \
 		libvpx>=1.5.0:multimedia/libvpx \
-		sqlite3>=3.14.1:databases/sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
+		sqlite3>=3.17.0:databases/sqlite3 \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
 		v4l_compat>0:multimedia/v4l_compat \
 		autoconf-2.13:devel/autoconf213 \
 		yasm:devel/yasm \
 		zip:archivers/zip
-#		soundtouch>=1.9.0:audio/soundtouch \
 
 LIB_DEPENDS=	libv4l2.so:multimedia/libv4l
 
 SSP_UNSAFE=	yes
 USE_GECKO=	gecko
-USE_GL=		gl
 USES=		tar:xz
 MOZ_PIS_SCRIPTS=	moz_pis_S50cleanhome
 
-MOZ_EXTENSIONS=	default
 MOZ_OPTIONS+=	--enable-application=suite
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
-USE_MOZILLA=	-soundtouch
+USE_MOZILLA=	-webp
 MOZ_PKGCONFIG_FILES=
+
+USE_HARDENING=	pie:off relro:off
 
 OPTIONS_DEFINE=	LDAP LIGHTNING RUST
 OPTIONS_SINGLE=	TOOLKIT
 OPTIONS_SINGLE_TOOLKIT=	GTK2 GTK3
-OPTIONS_DEFAULT=CANBERRA GTK2 LDAP LIGHTNING
+OPTIONS_DEFAULT=CANBERRA GTK3 LDAP LIGHTNING
+OPTIONS_EXCLUDE=WAYLAND
 
 LDAP_DESC?=	LDAP support for Mailnews
 
 .include "${.CURDIR}/../../www/firefox/Makefile.options"
+
+# Inconsistent fallback order (libcubeb vs. audio_device)
+SNDIO_PREVENTS=		${OPTIONS_MULTI_AUDIO:NSNDIO}
+
 .include <bsd.port.options.mk>
 
-WRKSRC:=	${WRKDIR}/${PORTNAME}-${DISTVERSION}
 MOZSRC:=	${WRKSRC}/mozilla
 
 .if ! ${PORT_OPTIONS:MLDAP}

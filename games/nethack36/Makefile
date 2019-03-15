@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nethack36
-PORTVERSION=	3.6.0
-PORTREVISION=	1
+PORTVERSION=	3.6.1
 CATEGORIES=	games
 MASTER_SITES=	SF/${TRUEPORTNAME}/${TRUEPORTNAME}/${PORTVERSION}
 DISTNAME=	${TRUEPORTNAME}-${PORTVERSION:S/.//g}-src
@@ -36,7 +35,7 @@ DOCSDIR=	${PREFIX}/share/doc/${HACKNAME}
 PKGDEINSTALL=	${WRKDIR}/pkg-deinstall
 
 .if !defined(PKGNAMESUFFIX)
-USE_XORG=	xaw xpm
+USE_XORG=	xaw xpm xmu xext xt x11 sm ice
 CFLAGS+=	-DX11_GRAPHICS -DUSE_TILES
 GRAPHICS=	X11_GRAPHICS
 .else
@@ -49,8 +48,6 @@ CFLAGS+=	-DNOMAIL
 OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
-
-.include <bsd.port.options.mk>
 
 .if !exists(${PREFIX}/bin/${HACKLINK}) && ${HACKNAME} != ${HACKLINK}
 PLIST_SUB+=	HACKLINK=""

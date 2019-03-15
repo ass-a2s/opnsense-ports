@@ -11,11 +11,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	culot@FreeBSD.org
 COMMENT=	Check for presence of dependencies
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-CPAN-Meta-Check>=0.007:devel/p5-CPAN-Meta-Check
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-CPAN-Meta-Check>=0.007:devel/p5-CPAN-Meta-Check
 
 NO_ARCH=	yes
 USES=		perl5

@@ -11,11 +11,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	culot@FreeBSD.org
 COMMENT=	Perl5 modules for parsing of `Received' headers in e-mails
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Mail-Tools>0:mail/p5-Mail-Tools
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Mail-Tools>0:mail/p5-Mail-Tools
 
 TEST_DEPENDS=	p5-Test-Differences>0:devel/p5-Test-Differences
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	shaaft
 PORTVERSION=	0.5.0
-PORTREVISION=	19
+PORTREVISION=	23
 CATEGORIES=	games
 MASTER_SITES=	SF/criticalmass/OldFiles
 DISTNAME=	Shaaft-${PORTVERSION}
@@ -15,12 +15,11 @@ LIB_DEPENDS=	libpng.so:graphics/png
 
 CONFLICTS=	criticalmass-*
 
-BROKEN_aarch64=		fails to compile: error: conflicting declaration typedef int GLintptrARB
-BROKEN_sparc64=		does not compile
+USE_HARDENING=	pie:off relro:off
 
 USES=		tar:bzip2
 USE_SDL=	mixer image sdl
-USE_GL=		yes
+USE_GL=		gl
 USE_GCC=	any
 USE_CXXSTD=	gnu++98
 GNU_CONFIGURE=	yes
@@ -28,9 +27,6 @@ CONFIGURE_ARGS=	--disable-optimize
 
 CPPFLAGS+=	$$(libpng-config --I_opts)
 LDFLAGS+=	$$(libpng-config --L_opts)
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 DATADIR=	${PREFIX}/share/Shaaft
 

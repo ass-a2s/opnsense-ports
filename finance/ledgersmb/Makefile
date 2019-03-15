@@ -3,7 +3,7 @@
 
 PORTNAME=	ledger-smb
 PORTVERSION=	1.1.12
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	finance perl5
 MASTER_SITES=	SF/${PORTNAME}/Releases/archive-1.1/${PORTVERSION}
 
@@ -16,7 +16,6 @@ RUN_DEPENDS:=	${BUILD_DEPENDS}
 NO_BUILD=	yes
 NO_ARCH=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
-PKGMESSAGE=	${WRKDIR}/pkg-message
 USES=		shebangfix perl5
 SHEBANG_FILES=	*.pl locale/*/*.pl bin/*/*.pl utils/*/*.pl
 PLIST_SUB=	WWWOWN="${WWWOWN}" WWWGRP="${WWWGRP}"

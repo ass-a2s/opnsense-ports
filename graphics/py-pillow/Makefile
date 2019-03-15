@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pillow
-PORTVERSION=	3.4.2
-PORTREVISION=	1
+PORTVERSION=	5.3.0
 CATEGORIES=	graphics python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
@@ -14,6 +13,19 @@ LICENSE=	PIL
 LICENSE_NAME=	Standard PIL License
 LICENSE_FILE=	${WRKSRC}/LICENSE
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
+
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>0:devel/py-pytest@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pytest-runner>0:devel/py-pytest-runner@${PY_FLAVOR}
+
+# Python 2.7,3.4+
+USES=		cpe python
+USE_GITHUB=	yes
+USE_PYTHON=	autoplist concurrent distutils
+
+GH_ACCOUNT=	python-${PORTNAME}
+GH_PROJECT=	${PORTNAME:C/p/P/}
+
+CONFLICTS_INSTALL=	py*-imaging-*
 
 OPTIONS_DEFINE=		FREETYPE JPEG JPEG2000 LCMS PNG TIFF TKINTER WEBP
 OPTIONS_DEFAULT=	FREETYPE JPEG JPEG2000 PNG TKINTER WEBP
@@ -45,22 +57,13 @@ TIFF_VARS=		PYDISTUTILS_BUILDARGS+=--enable-tiff
 TIFF_VARS_OFF=		PYDISTUTILS_BUILDARGS+=--disable-tiff
 
 TKINTER_USES=		tk
-TKINTER_BUILD_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter
-TKINTER_RUN_DEPENDS?=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter
+TKINTER_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR}
+TKINTER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR}
 TKINTER_VARS=		PYDISTUTILS_BUILDARGS+="--include-dirs=${TCL_INCLUDEDIR}:${TK_INCLUDEDIR}"
 
 WEBP_LIB_DEPENDS=	libwebp.so:graphics/webp
-WEBP_VARS=		PYDISTUTILS_BUILDARGS+=--enable-webp --enable-webpmux
-WEBP_VARS_OFF=		PYDISTUTILS_BUILDARGS+=--disable-webp --disable-webpmux
-
-USES?=		cpe python
-USE_GITHUB=	yes
-USE_PYTHON=	autoplist concurrent distutils
-
-GH_ACCOUNT=	python-${PORTNAME}
-GH_PROJECT=	${PORTNAME:C/p/P/}
-
-CONFLICTS_INSTALL=	py*-imaging-*
+WEBP_VARS=		PYDISTUTILS_BUILDARGS+="--enable-webp --enable-webpmux"
+WEBP_VARS_OFF=		PYDISTUTILS_BUILDARGS+="--disable-webp --disable-webpmux"
 
 .include <bsd.port.pre.mk>
 
@@ -71,9 +74,6 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/PIL/*.so
 
 do-test:
-	@cd ${WRKSRC} && \
-	${PYTHON_CMD} ${PYSETUP} build_ext -i && \
-	${PYTHON_CMD} selftest.py && \
-	${PYTHON_CMD} -m nose -vx Tests/test_*.py
+	@cd ${WRKSRC} && ${PYTHON_CMD} ${PYDISTUTILS_SETUP} test
 
 .include <bsd.port.post.mk>

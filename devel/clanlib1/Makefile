@@ -3,7 +3,7 @@
 
 PORTNAME=	clanlib
 PORTVERSION=	1.0.0
-PORTREVISION=	8
+PORTREVISION=	9
 CATEGORIES=	devel
 MASTER_SITES=	http://www.clanlib.org/download/releases-1.0/
 PKGNAMESUFFIX=	1
@@ -13,17 +13,20 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Cross-platform game SDK
 
 LICENSE=	ZLIB
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libmikmod.so:audio/libmikmod \
-		libvorbis.so:audio/libvorbis
+		libvorbis.so:audio/libvorbis \
+		libogg.so:audio/libogg
 
-USES=		alias gmake jpeg libtool localbase:ldflags pathfix \
+USES=		alias gmake gl jpeg libtool localbase:ldflags pathfix \
 		pkgconfig tar:tgz
-USE_XORG=	x11 xi
+USE_CXXSTD=	c++98
+USE_XORG=	x11 xi xxf86vm
 USE_LDCONFIG=	yes
 USE_SDL=	gfx
-USE_GL=		yes
+USE_GL=		gl glu
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-docs \

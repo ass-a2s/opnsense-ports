@@ -3,6 +3,7 @@
 
 PORTNAME=	jacal
 PORTVERSION=	1c4
+PORTREVISION=	2
 CATEGORIES=	math
 MASTER_SITES=	http://groups.csail.mit.edu/mac/ftpdir/scm/
 

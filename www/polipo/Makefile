@@ -3,7 +3,7 @@
 
 PORTNAME=	polipo
 PORTVERSION=	1.1.1
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	www
 MASTER_SITES=	http://www.pps.univ-paris-diderot.fr/~jch/software/files/polipo/
 
@@ -13,10 +13,14 @@ COMMENT=	Small and fast caching web proxy
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+USE_HARDENING=	safestack
+
 USES=		makeinfo
 USE_RC_SUBR=	polipo
 
 INFO=		polipo
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.pre.mk>
 
@@ -27,7 +31,7 @@ SUB_FILES=	pkg-message pkg-install pkg-deinstall 400.polipo
 SUB_LIST+=	USER=${PUSER} GROUP=${PGRP} DESTDIR=${DESTDIR} PCONFIGDIR=${PCONFIGDIR} \
 		PCACHEDIR=${PCACHEDIR} PPIDDIR=${PPIDDIR} PPIDFILE=${PPIDFILE} \
 		PLOGFILE=${PLOGFILE}
-PLIST_SUB=	PCACHEDIR=${PCACHEDIR}
+PLIST_SUB+=	PCACHEDIR=${PCACHEDIR}
 
 # polipo installation options, propagated to install scripts
 PUSER?=		polipo

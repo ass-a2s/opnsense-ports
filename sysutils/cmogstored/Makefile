@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	cmogstored
-PORTVERSION=	1.6.0
+PORTVERSION=	1.7.0
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	http://bogomips.org/cmogstored/files/
 
@@ -12,9 +13,12 @@ COMMENT=	Alternative mogstored implementation for MogileFS
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_HARDENING=	# empty
+USE_HARDENING=	pie:off relro:off
 
-BROKEN_powerpc64=	Does not build: internal compiler error: Segmentation fault
+BROKEN_mips=		failst to compile: fdmap.c:89: undefined reference to `__sync_add_and_fetch_4'
+BROKEN_mips64=		failst to compile: fdmap.c:89: undefined reference to `__sync_add_and_fetch_4'
+
+USES=		compiler:c11
 
 PLIST_FILES=	sbin/cmogstored \
 		man/man1/cmogstored.1.gz

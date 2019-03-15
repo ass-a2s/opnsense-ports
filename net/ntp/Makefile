@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	ntp
-PORTVERSION=	4.2.8p10
-PORTREVISION=	2
+PORTVERSION=	4.2.8p13
 CATEGORIES=	net ipv6
 MASTER_SITES=	http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2/ \
 		http://archive.ntp.org/ntp4/ntp-4.2/ \
@@ -15,15 +14,17 @@ COMMENT=	The Network Time Protocol Distribution
 
 LIB_DEPENDS=	libevent.so:devel/libevent
 
-CONFLICTS=	ntp-devel-*
+CONFLICTS=	ntp-devel-* openntpd-*
+
+USE_HARDENING=	safestack
 
 USES=		cpe pathfix shebangfix libedit libtool localbase:ldflags \
 		pkgconfig
-
-EXPLICIT_SAFESTACK=	yes
+USES+=		autoreconf # until trustedbsd-mac changes accepted upstream
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--enable-leap-smear
+CONFIGURE_ARGS=	--enable-leap-smear --enable-trustedbsd-mac \
+		--with-locfile=freebsd
 
 TEST_TARGET=	check
 
@@ -31,6 +32,8 @@ SHEBANG_FILES=	scripts/ntptrace/ntptrace.in \
 		scripts/ntp-wait/ntp-wait.in \
 		scripts/update-leap/update-leap.in
 perl_OLD_CMD=	@PATH_PERL@
+
+SUB_FILES=	pkg-message
 
 .include "Makefile.inc"
 

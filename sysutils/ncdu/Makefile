@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	ncdu
-PORTVERSION=	1.12
+PORTVERSION=	1.14
 CATEGORIES=	sysutils
-MASTER_SITES=	http://dev.yorhel.nl/download/
+MASTER_SITES=	https://dev.yorhel.nl/download/
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	tobik@FreeBSD.org
 COMMENT=	Ncurses du(1)
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		ncurses
 GNU_CONFIGURE=	yes

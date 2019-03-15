@@ -32,8 +32,24 @@ CONFLICTS=	cvsweb-2.*
 
 USES=		perl5 shebangfix
 SHEBANG_FILES=	cvsweb.cgi
+
 NO_BUILD=	yes
 NO_ARCH=	yes
+
+PLIST_SUB=	CGIDIR="${CGIDIR}" ICONSDIR="${ICONSDIR}" CSSDIR="${CSSDIR}" \
+		DIRPREFIX="${DIRPREFIX}"
+SUB_FILES=	pkg-message
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
+
+CONFFILES=	cvsweb.conf \
+		cvsweb.conf-freebsd \
+		cvsweb.conf-openbsd \
+		cvsweb.conf-netbsd \
+		cvsweb.conf-ruby
+
+# Specify the title of your cvsweb site.
+TITLE?=		My CVS Repository
 
 .include <bsd.port.pre.mk>
 
@@ -43,36 +59,19 @@ NO_ARCH=	yes
 CVSROOT=	/home/cvs
 .endif
 
-# Specify the title of your cvsweb site.
-TITLE?=		My CVS Repository
-
 # Specify these directories in relative paths to ${PREFIX}.
 .if exists(${PREFIX}/www/cgi-bin)
 DIRPREFIX=	www
 .elif exists(${PREFIX}/www/apache24/cgi-bin)
-DIRPREFIX=      www/apache24
-.elif exists(${PREFIX}/www/apache22/cgi-bin)
-DIRPREFIX=	www/apache22
+DIRPREFIX=	www/apache24
 .elif exists(${PREFIX}/apache/cgi-bin)
 DIRPREFIX=	apache
 .else
 DIRPREFIX=	share/apache
 .endif
-CGIDIR?=        ${DIRPREFIX}/cgi-bin
-ICONSDIR?=      ${DIRPREFIX}/icons
-CSSDIR?=        ${DIRPREFIX}/data/css
-
-CONFFILES=	cvsweb.conf \
-		cvsweb.conf-freebsd \
-		cvsweb.conf-openbsd \
-		cvsweb.conf-netbsd \
-		cvsweb.conf-ruby
-
-PLIST_SUB=	CGIDIR="${CGIDIR}" ICONSDIR="${ICONSDIR}" CSSDIR="${CSSDIR}" \
-		DIRPREFIX="${DIRPREFIX}"
-
-SUB_FILES=	pkg-message
-SUB_LIST=	PREFIX="${PREFIX}" DOCSDIR="${DOCSDIR}"
+CGIDIR?=	${DIRPREFIX}/cgi-bin
+ICONSDIR?=	${DIRPREFIX}/icons
+CSSDIR?=	${DIRPREFIX}/data/css
 
 post-patch:
 	@${SED} -i '' -e 's,/usr/local/etc/,${PREFIX}/etc/,' \

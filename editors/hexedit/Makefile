@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	hexedit
-PORTVERSION=	1.4.1
+PORTVERSION=	1.4.2
 CATEGORIES=	editors
 
 MAINTAINER=	sunpoet@FreeBSD.org
@@ -14,12 +14,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 GNU_CONFIGURE=	yes
 USES=		autoreconf ncurses
 
+USE_HARDENING=	safestack
+
 PLIST_FILES=	bin/hexedit man/man1/hexedit.1.gz
 
 GH_ACCOUNT=	pixel
 USE_GITHUB=	yes
-
-EXPLICIT_SAFESTACK=	yes
 
 post-build:
 	m4 -DVERSION=${PORTVERSION} ${WRKSRC}/hexedit.1.in > ${WRKSRC}/hexedit.1

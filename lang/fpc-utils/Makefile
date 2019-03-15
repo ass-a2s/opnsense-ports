@@ -1,13 +1,15 @@
 # Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
+PORTREVISION=	1
 CATEGORIES=	lang
 PKGNAMESUFFIX=	-utils
 
 COMMENT=	Free Pascal Compiler utilities
 
-USE_FPC=	chm fcl-base fcl-net fcl-passrc fcl-res fcl-xml fppkg \
-		libcurl fcl-json rtl-extra rtl-objpas openssl fcl-async \
+USES=		fpc
+USE_FPC=	chm fcl-base fcl-fpcunit fcl-net fcl-passrc fcl-res fcl-xml \
+		fppkg libcurl fcl-json rtl-extra rtl-objpas openssl fcl-async \
 		fcl-web fcl-db ibase mysql odbc oracle postgres sqlite \
 		dblib pxlib fastcgi httpd22 httpd24
 

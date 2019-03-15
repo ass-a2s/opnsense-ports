@@ -3,6 +3,7 @@
 
 PORTNAME=	Diff
 PORTVERSION=	0.3.4
+PORTREVISION=	4
 CATEGORIES=	textproc haskell
 
 MAINTAINER=	haskell@FreeBSD.org

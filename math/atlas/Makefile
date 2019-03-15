@@ -3,10 +3,11 @@
 
 PORTNAME=	atlas
 PORTVERSION=	3.8.4
-PORTREVISION=	10
+PORTREVISION=	16
 PORTEPOCH=	1
 CATEGORIES=	math
 MASTER_SITES=	SF/math-${PORTNAME}/Stable/${PORTVERSION}
+PKGNAMESUFFIX=	-math
 DISTNAME=	${PORTNAME}${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -226,6 +227,7 @@ do-install:
 	(cd ${WRKSRC}/${opt}/ARCHS; \
 		${COPYTREE_SHARE} "*" ${STAGEDIR}${DATADIR}/${opt} \
 		"! -name Makefile -and ! -name *.tgz")
+	@${FIND} ${STAGEDIR}${DATADIR}/${opt} -type d -empty -delete
 .    endif
 .endfor
 .if ${PORT_OPTIONS:MDOCS}

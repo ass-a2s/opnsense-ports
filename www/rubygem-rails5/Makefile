@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rails
-PORTVERSION=	5.1.4
+PORTVERSION=	5.1.6.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	5
@@ -20,11 +20,10 @@ RUN_DEPENDS=	rubygem-actioncable5>=${PORTVERSION}:www/rubygem-actioncable5 \
 		rubygem-activemodel5>=${PORTVERSION}:databases/rubygem-activemodel5 \
 		rubygem-activerecord5>=${PORTVERSION}:databases/rubygem-activerecord5 \
 		rubygem-activesupport5>=${PORTVERSION}:devel/rubygem-activesupport5 \
-		rubygem-bundler<2.0:sysutils/rubygem-bundler \
+		rubygem-bundler>=1.3.0:sysutils/rubygem-bundler \
 		rubygem-railties5>=${PORTVERSION}:www/rubygem-railties5 \
-		rubygem-sprockets-rails-rails5>=2.0.0:devel/rubygem-sprockets-rails-rails5
-
-RUN_DEPENDS+=	rubygem-bindex>=0.5.0:devel/rubygem-bindex \
+		rubygem-sprockets-rails-rails5>=2.0.0:devel/rubygem-sprockets-rails-rails5 \
+		rubygem-bindex>=0.5.0:devel/rubygem-bindex \
 		rubygem-byebug>=9.0.6:devel/rubygem-byebug \
 		rubygem-capybara>=2.14.0:devel/rubygem-capybara \
 		rubygem-coffee-rails-rails5>=4.2.1:devel/rubygem-coffee-rails-rails5 \
@@ -50,10 +49,12 @@ RUN_DEPENDS+=	rubygem-bindex>=0.5.0:devel/rubygem-bindex \
 		rubygem-uglifier>=3.2.0:www/rubygem-uglifier \
 		rubygem-web-console>=3.5.0:devel/rubygem-web-console
 
-NO_ARCH=	yes
+PORTSCOUT=	limit:^5\.1\.
 
 USES=		gem
 USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 CPE_VENDOR=	rubyonrails
 CPE_PRODUCT=	ruby_on_rails

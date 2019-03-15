@@ -8,13 +8,16 @@ CATEGORIES=	graphics
 MASTER_SITES=	http://qt-apps.org/CONTENT/content-files/
 DISTNAME=	140877-easyPaint
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Easy graphic editing program
 
 LICENSE=	GPLv3
 
-USES=		qmake
-USE_QT4=	gui xml uic_build moc_build rcc_build
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake qt:4
+USE_QT=		gui xml uic_build moc_build rcc_build
 QPROFILE=	easyPaint
 WRKSRC=		${WRKDIR}/${QPROFILE}
 

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	actioncable
-PORTVERSION=	5.1.4
+PORTVERSION=	5.1.6.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	5
@@ -17,8 +17,11 @@ RUN_DEPENDS=	rubygem-actionpack5>=${PORTVERSION}:www/rubygem-actionpack5 \
 		rubygem-nio4r>=2.0:devel/rubygem-nio4r \
 		rubygem-websocket-driver>=0.6.1:www/rubygem-websocket-driver
 
-NO_ARCH=	yes
-USE_RUBY=	yes
+PORTSCOUT=	limit:^5\.1\.
+
 USES=		gem
+USE_RUBY=	yes
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

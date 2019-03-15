@@ -9,12 +9,12 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Policies for Perl::Critic concerned with using Moose
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-namespace-autoclean>=0:devel/p5-namespace-autoclean \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-namespace-autoclean>=0:devel/p5-namespace-autoclean \
 		p5-Perl-Critic>=0:textproc/p5-Perl-Critic
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

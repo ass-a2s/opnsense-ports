@@ -1,20 +1,17 @@
---- chrome/browser/browser_process_impl.cc.orig	2017-06-05 19:03:02 UTC
-+++ chrome/browser/browser_process_impl.cc
-@@ -171,7 +171,7 @@
- #include "chrome/browser/media/webrtc/webrtc_log_uploader.h"
- #endif
+--- chrome/browser/browser_process_impl.cc.orig	2019-02-12 16:31:58.701630000 +0100
++++ chrome/browser/browser_process_impl.cc	2019-02-12 16:32:33.417312000 +0100
+@@ -1485,7 +1485,7 @@
+ }
  
--#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
- #include "chrome/browser/memory/tab_manager.h"
- #endif
+ // Mac is currently not supported.
+-#if (defined(OS_WIN) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
++#if (defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)
  
-@@ -810,7 +810,7 @@ gcm::GCMDriver* BrowserProcessImpl::gcm_driver() {
+ bool BrowserProcessImpl::IsRunningInBackground() const {
+   // Check if browser is in the background.
+@@ -1555,4 +1555,4 @@
+   }
+ }
  
- memory::TabManager* BrowserProcessImpl::GetTabManager() {
-   DCHECK(CalledOnValidThread());
--#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
-   if (!tab_manager_.get())
-     tab_manager_.reset(new memory::TabManager());
-   return tab_manager_.get();
+-#endif  // (defined(OS_WIN) || defined(OS_LINUX)) && !defined(OS_CHROMEOS)
++#endif  // (defined(OS_WIN) || defined(OS_LINUX) || defined(OS_BSD)) && !defined(OS_CHROMEOS)

@@ -3,15 +3,16 @@ Forwarded: not-needed
 Author: Peter Pentchev <roam@FreeBSD.org>
 Last-Update: 2010-12-18
 
---- lib/url.c.orig	2017-04-18 06:36:20 UTC
+--- lib/url.c.orig	2019-02-05 14:00:12 UTC
 +++ lib/url.c
-@@ -671,6 +671,9 @@ CURLcode Curl_open(struct Curl_easy **cu
-     data->state.current_speed = -1; /* init to negative == impossible */
-     data->set.fnmatch = ZERO_NULL;
-     data->set.maxconnects = DEFAULT_CONNCACHE_SIZE; /* for easy handles */
+@@ -536,6 +536,10 @@ CURLcode Curl_init_userdefined(struct Cu
+   set->fnmatch = ZERO_NULL;
+   set->upkeep_interval_ms = CURL_UPKEEP_INTERVAL_DEFAULT;
+   set->maxconnects = DEFAULT_CONNCACHE_SIZE; /* for easy handles */
 +#if defined(__FreeBSD_version)
-+    data->set.no_signal = TRUE; /* different handling of signals and threads */
-+#endif /* __FreeBSD_version */
- 
-     Curl_http2_init_state(&data->state);
-   }
++  /* different handling of signals and threads */
++  set->no_signal = TRUE;
++#endif
+   set->http09_allowed = TRUE;
+   set->httpversion =
+ #ifdef USE_NGHTTP2

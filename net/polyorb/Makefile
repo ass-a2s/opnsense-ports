@@ -3,7 +3,7 @@
 
 PORTNAME=	polyorb
 PORTVERSION=	2.11.1
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	net
 MASTER_SITES=	http://downloads.dragonlace.net/src/
 DISTNAME=	polyorb-gpl-${YEAR}-src
@@ -15,14 +15,13 @@ LICENSE=	GPLv3
 
 BUILD_DEPENDS=	xmlada>=3.2:textproc/xmlada
 
-USES=		ada gmake python:build shebangfix
+USE_HARDENING=	pie:off relro:off
+
+USES=		ada gmake python:2.7,build shebangfix
 GNU_CONFIGURE=	yes
 NO_MTREE=	yes
 YEAR=		2014
 WRKSRC=		${WRKDIR}/polyorb-${YEAR}-src
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 ALL_TARGET=	default
 MAKE_ENV=	PROCESSORS=${MAKE_JOBS_NUMBER}
@@ -45,12 +44,11 @@ CONFIGURE_ARGS=	--with-appli-perso="corba dsa moma" \
 # Polyorb 2014 = PCS version 6   GNAT GCC 4.9 = PCS version 6
 
 OPTIONS_DEFINE=	DOCS TESTSUITE
-OPTIONS_SUB=	TESTSUITE
+OPTIONS_SUB=	yes
 
 TESTSUITE_ALL_TARGET=	testsuite
 TESTSUITE_BUILD_DEPENDS=gnatpython>=20101207:devel/gnatpython
 TESTSUITE_DESC=		Enable 'make run-testsuite' target
-
 
 .include <bsd.port.options.mk>
 

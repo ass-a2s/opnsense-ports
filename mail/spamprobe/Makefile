@@ -3,16 +3,17 @@
 
 PORTNAME=		spamprobe
 PORTVERSION=	1.4d
-PORTREVISION=	15
+PORTREVISION=	19
 CATEGORIES=		mail
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Spam detector using Bayesian analysis of word counts
 
+USE_HARDENING=	pie:off relro:off
+
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-default-8bit
-USE_GCC=	any
 
 PLIST_FILES=	bin/spamprobe man/man1/spamprobe.1.gz
 
@@ -24,9 +25,6 @@ PBL_DESC=		PBL database support (author's recommended data store)
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 # PBL support
 PBL_BUILD_DEPENDS=	${LOCALBASE}/lib/libpbl.a:databases/libpbl

@@ -4,7 +4,7 @@
 PORTNAME=	ninja-ide
 PORTVERSION=	2.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	4
 CATEGORIES=	devel
 MASTER_SITES=	http://nivit.altervista.org/FreeBSD/ports/distfiles/
 
@@ -13,7 +13,10 @@ COMMENT=	Cross-platform integrated development environment (IDE)
 
 LICENSE=	GPLv3
 
-USES=		pyqt:4 python:2
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		pyqt:4 python:2.7
 USE_PYQT=	declarative_run network  webkit
 USE_PYTHON=	distutils autoplist
 

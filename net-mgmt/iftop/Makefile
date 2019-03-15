@@ -11,11 +11,15 @@ COMMENT=	Display bandwidth usage on an interface by host
 
 LICENSE=	GPLv2
 
+USE_HARDENING=	cfi safestack
+
 USES=		ncurses
 GNU_CONFIGURE=	yes
 
 PORTDOCS=	README
 PLIST_FILES=	sbin/iftop man/man8/iftop.8.gz
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/sbin

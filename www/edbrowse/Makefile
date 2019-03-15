@@ -1,44 +1,46 @@
 # $FreeBSD$
 
 PORTNAME=	edbrowse
-PORTVERSION=	3.5.1
-PORTREVISION=	3
+DISTVERSIONPREFIX=	v
+DISTVERSION=	3.7.4
+PORTREVISION=	1
 CATEGORIES=	www editors
-MASTER_SITES=	http://the-brannons.com/edbrowse/ \
-		http://rithmomachia.org/edbrowse/
 
-MAINTAINER=	david.vionnet@vmailbox.org
+MAINTAINER=	alfix86@gmail.com
 COMMENT=	Line-oriented Web browser and text editor
 
 LICENSE=	GPLv2
 
-BUILD_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libmozjs-24.so:lang/spidermonkey24 \
-		libcurl.so:ftp/curl
+		libcurl.so:ftp/curl \
+		libtidy.so:www/tidy-lib \
+		libtidy5.so:www/tidy-html5 \
+		libduktape.so:lang/duktape-lib
 
-BROKEN_powerpc64=	fails to link: html.o: undefined reference to std::__cxx11::basic_string
+USES=		cmake:insource compiler:c11 perl5 readline
+USE_PERL5=	build
+USE_GITHUB=	yes
 
-USES=		compiler:c11 readline zip ssl
+GH_ACCOUNT=	CMB
+
+PLIST_FILES=	bin/${PORTNAME} \
+		man/man1/${PORTNAME}.1.gz
+
+PORTDOCS=	*
 
 OPTIONS_DEFINE=	DOCS
 
-WRKBASE=	${WRKDIR}/${PORTNAME}-${PORTVERSION}
-WRKSRC=		${WRKBASE}/src
-
-MAKEFILE=	makefile.bsd
-
 do-install:
+	${INSTALL_MAN} ${WRKSRC}/doc/man-edbrowse-freebsd.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/${PORTNAME}.1
 	${INSTALL_PROGRAM} ${WRKSRC}/edbrowse ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKBASE}/doc/man-edbrowse-debian.1 ${STAGEDIR}${MAN1PREFIX}/man/man1/edbrowse.1
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKBASE}/CHANGES ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKBASE}/COPYING ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKBASE}/README ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKBASE}/doc && \
+	${INSTALL_DATA} ${WRKSRC}/CHANGES ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/COPYING ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC}/doc && \
 		${FIND} . \( -name setup.ebrc -or -name "man-edbrowse*" \) -delete  && \
-		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+		${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

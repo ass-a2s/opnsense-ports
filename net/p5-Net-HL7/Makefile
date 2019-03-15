@@ -11,8 +11,6 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	bbp2006@columbia.edu
 COMMENT=	Net::HL7 - A simple yet flexible API for non-XML HL7 applications
 
-PORTDOCS=	README
-
 USES=		perl5
 USE_PERL5=	configure
 
@@ -24,6 +22,6 @@ PORTDOCS=	README
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -13,9 +13,13 @@ COMMENT=	Search using regexes for file names and text
 
 LICENSE=	GPLv3+
 
-USES=		qmake dos2unix zip
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake dos2unix qt:4 zip
+USE_CXXSTD=	c++98
 DOS2UNIX_GLOB=	*.cpp *.h
-USE_QT4=	corelib gui moc_build rcc_build uic_build
+USE_QT=		corelib gui moc_build rcc_build uic_build
 
 PLIST_FILES=	bin/${PORTNAME}
 

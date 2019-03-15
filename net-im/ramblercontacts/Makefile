@@ -13,10 +13,13 @@ COMMENT=	Free, multi-service communication client from Rambler
 
 LICENSE=	GPLv3
 
-USES=		qmake dos2unix
-DOS2UNIX_FILES=	src/config.inc
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake dos2unix qt:4
+DOS2UNIX_GLOB=	*
 USE_XORG=	xscrnsaver
-USE_QT4=	moc_build rcc_build uic_build designer_build \
+USE_QT=		moc_build rcc_build uic_build designer_build \
 		webkit
 USE_LDCONFIG=	yes
 

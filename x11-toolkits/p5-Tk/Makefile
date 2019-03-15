@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Tk
-PORTVERSION=	804.033
-PORTREVISION=	1
+PORTVERSION=	804.034
 CATEGORIES=	x11-toolkits tk perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -11,14 +10,16 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Re-port of a perl5 interface to Tk8.4
 
+LICENSE=	ARTPERL10
+
 LIB_DEPENDS=	libpng.so:graphics/png \
-		libfreetype.so:print/freetype2
+		libfreetype.so:print/freetype2 \
+		libfontconfig.so:x11-fonts/fontconfig
 
 OPTIONS_DEFINE=	XFT
 OPTIONS_DEFAULT=	XFT
 XFT_DESC=	Client-side fonts via libXft
 
-CONFIGURE_ARGS=	X11INC=${LOCALBASE}/include X11LIB=${LOCALBASE}/lib
 MAKE_JOBS_UNSAFE=	yes
 USES=		jpeg perl5 shebangfix
 SHEBANG_FILES=	pTk/Tcl-pTk \

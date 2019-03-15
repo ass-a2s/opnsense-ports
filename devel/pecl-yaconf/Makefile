@@ -2,16 +2,16 @@
 # $FreeBSD$
 
 PORTNAME=	yaconf
-PORTVERSION=	1.0.5
+DISTVERSION=	1.0.7
 CATEGORIES=	devel
 
-MAINTAINER=	johnpupu@gmail.com
+MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	PHP Persistent Configurations Container
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-IGNORE_WITH_PHP=56
+IGNORE_WITH_PHP= 73
 USES=		php:pecl
 
 .include <bsd.port.mk>

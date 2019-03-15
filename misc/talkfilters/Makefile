@@ -3,7 +3,7 @@
 
 PORTNAME=	talkfilters
 PORTVERSION=	2.3.8
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	misc
 MASTER_SITES=	http://www.hyperrealm.com/talkfilters/ \
 		LOCAL/ehaupt
@@ -18,8 +18,6 @@ CONFLICTS=	jive* chef* filters-*
 USES=		libtool pathfix
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-
-BROKEN_aarch64=	fails to install: error in backend: fixup value out of range
 
 SUB_FILES=	pkg-message
 

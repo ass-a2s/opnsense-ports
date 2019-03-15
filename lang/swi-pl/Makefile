@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	swi-pl
-PORTVERSION=	7.4.2
-PORTREVISION=	1
+PORTVERSION=	7.6.4
 CATEGORIES=	lang
 MASTER_SITES=	http://www.swi-prolog.org/download/stable/src/
 DISTNAME=	swipl-${PORTVERSION}
@@ -13,25 +12,26 @@ COMMENT=	Edinburgh-style Prolog compiler
 
 LICENSE=	BSD2CLAUSE
 
-LIB_DEPENDS=	libgmp.so:math/gmp \
-		libodbc.so:databases/unixODBC \
-		libfontconfig.so:x11-fonts/fontconfig \
-		libfreetype.so:print/freetype2
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
 BROKEN_mips=		fails to link: libswipl.so: undefined reference to '__sync_sub_and_fetch_4'
 BROKEN_mips64=		fails to link: libswipl.so: undefined reference to '__sync_sub_and_fetch_4'
 BROKEN_powerpc64=	fails to compile: pce_principal.pl:155: Shared object "pl2xpce" not found, required by "swipl"
 
+LIB_DEPENDS=	libgmp.so:math/gmp \
+		libodbc.so:databases/unixODBC \
+		libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libpcre.so:devel/pcre
+
 SWIPLDIR=	${PORTNAME:C/-//}-${PORTVERSION}
 
+USE_HARDENING=	pie:off relro:off
+
 NOPRECIOUSMAKEVARS=	yes
-USE_XORG=	ice sm x11 xext xft xinerama xpm xt 
 
 USES=		libedit gmake jpeg libarchive pathfix pkgconfig \
 		readline shebangfix ssl
+USE_XORG=	ice sm x11 xext xft xinerama xpm xt
+
 MAKE_JOBS_UNSAFE=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ARCH=${ARCH}-${OPSYS:tl}
@@ -42,8 +42,6 @@ MAKE_ARGS=	DISABLE_PKGS=jpl \
 		ac_cv_lib_uuid_uuid_create=no
 
 SHEBANG_LANG=	swipl
-swipl_OLD_CMD=	/usr/bin/swipl
-swipl_CMD=	${LOCALBASE}/bin/swipl
 SHEBANG_FILES=	library/dialect/sicstus/swipl-lfr.pl \
 		packages/http/examples/demo_inetd
 
@@ -52,18 +50,22 @@ PLIST_SUB=	DISTNAME=${SWIPLDIR} ARCH=${ARCH} OS=${OPSYS:tl} \
 
 .include <bsd.port.pre.mk>
 
-.if (${ARCH} == "i386" || ${ARCH} == "powerpc" || ${ARCH} == "armv6")
+.if (${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == i386 || ${ARCH} == powerpc)
 PLIST_SUB+=	BITS=32
 .else
 PLIST_SUB+=	BITS=64
 .endif
 
-.if (${ARCH} == "amd64")
+.if (${ARCH} == amd64)
 ARCH=		x86_64
 .endif
 
+.if (${ARCH} == aarch64)
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-skip-gnu-qsort
+.endif
+
 post-configure:
-.if ${ARCH} != "i386"
+.if ${ARCH} != i386
 	@${REINPLACE_CMD} -e '/^CMFLAGS=/s/$$/ -fPIC/' \
 		${WRKSRC}/packages/Dialect.defs
 .endif
@@ -73,7 +75,6 @@ post-configure:
 post-patch:
 	@${REINPLACE_CMD} -e 's!^mandir=@mandir@!mandir=${MANPREFIX}/man!' \
 		-e '/-o $$@ $$(PLOBJ)/s/$$/ $$(LIBS)/' \
-		-e '/ $$(SHAREDV) $$(SONAME)/d' \
 		${WRKSRC}/src/Makefile.in \
 		${WRKSRC}/packages/xpce/src/Makefile.in
 	@${REINPLACE_CMD} -e '/EXAMPLEEXE/s/INSTALL_PROGRAM/INSTALL_SCRIPT/' \

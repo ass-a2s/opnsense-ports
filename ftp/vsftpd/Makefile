@@ -3,6 +3,7 @@
 
 PORTNAME=	vsftpd
 PORTVERSION=	3.0.3
+PORTREVISION=	1
 CATEGORIES=	ftp ipv6
 MASTER_SITES=	https://security.appspot.com/downloads/ \
 		GENTOO
@@ -14,7 +15,7 @@ COMMENT=	FTP daemon that aims to be "very secure"
 LICENSE=	GPLv2
 
 #USERS=		ftp
-#GROUPS=		ftp
+#GROUPS=	ftp
 USES=		alias
 ALL_TARGET=	vsftpd
 USE_RC_SUBR=	vsftpd

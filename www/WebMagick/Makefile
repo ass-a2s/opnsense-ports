@@ -3,7 +3,7 @@
 
 PORTNAME=	WebMagick
 PORTVERSION=	2.03p29
-PORTREVISION=	1
+PORTREVISION=	4
 PORTEPOCH=	1
 CATEGORIES=	www graphics
 MASTER_SITES=	SF/${PORTNAME:tl}/${PORTNAME:tl}-beta/${DISTVERSION}
@@ -15,12 +15,11 @@ COMMENT=	Image Web Generator - recursively build HTMLs, imagemaps, thumbnails
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick
+LIB_DEPENDS=	libMagickCore-6.so:graphics/ImageMagick6
 RUN_DEPENDS=	p5-Sort-Naturally>=0:textproc/p5-Sort-Naturally
 
 USES=		shebangfix perl5 autoreconf
 GNU_CONFIGURE=	yes
-AUTOMAKE_ARGS+= --add-missing
 INFO=		webmagick
 MAKE_ARGS+=	ICON_INSTALL_DIR=${STAGEDIR}${PREFIX}/www/data/webmagick \
 		ETC_INSTALL_DIR=${STAGEDIR}${PREFIX}/etc

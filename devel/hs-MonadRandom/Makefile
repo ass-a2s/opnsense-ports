@@ -2,6 +2,7 @@
 
 PORTNAME=	MonadRandom
 PORTVERSION=	0.5.1
+PORTREVISION=	4
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

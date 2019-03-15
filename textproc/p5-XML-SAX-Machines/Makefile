@@ -12,20 +12,17 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Manage collections of SAX processors
 
-BUILD_DEPENDS=	p5-XML-SAX>=0:textproc/p5-XML-SAX \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-XML-SAX>=0:textproc/p5-XML-SAX \
 		p5-XML-SAX-Writer>=0:textproc/p5-XML-SAX-Writer
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure
 
 OPTIONS_DEFINE=	EXAMPLES
 
-regression-test: build
-	${MAKE} -C ${WRKSRC} test
-
-post-install:
-		@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-		${INSTALL_SCRIPT} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
+post-install-EXAMPLES-on:
+	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
+	${INSTALL_SCRIPT} ${WRKSRC}/examples/* ${STAGEDIR}${EXAMPLESDIR}
 
 .include <bsd.port.mk>

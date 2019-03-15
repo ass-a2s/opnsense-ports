@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	opnsense-update
-PORTVERSION=	17.7.1
+PORTVERSION=	19.1.4
+#PORTREVISION=	1 # GH_TAGNAME
 CATEGORIES=	sysutils
 
 MAINTAINER=	franco@opnsense.org
@@ -14,10 +15,11 @@ LIB_DEPENDS+=	libucl.so:textproc/libucl
 
 USES=		ssl
 
-USE_HARDENING=	pie relro safestack
+USE_HARDENING=	safestack
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	opnsense
 GH_PROJECT=	update
+#GH_TAGNAME=	75b9a88
 
 .include <bsd.port.mk>

@@ -3,7 +3,7 @@
 
 PORTNAME=	trytond28_account_be
 PORTVERSION=	2.8.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	finance python
 MASTER_SITES=	https://pypi.python.org/packages/source/t/trytond_account_be/ \
 		http://downloads.tryton.org/${PORTVERSION:R}/
@@ -18,7 +18,7 @@ RUN_DEPENDS=	trytond28_account>=2.8.1:finance/trytond28_account
 
 CONFLICTS=	trytond_account-2.[46].*
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

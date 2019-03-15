@@ -3,14 +3,14 @@
 
 PORTNAME=	gost
 PORTVERSION=	0.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://sd.ascon.ru/ftp/Public/Utils/DWG-DXF/ \
 		LOCAL/vg
 PKGNAMEPREFIX=	font-
 DISTNAME=	TTF_FON
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GOST TrueType fonts
 
 USES=		fonts zip

@@ -2,7 +2,7 @@
 
 PORTNAME=	riscv-isa-sim
 DISTVERSION=	git
-PORTREVISION=	20170809
+PORTREVISION=	20181006
 CATEGORIES=	emulators
 
 MAINTAINER=	lwhsu@FreeBSD.org
@@ -10,14 +10,14 @@ COMMENT=	Spike, a RISC-V ISA Simulator
 
 LICENSE=	BSD3CLAUSE
 
-LIB_DEPENDS=	libfesvr.so:emulators/riscv-fesvr
-
 ONLY_FOR_ARCHS=	amd64
 
-GH_ACCOUNT=	freebsd-riscv
-GH_TAGNAME=	54ae820
+LIB_DEPENDS=	libfesvr.so:emulators/riscv-fesvr
 
 USES=	compiler:c++11-lang gmake shebangfix
+
+GH_ACCOUNT=	freebsd-riscv
+GH_TAGNAME=	aae60e0
 
 HAS_CONFIGURE=	yes
 SHEBANG_FILES=	scripts/vcs-version.sh

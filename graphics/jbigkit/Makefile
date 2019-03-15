@@ -5,10 +5,13 @@ PORTNAME=	jbigkit
 PORTVERSION=	2.1
 PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://www.cl.cam.ac.uk/~mgk25/download/
+MASTER_SITES=	https://www.cl.cam.ac.uk/~mgk25/download/
 
 MAINTAINER=	mi@aldan.algebra.com
 COMMENT=	Lossless compression for bi-level images such as scanned pages, faxes
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USE_LDCONFIG=	yes
 MANS=		jbgtopbm.1 pbmtojbg.1

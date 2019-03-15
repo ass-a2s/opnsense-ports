@@ -3,7 +3,7 @@
 
 PORTNAME=	syslog-ng
 DISTVERSION=	3.11.1
-PORTREVISION=	1
+PORTREVISION=	8
 CATEGORIES=	sysutils
 DISTFILES=	syslog-ng-${DISTVERSION}.tar.gz
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
@@ -14,40 +14,43 @@ PKGNAMESUFFIX=	311
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Powerful syslogd replacement
 
-LIB_DEPENDS=	libpcre.so:devel/pcre \
-		libuuid.so:misc/e2fsprogs-libuuid \
-		libbson-1.0.so:devel/libbson
+DEPRECATED=		No longer supported by Balabit
+EXPIRATION_DATE=	2019-12-31
 
-BROKEN_powerpc64=	fails to link: Internal error: Segmentation fault (program ld)
+LIB_DEPENDS=	libpcre.so:devel/pcre \
+		libuuid.so:misc/e2fsprogs-libuuid
+
 BROKEN_sparc64=		fails to link: Internal error: Segmentation fault (program ld)
 
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 		syslog-ng[0-9][0-9]-[0-9]* \
-		syslog-ng-devel-[0-9]* eventlog*
+		syslog-ng[0-9][0-9][0-9]-[0-9]* \
+		syslog-ng-devel-[0-9]* eventlog* \
+		syslog-ng-incubator-*
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 MAKE_JOBS_UNSAFE=	yes
-OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP GEOIP2 DOCS REDIS JAVA PYTHON MONGO CURL JAVA_MOD
-OPTIONS_DEFAULT=	JSON
+OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP2 DOCS REDIS JAVA PYTHON MONGO CURL JAVA_MOD AMQP
+OPTIONS_DEFAULT=	CURL JSON
 TCP_WRAPPERS_DESC=	Build with TCP Wrappers
 SQL_DESC=		Build with database (libdbi) support
 SPOOF_DESC=		Build with spoof source support
 SMTP_DESC=		Build with SMTP support
 JSON_DESC=		Build with JSON-C support
-GEOIP_DESC=		Build with GeoIP support (depreciated)
 GEOIP2_DESC=		Build with geoip2 (MaxMindDB) support
 REDIS_DESC=		Build with Redis support
 JAVA_DESC=		Build with Java support (no modules)
 JAVA_MOD_DESC=		Build with Java modules (needs Maven / Internet access)
 PYTHON_DESC=		Build with Python 2.7 support
 CURL_DESC=		Build with Curl HTTP support
+AMQP_DESC=		Build with AMQP support
 
 USES=		autoreconf:build gmake libtool pathfix pkgconfig ssl \
 		gettext-runtime python shebangfix
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	syslog-ng
 SHEBANG_FILES=	lib/merge-grammar.py
-SHEBANG_LANG=	python
 GNU_CONFIGURE=	yes
 USE_GNOME=	glib20
 SUB_FILES=	pkg-message
@@ -69,13 +72,10 @@ SPOOF_CONFIGURE_ON=		--with-libnet=/usr/local/bin
 SPOOF_CONFIGURE_ENV=		LIBNET_CFLAGS="-I/usr/local/include" \
 				LIBNET_LIBS="-L/usr/local/lib -lnet"
 
-
 IPV6_CONFIGURE_ENABLE=		ipv6
 
-GEOIP_CONFIGURE_ENABLE=		geoip
-GEOIP_LIB_DEPENDS=		libGeoIP.so:net/GeoIP
-GEOIP_CONFIGURE_ENV=		GEOIP_LIBS="-L${LOCALBASE}/lib -lGeoIP"
-GEOIP_PLIST_FILES=		lib/syslog-ng/libgeoip-plugin.so
+AMQP_CONFIGURE_ENABLE=		amqp
+AMQP_PLIST_FILES=		lib/syslog-ng/libafamqp.so
 
 GEOIP2_CONFIGURE_ENABLE=	geoip2
 GEOIP2_LIB_DEPENDS=		libmaxminddb.so:net/libmaxminddb                                
@@ -99,20 +99,21 @@ SQL_PLIST_FILES=		lib/syslog-ng/libafsql.so
 
 MONGO_CONFIGURE_ENABLE=		mongodb
 MONGO_LIB_DEPENDS=		libmongoc-1.0.so:devel/mongo-c-driver
+MONGO_LIB_DEPENDS+=		libbson-1.0.so:devel/libbson
 MONGO_PLIST_FILES=		lib/syslog-ng/libafmongodb.so
 
 JSON_CONFIGURE_ENABLE=		json
 JSON_LIB_DEPENDS=		libjson-c.so:devel/json-c
-JSON_PLIST_FILES= 		lib/syslog-ng/libjson-plugin.so \
+JSON_PLIST_FILES=		lib/syslog-ng/libjson-plugin.so \
 				share/syslog-ng/include/scl/cim/template.conf
 
 JAVA_CONFIGURE_ENABLE=		java
-JAVA_USE_JAVA=			yes
-JAVA_PLIST_FILES= 		lib/syslog-ng/libmod-java.so \
+JAVA_USE=			JAVA=yes
+JAVA_PLIST_FILES=		lib/syslog-ng/libmod-java.so \
 				lib/syslog-ng/java-modules/syslog-ng-core.jar
 
 JAVA_MOD_CONFIGURE_ENABLE=	java-modules
-JAVA_MOD_USE_JAVA=		yes
+JAVA_MOD_USE=			JAVA=yes
 JAVA_MOD_BUILD_DEPENDS=		gradle:devel/gradle \
 				bash:shells/bash
 JAVA_MOD_PLIST_DIRS=		lib/syslog-ng/java-modules/elastic-jest-client
@@ -141,11 +142,11 @@ JAVA_MOD_PLIST_FILES=		lib/syslog-ng/java-modules/log4j-1.2.16.jar \
 PYTHON_CONFIGURE_ENABLE=	python
 PYTHON_CONFIGURE_WITH=		python=2.7
 PYTHON_USES=			python:2.7
-PYTHON_PLIST_FILES= 		lib/syslog-ng/libmod-python.so
+PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so
 
 CURL_CONFIGURE_OFF=		--with-libcurl=off
 CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
-CURL_PLIST_FILES= 		lib/syslog-ng/libhttp.so
+CURL_PLIST_FILES=		lib/syslog-ng/libhttp.so
 
 .include <bsd.port.pre.mk>
 

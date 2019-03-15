@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	DBIx-Simple
-PORTVERSION=	1.35
-PORTREVISION=	1
+PORTVERSION=	1.37
 CATEGORIES=	databases perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -11,8 +10,8 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Simplified object oriented interface to Perl DBI
 
-BUILD_DEPENDS=	p5-DBI>=1.21:databases/p5-DBI ${TEST_DEPENDS}
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-DBI>=1.21:databases/p5-DBI ${TEST_DEPENDS}
 TEST_DEPENDS=	p5-DBD-SQLite>=0:databases/p5-DBD-SQLite
 
 OPTIONS_DEFINE=		SQL_INTERP SQL_ABSTRACT DBIX_XHTML_TABLE TEXT_TABLE
@@ -21,6 +20,7 @@ SQL_ABSTRACT_DESC=	Generate SQL from Perl data structures
 DBIX_XHTML_TABLE_DESC=	Create XHTML tables from SQL queries
 TEXT_TABLE_DESC=	Create plain text table from data
 
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 

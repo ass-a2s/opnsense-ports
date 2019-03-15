@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	ntopng
-PORTVERSION=	3.0.2017.08.12
+PORTVERSION=	3.8.d20190301
+PORTEPOCH=	1
 CATEGORIES=	net
 
 MAINTAINER=	madpilot@FreeBSD.org
@@ -12,36 +13,38 @@ LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	librrd.so:databases/rrdtool \
-		libluajit-5.1.so:lang/luajit \
 		libzmq.so:net/libzmq4 \
 		libcurl.so:ftp/curl \
 		libndpi.so:net/ndpi \
 		libjson-c.so:devel/json-c \
-		libsodium.so:security/libsodium
+		libsodium.so:security/libsodium \
+		libmaxminddb.so:net/libmaxminddb
 BUILD_DEPENDS=  bash:shells/bash
 
-USES=	 	autoreconf cpe gmake libtool localbase mysql pathfix pkgconfig \
-		shebangfix sqlite ssl
-SUB_FILES=	ntopng-geoipupdate.sh pkg-deinstall
-SHEBANG_FILES=	httpdocs/misc/ntopng-add-user.sh
+USE_HARDENING=	pie:off relro:off
+
+USES=		autoreconf compiler:c++11-lang cpe gmake libtool localbase \
+		mysql pathfix pkgconfig shebangfix sqlite ssl
+
+SUB_FILES=	ntopng-geoip2update.sh pkg-deinstall
+SHEBANG_FILES=	httpdocs/misc/ntopng-add-user.sh \
+		httpdocs/misc/ntopng-utils-manage-config.in
 GNU_CONFIGURE=	yes
-USE_LDCONFIG=	yes
+CONFIGURE_ARGS=	--with-ndpi-includes=${LOCALBASE}/include/ndpi
 
 USERS=		ntopng
 GROUPS=		ntopng
+PLIST_SUB=	NTOPNGUSER="${USERS}" NTOPNGROUP="${GROUPS}"
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	ntop
-GH_TAGNAME=	8e2a743
+GH_TAGNAME=	b287827
 
 CPE_VENDOR=	ntop
 
-OPTIONS_DEFINE=		GEOIP NLS
-OPTIONS_DEFAULT=	GEOIP
+OPTIONS_DEFINE=	NLS
 
 OPTIONS_SUB=	yes
-
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
 
 NLS_USES=	gettext
 
@@ -54,8 +57,7 @@ post-patch:
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/ntopng
-
-post-install-GEOIP-on:
-	${INSTALL_SCRIPT} ${WRKDIR}/ntopng-geoipupdate.sh ${STAGEDIR}${PREFIX}/bin
+	${MKDIR} ${STAGEDIR}/var/db/ntopng
+	${INSTALL_SCRIPT} ${WRKDIR}/ntopng-geoip2update.sh ${STAGEDIR}${PREFIX}/bin
 
 .include <bsd.port.mk>

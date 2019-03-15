@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	scala
-PORTVERSION=	2.12.2
+PORTVERSION=	2.12.8
 CATEGORIES=	lang java
 MASTER_SITES=	http://www.scala-lang.org/files/archive/
 
-MAINTAINER=	mitsururike@gmail.com
+MAINTAINER=	freebsd-ports@jan0sch.de
 COMMENT=	Scala Programming Language
 
-LICENSE=	BSD3CLAUSE
+LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/doc/LICENSE.md
 
 RUN_DEPENDS=	bash:shells/bash

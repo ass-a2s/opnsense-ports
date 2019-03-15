@@ -4,7 +4,7 @@
 PORTNAME=	zetacoin
 PORTVERSION=	0.11.2.3
 DISTVERSIONPREFIX=	v
-PORTREVISION=	9
+PORTREVISION=	25
 CATEGORIES=	net-p2p finance
 
 MAINTAINER=	daniel@morante.net
@@ -14,7 +14,8 @@ LICENSE=	MIT
 
 LIB_DEPENDS=	libboost_date_time.so:devel/boost-libs
 
-USES+=		autoreconf compiler:c++0x gmake libtool pkgconfig:build ssl
+USES+=		autoreconf compiler:c++11-lang gmake libtool pkgconfig:build ssl
+USE_CXXSTD=	c++11
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
 
@@ -30,7 +31,7 @@ WALLET_DESC=	Build wallet or P2P server node only
 QRCODES_DESC=	Enable QR code display when building graphical interface
 CLI_DESC=		Build command line RPC client
 
-OPTIONS_DEFAULT=	X11 WALLET QRCODES
+OPTIONS_DEFAULT=	WALLET
 OPTIONS_GROUP=		X11
 OPTIONS_GROUP_X11=	QRCODES
 
@@ -44,9 +45,9 @@ X11_CONFIGURE_ON=	--without-daemon
 X11_CONFIGURE_OFF=	--with-daemon
 X11_BUILD_DEPENDS=	protoc:devel/protobuf
 X11_LIB_DEPENDS=	libprotobuf.so:devel/protobuf
-X11_USE=		qt4=corelib,network,gui,qmake_build,linguisttools_build \
-			qt4=uic_build,moc_build,rcc_build,qtestlib_build
-X11_USES=		desktop-file-utils
+X11_USE=		qt=corelib,network,gui,qmake_build,linguisttools_build \
+			qt=uic_build,moc_build,rcc_build,qtestlib_build
+X11_USES=		desktop-file-utils qmake:no_env qt:4
 
 WALLET_CONFIGURE_ENABLE=wallet
 WALLET_CXXFLAGS=	-I${BDB_INCLUDE_DIR}
@@ -78,10 +79,6 @@ PLIST_SUB+=	EXECUTABLE_QT=bin/${QT_BINARY} \
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MX11}
-QT_NONSTANDARD=	yes
-.endif
-
 # tests will currently fail
 .if ${PORT_OPTIONS:MTEST}
 BROKEN=	automated testing fails
@@ -93,6 +90,9 @@ SUB_LIST+=	PORTNAME=${PORTNAME}
 SUB_FILES=	pkg-message
 USERS=		${PORTNAME}
 GROUPS=		${PORTNAME}
+.else
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 .endif
 
 .include <bsd.port.pre.mk>

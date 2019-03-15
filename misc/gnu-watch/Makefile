@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	watch
-DISTVERSION=	3.3.12
+DISTVERSION=	3.3.15
 CATEGORIES=	misc
 MASTER_SITES=	SF/procps-ng/Production \
 		LOCAL/ehaupt
@@ -18,6 +18,8 @@ GNU_CONFIGURE=	yes
 USES=		autoreconf gettext gmake libtool localbase:ldflags ncurses \
 		pkgconfig tar:xz
 USE_CSTD=	gnu99
+
+USE_HARDENING=	safestack
 
 OPTIONS_DEFINE=	UNICODE
 OPTIONS_DEFAULT=UNICODE

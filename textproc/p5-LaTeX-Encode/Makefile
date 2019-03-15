@@ -10,11 +10,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Encode characters for LaTeX formatting
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Readonly>=0:devel/p5-Readonly
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Readonly>=0:devel/p5-Readonly
 TEST_DEPENDS=	p5-Carp-Always>=0:devel/p5-Carp-Always
 
 NO_ARCH=	yes

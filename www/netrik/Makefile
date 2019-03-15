@@ -14,7 +14,7 @@ RUN_DEPENDS=	wget:ftp/wget
 USES=		gmake ncurses
 GNU_CONFIGURE=	yes
 
-NOPIE_PORTS=	yes
+USE_HARDENING=	pie:off
 
 PLIST_FILES=	bin/netrik \
 		man/man1/netrik.1.gz \

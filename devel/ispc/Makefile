@@ -2,38 +2,40 @@
 # $FreeBSD$
 
 PORTNAME=	ispc
-PORTVERSION=	1.9.1
 DISTVERSIONPREFIX=	v
+DISTVERSION=	1.10.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Intel's compiler for high-performance SIMD programming
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-BUILD_DEPENDS=	clang${CLANG_VERSION}:lang/clang${CLANG_VERSION}
+ONLY_FOR_ARCHS=		amd64 i386
+ONLY_FOR_ARCHS_REASON=	only available for x86 architectures
 
-USE_GITHUB=	yes
+LIB_DEPENDS=	libLLVM.so:devel/llvm${LLVM_DEFAULT}
 
 USES=		bison gmake python:build shebangfix
+USE_GITHUB=	yes
+
 ALL_TARGET=	default
 MAKE_ENV=	LLVM_HOME="${LOCALBASE}"
-CLANG_VERSION=	38
 SHEBANG_FILES=	*.py
 
-MAKE_ARGS=	LLVM_CONFIG=${LOCALBASE}/bin/llvm-config${CLANG_VERSION} \
-		CLANG=clang${CLANG_VERSION} CXX=clang++${CLANG_VERSION}
+MAKE_ARGS=	LLVM_CONFIG=${LOCALBASE}/bin/llvm-config${LLVM_DEFAULT} \
+		CLANG=clang${LLVM_DEFAULT} CXX=clang++${LLVM_DEFAULT}
 
 PLIST_FILES=	bin/ispc
-
-ONLY_FOR_ARCHS=		i386 amd64
-ONLY_FOR_ARCHS_REASON=	only available for x86 architectures
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|python|${PYTHON_CMD}| ; s|@$$(C|$$(C|' \
 		${WRKSRC}/Makefile
-	@${REINPLACE_CMD} -e '/alloca\.h/d' ${WRKSRC}/util.cpp
+	@${REINPLACE_CMD} -e '/alloca\.h/d' ${WRKSRC}/src/util.cpp
+	@${REINPLACE_CMD} -e '/^LLVM_LIBS=/s|$$| -lexecinfo|' \
+		${WRKSRC}/Makefile
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/ispc ${STAGEDIR}${PREFIX}/bin

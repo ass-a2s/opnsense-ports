@@ -2,10 +2,10 @@
 
 PORTNAME=	zbackup
 PORTVERSION=	1.4.4
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	sysutils
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Versatile deduplicating backup tool
 
 LICENSE=	GPLv2
@@ -13,9 +13,8 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libprotobuf.so:devel/protobuf \
 		liblzo2.so:archivers/lzo2
 
-BROKEN_powerpc64=	fails to compile: metadata_lite.h: class 'google::protobuf::internal::InternalMetadataWithArenaLite' does not have any field named 'InternalMetadataWithArenaBase'
-
-USES=		alias cmake ssl
+USES=		alias cmake:insource compiler:c++11-lang ssl
+USE_CXXSTD=	c++11
 USE_GITHUB=	yes
 
 OPTIONS_DEFINE=	DOCS

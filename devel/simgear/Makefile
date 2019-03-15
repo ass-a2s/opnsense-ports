@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	simgear
-PORTVERSION=	2017.1.3
-PORTREVISION=	5
+PORTVERSION=	2018.3.2
 CATEGORIES=	devel games
 MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
@@ -16,15 +15,22 @@ RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib
 LIB_DEPENDS=	libboost_thread.so:devel/boost-libs \
 		libosg.so:graphics/osg
 
+USES=		alias cmake compiler:c++11-lib cpe gl jpeg openal:al,alut \
+		tar:bzip2
 USE_XORG=	ice sm x11 xext xi xmu xt
 USE_GL=		gl glu glut
-USES=		alias cmake compiler:c++11-lib cpe jpeg openal:al,alut tar:bzip2
 
-.include <bsd.port.pre.mk>
+LDFLAGS_mips=	-losgDB
+LDFLAGS_mips64=	-losgDB
+LDFLAGS_powerpc64=	-losgDB
+LDFLAGS_powerpc=	-losgDB
+LDFLAGS_powerpcspe=	-losgDB
+LDFLAGS_sparc64=	-losgDB
 
-# Work around "'to_string' is not a member of 'std'" when building with Gcc < 6
-.if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} < 60
-CFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
+post-patch:
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
+	@${REINPLACE_CMD} -Ei .c++20 '/file|set_prop/s/version[[:>:]]/&.txt/' \
+		${WRKSRC}/CMakeLists.txt
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

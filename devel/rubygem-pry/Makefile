@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pry
-PORTVERSION=	0.10.4
+PORTVERSION=	0.12.2
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
@@ -13,12 +13,12 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	rubygem-coderay>=1.1.0:textproc/rubygem-coderay \
-		rubygem-method_source>=0.8.1:devel/rubygem-method_source \
-		rubygem-slop3>=3.4.0:devel/rubygem-slop3
+		rubygem-method_source>=0.9.0:devel/rubygem-method_source
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 PLIST_FILES=	bin/pry
 

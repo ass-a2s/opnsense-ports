@@ -3,7 +3,7 @@
 
 PORTNAME=	gtkada
 PORTVERSION=	3.14.2
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11-toolkits
 PKGNAMESUFFIX=	3
 
@@ -19,7 +19,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libdrm.so:graphics/libdrm \
 		libatk-bridge-2.0.so:accessibility/at-spi2-atk \
 		libepoxy.so:graphics/libepoxy \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libffi.so:devel/libffi \
 		libpcre.so:devel/pcre \
 		libexpat.so:textproc/expat2 \
@@ -43,8 +43,7 @@ ALL_TARGET=	tools static relocatable
 PORTDOCS=	gtkada_ug
 LDFLAGS+=	-L${LOCALBASE}/lib
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
+USE_HARDENING=	pie:off relro:off
 
 MAKE_ARGS=	PROCESSORS=${MAKE_JOBS_NUMBER}
 

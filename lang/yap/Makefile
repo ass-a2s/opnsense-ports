@@ -3,7 +3,7 @@
 
 PORTNAME=	yap
 PORTVERSION=	6.2.2
-PORTREVISION=	5
+PORTREVISION=	8
 CATEGORIES=	lang
 MASTER_SITES=	http://www.dcc.fc.up.pt/~vsc/Yap/
 
@@ -14,6 +14,8 @@ LIB_DEPENDS=	libgmp.so:math/gmp
 
 PORTSCOUT=	limit:^6\.2\.
 CONFLICTS=	yap-6.3.*
+
+USE_HARDENING=	pie:off relro:off
 
 OPTIONS_DEFINE=	DOCS
 
@@ -28,23 +30,11 @@ CONFIGURE_ARGS=	--enable-max-performance \
 		--disable-myddas
 USES=		gmake localbase readline
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
 DOCSDIR=	${PREFIX}/share/doc/Yap
 DATADIR=	${PREFIX}/share/Yap
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == i386
-# H/absmi.h:77:23: error: global register variables are not supported
-USES+=		compiler:gcc-c++11-lib
-.endif
-
-post-build:
-.if empty(PORT_OPTIONS:MDOCS)
+post-build-DOCS-off:
 	# prevent the instalation of three docs files
 	${REINPLACE_CMD} -e '559,562d' ${WRKSRC}/Makefile
-.endif
 
 .include <bsd.port.mk>

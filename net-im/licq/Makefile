@@ -1,10 +1,12 @@
+#	$FreeBSD: head/ports-mgmt/pkg_jail/files/pkg_update 411390 2016-03-19 11:00:57Z dinoex 2
 # Created by: Brian Feldman & Matt Heckaman
 # $FreeBSD$
 
 PORTNAME=	base
-PORTVERSION=	${LICQ_VER}
-PORTREVISION=	6
+PORTVERSION=	1.9.0
+PORTREVISION=	0
 CATEGORIES=	net-im
+PKGNAMEPREFIX=	licq-
 PKGNAMESUFFIX=	${SOCKS_SUFFIX}${PKGNAMESUFFIX2}
 
 MAINTAINER=	dinoex@FreeBSD.org
@@ -17,9 +19,12 @@ LIB_DEPENDS=	libboost_regex.so:devel/boost-libs
 BROKEN_sparc64=		Does not build: fails to link
 
 USES=		cmake:noninja iconv ssl
-WRKSRC=		${WRKDIR}/${DISTNAME}
-LICQ_PORT?=	net-im/licq
-
+USE_CXXSTD=	c++98
+USE_GITHUB=	yes
+GH_ACCOUNT=	licq-im
+GH_PROJECT=	licq
+GH_TAGNAME=	f271d55
+WRKSRC=		${WRKDIR}/${GH_PROJECT}-${GH_TAGNAME}/licq
 CFLAGS+=	-I${LOCALBASE}/include
 CXXFLAGS+=	-DGTEST_USE_OWN_TR1_TUPLE
 
@@ -34,9 +39,9 @@ GPGME_LIB_DEPENDS=	libgpgme.so:security/gpgme \
 			libassuan.so:security/libassuan \
 			libgpg-error.so:security/libgpg-error
 
-.include <bsd.port.options.mk>
+LICQ_PORT?=	net-im/licq
 
-.include "${PORTSDIR}/${LICQ_PORT}/Makefile.inc"
+.include <bsd.port.options.mk>
 
 pre-configure:
 	${REINPLACE_CMD} -e 's=!/bin/bash=!${LOCALBASE}/bin/bash=' \

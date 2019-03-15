@@ -3,6 +3,7 @@
 
 PORTNAME=	trytond28_carrier_weight
 PORTVERSION=	2.8.2
+PORTREVISION=	1
 CATEGORIES=	finance python
 MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/${PORTVERSION:R}/
@@ -18,7 +19,7 @@ RUN_DEPENDS=	trytond28_product_measurements>=2.8.0:finance/trytond28_product_mea
 
 CONFLICTS=	trytond_carrier_weight-2.[46].*
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

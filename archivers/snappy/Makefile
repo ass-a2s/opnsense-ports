@@ -10,17 +10,16 @@ COMMENT=	Fast compressor/decompressor library
 
 LICENSE=	BSD3CLAUSE
 
-OPTIONS_DEFINE=	DOCS
-
-USES=		autoreconf libtool pathfix pkgconfig
+USES=		autoreconf compiler:c++11-lang libtool pathfix pkgconfig
 CONFIGURE_ARGS=	--disable-gtest
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
 CFLAGS+=	-DNDEBUG
 USE_GITHUB=	yes
 GH_ACCOUNT=	google
+TEST_TARGET=	check
 
-BROKEN_sparc64=	Does not compile on sparc64
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${LOCALBASE}/lib/libsnappy.so.1.1.6

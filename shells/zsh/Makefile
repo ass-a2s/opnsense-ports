@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	zsh
-DISTVERSION=	5.4.2
+DISTVERSION=	5.7.1
 CATEGORIES=	shells
-MASTER_SITES=	http://www.zsh.org/pub/ \
+MASTER_SITES=	https://www.zsh.org/pub/ \
 		SF \
-		http://www.zsh.org/pub/:doc \
+		https://www.zsh.org/pub/:doc \
 		SF/${PORTNAME}/${PORTNAME}-doc/${PORTVERSION}:doc
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 
@@ -20,9 +20,9 @@ LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 MAKE_JOBS_UNSAFE=	yes
 
-USES=		autoreconf iconv ncurses shebangfix tar:xz
+USE_HARDENING=	safestack
 
-USE_HARDENING=	pie relro safestack
+USES=		autoreconf iconv ncurses shebangfix tar:xz
 
 SHEBANG_LANG=	zsh
 zsh_OLD_CMD=	zsh	# shebang appears as /bin/zsh and just zsh
@@ -35,7 +35,8 @@ CONFIGURE_ARGS=	--with-tcsetpgrp \
 		--enable-multibyte \
 		--enable-zsh-secure-free \
 		--sysconfdir=${PREFIX}/etc
-CONFIGURE_ENV+=	zsh_cv_sys_path_dev_fd=no
+CONFIGURE_ENV+=	zsh_cv_sys_path_dev_fd=no \
+		ac_cv_header_sys_capability_h=no
 
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include -DBOOL_DEFINED
@@ -89,6 +90,7 @@ post-patch:
 	@${REINPLACE_CMD} -e '/LIBS/s|-lrt||' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e "s|/etc/|${LOCALBASE}/etc/|" \
 		${WRKSRC}/Functions/MIME/zsh-mime-setup
+	${RM} ${WRKSRC}/Doc/help.txt
 
 post-patch-STATIC-on:
 	@${REINPLACE_CMD} -e "s|link=dynamic|link=either|" \
@@ -108,6 +110,7 @@ post-install:
 	(${STAGEDIR}${PREFIX}/bin/zsh -fc ' \
 		setopt extendedglob nomark_dirs; \
 		cd ${STAGEDIR}/${DATADIR}/${ZSH_VER} ; \
+		rm -f functions/**/*.orig ; \
 		for i in functions/**/*(/) ; do \
 			zcompile -U -M $$i.zwc $$i/*~*.zwc(^/) ; \
 			${CHMOD} 644 $$i.zwc ; \

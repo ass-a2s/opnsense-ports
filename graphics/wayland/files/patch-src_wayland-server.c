@@ -1,4 +1,4 @@
---- src/wayland-server.c.orig	2017-02-07 22:59:06 UTC
+--- src/wayland-server.c.orig	2018-04-09 17:19:26 UTC
 +++ src/wayland-server.c
 @@ -25,6 +25,8 @@
  
@@ -21,7 +21,7 @@
  #include "wayland-util.h"
  #include "wayland-private.h"
  #include "wayland-server.h"
-@@ -79,7 +86,13 @@ struct wl_client {
+@@ -77,7 +84,13 @@ struct wl_client {
  	struct wl_list link;
  	struct wl_map objects;
  	struct wl_priv_signal destroy_signal;
@@ -35,7 +35,21 @@
  	int error;
  	struct wl_priv_signal resource_created_signal;
  };
-@@ -503,10 +516,20 @@ wl_client_create(struct wl_display *disp
+@@ -303,7 +316,13 @@ wl_resource_post_error(struct wl_resource *resource,
+ static void
+ destroy_client_with_error(struct wl_client *client, const char *reason)
+ {
++#ifdef HAVE_SYS_UCRED_H
++	/* FreeBSD */
++	wl_log("%s\n", reason);
++#else
++	/* Linux */
+ 	wl_log("%s (pid %u)\n", reason, client->ucred.pid);
++#endif
+ 	wl_client_destroy(client);
+ }
+ 
+@@ -517,10 +536,20 @@ wl_client_create(struct wl_display *display, int fd)
  	if (!client->source)
  		goto err_client;
  
@@ -56,13 +70,13 @@
  
  	client->connection = wl_connection_create(fd);
  	if (client->connection == NULL)
-@@ -560,12 +583,23 @@ WL_EXPORT void
+@@ -574,12 +603,23 @@ WL_EXPORT void
  wl_client_get_credentials(struct wl_client *client,
  			  pid_t *pid, uid_t *uid, gid_t *gid)
  {
 +#ifdef HAVE_SYS_UCRED_H
 +	/* FreeBSD */
-+	if (pid)
+ 	if (pid)
 +		*pid = 0; /* FIXME: not defined on FreeBSD */
 +	if (uid)
 +		*uid = client->xucred.cr_uid;
@@ -70,7 +84,7 @@
 +		*gid = client->xucred.cr_gid;
 +#else
 +	/* Linux */
- 	if (pid)
++	if (pid)
  		*pid = client->ucred.pid;
  	if (uid)
  		*uid = client->ucred.uid;

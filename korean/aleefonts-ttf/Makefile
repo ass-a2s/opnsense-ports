@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	aleefonts
-PORTVERSION=	13.1
+PORTVERSION=	13.3
+PORTREVISION=	1
 CATEGORIES=	korean x11-fonts
 MASTER_SITES=	DEBIAN/pool/main/f/fonts-alee
 PKGNAMESUFFIX=	-ttf

@@ -1,4 +1,3 @@
-# Created by: Jason W. Bacon <bacon@smithers.neuro.mcw.edu>
 # $FreeBSD$
 
 PORTNAME=	vtkmpeg2encode
@@ -17,7 +16,7 @@ LICENSE_NAME=	MPEG-2 license
 LICENSE_FILE=	${WRKSRC}/mpeg2enc.h
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
-USES=		cmake
+USES=		cmake:insource
 USE_LDCONFIG=	yes
 CMAKE_ARGS?=	-DBUILD_SHARED_LIBS:BOOL=ON
 VTK_VERSION=	5.10.1

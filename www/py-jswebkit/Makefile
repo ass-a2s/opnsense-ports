@@ -3,7 +3,7 @@
 
 PORTNAME=	jswebkit
 PORTVERSION=	0.0.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	www python
 MASTER_SITES=	http://archive.ubuntu.com/ubuntu/pool/universe/p/python-jswebkit/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -12,12 +12,13 @@ DISTNAME=	python-${PORTNAME}_${PORTVERSION}.orig
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	WebKit/JavaScriptCore Python bindings
 
-BUILD_DEPENDS=	cython:lang/cython
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 LIB_DEPENDS=	libwebkitgtk-1.0.so:www/webkit-gtk2
 
-USES=		pkgconfig python:2
-USE_PYTHON=	distutils autoplist
+DEPRECATED=	Uses webkit-gtk2 which has security issues
+EXPIRATION_DATE=2019-03-24
+
+USES=		pkgconfig python:2.7
+USE_PYTHON=	distutils autoplist cython cython_run
 WRKSRC=		${WRKDIR}/python-${PORTNAME}-${PORTVERSION}
 
 post-install:

@@ -6,7 +6,7 @@ PKGNAMESUFFIX=	3
 
 COMMENT=	Python 2 bindings for GObject
 
-SLAVE_PORT=	python2
+SLAVE_PORT=	python
 
 MASTERDIR=	${.CURDIR}/../../devel/pygobject3-common
 PLIST=		${.CURDIR}/pkg-plist

@@ -2,15 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	monit
-PORTVERSION=	5.23.0
+PORTVERSION=	5.25.3
 CATEGORIES=	sysutils
-MASTER_SITES=	http://www.mmonit.com/monit/dist/
+MASTER_SITES=	https://mmonit.com/monit/dist/
 
 MAINTAINER=	martinp@tildeslash.com
 COMMENT=	Unix system management and proactive monitoring
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+USE_HARDENING=	safestack
 
 GNU_CONFIGURE=	yes
 USES=		bison gmake

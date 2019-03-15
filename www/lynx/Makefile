@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	lynx
-PORTVERSION=	2.8.8.2
-PORTREVISION=	6
+PORTVERSION=	2.8.9.1
 PORTEPOCH=	1
 CATEGORIES=	www ipv6
 MASTER_SITES=	http://invisible-mirror.net/archives/lynx/tarballs/ \
@@ -21,7 +20,6 @@ CONFLICTS=	lynx-2.8.[8-9]d*
 
 USES=		cpe ncurses shebangfix tar:bzip2
 SHEBANG_FILES=	samples/mailto-form.pl
-WRKSRC=		${WRKDIR}/${PORTNAME}2-8-8
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS+=--with-zlib --libdir="${PREFIX}/etc" \
 		--enable-nsl-fork --enable-persistent-cookies \
@@ -30,7 +28,7 @@ CONFIGURE_ARGS+=--with-zlib --libdir="${PREFIX}/etc" \
 CPE_VERSION=	${PORTVERSION:R}
 CPE_UPDATE=	rel.${PORTVERSION:E}
 
-EXPLICIT_SAFESTACK=	yes
+USE_HARDENING=	safestack
 
 MAKEFILE=	makefile
 L_HELP=		${PREFIX}/share/lynx_help
@@ -66,10 +64,4 @@ post-install-DOCS-on:
 	(cd ${STAGEDIR}${L_HELP} && ${LN} -sf ../doc/lynx/${doc} .)
 .endfor
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MSSL} && ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

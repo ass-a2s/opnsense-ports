@@ -2,6 +2,7 @@
 
 PORTNAME=	iproute
 PORTVERSION=	1.7.1
+PORTREVISION=	4
 CATEGORIES=	net haskell
 
 MAINTAINER=	haskell@FreeBSD.org

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	nghttp2
-PORTVERSION=	1.25.0
+PORTVERSION=	1.37.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www net
 
@@ -15,22 +15,21 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	libnghttp2>=${PORTVERSION}:www/libnghttp2
 LIB_DEPENDS=	libnghttp2.so:www/libnghttp2
 
-OPTIONS_DEFINE=	APP ASIO DOCS EXAMPLES HPACK SPDY
-OPTIONS_DEFAULT=APP HPACK SPDY
+OPTIONS_DEFINE=	APP ASIO DOCS EXAMPLES HPACK
+OPTIONS_DEFAULT=APP HPACK
 OPTIONS_SUB=	yes
 APP_DESC=	Build h2load, nghttp, nghttpd and nghttpx
-SPDY_DESC=	Enable SPDY in h2load and nghttpx
-SPDY_IMPLIES=	APP
+
+USES=		autoreconf compiler:c++14-lang gmake libtool localbase pathfix pkgconfig ssl
 
 CONFIGURE_ARGS=	--disable-python-bindings --with-jemalloc
 CONFIGURE_ENV=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
 		OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto -lssl"
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
-USE_CXXSTD=	c++11
+USE_CXXSTD=	c++14
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	nghttpx
-USES=		autoreconf compiler:c++11-lib gmake libtool localbase pathfix pkgconfig ssl
 
 PORTDATA=	fetch-ocsp-response
 PORTDOCS=	*
@@ -56,11 +55,6 @@ EXAMPLES_LIB_DEPENDS=	libevent_openssl.so:devel/libevent
 HPACK_BUILD_DEPENDS=	jansson>=2.5:devel/jansson
 HPACK_CONFIGURE_ENABLE=	hpack-tools
 HPACK_LIB_DEPENDS=	libjansson.so:devel/jansson
-SPDY_BUILD_DEPENDS=	spdylay>=1.3.2:www/spdylay
-SPDY_CONFIGURE_WITH=	spdylay
-SPDY_LIB_DEPENDS=	libspdylay.so:www/spdylay
-
-.include <bsd.port.options.mk>
 
 post-patch:
 	@${REINPLACE_CMD} -e '/^SUBDIRS = / s| lib||' ${WRKSRC}/Makefile.am
@@ -72,11 +66,6 @@ post-configure:
 	@${MKDIR} ${WRKSRC}/lib/.libs/
 	@${CP} ${LOCALBASE}/lib/libnghttp2.so* ${WRKSRC}/lib/.libs/
 	@cd ${WRKSRC}/lib/.libs/ && ${AR} x ${LOCALBASE}/lib/libnghttp2.a
-# Disable thread_local support for hosts without __cxa_thread_atexit()
-# See PR/192320 for details
-.if ${OPSYS} == FreeBSD && ((${OSVERSION} < 1003506) || (${OSVERSION} == 1100500))
-	@${REINPLACE_CMD} -e '/HAVE_THREAD_LOCAL/d' ${WRKSRC}/config.h
-.endif
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/nghttpx/

@@ -1,12 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	wpa_supplicant
-PORTVERSION=	2.6
-PORTREVISION=	1
+PORTVERSION=	2.7
 CATEGORIES=	security net
-MASTER_SITES=	http://w1.fi/releases/
+MASTER_SITES=	https://w1.fi/releases/
 
-MAINTAINER=	ports@FreeBSD.org
+PATCH_SITES=	https://w1.fi/security/2018-1/:2018_1
+
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Supplicant (client) for WPA/802.1x protocols
 
 LICENSE=	BSD3CLAUSE
@@ -116,47 +117,47 @@ post-patch:
 	# Set driver(s)
 .for item in BSD NDIS WIRED ROBOSWITCH TEST NONE
 .  if ${PORT_OPTIONS:M${item}}
-	@${ECHO} CONFIG_DRIVER_${item}=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_DRIVER_${item}=y >> ${CFG}
 .  endif
 .endfor
 	# Set EAP protocol(s)
 .for item in MD5 MSCHAPv2 TLS PEAP TTLS FAST GTC OTP PSK PWD PAX LEAP SIM \
 	AKA AKA_PRIME SAKE GPSK TNC IKEv2 EKE
 .  if ${PORT_OPTIONS:M${item}}
-	@${ECHO} CONFIG_EAP_${item:tu}=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_EAP_${item:tu}=y >> ${CFG}
 .  endif
 .endfor
 .if ${PORT_OPTIONS:MSIM} || ${PORT_OPTIONS:MAKA} || ${PORT_OPTIONS:MAKA_PRIME}
-	@${ECHO} CONFIG_PCSC=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_PCSC=y >> ${CFG}
 .endif
 .for simple in WPS WPS_ER WPS_NFC PKCS12 SMARTCARD HT_OVERRIDES \
 	VHT_OVERRIDES TLSV12 IEEE80211AC IEEE80211N IEEE80211R IEEE80211W \
 	INTERWORKING DEBUG_FILE DEBUG_SYSLOG HS20 NO_ROAMING PRIVSEP P2P TDLS
 .  if ${PORT_OPTIONS:M${simple}}
-	@${ECHO} CONFIG_${simple}=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_${simple}=y >> ${CFG}
 .  endif
 .endfor
 .for item in READLINE PEERKEY
-	@${ECHO} CONFIG_${item}=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_${item}=y >> ${CFG}
 .endfor
 .if ${PORT_OPTIONS:MIEEE80211AC} || ${PORT_OPTIONS:MIEEE80211N}
-	@${ECHO} CONFIG_AP=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_AP=y >> ${CFG}
 .endif
 .if ${PORT_OPTIONS:MGPSK}
 	# GPSK desired, assume highest SHA desired too
-	@${ECHO} CONFIG_EAP_GPSK_SHA256=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_EAP_GPSK_SHA256=y >> ${CFG}
 .endif
 .if ${PORT_OPTIONS:MWPS_NOREG}
-	@${ECHO} CONFIG_WPS_REG_DISABLE_OPEN=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_WPS_REG_DISABLE_OPEN=y >> ${CFG}
 .endif
 .if ${PORT_OPTIONS:MDELAYED_MIC}
-	@${ECHO} CONFIG_DELAYED_MIC_ERROR_REPORT=y >> ${CFG}
+	@${ECHO_CMD} CONFIG_DELAYED_MIC_ERROR_REPORT=y >> ${CFG}
 .endif
-	@${ECHO} CONFIG_OS=unix >> ${CFG}
-	@${ECHO} CONFIG_CTRL_IFACE=unix >> ${CFG}
-	@${ECHO} CONFIG_BACKEND=file >> ${CFG}
-	@${ECHO} CONFIG_L2_PACKET=freebsd >> ${CFG}
-	@${ECHO} CONFIG_TLS=openssl >> ${CFG}
+	@${ECHO_CMD} CONFIG_OS=unix >> ${CFG}
+	@${ECHO_CMD} CONFIG_CTRL_IFACE=unix >> ${CFG}
+	@${ECHO_CMD} CONFIG_BACKEND=file >> ${CFG}
+	@${ECHO_CMD} CONFIG_L2_PACKET=freebsd >> ${CFG}
+	@${ECHO_CMD} CONFIG_TLS=openssl >> ${CFG}
 
 do-install:
 	(cd ${BUILD_WRKSRC} && ${INSTALL_PROGRAM} wpa_supplicant wpa_cli \

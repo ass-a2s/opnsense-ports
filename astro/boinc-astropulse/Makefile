@@ -3,37 +3,39 @@
 
 PORTNAME=	boinc-astropulse
 PORTVERSION=	6.01
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	astro
 MASTER_SITES=	LOCAL/rene
 DISTNAME=	astropulse-svn-1702 # modified archive, see leftout in top directory
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Astropulse for BOINC
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+BROKEN_armv6=		fails to compile: call to abs is ambiguous
+
 BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:math/fftw3 \
-		${NONEXISTENT}:astro/boinc-setiathome-v7:patch
+		${NONEXISTENT}:astro/boinc-setiathome:configure
 RUN_DEPENDS=	boinc_client:net/boinc-client
 LIB_DEPENDS=	libfftw3f.so:math/fftw3-float
 
-BROKEN_armv6=		fails to compile: call to abs is ambiguous
+USES=		autoreconf gmake libtool pkgconfig tar:xz
 
 GNU_CONFIGURE=	yes
-USES=		autoreconf gmake libtool pkgconfig tar:xz
+
 WRKSRC_SUBDIR=		client
 
 CPPFLAGS+=	-I${LOCALBASE}/include/boinc -I${LOCALBASE}/include
-LIBS+=		-L${LOCALBASE}/lib
+LIBS+=		-L${LOCALBASE}/lib -lexecinfo
 
 # these must match settings in ${PORTSDIR}/net/boinc-client/Makefile
 BOINC_CLIENT_USER?=	boinc
 BOINC_CLIENT_GROUP?=	boinc
 BOINC_CLIENT_HOME?=	/var/db/boinc
 
-SETI_WORK!=	cd ${.CURDIR}/../boinc-setiathome-v7 && ${MAKE} -V WRKSRC
+SETI_WORK!=	cd ${.CURDIR}/../boinc-setiathome && ${MAKE} -V WRKSRC
 CONFIGURE_ENV=	BOINCDIR="${NONEXISTENT}" \
 		BOINC_DIR="${NONEXISTENT}" \
 		SETI_BOINC_DIR="${SETI_WORK}"
@@ -61,7 +63,7 @@ OPTIONS_SUB=	yes
 
 X11_DESC=		Build screensaver (requires net/boinc-client with X11)
 X11_BUILD_DEPENDS=	${LOCALBASE}/lib/libboinc_graphics2.a:net/boinc-client
-X11_USES=		jpeg
+X11_USES=		gl jpeg
 X11_USE=		GL=gl,glu,glut \
 			XORG=ice,sm,x11,xau,xcb,xext,xi,xdamage,xdmcp,xfixes,xmu,xt,xxf86vm
 X11_CONFIGURE_ENABLE=	graphics

@@ -2,8 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	django-mptt
-PORTVERSION=	0.8.7
+PORTVERSION=	0.9.1
 CATEGORIES=	www python
+MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	cs@FreeBSD.org
@@ -12,15 +13,14 @@ COMMENT=	Utilities for implementing Modified Preorder Tree Traversal in Django
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/django/bin/django-admin.py:www/py-django18 # >= 1.8
-
-CONFLICTS_INSTALL= py*-django-happenings
-
-USE_GITHUB=	yes
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}django111>=1.11:www/py-django111@${PY_FLAVOR}\
+		${PYTHON_PKGNAMEPREFIX}django-js-asset>0:www/py-django-js-asset@${PY_FLAVOR}
 
 USES=		gettext python
 USE_PYTHON=	autoplist distutils
 
-NO_ARCH=	yes
+NO_ARCH=		yes
+CONFLICTS_INSTALL=	${PYTHON_PKGNAMEPREFIX}django-happenings \
+			${PYTHON_PKGNAMEPREFIX}dj21-django-mptt
 
 .include <bsd.port.mk>

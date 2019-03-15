@@ -68,6 +68,8 @@ __FBSDID("$FreeBSD$");
  * Priority comparison code by Harlan Stenn.
  */
 
+/* Maximum number of characters in time of last occurrence */
+#define	MAXDATELEN	16
 #define	MAXLINE		1024		/* maximum line length */
 #define	MAXSVLINE	MAXLINE		/* maximum saved line length */
 #define	DEFUPRI		(LOG_USER|LOG_NOTICE)
@@ -79,15 +81,15 @@ __FBSDID("$FreeBSD$");
 #include <sys/param.h>
 #include <sys/ioctl.h>
 #include <sys/mman.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <sys/socket.h>
 #include <sys/queue.h>
+#include <sys/resource.h>
+#include <sys/socket.h>
+#include <sys/stat.h>
+#include <sys/syslimits.h>
+#include <sys/time.h>
 #include <sys/uio.h>
 #include <sys/un.h>
-#include <sys/time.h>
-#include <sys/resource.h>
-#include <sys/syslimits.h>
+#include <sys/wait.h>
 #include <sys/types.h>
 
 #include <netinet/in.h>
@@ -95,6 +97,7 @@ __FBSDID("$FreeBSD$");
 #include <arpa/inet.h>
 
 #include <ctype.h>
+#include <dirent.h>
 #include <err.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -118,6 +121,8 @@ __FBSDID("$FreeBSD$");
 const char	*ConfFile = _PATH_LOGCONF;
 const char	*PidFile = _PATH_LOGPID;
 const char	ctty[] = _PATH_CONSOLE;
+static const char	include_str[] = "include";
+static const char	include_ext[] = ".conf";
 
 #define	dprintf		if (Debug) printf
 
@@ -165,7 +170,7 @@ STAILQ_HEAD(, funix) funixes =	{ &funix_default,
  * This structure represents the files that will have log
  * copies printed.
  * We require f_file to be valid if f_type is F_FILE, F_CONSOLE, F_TTY
- * or if f_type if F_PIPE and f_pid > 0.
+ * or if f_type is F_PIPE and f_pid > 0.
  */
 
 struct filed {
@@ -194,7 +199,7 @@ struct filed {
 		} f_pipe;
 	} f_un;
 	char	f_prevline[MAXSVLINE];		/* last message logged */
-	char	f_lasttime[16];			/* time of last occurrence */
+	char	f_lasttime[MAXDATELEN];		/* time of last occurrence */
 	char	f_prevhost[MAXHOSTNAMELEN];	/* host from which recd. */
 	int	f_prevpri;			/* pri of f_prevline */
 	int	f_prevlen;			/* length of f_prevline */
@@ -357,9 +362,25 @@ close_filed(struct filed *f)
 	if (f == NULL || f->f_file == -1)
 		return;
 
+	switch (f->f_type) {
+	case F_FORW:
+            if (f->f_un.f_forw.f_addr) {
+                freeaddrinfo(f->f_un.f_forw.f_addr);
+                f->f_un.f_forw.f_addr = NULL;
+            }
+            /*FALLTHROUGH*/
+
+	case F_FILE:
+	case F_TTY:
+	case F_CONSOLE:
+		f->f_type = F_UNUSED;
+		break;
+	case F_PIPE:
+		f->f_un.f_pipe.f_pid = 0;
+		break;
+	}
 	(void)close(f->f_file);
 	f->f_file = -1;
-	f->f_type = F_UNUSED;
 }
 
 int
@@ -621,10 +642,7 @@ main(int argc, char *argv[])
 		dprintf("sending on inet and/or inet6 socket\n");
 	}
 
-	if ((fklog = open(_PATH_KLOG, O_RDONLY, 0)) >= 0)
-		if (fcntl(fklog, F_SETFL, O_NONBLOCK) < 0)
-			fklog = -1;
-	if (fklog < 0)
+	if ((fklog = open(_PATH_KLOG, O_RDONLY|O_NONBLOCK, 0)) < 0)
 		dprintf("can't open %s (%d)\n", _PATH_KLOG, errno);
 
 	/* tuck my process id away */
@@ -657,7 +675,7 @@ main(int argc, char *argv[])
 			fdsrmax = fx->s;
 
 	fdsr = (fd_set *)calloc(howmany(fdsrmax+1, NFDBITS),
-	    sizeof(fd_mask));
+	    sizeof(*fdsr));
 	if (fdsr == NULL)
 		errx(1, "calloc fd_set");
 
@@ -668,7 +686,7 @@ main(int argc, char *argv[])
 			die(WantDie);
 
 		bzero(fdsr, howmany(fdsrmax+1, NFDBITS) *
-		    sizeof(fd_mask));
+		    sizeof(*fdsr));
 
 		if (fklog != -1)
 			FD_SET(fklog, fdsr);
@@ -974,7 +992,7 @@ logmsg(int pri, const char *msg, const char *from, int flags)
 	 * Check to see if msg looks non-standard.
 	 */
 	msglen = strlen(msg);
-	if (msglen < 16 || msg[3] != ' ' || msg[6] != ' ' ||
+	if (msglen < MAXDATELEN || msg[3] != ' ' || msg[6] != ' ' ||
 	    msg[9] != ':' || msg[12] != ':' || msg[15] != ' ')
 		flags |= ADDDATE;
 
@@ -983,8 +1001,8 @@ logmsg(int pri, const char *msg, const char *from, int flags)
 		timestamp = ctime(&now) + 4;
 	} else {
 		timestamp = msg;
-		msg += 16;
-		msglen -= 16;
+		msg += MAXDATELEN;
+		msglen -= MAXDATELEN;
 	}
 
 	/* skip leading blanks */
@@ -1344,18 +1362,16 @@ fprintlog(struct filed *f, int flags, const char *msg)
 		if (f->f_un.f_pipe.f_pid == 0) {
 			if ((f->f_file = p_open(f->f_un.f_pipe.f_pname,
 						&f->f_un.f_pipe.f_pid)) < 0) {
-				f->f_type = F_UNUSED;
 				logerror(f->f_un.f_pipe.f_pname);
 				break;
 			}
 		}
 		if (writev(f->f_file, iov, IOV_SIZE) < 0) {
 			int e = errno;
+
 			close_filed(f);
-			if (f->f_un.f_pipe.f_pid > 0)
-				deadq_enter(f->f_un.f_pipe.f_pid,
-					    f->f_un.f_pipe.f_pname);
-			f->f_un.f_pipe.f_pid = 0;
+			deadq_enter(f->f_un.f_pipe.f_pid,
+				    f->f_un.f_pipe.f_pname);
 			errno = e;
 			logerror(f->f_un.f_pipe.f_pname);
 		}
@@ -1483,7 +1499,6 @@ reapchild(int signo __unused)
 			if (f->f_type == F_PIPE &&
 			    f->f_un.f_pipe.f_pid == pid) {
 				close_filed(f);
-				f->f_un.f_pipe.f_pid = 0;
 				log_deadchild(pid, status,
 					      f->f_un.f_pipe.f_pname);
 				break;
@@ -1585,10 +1600,8 @@ die(int signo)
 		/* flush any pending output */
 		if (f->f_prevcount)
 			fprintlog(f, 0, (char *)NULL);
-		if (f->f_type == F_PIPE && f->f_un.f_pipe.f_pid > 0) {
+		if (f->f_type == F_PIPE && f->f_un.f_pipe.f_pid > 0)
 			close_filed(f);
-			f->f_un.f_pipe.f_pid = 0;
-		}
 	}
 	Initialized = was_initialized;
 	if (signo) {
@@ -1604,114 +1617,46 @@ die(int signo)
 	exit(1);
 }
 
-/*
- *  INIT -- Initialize syslogd from configuration table
- */
-static void
-init(int signo)
+static int
+configfiles(const struct dirent *dp)
 {
-	int i;
-	FILE *cf;
-	struct filed *f, *next, **nextp;
-	char *p;
+	const char *p;
+	size_t ext_len;
+
+	if (dp->d_name[0] == '.')
+		return (0);
+
+	ext_len = sizeof(include_ext) -1;
+
+	if (dp->d_namlen <= ext_len)
+		return (0);
+
+	p = &dp->d_name[dp->d_namlen - ext_len];
+	if (strcmp(p, include_ext) != 0)
+		return (0);
+
+	return (1);
+}
+
+static struct filed **
+readconfigfile(FILE *cf, struct filed **nextp, int allow_includes)
+{
+	FILE *cf2;
+	struct filed *f;
+	struct dirent **ent;
 	char cline[LINE_MAX];
- 	char prog[LINE_MAX];
 	char host[MAXHOSTNAMELEN];
-	char oldLocalHostName[MAXHOSTNAMELEN];
-	char hostMsg[2*MAXHOSTNAMELEN+40];
-	char bootfileMsg[LINE_MAX];
-
-	dprintf("init\n");
-
-	/*
-	 * Load hostname (may have changed).
-	 */
-	if (signo != 0)
-		(void)strlcpy(oldLocalHostName, LocalHostName,
-		    sizeof(oldLocalHostName));
-	if (gethostname(LocalHostName, sizeof(LocalHostName)))
-		err(EX_OSERR, "gethostname() failed");
-	if ((p = strchr(LocalHostName, '.')) != NULL) {
-		*p++ = '\0';
-		LocalDomain = p;
-	} else {
-		LocalDomain = "";
-	}
-
-	/*
-	 * Load / reload timezone data (in case it changed).
-	 *
-	 * Just calling tzset() again does not work, the timezone code
-	 * caches the result.  However, by setting the TZ variable, one
-	 * can defeat the caching and have the timezone code really
-	 * reload the timezone data.  Respect any initial setting of
-	 * TZ, in case the system is configured specially.
-	 */
-	dprintf("loading timezone data via tzset()\n");
-	if (getenv("TZ")) {
-		tzset();
-	} else {
-		setenv("TZ", ":/etc/localtime", 1);
-		tzset();
-		unsetenv("TZ");
-	}
-
-	/*
-	 *  Close all open log files.
-	 */
-	Initialized = 0;
-	for (f = Files; f != NULL; f = next) {
-		/* flush any pending output */
-		if (f->f_prevcount)
-			fprintlog(f, 0, (char *)NULL);
-
-		switch (f->f_type) {
-		case F_FILE:
-		case F_FORW:
-		case F_CONSOLE:
-		case F_TTY:
-			close_filed(f);
-			break;
-		case F_PIPE:
-			if (f->f_un.f_pipe.f_pid > 0) {
-				close_filed(f);
-				deadq_enter(f->f_un.f_pipe.f_pid,
-					    f->f_un.f_pipe.f_pname);
-			}
-			f->f_un.f_pipe.f_pid = 0;
-			break;
-		}
-		next = f->f_next;
-		if (f->f_program) free(f->f_program);
-		if (f->f_host) free(f->f_host);
-		free((char *)f);
-	}
-	Files = NULL;
-	nextp = &Files;
-
-	/* open the configuration file */
-	if ((cf = fopen(ConfFile, "r")) == NULL) {
-		dprintf("cannot open %s\n", ConfFile);
-		*nextp = (struct filed *)calloc(1, sizeof(*f));
-		if (*nextp == NULL) {
-			logerror("calloc");
-			exit(1);
-		}
-		cfline("*.ERR\t/dev/console", *nextp, "*", "*");
-		(*nextp)->f_next = (struct filed *)calloc(1, sizeof(*f));
-		if ((*nextp)->f_next == NULL) {
-			logerror("calloc");
-			exit(1);
-		}
-		cfline("*.PANIC\t*", (*nextp)->f_next, "*", "*");
-		Initialized = 1;
-		return;
-	}
+	char prog[LINE_MAX];
+	char file[MAXPATHLEN];
+	char *p, *tmp;
+	int i, nents;
+	size_t include_len;
 
 	/*
 	 *  Foreach line in the conf table, open that file.
 	 */
 	f = NULL;
+	include_len = sizeof(include_str) -1;
 	(void)strlcpy(host, "*", sizeof(host));
 	(void)strlcpy(prog, "*", sizeof(prog));
 	while (fgets(cline, sizeof(cline), cf) != NULL) {
@@ -1724,6 +1669,42 @@ init(int signo)
 			continue;
 		if (*p == 0)
 			continue;
+		if (allow_includes &&
+		    strncmp(p, include_str, include_len) == 0 &&
+		    isspace(p[include_len])) {
+			p += include_len;
+			while (isspace(*p))
+				p++;
+			tmp = p;
+			while (*tmp != '\0' && !isspace(*tmp))
+				tmp++;
+			*tmp = '\0';
+			dprintf("Trying to include files in '%s'\n", p);
+			nents = scandir(p, &ent, configfiles, alphasort);
+			if (nents == -1) {
+				dprintf("Unable to open '%s': %s\n", p,
+				    strerror(errno));
+				continue;
+			}
+			for (i = 0; i < nents; i++) {
+				if (snprintf(file, sizeof(file), "%s/%s", p,
+				    ent[i]->d_name) >= (int)sizeof(file)) {
+					dprintf("ignoring path too long: "
+					    "'%s/%s'\n", p, ent[i]->d_name);
+					free(ent[i]);
+					continue;
+				}
+				free(ent[i]);
+				cf2 = fopen(file, "r");
+				if (cf2 == NULL)
+					continue;
+				dprintf("reading %s\n", file);
+				nextp = readconfigfile(cf2, nextp, 0);
+				fclose(cf2);
+			}
+			free(ent);
+			continue;
+		}
 		if (*p == '#') {
 			p++;
 			if (*p != '!' && *p != '+' && *p != '-')
@@ -1785,6 +1766,108 @@ init(int signo)
 		nextp = &f->f_next;
 		cfline(cline, f, prog, host);
 	}
+	return nextp;
+}
+
+/*
+ *  INIT -- Initialize syslogd from configuration table
+ */
+static void
+init(int signo)
+{
+	int i;
+	FILE *cf;
+	struct filed *f, *next, **nextp;
+	char *p;
+	char oldLocalHostName[MAXHOSTNAMELEN];
+	char hostMsg[2*MAXHOSTNAMELEN+40];
+	char bootfileMsg[LINE_MAX];
+
+	dprintf("init\n");
+
+	/*
+	 * Load hostname (may have changed).
+	 */
+	if (signo != 0)
+		(void)strlcpy(oldLocalHostName, LocalHostName,
+		    sizeof(oldLocalHostName));
+	if (gethostname(LocalHostName, sizeof(LocalHostName)))
+		err(EX_OSERR, "gethostname() failed");
+	if ((p = strchr(LocalHostName, '.')) != NULL) {
+		*p++ = '\0';
+		LocalDomain = p;
+	} else {
+		LocalDomain = "";
+	}
+
+	/*
+	 * Load / reload timezone data (in case it changed).
+	 *
+	 * Just calling tzset() again does not work, the timezone code
+	 * caches the result.  However, by setting the TZ variable, one
+	 * can defeat the caching and have the timezone code really
+	 * reload the timezone data.  Respect any initial setting of
+	 * TZ, in case the system is configured specially.
+	 */
+	dprintf("loading timezone data via tzset()\n");
+	if (getenv("TZ")) {
+		tzset();
+	} else {
+		setenv("TZ", ":/etc/localtime", 1);
+		tzset();
+		unsetenv("TZ");
+	}
+
+	/*
+	 *  Close all open log files.
+	 */
+	Initialized = 0;
+	for (f = Files; f != NULL; f = next) {
+		/* flush any pending output */
+		if (f->f_prevcount)
+			fprintlog(f, 0, (char *)NULL);
+
+		switch (f->f_type) {
+		case F_FILE:
+		case F_FORW:
+		case F_CONSOLE:
+		case F_TTY:
+			close_filed(f);
+			break;
+		case F_PIPE:
+			close_filed(f);
+			deadq_enter(f->f_un.f_pipe.f_pid,
+				    f->f_un.f_pipe.f_pname);
+			break;
+		}
+		next = f->f_next;
+		if (f->f_program) free(f->f_program);
+		if (f->f_host) free(f->f_host);
+		free((char *)f);
+	}
+	Files = NULL;
+	nextp = &Files;
+
+	/* open the configuration file */
+	if ((cf = fopen(ConfFile, "r")) == NULL) {
+		dprintf("cannot open %s\n", ConfFile);
+		*nextp = (struct filed *)calloc(1, sizeof(*f));
+		if (*nextp == NULL) {
+			logerror("calloc");
+			exit(1);
+		}
+		cfline("*.ERR\t/dev/console", *nextp, "*", "*");
+		(*nextp)->f_next = (struct filed *)calloc(1, sizeof(*f));
+		if ((*nextp)->f_next == NULL) {
+			logerror("calloc");
+			exit(1);
+		}
+		cfline("*.PANIC\t*", (*nextp)->f_next, "*", "*");
+		Initialized = 1;
+		return;
+	}
+
+	readconfigfile(cf, &Files, 1);
 
 	/* close the configuration file */
 	(void)fclose(cf);
@@ -2205,7 +2288,7 @@ markit(void)
 
 /*
  * fork off and become a daemon, but wait for the child to come online
- * before returing to the parent, or we get disk thrashing at boot etc.
+ * before returning to the parent, or we get disk thrashing at boot etc.
  * Set a timer so we don't hang forever if it wedges.
  */
 static int
@@ -2656,6 +2739,8 @@ deadq_enter(pid_t pid, const char *name)
 	dq_t p;
 	int status;
 
+	if (pid == 0)
+		return;
 	/*
 	 * Be paranoid, if we can't signal the process, don't enter it
 	 * into the dead queue (perhaps it's already dead).  If possible,

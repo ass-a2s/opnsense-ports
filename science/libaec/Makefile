@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libaec
-PORTVERSION=	1.0.1
+PORTVERSION=	1.0.4
 CATEGORIES=	science
-MASTER_SITES=	https://gitlab.dkrz.de/k202009/libaec/repository/archive.tar.bz2?ref=v${PORTVERSION}&dummy=/ \
-		LOCAL/sunpoet
+MASTER_SITES=	LOCAL/sunpoet
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Adaptive entropy coding library
@@ -15,12 +14,15 @@ LICENSE_FILE=	${WRKSRC}/Copyright.txt
 
 CONFLICTS_INSTALL=	hdf-szip
 
+USES=		autoreconf libtool tar:bz2
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
-USES=		autoreconf libtool tar:bz2
 
-GL_TAGNAME=	d808db1e1276f6c23feccdcefd56f7e38e2d7c9e
-WRKSRC=		${WRKDIR}/${PORTNAME}-v${PORTVERSION}-${GL_TAGNAME}
+GL_ACCOUNT=	k202009
+GL_COMMIT=	0c0453a0e463da9c2183f46d0255f05645e0e5ef
+GL_SITE=	https://gitlab.dkrz.de/
+USE_GITLAB=	yes
 
 .include <bsd.port.mk>

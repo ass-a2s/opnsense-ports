@@ -4,7 +4,7 @@ PORTNAME=	yajl
 PORTVERSION=	2.1.0
 CATEGORIES=	devel
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	gregf@hugops.pw
 COMMENT=	Portable JSON parsing and serialization library in ANSI C
 
 LICENSE=	ISCL
@@ -15,7 +15,7 @@ GH_ACCOUNT=	lloyd
 CFLAGS+=	-g -O0
 
 USE_LDCONFIG=	yes
-USES=		cmake:outsource
+USES=		cmake
 
 PLIST_SUB=	VERSION=${PORTVERSION}
 

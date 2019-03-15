@@ -3,7 +3,7 @@
 
 PORTNAME=	gss
 PORTVERSION=	1.0.3
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES=	GNU
 
@@ -14,7 +14,7 @@ LIB_DEPENDS=	libshishi.so:security/shishi
 
 CONFLICTS=	heimdal-[0-9]*
 
-USES=		libtool pathfix pkgconfig perl5
+USES=		libtool localbase:ldflags pathfix pkgconfig perl5
 USE_PERL5=	build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-kerberos5
@@ -29,13 +29,10 @@ NLS_CONFIGURE_ENABLE=	nls
 INFO=		gss
 PORTDOCS=	gss.html gss.ps gss.pdf
 
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-
 post-configure:
 	@cd ${WRKSRC}/doc && ${TOUCH} Makefile*
 
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC}/doc && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 

@@ -1,39 +1,43 @@
 # Created by: Gustau Perez <gustau.perez@gmail.com>
 # $FreeBSD$
-#   $MCom: ports/trunk/mail/geary/Makefile 20050 2014-11-10 09:22:41Z gusi $
 
 PORTNAME=	geary
-PORTVERSION=	0.10.0
+PORTVERSION=	0.13.3
 CATEGORIES=	mail gnome
 MASTER_SITES=	GNOME
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Mail client for GNOME 3
 
+LICENSE=	BSD2CLAUSE CC-BY-3.0 LGPL21+
+LICENSE_COMB=	multi
+
 BUILD_DEPENDS=	vapigen:lang/vala \
-		bash:shells/bash
+		itstool:textproc/itstool
 LIB_DEPENDS=	libgmime-2.6.so:mail/gmime26 \
-		libwebkitgtk-3.0.so:www/webkit-gtk3 \
-		libcanberra-gtk3.so:audio/libcanberra-gtk3 \
+		libsoup-2.4.so:devel/libsoup \
+		libunwind.so:devel/libunwind \
+		libjson-glib-1.0.so:devel/json-glib \
+		libwebkit2gtk-4.0.so:www/webkit2-gtk3 \
+		libgoa-1.0.so:net/gnome-online-accounts \
+		libcanberra.so:audio/libcanberra \
 		libnotify.so:devel/libnotify \
 		libgee-0.8.so:devel/libgee \
-		libgcr-3.so:security/gcr
+		libgcr-3.so:security/gcr \
+		libsecret-1.so:security/libsecret \
+		libenchant-2.so:textproc/enchant2
 
-USES=		cmake desktop-file-utils gettext \
-		libtool pkgconfig shebangfix tar:xz
-USE_GNOME=	gnomedocutils gnomeprefix gtk30 intlhack
-SHEBANG_FILES=	desktop/geary-attach
+USES=		compiler:c11 desktop-file-utils gettext gmake gnome meson \
+		pkgconfig python:3.5+,build shebangfix sqlite tar:xz
+USE_GNOME=	cairo gtk30 libxml2
+
 USE_LDCONFIG=	yes
+
+SHEBANG_FILES=	desktop/geary-attach
 INSTALLS_ICONS=	yes
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
-CMAKE_ARGS=	-DNO_FATAL_WARNINGS:BOOL=ON
+BINARY_ALIAS=	python3=${PYTHON_VERSION}
 
-GLIB_SCHEMAS=	org.yorba.geary.gschema.xml
-
-post-patch:
-		@${REINPLACE_CMD} -e 's|abort $$option||g' \
-			${WRKSRC}/configure
+GLIB_SCHEMAS=	org.gnome.Geary.gschema.xml
 
 .include <bsd.port.mk>

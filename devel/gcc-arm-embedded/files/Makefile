@@ -13,7 +13,7 @@ WORLD_LIB=${LOCALBASE}
 LDFLAGS+=	-L${WORLD_LIB}/lib
 
 .if ${CHOSEN_COMPILER_TYPE} == clang
-MAKE_ARGS+=     CFLAGS="-Wno-error -fbracket-depth=512" CXXFLAGS="-Wno-error -fbracket-depth=512"
+MAKE_ARGS+=     CFLAGS="-Wno-error -fbracket-depth=512 -Wno-deprecated-register" CXXFLAGS="-Wno-error -fbracket-depth=512 -Wno-deprecated-register"
 .endif
 
 MISC_DOCS=	license.txt readme.txt release.txt
@@ -169,7 +169,9 @@ build-newlib:
 	 --htmldir=${DOC_PREFIX}/html \
 	 --pdfdir=${DOC_PREFIX}/pdf \
 	 --enable-newlib-io-long-long \
+	 --enable-newlib-io-c99-formats \
 	 --enable-newlib-register-fini \
+	 --enable-newlib-retargetable-locking \
 	 --disable-newlib-supplied-syscalls \
 	 --disable-nls
 	@${ECHO_MSG} "=====>  Build"
@@ -210,6 +212,7 @@ build-newlib-nano:
 	 --pdfdir=${DOC_PREFIX}/pdf \
 	 --disable-newlib-supplied-syscalls    \
 	 --enable-newlib-reent-small           \
+	 --enable-newlib-retargetable-locking  \
 	 --disable-newlib-fvwrite-in-streamio  \
 	 --disable-newlib-fseek-optimization   \
 	 --disable-newlib-wide-orient          \
@@ -430,6 +433,7 @@ strip-binaries:
 	   if ! ${FILE} $$bin | ${GREP} -qs ': ELF' ; then continue ; fi ; \
 	   ${STRIP_CMD} $${bin} ; \
 	 done
+	@${STRIP_CMD} ${INTERIM_PREFIX}/lib/libcc1.so.0
 	@for bin in $$(${FIND} ${INTERIM_PREFIX}/lib/gcc/${TARGET}/${GCC_VERSION} -perm +111 -and ! -type d) ; do \
 	   if ! ${FILE} $$bin | ${GREP} -qs ': ELF' ; then continue ; fi ; \
 	   ${STRIP_CMD} $${bin} ; \

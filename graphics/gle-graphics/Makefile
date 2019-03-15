@@ -14,6 +14,11 @@ COMMENT=	Graphics language that produces images from script files
 LICENSE=	BSD3CLAUSE GPLv2
 LICENSE_COMB=	multi
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USE_HARDENING=	pie:off
+
 BITMAP_IMAGES_CONFIGURE_WITH=	jpeg=${LOCALBASE} tiff=${LOCALBASE} png=${LOCALBASE}
 BITMAP_IMAGES_DESC=	Support for including bitmap images
 BITMAP_IMAGES_LIB_DEPENDS=	libpng.so:graphics/png \
@@ -21,8 +26,6 @@ BITMAP_IMAGES_LIB_DEPENDS=	libpng.so:graphics/png \
 BITMAP_IMAGES_USES=	jpeg
 
 CONFIGURE_ARGS=	--with-extrafonts=yes --with-qt=${QT_ARCHDIR}
-
-NOPIE_PORTS=	yes
 
 ALL_TARGET=	all
 
@@ -46,8 +49,8 @@ REINPLACE_FILES=	configure
 
 USE_GL=	yes
 USE_LDCONFIG=	yes
-USE_QT4=	corelib gui moc network opengl rcc qmake_build
-USES=		gmake ncurses pathfix
+USE_QT=		corelib gui moc network opengl rcc qmake_build
+USES=		gmake ncurses pathfix qt:4
 CPPFLAGS+=	-I${NCURSESINC}
 
 WRKSRC=	${WRKDIR}/${PORTNAME}-${PORTVERSION:R}${PORTVERSION:E}

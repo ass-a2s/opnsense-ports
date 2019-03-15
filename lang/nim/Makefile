@@ -2,17 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	nim
-PORTVERSION=	0.17.0
+PORTVERSION=	0.19.4
 CATEGORIES=	lang
-MASTER_SITES=	http://nim-lang.org/download/
+MASTER_SITES=	https://nim-lang.org/download/
 
 MAINTAINER=	ports@nicandneal.net
 COMMENT=	Nim programming language
 
 LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/copying.txt
 
 BROKEN_aarch64=		fails to compile: crt1.c: undefined reference to main
 BROKEN_armv6=		fails to compile: crt1.c: undefined reference to main
+BROKEN_armv7=		fails to compile: crt1.c: undefined reference to main
 BROKEN_mips64=		fails to build: build.sh: clang: not found
 BROKEN_powerpc64=	fails to build: build.sh: clang: not found
 BROKEN_sparc64=		fails to build: build.sh: clang: not found
@@ -38,7 +40,7 @@ do-build:
 	cd ${WRKSRC} && ${SETENV} CC="${CC}" LINKER="${CC}" \
 		COMP_FLAGS="${CPPFLAGS} ${CFLAGS}" LINK_FLAGS="${LDFLAGS}" \
 		${SH} build.sh
-	cd ${WRKSRC} && bin/nim c --parallelBuild=${MAKE_JOBS_NUMBER} koch
+	cd ${WRKSRC} && bin/nim c --parallelBuild=${MAKE_JOBS_NUMBER} --nimcache=${WRKSRC}/nimcache koch
 	cd ${WRKSRC} && ./koch boot --parallelBuild=${MAKE_JOBS_NUMBER} \
 		-d:release
 

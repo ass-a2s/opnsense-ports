@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	virtualbox-ose
-PORTVERSION=	5.1.26
-PORTREVISION=	1
+PORTVERSION=	5.2.26
+PORTREVISION=	3
 CATEGORIES=	emulators
-MASTER_SITES=	http://download.virtualbox.org/virtualbox/${PORTVERSION}/
+MASTER_SITES=	https://download.virtualbox.org/virtualbox/${PORTVERSION}/
 DISTFILES=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX} ${GUESTADDITIONS}
 EXTRACT_ONLY=	VirtualBox-${PORTVERSION}${EXTRACT_SUFX}
 
@@ -18,20 +18,18 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 BUILD_DEPENDS=	yasm:devel/yasm \
 		xsltproc:textproc/libxslt \
 		kmk:devel/kBuild \
-		gtar:archivers/gtar \
-		cdrecord:sysutils/cdrtools
+		gtar:archivers/gtar
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libxslt.so:textproc/libxslt \
 		libcurl.so:ftp/curl
-RUN_DEPENDS=	${LOCALBASE}/etc/rc.d/vboxnet:emulators/virtualbox-ose-kmod \
-		cdrecord:sysutils/cdrtools
+RUN_DEPENDS=	${LOCALBASE}/etc/rc.d/vboxnet:emulators/virtualbox-ose-kmod
 
 CPE_VENDOR=	oracle
 CPE_PRODUCT=	vm_virtualbox
 
 WRKSRC=		${WRKDIR}/VirtualBox-${PORTVERSION}
 ONLY_FOR_ARCHS=	i386 amd64
-USES=		compiler cpe iconv pkgconfig ssl tar:bzip2
+USES=		compiler:c++14-lang cpe gnome iconv pkgconfig ssl tar:bzip2
 USE_GNOME=	libidl libxml2
 
 HAS_CONFIGURE=	yes
@@ -57,22 +55,20 @@ VBOX_UTILS=	VBoxExtPackHelperApp VBoxNetAdpCtl VBoxNetDHCP VBoxNetNAT \
 		VBoxSVC VBoxXPCOMIPCD
 
 OPTIONS_DEFINE=	ALSA DBUS DEBUG GUESTADDITIONS MANUAL NLS PULSEAUDIO \
-		PYTHON R0LOGGING UDPTUNNEL VDE VNC WEBSERVICE VPX X11
+		PYTHON QT5 R0LOGGING UDPTUNNEL VDE VNC WEBSERVICE VPX X11
 OPTIONS_DEFAULT=	DBUS QT5 UDPTUNNEL VNC WEBSERVICE X11
-OPTIONS_RADIO=		GUI
-OPTIONS_RADIO_GUI=	QT4 QT5
 OPTIONS_SUB=	yes
 
 DEBUG_DESC=	Debug symbols, additional logs and assertions
 GUESTADDITIONS_DESC=	Build with Guest Additions
 MANUAL_DESC=	Build with user manual
-QT4_DESC=	Build with QT4 Frontend
-QT5_DESC=	Build with QT5 Frontend
-R0LOGGING_DESC=	Enable R0 logging
+NLS_DESC=	Native language support (requires QT5)
+QT5_DESC=	Build with QT5 frontend (requires X11)
+R0LOGGING_DESC=	Enable R0 logging (requires DEBUG)
 UDPTUNNEL_DESC=	Build with UDP tunnel support
 VDE_DESC=	Build with VDE support
 VNC_DESC=	Build with VNC support
-VPX_DESC=	Use vpx for video capturing
+VPX_DESC=	Use libvpx for video recording
 WEBSERVICE_DESC=	Build Webservice
 
 ALSA_CONFIGURE_OFF=	--disable-alsa
@@ -82,9 +78,12 @@ DBUS_LIB_DEPENDS=	libdbus-1.so:devel/dbus
 DEBUG_CONFIGURE_ON=	--build-debug
 MANUAL_BUILD_DEPENDS=	${LOCALBASE}/share/xml/docbook/4.4/docbookx.dtd:textproc/docbook-xml
 MANUAL_CONFIGURE_OFF=	--disable-docs
+NLS_IMPLIES=		QT5
 PULSEAUDIO_CONFIGURE_OFF=	--disable-pulse
 PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PYTHON_CONFIGURE_OFF=	--disable-python
+QT5_IMPLIES=		X11
+R0LOGGING_IMPLIES=	DEBUG
 UDPTUNNEL_CONFIGURE_OFF=	--disable-udptunnel
 VDE_CONFIGURE_ON=	--enable-vde
 VDE_RUN_DEPENDS=	vde_switch:net/vde2
@@ -115,7 +114,7 @@ OPTIONS_DEFAULT+=	PYTHON
 CONFLICTS_INSTALL+=	virtualbox-ose-[0-9]*
 .endif
 
-.if ${PORT_OPTIONS:MNLS} && empty(PORT_OPTIONS:MQT[45])
+.if ${PORT_OPTIONS:MNLS} && empty(PORT_OPTIONS:MQT5)
 BROKEN=		NLS support requires QT frontend. Run 'make config' again!
 .endif
 
@@ -123,15 +122,15 @@ BROKEN=		NLS support requires QT frontend. Run 'make config' again!
 BROKEN=		QT frontend requires X11 support. Run 'make config' again!
 .endif
 
+.if ${ARCH} == "amd64"
+_ELF32!=	kldstat -q -m elf32 && echo yes || echo no
+.endif
+
 .if ${PORT_OPTIONS:MDEBUG}
 KMK_BUILDTYPE=	debug
 KMK_FLAGS+=	BUILD_TYPE=debug
 .else
 KMK_BUILDTYPE=	release
-.endif
-
-.if ${PORT_OPTIONS:MR0LOGGING} && empty(PORT_OPTIONS:MDEBUG)
-BROKEN=		R0 logging requires debug build
 .endif
 
 .if ${PORT_OPTIONS:MGUESTADDITIONS}
@@ -147,39 +146,26 @@ USE_TEX=	dvipsk:build formats:build
 .endif
 
 .if ${PORT_OPTIONS:MPYTHON}
-USES+=		python
-USE_PYTHON=	distutils noegginfo
+USES+=		python:2.7
+USE_PYTHON=	distutils noegginfo noflavors
 PYDISTUTILS_PKGNAME=	vboxapi
 PYDISTUTILS_PKGVERSION=	1.0
 .else
-USES+=		python:build
+USES+=		python:2.7,build
 .endif
 
-.if ${PORT_OPTIONS:MQT[45]}
+.if ${PORT_OPTIONS:MQT5}
+CONFIGURE_ARGS+=	--enable-qt5
 PLIST_SUB+=	QT=""
-QT_NONSTANDARD=	yes
-USE_GL=		gl
+USES+=		gl qmake:no_env qt:5
+USE_GL=		gl glu
+USE_QT=		buildtools_build core dbus gui linguisttools_build opengl
+USE_QT+=	printsupport widgets x11extras
 USE_XORG=	xcb
 INSTALLS_ICONS=	yes
 VBOX_PROGS+=	VirtualBox
 VBOX_UTILS+=	VBoxTestOGL
 VBOX_WITH_QT=	1
-.if ${PORT_OPTIONS:MQT4}
-EXTRA_PATCHES+=	${PATCHDIR}/extrapatch-src_VBox_Frontends_VirtualBox_src_net_UIDownloaderAdditions.cpp \
-		${PATCHDIR}/extrapatch-src_VBox_Frontends_VirtualBox_src_net_UIDownloaderExtensionPack.cpp \
-		${PATCHDIR}/extrapatch-src_VBox_Frontends_VirtualBox_src_settings_global_UIGlobalSettingsNetworkDetailsHost.cpp \
-		${PATCHDIR}/extrapatch-src_VBox_Frontends_VirtualBox_src_widgets_UIMiniToolBar.cpp \
-		${PATCHDIR}/extrapatch-src_VBox_Frontends_VirtualBox_src_widgets_UIMiniToolBar.h
-CONFIGURE_ARGS+=	--enable-qt4
-USE_QT4=	corelib gui linguist_build moc_build network opengl
-USE_QT4+=	rcc_build uic_build
-WARNING=	"Qt4 support has been deprecated by the upstream.\
-		This option may be removed in the future without notice."
-.else
-CONFIGURE_ARGS+=	--enable-qt5
-USE_QT5=	buildtools_build core dbus gui linguist_build opengl
-USE_QT5+=	printsupport widgets x11extras
-.endif
 .else
 CONFIGURE_ARGS+=	--disable-qt
 PLIST_SUB+=	QT="@comment "
@@ -194,7 +180,7 @@ VBOX_UTILS+=	vboxwebsrv webtest
 
 .if ${PORT_OPTIONS:MX11}
 USE_SDL=	sdl
-USE_XORG+=	inputproto x11 xcursor xext xinerama xmu xt
+USE_XORG+=	xorgproto x11 xcursor xext xinerama xmu xt
 VBOX_PROGS+=	VBoxSDL
 .endif
 
@@ -279,9 +265,6 @@ post-patch:
 	    ${WRKSRC}/LocalConfig.kmk
 	@${ECHO} 'VBOX_WITH_VALIDATIONKIT =' >> ${WRKSRC}/LocalConfig.kmk
 	@${ECHO} 'VBOX_WITH_X11_ADDITIONS =' >> ${WRKSRC}/LocalConfig.kmk
-.if empty(PORT_OPTIONS:MQT5)
-	@${ECHO} 'VBOX_WITH_QTGUI_V5 =' >> ${WRKSRC}/LocalConfig.kmk
-.endif
 .if ${PORT_OPTIONS:MR0LOGGING}
 	@${ECHO} 'VBOX_WITH_R0_LOGGING = 1' >> ${WRKSRC}/LocalConfig.kmk
 .endif
@@ -302,8 +285,6 @@ post-patch:
 	    -e 's| -mpreferred-stack-boundary=2||' ${WRKSRC}/Config.kmk
 	@${REINPLACE_CMD} -e 's| -fpermissive||' ${WRKSRC}/Config.kmk \
 	    ${WRKSRC}/src/VBox/Main/webservice/Makefile.kmk
-	@${ECHO} 'VBOX_GCC_Wno-unused-parameter = -Wno-unused-parameter' >> \
-	    ${WRKSRC}/LocalConfig.kmk
 	@${ECHO} 'TOOL_VBoxGccFreeBSD_LD = ${CXX}' >> ${WRKSRC}/LocalConfig.kmk
 	@${SED} -e 's|GXX3|VBoxGccFreeBSD|g' \
 	    ${LOCALBASE}/share/kBuild/tools/GXX3.kmk > \
@@ -339,7 +320,9 @@ do-build:
 .endif
 
 do-install:
-	${MKDIR} ${STAGEDIR}${DATADIR}
+.if ${PORT_OPTIONS:MPYTHON} || ${PORT_OPTIONS:MWEBSERVICE}
+	${MKDIR} ${STAGEDIR}${DATADIR}/sdk
+.endif
 	cd ${KMK_BUILDDIR}/bin/sdk/bindings/xpcom && \
 	    ${COPYTREE_SHARE} "idl samples" ${STAGEDIR}${DATADIR}
 
@@ -350,7 +333,9 @@ do-install:
 	${MKDIR} ${STAGEDIR}${VBOX_DIR}
 	cd ${KMK_BUILDDIR}/bin && ${COPYTREE_SHARE} \
 	    "*.fd *.r0 *.rc *.so components" ${STAGEDIR}${VBOX_DIR}
-	${LN} -fs ${DATADIR}/sdk ${STAGEDIR}${VBOX_DIR}
+.if ${PORT_OPTIONS:MPYTHON} || ${PORT_OPTIONS:MWEBSERVICE}
+	${RLN} ${STAGEDIR}${DATADIR}/sdk ${STAGEDIR}${VBOX_DIR}
+.endif
 
 	${INSTALL_SCRIPT} ${WRKSRC}/src/VBox/Installer/freebsd/VBox.sh \
 	    ${STAGEDIR}${VBOX_DIR}
@@ -368,7 +353,7 @@ do-install:
 	${MKDIR} ${STAGEDIR}${VBOX_DIR}/additions
 	${INSTALL_DATA} ${DISTDIR}/${GUESTADDITIONS} \
 	    ${STAGEDIR}${VBOX_DIR}/additions/
-	${LN} -fs ${VBOX_DIR}/additions/${GUESTADDITIONS} \
+	${RLN} ${STAGEDIR}${VBOX_DIR}/additions/${GUESTADDITIONS} \
 	    ${STAGEDIR}${VBOX_DIR}/additions/VBoxGuestAdditions.iso
 .endif
 
@@ -392,11 +377,11 @@ do-install:
 	cd ${KMK_BUILDDIR}/bin/sdk/bindings/xpcom/python/xpcom && \
 	    ${COPYTREE_SHARE} "*" ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom
 	@${MKDIR} ${STAGEDIR}${DATADIR}/sdk/bindings/xpcom/python
-	${LN} -fs ${PYTHON_SITELIBDIR}/xpcom \
+	${RLN} ${STAGEDIR}${PYTHON_SITELIBDIR}/xpcom \
 	    ${STAGEDIR}${DATADIR}/sdk/bindings/xpcom/python
 .endif
 
-.if ${PORT_OPTIONS:MQT[45]}
+.if ${PORT_OPTIONS:MQT5}
 	${INSTALL_DATA} \
 	    ${WRKSRC}/src/VBox/Frontends/VirtualBox/images/OSE/VirtualBox_48px.png \
 	    ${STAGEDIR}${PREFIX}/share/pixmaps/VBox.png

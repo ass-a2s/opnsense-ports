@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	novnc
-PORTVERSION=	0.6.2
+PORTVERSION=	1.0.0
 CATEGORIES=	www
 
 MAINTAINER=	araujo@FreeBSD.org
@@ -20,7 +20,7 @@ NO_ARCH=	yes
 TARGET_DIR=	${PREFIX}/libexec/novnc
 
 do-install:
-	${MKDIR} ${TARGET_DIR}
+	${MKDIR} ${STAGEDIR}${TARGET_DIR}
 	cd ${WRKSRC} && ${RM} .gitignore .gitmodules .travis.yml
 	cd ${WRKSRC} && ${COPYTREE_SHARE} . ${STAGEDIR}${TARGET_DIR}
 	

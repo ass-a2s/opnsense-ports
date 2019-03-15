@@ -3,11 +3,11 @@
 
 PORTNAME=	libgpod
 PORTVERSION=	0.8.3
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	audio
 MASTER_SITES=	SF/gtkpod/${PORTNAME}/${PORTNAME}-${PORTVERSION:R}
 
-MAINTAINER?=	avilla@FreeBSD.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Library for direct access to iPod contents
 
 LICENSE=	LGPL20
@@ -16,7 +16,8 @@ LIB_DEPENDS=	libplist.so:devel/libplist \
 		libtag.so:audio/taglib \
 		libsgutils2.so:sysutils/sg3_utils
 
-USES=		gettext gmake libtool localbase pathfix pkgconfig sqlite:3 tar:bzip2
+USES=		compiler:c++11-lang gettext gmake libtool localbase pathfix \
+		pkgconfig sqlite:3 tar:bzip2
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-udev --without-hal \
 		--with-html-dir="${DOCSDIR:H}"
@@ -38,12 +39,12 @@ IMOBILE_CONFIGURE_WITH=	libimobiledevice
 MONO_USE=		GNOME=gtksharp20
 MONO_CONFIGURE_WITH=	mono
 
-PYTHON_BUILD_DEPENDS=	swig2.0:devel/swig20 \
-			${PYTHON_SITELIBDIR}/mutagen/__init__.py:audio/py-mutagen
-PYTHON_RUN_DEPENDS=	${PYTHON_SITELIBDIR}/mutagen/__init__.py:audio/py-mutagen
+PYTHON_BUILD_DEPENDS=	swig3.0:devel/swig30 \
+			${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${PY_FLAVOR}
+PYTHON_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}mutagen>0:audio/py-mutagen@${PY_FLAVOR}
 PYTHON_USE=		GNOME=pygobject
-PYTHON_USES=		python
-PYTHON_CONFIGURE_ENV=	SWIG="${LOCALBASE}/bin/swig2.0"
+PYTHON_USES=		python:2.7
+PYTHON_CONFIGURE_ENV=	SWIG="${LOCALBASE}/bin/swig3.0"
 PYTHON_CONFIGURE_WITH=	python
 
 PORTDOCS=	ChangeLog NEWS README*

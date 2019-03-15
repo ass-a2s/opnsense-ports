@@ -10,9 +10,11 @@ PKGNAMEPREFIX=	qt4-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 3 compatibility module
 
-USE_QT4=	qmake_build moc_build corelib gui network sql xml
-QT_DIST=	yes
-USES=		pkgconfig
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USE_QT=		moc_build corelib gui network sql xml
+USES=		pkgconfig qmake:no_env qt-dist:4
 
 HAS_CONFIGURE=	yes
 USE_LDCONFIG=	${PREFIX}/${QT_LIBDIR_REL}

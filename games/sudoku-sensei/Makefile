@@ -15,10 +15,13 @@ COMMENT=	Enjoy playing with Sudoku boards designed by yourself
 
 LICENSE=	GPLv2+
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 WRKSRC=		${WRKDIR}/SudokuSenseiSources
 
-USES=		qmake
-USE_QT4=	moc_build uic_build corelib gui iconengines_run imageformats_run
+USES=		qmake qt:4
+USE_QT=		moc_build uic_build corelib gui iconengines_run imageformats_run
 
 SUB_FILES=	${PORTNAME} pkg-deinstall pkg-message
 

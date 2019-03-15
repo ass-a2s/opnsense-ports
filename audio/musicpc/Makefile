@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	musicpc
-PORTVERSION=	0.28
+DISTVERSION=	0.31
 CATEGORIES=	audio ipv6
 MASTER_SITES=	http://www.musicpd.org/download/mpc/0/
 DISTNAME=	mpc-${PORTVERSION}
@@ -15,32 +15,20 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libmpdclient.so:audio/libmpdclient
 
-USES=		pkgconfig tar:xz
-GNU_CONFIGURE=	yes
+USES=		meson pkgconfig tar:xz
+MESON_ARGS=	--mandir=${MANPREFIX}
 
-PLIST_FILES=	bin/mpc man/man1/mpc.1.gz
+OPTIONS_DEFINE=	DOCS ICONV
+OPTIONS_DEFAULT=	DOCS ICONV
 
-PORTDOCS=	AUTHORS README NEWS
-PORTEXAMPLES=	*
-
-OPTIONS_DEFINE=	EXAMPLES DOCS ICONV
-OPTIONS_DEFAULT=	ICONV
+DOCS_USES=	python:env
+DOCS_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR}
+DOCS_MESON_ENABLED=	documentation
 
 ICONV_USES=	iconv
-ICONV_LDFLAGS=	-L${LOCALBASE}/lib ${ICONV_LIB}
-ICONV_CONFIGURE_ENABLE=	iconv
+ICONV_LDFLAGS=	-L${ICONV_PREFIX}/lib ${ICONV_LIB}
+ICONV_MESON_ENABLED=	iconv
 
-do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/mpc ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_MAN} ${WRKSRC}/doc/mpc.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
-
-do-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/|} ${STAGEDIR}${DOCSDIR}
-
-do-install-EXAMPLES-on:
-	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
-	${INSTALL_DATA} ${WRKSRC}/doc/mpc-completion.bash \
-		${STAGEDIR}${EXAMPLESDIR}
+PORTDOCS=	AUTHORS README.rst NEWS
 
 .include <bsd.port.mk>

@@ -2,36 +2,35 @@
 # $FreeBSD$
 
 PORTNAME=	ansifilter
-PORTVERSION=	2.3
+PORTVERSION=	2.13
 CATEGORIES=	textproc
 MASTER_SITES=	http://www.andre-simon.de/zip/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Customizable ANSI Code Converter
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BROKEN_powerpc64=	fails to compile: cc1plus: error: unrecognized command line option -std=c++11
+USES=		compiler:c++11-lib gmake tar:bzip2
 
-USES=		gmake tar:bzip2
 MAKEFILE=	makefile
 
-PORTDOCS=	ChangeLog README
+PORTDOCS=	ChangeLog.adoc README.adoc
 PLIST_FILES=	bin/${PORTNAME} man/man1/${PORTNAME}.1.gz
 
-OPTIONS_DEFINE=		DOCS QT4
+OPTIONS_DEFINE=		DOCS QT5
 
-QT4_USES=		qmake:norecursive
-QT4_USE=		QT4=gui,moc_build
-QT4_ALL_TARGET=		all all-gui
-QT4_PLIST_FILES=	bin/${PORTNAME}-gui
-QT4_DESKTOP_ENTRIES=	"ANSIFilter" "" "" "${PORTNAME}-gui" \
+QT5_USES=		qmake:norecursive qt:5
+QT5_USE=		QT=gui,widgets
+QT5_ALL_TARGET=		all all-gui
+QT5_PLIST_FILES=	bin/${PORTNAME}-gui
+QT5_DESKTOP_ENTRIES=	"ANSIFilter" "" "" "${PORTNAME}-gui" \
 			"TextTools;Utility;Qt;" ""
 
 .include <bsd.port.options.mk>
 
-.if ${PORT_OPTIONS:MQT4}
+.if ${PORT_OPTIONS:MQT5}
 CONFIGURE_WRKSRC=	${WRKSRC}/src/qt-gui
 QMAKE_SOURCE_PATH=	${CONFIGURE_WRKSRC}/${PORTNAME}-gui.pro
 .endif
@@ -60,7 +59,7 @@ do-install-DOCS-on:
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} \
 		${STAGEDIR}${DOCSDIR})
 
-do-install-QT4-on:
+do-install-QT5-on:
 	${INSTALL_PROGRAM} ${WRKSRC}/src/qt-gui/${PORTNAME}-gui \
 		${STAGEDIR}${PREFIX}/bin
 

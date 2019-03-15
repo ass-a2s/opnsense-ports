@@ -16,6 +16,7 @@ USES=		groff perl5 shebangfix
 SHEBANG_FILES=	client/getsymonitem.pl
 USE_PERL5=	build
 MAKE_JOBS_UNSAFE=	yes
+CFLAGS+=	-D_WANT_SEMUN
 
 USERS=		_symon
 GROUPS=		_symon
@@ -61,7 +62,7 @@ post-extract:
 post-patch:
 # We need to teach symon about mbstat changes/removal in r253351 and r253361.
 	@${RM} ${WRKSRC}/platform/FreeBSD/sm_mbuf.c
-.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1100070
+.if ${OPSYS} == FreeBSD
 	@${REINPLACE_CMD} 's|altq/|net/&|' ${WRKSRC}/platform/FreeBSD/sm_pfq.c
 .endif
 

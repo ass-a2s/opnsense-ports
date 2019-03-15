@@ -3,7 +3,7 @@
 
 PORTNAME=	x12arima
 PORTVERSION=	0.3
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	math finance
 MASTER_SITES=	http://www.census.gov/ts/x12a/v03/unix/
 DISTFILES=	omegav03src.tar.gz
@@ -15,9 +15,6 @@ COMMENT=	X-12-ARIMA seasonal adjustment program
 USES=		fortran
 NO_WRKSUBDIR=	yes
 MAKEFILE=	makefile.lnx
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 PLIST_FILES=	bin/x12a
 
@@ -34,7 +31,7 @@ PORTDOCS=	ReleaseNotesVersion03.pdf qref03unix.pdf x12adocV03.pdf
 .if ${PORT_OPTIONS:MDOCS}
 post-install:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@(cd ${WRKSRC}/docs && ${INSTALL_MAN} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
-
+	${INSTALL_DATA} ${PORTDOCS:S|^|${WRKSRC}/docs/|} ${STAGEDIR}${DOCSDIR}
 .endif
+
 .include <bsd.port.mk>

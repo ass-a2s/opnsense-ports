@@ -11,8 +11,11 @@ PKGNAMESUFFIX=	-tw
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt Big-5 codec plugin
 
-USE_QT4=	qmake_build corelib
-QT_DIST=	yes
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake:no_env qt-dist:4
+USE_QT=		corelib
 
 HAS_CONFIGURE=	yes
 

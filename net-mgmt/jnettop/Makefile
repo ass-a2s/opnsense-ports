@@ -11,7 +11,7 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.13 \
 MAINTAINER=	zi@FreeBSD.org
 COMMENT=	Traffic visualizer, similar to nettop
 
-MAN8=		jnettop.8
+USE_HARDENING=	pie:off
 
 GNU_CONFIGURE=	yes
 USES=		pkgconfig gmake
@@ -20,8 +20,6 @@ USE_GNOME=	glib20
 LICENSE=	GPLv2
 
 CONFIGURE_ARGS=	--prefix=${PREFIX}
-
-NOPIE_PORTS=	yes
 
 .if defined(WITH_DAG)
 post-configure:

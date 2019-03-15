@@ -3,7 +3,7 @@
 
 PORTNAME=	numptyphysics
 DISTVERSION=	0.3.r20090104
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	games
 MASTER_SITES=	http://mirror.amdmi3.ru/distfiles/
 
@@ -13,14 +13,17 @@ COMMENT=	Drawing physics-based puzzle game
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		tar:bzip2 desktop-file-utils
+USES=		compiler:c++11-lang tar:bzip2 desktop-file-utils
 GNU_CONFIGURE=	yes
 USE_SDL=	sdl image
+USE_XORG=	x11
 INSTALLS_ICONS=	yes
 
 CONFIGURE_ENV=	AUTOMAKE="${TRUE}" ACLOCAL="${TRUE}" MISSING="${TRUE}"
 LDFLAGS+=	-L${LOCALBASE}/lib -lpthread
 CPPFLAGS+=	-I${LOCALBASE}/include -DINSTALL_BASE_PATH=\"\\\"${DATADIR}\\\"\"
+
+CXXFLAGS+=	-Wno-c++11-narrowing
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
@@ -41,6 +44,6 @@ post-patch-MOREFPS-on:
 		${WRKSRC}/Config.h
 
 post-build:
-	${STRIP_CMD} ${WRKSRC}/${PORTNAME}
+	@${STRIP_CMD} ${WRKSRC}/${PORTNAME}
 
 .include <bsd.port.mk>

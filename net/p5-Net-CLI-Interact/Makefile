@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Net-CLI-Interact
-PORTVERSION=	2.200009
+PORTVERSION=	2.300002
 CATEGORIES=	net perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -10,11 +10,14 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Toolkit for CLI Automation
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
 		p5-Class-Mix>=0:devel/p5-Class-Mix \
+		p5-Config-Any>=0.27:devel/p5-Config-Any \
+		p5-File-ShareDir>=1:devel/p5-File-ShareDir \
 		p5-IO-Tty>=0:devel/p5-IO-Tty \
 		p5-IPC-Run>=0:devel/p5-IPC-Run \
 		p5-Log-Dispatch-Config>=0:devel/p5-Log-Dispatch-Config \
@@ -23,10 +26,9 @@ BUILD_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
 		p5-MooX-Types-MooseLike>=0:devel/p5-MooX-Types-MooseLike \
 		p5-Net-Telnet>=0:net/p5-Net-Telnet \
 		p5-Path-Class>=0:devel/p5-Path-Class
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
-USE_PERL5=	configure
+USE_PERL5=	modbuild
 USES=		perl5
 
 .include <bsd.port.mk>

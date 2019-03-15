@@ -12,8 +12,11 @@ COMMENT=	Qt-based tool for high-quality image magnification/resizing
 
 LICENSE=	GPLv3
 
-USES=		qmake zip
-USE_QT4=	qmake_build moc_build rcc_build uic_build gui
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake qt:4 zip
+USE_QT=		qmake_build moc_build rcc_build uic_build gui
 
 WRKSRC=		${WRKDIR}/${DISTNAME}/SmillaEnlargerSrc
 

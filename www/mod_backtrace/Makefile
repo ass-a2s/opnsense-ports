@@ -18,15 +18,14 @@ LICENSE=	APACHE20
 
 MANUAL_PACKAGE_BUILD=	requires apache WITH_EXCEPTION_HOOK=yes
 
-USES=		execinfo
-USE_APACHE=	22+
+USES=		apache:2.2+
 AP_FAST_BUILD=	yes
 AP_GENPLIST=	yes
 AP_EXTRAS+=	-lexecinfo
 AP_LIB+=	${LOCALBASE}/lib
 SHORTMODNAME=	backtrace
 
-WRKSRC=		${WRKDIR}
+NO_WRKSUBDIR=	yes
 
 pre-everything::
 	@${ECHO_MSG} "*********************** PLEASE NOTE! ***********************"

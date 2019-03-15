@@ -7,14 +7,15 @@ CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Print binary in hex format
 
 LICENSE=	PD
 
-WRKSRC=		${WRKDIR}
 USES=		python zip
 USE_PYTHON=	autoplist distutils
+
 NO_ARCH=	yes
+NO_WRKSUBDIR=	yes
 
 .include <bsd.port.mk>

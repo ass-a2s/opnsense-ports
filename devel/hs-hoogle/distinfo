@@ -1,3 +1,3 @@
-TIMESTAMP = 1499627842
-SHA256 (cabal/hoogle-5.0.12.tar.gz) = 1d37f1e96b699fe71ea3661ac2a9424cfd178cba5cc26b0a7ee5505e6fb49308
-SIZE (cabal/hoogle-5.0.12.tar.gz) = 85464
+TIMESTAMP = 1545936497
+SHA256 (cabal/hoogle-5.0.17.4.tar.gz) = 499b2b7a77806ed486d7ed8daad29c3827cec38a32dbd02769b72fba87f62d15
+SIZE (cabal/hoogle-5.0.17.4.tar.gz) = 93902

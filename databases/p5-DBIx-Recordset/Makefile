@@ -11,15 +11,14 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl module for abstraction and simplification of database access
 
-BUILD_DEPENDS=	p5-DBI>=0:databases/p5-DBI
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+LICENSE=	ART10 GPLv1+
+LICENSE_COMB=	dual
 
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-DBI>=0:databases/p5-DBI
+
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
-
-post-configure:
-# bad DBIx::Intrors.3
-		@${PERL} -pi -e 's/^(POD2MAN_EXE.*)$$/\1 -lax/;' \
-			${WRKSRC}/Makefile
 
 .include <bsd.port.mk>

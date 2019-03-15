@@ -1,14 +1,13 @@
---- GNUmakefile.orig	2016-03-27 13:46:35 UTC
+--- GNUmakefile.orig	2018-10-31 14:17:53 UTC
 +++ GNUmakefile
-@@ -418,9 +418,9 @@ install: $(TARGET)
- 	test -d $(DESTDIR)$(PREFIX)/bin || $(MKDIR) -p $(DESTDIR)$(PREFIX)/bin
- 	test -d $(DESTDIR)$(PREFIX)/$(MANDIR)/man1 || \
+@@ -525,10 +525,6 @@ install: $(TARGET) $(TARGET).conf $(TARGET).1 $(TARGET
  		$(MKDIR) -p $(DESTDIR)$(PREFIX)/$(MANDIR)/man1
--	$(INSTALL) -o $(BINUID) -g $(BINGID) -m $(BINMODE) \
-+	$(INSTALL) -m $(BINMODE) \
+ 	test -d $(DESTDIR)$(PREFIX)/$(MANDIR)/man5 || \
+ 		$(MKDIR) -p $(DESTDIR)$(PREFIX)/$(MANDIR)/man5
+-	test -d $(DESTDIR)/var/log/$(TARGET) || \
+-		$(MKDIR) -p $(DESTDIR)/var/log/$(TARGET)
+-	test -d $(DESTDIR)/var/run/$(TARGET) || \
+-		$(MKDIR) -p $(DESTDIR)/var/run/$(TARGET)
+ 	$(INSTALL) $(BINOWNERFLAGS) -m $(BINMODE) \
  		$(TARGET) $(DESTDIR)$(PREFIX)/bin/
--	$(INSTALL) -o $(MANUID) -g $(MANGID) -m $(MANMODE) \
-+	$(INSTALL) -m $(MANMODE) \
- 		$(TARGET).1 $(DESTDIR)$(PREFIX)/$(MANDIR)/man1/
- 
- deinstall:
+ 	$(INSTALL) $(CNFOWNERFLAGS) -m $(CNFMODE) \

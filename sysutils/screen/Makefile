@@ -2,25 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	screen
-PORTVERSION=	4.6.1
-PORTREVISION=	2
+PORTVERSION=	4.6.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
-MASTER_SITES=	http://ftp.gnu.org/gnu/screen/ \
+MASTER_SITES=	GNU \
 		ftp://ftp.gnu.org/gnu/screen/ \
 		ftp://gnu.mirror.iweb.com/screen/ \
 		http://gnu.mirror.iweb.com/screen/ \
 		http://mirror.sdunix.com/gnu/ \
 		ftp://mirrors.kernel.org/gnu/screen/ \
-		http://komquats.com/distfiles/ \
-		http://people.freebsd.org/~cy/distfiles/ \
-		GNU
+		http://cschubert.com/distfiles/ \
+		LOCAL/cy
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Multi-screen window manager
 
 LICENSE=	GPLv3
-
-EXPLICIT_SAFESTACK=		yes
 
 OPTIONS_DEFINE=		INFO MAN NETHACK XTERM_256 SHOWENC SYSTEM_SCREENRC
 OPTIONS_DEFAULT=	INFO MAN NETHACK XTERM_256 SOCKETS SYSTEM_SCREENRC \
@@ -48,6 +45,8 @@ OPTIONS_SUB=
 
 USES=		gmake cpe
 
+USE_HARDENING=	safestack
+
 CPE_VENDOR=	gnu
 
 .include <bsd.port.options.mk>
@@ -59,12 +58,14 @@ LDFLAGS+=	-L${NCURSESLIB}
 .if ${PORT_OPTIONS:MMAN}
 MAKE_ARGS+=	WITH_MAN=1
 PLIST_SUB+=	MAN=""
+USES+=		groff
 .else
 PLIST_SUB+=	MAN="@comment"
 .endif
 .if ${PORT_OPTIONS:MINFO}
 INFO=		screen
 MAKE_ARGS+=	WITH_INFO=1
+USES+=		makeinfo
 .endif
 
 # Enables support for 256 colour xterm.  Note that you may need to
@@ -89,8 +90,8 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/dev/ptmx|/nonexistent|' ${WRKSRC}/configure
 
 # Bug 191029:	Users can choose whether to use sockets or named pipes.
-# 		Choose sockets if you don't know what the difference is.
-# 		Choose named pipes if your environment is heterogeneous,
+#		Choose sockets if you don't know what the difference is.
+#		Choose named pipes if your environment is heterogeneous,
 #		using both screen 4.0.3 and 4.2.1.
 # Bug 191017
 post-configure-NAMED_PIPES-on:

@@ -2,6 +2,7 @@
 
 PORTNAME=	qucs
 PORTVERSION=	0.0.19
+PORTREVISION=	3
 CATEGORIES=	cad science
 MASTER_SITES=	SF
 
@@ -11,12 +12,15 @@ COMMENT=	Graphical circuit design and simulation tool
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/qucs/COPYING
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 BUILD_DEPENDS=	gperf:devel/gperf \
 		admsXml:cad/adms
 
-USE_QT4=	moc_build uic_build rcc_build linguisttools_build \
+USE_QT=		moc_build uic_build rcc_build linguisttools_build \
 		corelib gui xml svg script qt3support
-USES=		autoreconf compiler:c++11-lib bison gmake libtool shebangfix
+USES=		autoreconf compiler:c++11-lib bison gmake libtool qt:4 shebangfix
 SHEBANG_FILES=	qucs/contrib/ps2sp
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-doc

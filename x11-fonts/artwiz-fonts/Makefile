@@ -3,7 +3,7 @@
 
 PORTNAME=	artwiz-fonts
 PORTVERSION=	1.0
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://kobyla.info/soft/distfiles/ \
 		LOCAL/garga/artwiz/
@@ -14,7 +14,6 @@ COMMENT=	Set of free fonts for X11 desktops
 
 NO_BUILD=	yes
 USES=		fonts tar:bzip2
-PKGMESSAGE=	${WRKDIR}/pkg-message
 WRKSRC=		${WRKDIR}/fluxbox-${PORTNAME}
 
 FONTS=		anorexia aqui cure cursor drift edges gelly glisp-bold \

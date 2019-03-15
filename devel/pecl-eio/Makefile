@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	eio
-PORTVERSION=	2.0.1
+DISTVERSION=	2.0.2
 CATEGORIES=	devel
 
 MAINTAINER=	gasol.wu@gmail.com
@@ -12,5 +12,6 @@ LICENSE=	PHP301
 
 CONFIGURE_ARGS=	--enable-eio
 USES=		php:pecl
+IGNORE_WITH_PHP=	73
 
 .include <bsd.port.mk>

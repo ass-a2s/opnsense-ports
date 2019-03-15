@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	libddoc
-PORTVERSION=	0.2.0
+PORTVERSION=	0.6.0
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
@@ -17,13 +17,16 @@ BUILD_DEPENDS=	ldmd2:lang/ldc \
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	economicmodeling
+# Note that beta.1 is a perfectly acceptable version, this is not required at
+# all.
+GH_TAGNAME=	${DISTVERSIONFULL:S/beta/beta./}
 
 DUB_CMD=	${LOCALBASE}/bin/dub build --build=release
 D_INCLUDE_DIR=	${PREFIX}/include/d
 D_LIB_DIR=	${PREFIX}/lib/d
 
 post-patch:
-	${REINPLACE_CMD} -e '21,23d' ${WRKSRC}/dub.json
+	${REINPLACE_CMD} -e '22,24d' ${WRKSRC}/dub.json
 
 do-build:
 	@cd ${WRKSRC} && ${DUB_CMD}
@@ -31,7 +34,7 @@ do-build:
 do-install:
 	@${MKDIR} ${STAGEDIR}${D_INCLUDE_DIR}
 	@${MKDIR} ${STAGEDIR}${D_LIB_DIR}
-	${INSTALL_DATA} ${WRKSRC}/libddoc.a ${STAGEDIR}${D_LIB_DIR}
+	${INSTALL_DATA} ${WRKSRC}/bin/libddoc.a ${STAGEDIR}${D_LIB_DIR}
 	cd ${WRKSRC}/src && ${COPYTREE_SHARE} . ${STAGEDIR}${D_INCLUDE_DIR} "-name *\.d"
 
 .include <bsd.port.mk>

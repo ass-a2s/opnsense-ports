@@ -3,6 +3,7 @@
 
 PORTNAME=	ip4r
 PORTVERSION=	2.2
+PORTREVISION=	1
 CATEGORIES=	databases net
 
 MAINTAINER=	tobez@FreeBSD.org
@@ -15,6 +16,7 @@ OPTIONS_DEFINE=	IDXPATCH
 IDXPATCH_DESC=	Prefer ip4r indexes over seq_scan on large datasets
 
 USES=		gmake pgsql
+LLD_UNSAFE=	yes
 
 MAKE_ARGS=	USE_PGXS=1
 

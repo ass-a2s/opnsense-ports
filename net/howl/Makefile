@@ -3,7 +3,7 @@
 
 PORTNAME=	howl
 PORTVERSION=	1.0.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES?=	net devel
 MASTER_SITES=	http://www.porchdogsoft.com/download/
 
@@ -12,13 +12,13 @@ COMMENT=	Zeroconf/Bonjour(tm) implementation
 
 CONFLICTS=	avahi-[0-9]*
 
+USE_HARDENING=	pie:off
+
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USES=		gmake libtool pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	mdnsresponder
-
-NOPIE_PORTS=	yes
 
 PLIST_SUB=	VERSION="${PORTVERSION}"
 

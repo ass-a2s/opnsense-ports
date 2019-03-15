@@ -3,7 +3,7 @@
 
 PORTNAME=		fife
 PORTVERSION=		0.4.1
-PORTREVISION=		2
+PORTREVISION=		11
 CATEGORIES=		games
 PKGNAMEPREFIX=		${PYTHON_PKGNAMEPREFIX}
 
@@ -19,7 +19,7 @@ LIB_DEPENDS=		libvorbisfile.so:audio/libvorbis \
 
 BROKEN_powerpc64=	fails to compile: fifePYTHON_wrap.cxx: relocation truncated to fit
 
-USES=			openal:al pkgconfig cmake:outsource
+USES=			openal:al pkgconfig cmake
 USE_GL=			gl
 USE_SDL=		sdl2 ttf2 image2
 USE_XORG=		xcursor
@@ -60,7 +60,8 @@ ZIP_CMAKE_BOOL=		zip
 LOGGING_CMAKE_BOOL=	logging
 
 PYTHON_CMAKE_BOOL=	build-python
-PYTHON_USES=		python:2
+PYTHON_USES=		python:2.7
+PYTHON_USE=		python=flavors
 PYTHON_BUILD_DEPENDS=	${LOCALBASE}/bin/swig3.0:devel/swig30
 
 LIBRARY_CMAKE_BOOL=	build-library

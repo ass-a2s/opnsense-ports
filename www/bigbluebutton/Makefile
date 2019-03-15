@@ -3,7 +3,7 @@
 
 PORTNAME=	bigbluebutton
 PORTVERSION=	0.71
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	www java
 MASTER_SITES=	http://bigbluebutton.org/downloads/${PORTVERSION}/ \
 		http://bigbluebutton.org/downloads/0.70/:2 \
@@ -18,7 +18,7 @@ MAINTAINER=	alex.deiter@gmail.com
 COMMENT=	Web conferencing system for distance education
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/pdf2swf:graphics/swftools \
-		${LOCALBASE}/bin/convert:graphics/ImageMagick \
+		${LOCALBASE}/bin/convert:graphics/ImageMagick6 \
 		${LOCALBASE}/etc/rc.d/activemq:net/activemq \
 		${LOCALBASE}/sbin/nginx:www/nginx \
 		${LOCALBASE}/etc/rc.d/tomcat6:www/tomcat6 \
@@ -34,7 +34,7 @@ USE_JAVA=	yes
 JAVA_EXTRACT=	yes
 NO_BUILD=	yes
 DIST_SUBDIR=	${PORTNAME}
-USE_RC_SUBR=   	openoffice
+USE_RC_SUBR=	openoffice
 SOFFICEBIN?=	${PREFIX}/bin/openoffice-4.0.1
 RED5_HOME?=	${PREFIX}/red5
 RED5_LOGS?=	${RED5_HOME}/log

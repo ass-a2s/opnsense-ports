@@ -3,7 +3,7 @@
 
 PORTNAME=	hugs98
 PORTVERSION=	200609
-PORTREVISION=	11
+PORTREVISION=	15
 CATEGORIES=	lang haskell
 MASTER_SITES=	http://cvs.haskell.org/Hugs/downloads/2006-09/
 DISTNAME=	${PORTNAME}-plus-${HUGS_DATE}
@@ -11,12 +11,14 @@ DISTNAME=	${PORTNAME}-plus-${HUGS_DATE}
 MAINTAINER=	haskell@FreeBSD.org
 COMMENT=	Interpreter for the functional programming language Haskell 98
 
+BROKEN_armv6=		fails to compile: cppinput.c: invalid preprocessing directive \#!
+BROKEN_armv7=		fails to compile: cppinput.c: invalid preprocessing directive \#!
+
 BUILD_DEPENDS=	bash:shells/bash
 
-BROKEN_armv6=		fails to compile: cppinput.c: invalid preprocessing directive \#!
-BROKEN_powerpc64=	fails to compile: cppinput.c: detected recursion whilst expanding macro "vector"
-
 WRKSRC=		${WRKDIR}/${DISTNAME}
+
+USE_HARDENING=	pie:off relro:off
 
 HUGS_DATE=	Sep2006
 USES=		bison gmake openal:al,alut
@@ -26,11 +28,14 @@ USE_GCC=	yes
 GNU_CONFIGURE=		yes
 CONFIGURE_ARGS+=	--with-pthreads
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
 USE_GL=		glut
 USE_XORG=	sm ice xmu xi x11
+
+.include <bsd.port.pre.mk>
+
+.if ${ARCH} == i386 && ${OSVERSION} > 1200000
+CFLAGS+=         -O0
+.endif
 
 post-patch:
 	@${REINPLACE_CMD} 's/LIBS/LIBRARIES/' ${WRKSRC}/libraries/Makefile.in
@@ -55,4 +60,4 @@ do-install:
 	cd ${WRKSRC}/${dir} && ${SETENV} ${MAKE_ENV} ${MAKE_CMD} ${MAKE_FLAGS} ${MAKEFILE} ${MAKE_ARGS} ${INSTALL_TARGET}
 .	endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

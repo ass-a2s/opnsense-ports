@@ -1,14 +1,16 @@
 # $FreeBSD$
 
 PORTNAME=	kodi
-DISTVERSION=	17.3
-PORTREVISION=	1
+DISTVERSION=	17.6
+PORTREVISION=	9
 CATEGORIES=	multimedia java
 
 MAINTAINER=	mickael.maillot@gmail.com
 COMMENT=	Award winning media center application
 
 LICENSE=	GPLv2
+
+ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386
 
 BUILD_DEPENDS=	enca:converters/enca \
 		gawk:lang/gawk \
@@ -57,15 +59,16 @@ LIB_DEPENDS=	libass.so:multimedia/libass \
 		libvorbis.so:audio/libvorbis \
 		libxslt.so:textproc/libxslt \
 		libyajl.so:devel/yajl
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3
-
-ONLY_FOR_ARCHS=	amd64 armv6 i386
-KODI_ARCH_i386=	x86
-KODI_ARCH_amd64=x86_64
-KODI_ARCH_armv6=armv6
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR}
 
 USES=		autoreconf:build compiler:c++11-lib gettext gmake iconv jpeg \
 		libtool pkgconfig python:-2.7 ssl
+
+KODI_ARCH_i386=	x86
+KODI_ARCH_amd64=x86_64
+KODI_ARCH_armv6=armv6
+KODI_ARCH_armv7=armv7
+
 GNU_CONFIGURE=	yes
 USE_JAVA=	yes
 USE_GNOME=	libxml2
@@ -76,14 +79,14 @@ CONFIGURE_ENV=	OPENSSL_LIBS="-L${OPENSSLLIB}" \
 		OPENSSL_CFLAGS="-I${OPENSSLINC}"
 
 KODI_CODENAME=		Krypton
-FFMPEG_VERS=		3.1.6
+FFMPEG_VERS=		3.1.11
 LIBDVDCSS_TAGNAME=	2f12236
 LIBDVDNAV_TAGNAME=	981488f
 LIBDVDREAD_TAGNAME=	17d99db
 
 USE_GITHUB=	yes
 GH_TUPLE=	xbmc:xbmc:${PORTVERSION}-${KODI_CODENAME} \
-		xbmc:FFmpeg:${FFMPEG_VERS}-${KODI_CODENAME}:ffmpeg/tools/depends/target/ffmpeg \
+		xbmc:FFmpeg:${FFMPEG_VERS}-${KODI_CODENAME}-17.5:ffmpeg/tools/depends/target/ffmpeg \
 		xbmc:libdvdcss:${LIBDVDCSS_TAGNAME}:libdvdcss/tools/depends/target/libdvdcss/native \
 		xbmc:libdvdnav:${LIBDVDNAV_TAGNAME}:libdvdnav/tools/depends/target/libdvdnav/native \
 		xbmc:libdvdread:${LIBDVDREAD_TAGNAME}:libdvdread/tools/depends/target/libdvdread/native
@@ -92,12 +95,13 @@ PLIST_SUB=	ARCH=${KODI_ARCH_${ARCH}}
 
 OPTIONS_SUB=	yes
 OPTIONS_DEFINE=	AIRPLAY AIRTUNES AVAHI CEC DOCS \
-		LIBBLURAY LIRC MYSQL NFS NONFREE PULSEAUDIO RTMP \
-		SFTP SMB VAAPI VDPAU WEBSERVER
+		LCMS2 LIBBLURAY LIRC MYSQL NFS NONFREE PULSEAUDIO RTMP \
+		SFTP SNDIO SMB VAAPI VDPAU WEBSERVER
 OPTIONS_SINGLE=		RPI
 OPTIONS_SINGLE_RPI=	RPI1 RPI2
 
 OPTIONS_EXCLUDE_armv6=	LIRC VAAPI VDPAU
+OPTIONS_EXCLUDE_armv7=	LIRC VAAPI VDPAU
 OPTIONS_EXCLUDE_amd64=	RPI1 RPI2
 OPTIONS_EXCLUDE_i386=	RPI1 RPI2
 
@@ -109,9 +113,10 @@ SFTP_DESC=	SSH SFTP support via libssh
 RPI1_DESC=	build for RPI1-B (cpu=arm1176jzf-s)
 RPI2_DESC=	build for RPI2 (cpu=cortex-a7, neon enabled)
 
-OPTIONS_DEFAULT=	AIRPLAY AIRTUNES AVAHI CEC LIBBLURAY LIRC \
+OPTIONS_DEFAULT=	AIRPLAY AIRTUNES AVAHI CEC LIRC \
 		MYSQL NFS RTMP SFTP SMB VAAPI VDPAU WEBSERVER
 OPTIONS_DEFAULT_armv6=	RPI1
+OPTIONS_DEFAULT_armv7=	RPI1
 
 AIRPLAY_LIB_DEPENDS=	libplist.so:devel/libplist
 AIRPLAY_CONFIGURE_ENABLE=	airplay
@@ -125,6 +130,9 @@ AVAHI_CONFIGURE_ENABLE=	avahi
 CEC_BUILD_DEPENDS=	libcec>=3.1.0:multimedia/libcec
 CEC_LIB_DEPENDS=	libcec.so:multimedia/libcec
 CEC_CONFIGURE_ENABLE=	libcec
+
+LCMS2_LIB_DEPENDS=	liblcms2.so.2:graphics/lcms2
+LCMS2_CONFIGURE_ENABLE=	lcms2
 
 LIBBLURAY_LIB_DEPENDS=	libbluray.so:multimedia/libbluray
 LIBBLURAY_CONFIGURE_ENABLE=	libbluray
@@ -150,6 +158,10 @@ RPI2_CONFIGURE_ON=	--with-platform=raspberry-pi2
 RTMP_LIB_DEPENDS=	librtmp.so:multimedia/librtmp
 RTMP_CONFIGURE_ENABLE=	rtmp
 
+SNDIO_LIB_DEPENDS=	libsndio.so:audio/sndio
+SNDIO_CONFIGURE_ENABLE=	sndio
+SNDIO_EXTRA_PATCHES=	${PATCHDIR}/extra-patch-sndio
+
 SMB_USES=		samba:lib
 SMB_CONFIGURE_ENABLE=	samba
 
@@ -166,11 +178,18 @@ SFTP_BUILD_DEPENDS=	${LOCALBASE}/lib/libssh.so:security/libssh
 SFTP_RUN_DEPENDS=	${LOCALBASE}/lib/libssh.so:security/libssh
 SFTP_CONFIGURE_ENABLE=	ssh
 
-CONFIGURE_ARGS+=	--disable-debug --disable-alsa --disable-texturepacker
+CONFIGURE_ARGS+=	--disable-debug --enable-gl --disable-gles \
+			--disable-openmax --disable-tegra \
+			--disable-profiling --enable-x11 --disable-alsa \
+			--enable-dbus --enable-upnp --disable-mid \
+			--disable-mdnsembedded --enable-libxslt \
+			--disable-texturepacker --disable-libusb \
+			--disable-libbluetooth --disable-libcap \
+			--disable-gtest --disable-libav-compat
 
-.include <bsd.port.pre.mk>
+.include <bsd.port.options.mk>
 
-.if ${ARCH} != "armv6"
+.if ${ARCH} != armv6 && ${ARCH} != armv7
 BUILD_DEPENDS+=	gtk-update-icon-cache:x11-toolkits/gtk20
 LIB_DEPENDS+=	libdrm.so:graphics/libdrm
 RUN_DEPENDS+=	glxinfo:graphics/mesa-demos \
@@ -182,8 +201,8 @@ INSTALLS_ICONS=	yes
 PLIST_SUB+=	ARM="@comment "
 PLIST_SUB+=	X86=""
 .else
-# armv6 (rpi1 and rpi2 only)
-EXTRA_PATCHES=	${FILESDIR}/extra-armv6_hal
+# armv6 || armv7 (rpi1 and rpi2 only)
+EXTRA_PATCHES+=	${FILESDIR}/extra-armv6_hal
 CONFIGURE_ARGS+=	--enable-player=omxplayer
 LIB_DEPENDS+=	libEGL.so:misc/raspberrypi-userland \
 		libhal.so:sysutils/hal \
@@ -210,8 +229,8 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/kodi/kodi.bin
 	${FIND} ${STAGEDIR}${PREFIX}/lib/kodi -name '*.so' -or -name '*.xbs' -or -name '*.vis' \
 		| ${XARGS} ${STRIP_CMD}
-.if ${ARCH} != armv6
+.if ${ARCH} != armv6 && ${ARCH} != armv7
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/kodi/kodi-xrandr
 .endif
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

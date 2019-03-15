@@ -2,12 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	wine
-PORTVERSION=	2.15
+PORTVERSION=	4.0.r1
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	emulators
 MASTER_SITES=	LOCAL/dbn/repos/wine/${DIST_SUBDIR}/
 PKGNAMEPREFIX=	i386-
-PKGNAMESUFFIX?=	-devel
+PKGNAMESUFFIX=	-devel
 DISTNAME=	${PKGNAME}
 EXTRACT_SUFX=	.txz
 DIST_SUBDIR=	freebsd:${OSREL:C/\..*//}:x86:64
@@ -48,29 +49,24 @@ MONO_RUN_DEPENDS=	${DATADIR}/mono/wine-mono-4.7.1.msi:emulators/wine-mono-devel
 # Included for OPSYS and OSVERSION
 .include <bsd.port.pre.mk>
 
-.for osrel in 10 11 12
+.for osrel in 11 12 13
 .if ${OSREL:C/\..*//} == ${osrel}
 PLIST_SUB+=	OSREL${osrel}=""
 .if ${PKGNAMESUFFIX} == -devel
 PLIST_SUB+=	DEVEL=""
-PLIST_SUB+=	STAGING="@comment "
 PLIST_SUB+=	OSREL${osrel}-DEVEL=""
-PLIST_SUB+=	OSREL${osrel}-STAGING="@comment "
 .else
 PLIST_SUB+=	DEVEL="@comment "
-PLIST_SUB+=	STAGING=""
 PLIST_SUB+=	OSREL${osrel}-DEVEL="@comment "
-PLIST_SUB+=	OSREL${osrel}-STAGING=""
 .endif
 .else
 PLIST_SUB+=	OSREL${osrel}="@comment "
 PLIST_SUB+=	OSREL${osrel}-DEVEL="@comment "
-PLIST_SUB+=	OSREL${osrel}-STAGING="@comment "
 .endif
 .endfor
 
-.if ${OPSYS} != FreeBSD || (!(${OSVERSION} < 1100000) && !(${OSVERSION} >= 1100121 && ${OSVERSION} < 1200000) && !(${OSVERSION} >= 1200019 && ${OSVERSION} < 1300000))
-IGNORE=		binaries compiled for FreeBSD 10.3+, 11.0+ and -current only
+.if ${OPSYS} != FreeBSD || (!(${OSVERSION} >= 1102000 && ${OSVERSION} < 1200000) && !(${OSVERSION} >= 1200086 && ${OSVERSION} < 1300000) && !(${OSVERSION} >= 1300003 && ${OSVERSION} < 1400000))
+IGNORE=		binaries compiled for FreeBSD 11.2+, 12.0+ and -current only
 DISTFILES=
 .endif
 
@@ -88,14 +84,12 @@ ${PLIST}: fetch
 
 port-update:
 	${RM} ${SLAVEDIR}/distinfo ${SLAVEDIR}/distinfo~ ${SLAVEDIR}/pkg-plist.*
-.for osrel in 10 11 12
-.for suffix in -devel -staging
-	${MAKE} fetch OSREL=${osrel} OSVERSION=${osrel}99999 UNAME_r=${osrel} PKGNAMESUFFIX=${suffix}
-	${MAKE} makesum OSREL=${osrel} OSVERSION=${osrel}99999 UNAME_r=${osrel} PKGNAMESUFFIX=${suffix}
+.for osrel in 11 12 13
+	${MAKE} fetch OSREL=${osrel} OSVERSION=${osrel}99999 _OSRELEASE=${osrel}
+	${MAKE} makesum OSREL=${osrel} OSVERSION=${osrel}99999 _OSRELEASE=${osrel}
 	${CAT} ${SLAVEDIR}/distinfo >> ${SLAVEDIR}/distinfo~
 	${RM} ${SLAVEDIR}/distinfo
-	${MAKE} pkg-plist.${osrel}${suffix:tu} PLIST=pkg-plist.${osrel}${suffix:tu} OSREL=${osrel} OSVERSION=${osrel}99999 UNAME_r=${osrel} PKGNAMESUFFIX=${suffix}
-.endfor
+	${MAKE} pkg-plist.${osrel}${suffix:tu} PLIST=pkg-plist.${osrel}${suffix:tu} OSREL=${osrel} OSVERSION=${osrel}99999 _OSRELEASE=${osrel}
 .endfor
 	${SED} -e '2,$${' -e '/^TIMESTAMP/d' -e '}' distinfo~ > ${SLAVEDIR}/distinfo
 	python ${FILESDIR}/mergeplist.py ${SLAVEDIR}/pkg-plist.* > ${PLIST}

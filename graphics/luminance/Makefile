@@ -3,7 +3,7 @@
 
 PORTNAME=	luminance-hdr
 DISTVERSION=	2.3.1
-PORTREVISION=	13
+PORTREVISION=	24
 CATEGORIES=	graphics
 MASTER_SITES=	SF/qtpfsgui/luminance/${DISTVERSION}
 
@@ -12,10 +12,13 @@ COMMENT=	Complete open source solution for HDR photography
 
 LICENSE=	GPLv2
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 BUILD_DEPENDS=	${LOCALBASE}/include/fftw3.h:math/fftw3
 LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 		libexiv2.so:graphics/exiv2 \
-		libIlmImf.so:graphics/OpenEXR \
+		libIlmImf.so:graphics/openexr \
 		libtiff.so:graphics/tiff \
 		libgsl.so:math/gsl \
 		libraw_r.so:graphics/libraw \
@@ -23,8 +26,8 @@ LIB_DEPENDS=	libfftw3f.so:math/fftw3-float \
 
 BROKEN_powerpc64=	fails to compile: cc1plus: unrecognized command line option "-msse2"
 
-USES=		cmake jpeg tar:bzip2
-USE_QT4=	gui sql webkit xml linguist_build moc_build qmake_build \
+USES=		cmake jpeg qt:4 tar:bzip2
+USE_QT=		gui sql webkit xml linguist_build moc_build qmake_build \
 		rcc_build uic_build imageformats_run
 INSTALLS_ICONS=	yes
 

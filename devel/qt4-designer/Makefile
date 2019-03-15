@@ -3,17 +3,20 @@
 
 PORTNAME=	designer
 DISTVERSION=	${QT4_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt4-
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 4 graphical user interface designer
 
-USE_QT4=	qmake_build moc_build rcc_build uic_build assistant_run \
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		compiler:c++11-lang qmake:no_env qt-dist:4
+USE_QT=		moc_build rcc_build uic_build assistant_run \
 		qt3support corelib declarative gui network script sql xml \
 		webkit
-QT_DIST=	yes
 
 HAS_CONFIGURE=	yes
 # Try to fix linking when previous version is installed

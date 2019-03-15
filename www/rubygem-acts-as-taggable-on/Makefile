@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	acts-as-taggable-on
-PORTVERSION=	4.0.0
+PORTVERSION=	5.0.0
+PORTREVISION=	1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 
@@ -11,10 +12,11 @@ COMMENT=	Tag a single model on several contexts
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	rubygem-activerecord4>=4.0:databases/rubygem-activerecord4
+RUN_DEPENDS=	rubygem-activerecord50>=4.2.8:databases/rubygem-activerecord50
+
+USES=		gem
+USE_RUBY=	YES
 
 NO_ARCH=	yes
-USE_RUBY=	YES
-USES=		gem
 
 .include <bsd.port.mk>

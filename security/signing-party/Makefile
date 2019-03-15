@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	signing-party
-PORTVERSION=	2.5
+PORTVERSION=	2.7
 CATEGORIES=	security
 MASTER_SITES=	ftp://ftp.stack.nl/pub/users/johans/signing-party/ \
 		DEBIAN
@@ -24,11 +24,11 @@ RUN_DEPENDS=	gpg:security/gnupg \
 
 CONFLICTS_INSTALL=sig2dot-[0-9]* springgraph-[0-9]*
 
+USE_HARDENING=	pie:off
+
 USES=		perl5 python gmake shebangfix
 SHEBANG_FILES=	${SCRIPTS}
 NO_WRKSUBDIR=	yes
-
-NOPIE_PORTS=	yes
 
 BINS=		keyanalyze/keyanalyze keyanalyze/process_keys \
 		gpgwrap/bin/gpgwrap
@@ -45,6 +45,8 @@ EXAMPLES=	caff/caffrc.sample gpg-mailkeys/example.gpg-mailkeysrc
 PORTEXAMPLES=	${EXAMPLES:T}
 
 PORTDOCS=	*
+
+OPTIONS_DEFINE=	DOCS EXAMPLES
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/share/doc/signing-party/caff/caffrc\.sample|${EXAMPLESDIR}/caffrc.sample|' \

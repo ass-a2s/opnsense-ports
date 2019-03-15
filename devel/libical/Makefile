@@ -2,30 +2,33 @@
 # $FreeBSD$
 
 PORTNAME=	libical
-PORTVERSION=	2.0.0
-DISTVERSIONPREFIX=	v
+PORTVERSION=	3.0.4
 CATEGORIES=	devel
+MASTER_SITES=	https://github.com/libical/libical/releases/download/v${PORTVERSION}/
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Implementation of the IETF Calendaring and Scheduling protocols
 
+LICENSE=	LGPL21 MPL20
 LICENSE_COMB=	dual
-LICENSE=	MPL LGPL21
 
 LIB_DEPENDS=	libicuuc.so:devel/icu
 
-USE_GITHUB=	yes
+CFLAGS_amd64=	-fPIC
 
-USES=		cmake pathfix perl5
+USES=		cmake compiler:c++11-lib gnome pathfix perl5 pkgconfig
 USE_PERL5=	build
 USE_LDCONFIG=	yes
 
 MAKE_JOBS_UNSAFE= yes
 
-.include <bsd.port.pre.mk>
+BUILD_DEPENDS=	valac:lang/vala \
+		gtkdoc-scan:textproc/gtk-doc
+USE_GNOME=	introspection:build glib20 libxml2
+CMAKE_ARGS+=	-DGOBJECT_INTROSPECTION=true \
+		-DICAL_GLIB_VAPI=true \
+		-DICAL_BUILD_DOCS=false
 
-.if ${ARCH} == "amd64" || ${ARCH} == "ia64"
-CFLAGS+=	-fPIC
-.endif
+PLIST_SUB+=	VERSION=${PORTVERSION}
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

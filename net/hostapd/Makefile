@@ -1,12 +1,15 @@
-# Created by: Craig Leres <leres@ee.lbl.gov>
+# Created by: Craig Leres <leres@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	hostapd
-PORTVERSION=	2.6
+PORTVERSION=	2.7
+PORTREVISION=	1
 CATEGORIES=	net
-MASTER_SITES=	http://w1.fi/releases/
+MASTER_SITES=	https://w1.fi/releases/
 
-MAINTAINER=	leres@ee.lbl.gov
+PATCH_SITES=	https://w1.fi/security/2018-1/:2018_1
+
+MAINTAINER=	cy@FreeBSD.org
 COMMENT=	IEEE 802.11 AP, IEEE 802.1X/WPA/WPA2/EAP/RADIUS Authenticator
 
 LICENSE=	BSD3CLAUSE

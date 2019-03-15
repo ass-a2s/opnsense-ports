@@ -2,19 +2,19 @@
 # $FreeBSD$
 
 PORTNAME=	re2
-PORTVERSION=	20170301
+PORTVERSION=	20190301
 CATEGORIES=	devel
 
-MAINTAINER=	jlaffaye@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Fast C++ regex library
 
 LICENSE=	BSD3CLAUSE
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BROKEN_powerpc64=	fails to compile: prefilter_tree.cc: 'to_string' is not a member of 'std'
+USES=		compiler:c++11-lang gmake pathfix
 
 MAKE_ARGS=	CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" SED_INPLACE="${SED} -i ''" prefix=${PREFIX}
 USE_LDCONFIG=	yes
-USES=		compiler:c++11-lang gmake pathfix
 
 PATHFIX_MAKEFILEIN=	Makefile
 

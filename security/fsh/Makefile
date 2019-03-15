@@ -3,7 +3,7 @@
 
 PORTNAME=	fsh
 PORTVERSION=	1.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	http://www.lysator.liu.se/fsh/ \
 		http://mirror2.unixfreunde.de/ \
@@ -12,7 +12,7 @@ MASTER_SITES=	http://www.lysator.liu.se/fsh/ \
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Fast remote command execution
 
-USES=		python
+USES=		python:2.7
 GNU_CONFIGURE=	yes
 
 INFO=	fsh

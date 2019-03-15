@@ -3,6 +3,7 @@
 
 PORTNAME=	m4
 PORTVERSION=	1.4.18
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	devel
 MASTER_SITES=	GNU
@@ -18,12 +19,15 @@ LIBSIGSEGV_DESC=Use alternative page fault handler (GNU libsigsegv)
 
 CONFIGURE_ARGS=	--program-prefix=g
 CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split"
+.ifdef QEMU_EMULATING
+# XXX bug 224740: configure hangs
+CONFIGURE_ENV+=	gl_cv_func_printf_enomem=no
+.endif
 GNU_CONFIGURE=	yes
 USES=		makeinfo tar:xz
 
 EXAMPLESDIR=	${PREFIX}/share/examples/gm4
 INFO=		m4
-PORTEXAMPLES=	*
 
 LIBSIGSEGV_CONFIGURE_OFF=	--without-libsigsegv-prefix
 LIBSIGSEGV_CONFIGURE_ON=	--with-libsigsegv-prefix=${LOCALBASE}

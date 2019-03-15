@@ -3,6 +3,7 @@
 
 PORTNAME=	trytond28_stock_supply_production
 PORTVERSION=	2.8.2
+PORTREVISION=	1
 CATEGORIES=	finance python
 MASTER_SITES=	CHEESESHOP \
 		http://downloads.tryton.org/${PORTVERSION:R}/
@@ -20,7 +21,7 @@ RUN_DEPENDS=	trytond28>=2.8.2:finance/trytond28 \
 
 CONFLICTS=	trytond_stock_supply_production-2.[46].*
 
-USES=		python
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

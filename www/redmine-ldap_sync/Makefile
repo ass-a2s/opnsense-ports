@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	ldap_sync
-PORTVERSION=	2.0.7
+PORTVERSION=	2.1.0
 CATEGORIES=	www
 PKGNAMEPREFIX=	redmine-
 DIST_SUBDIR=	${PORTNAME}-${PORTVERSION}
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LDAP user/group synchronization for Redmine
 
 LICENSE=	GPLv3+

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pam_opnsense
-PORTVERSION=	17.1
+PORTVERSION=	19.1.3
 CATEGORIES=	sysutils
 
 MAINTAINER=	ad@opnsense.org
@@ -12,5 +12,8 @@ LICENSE=	BSD2CLAUSE
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	opnsense
+
+post-stage:
+	${RM} ${STAGEDIR}${PREFIX}/lib/*.a
 
 .include <bsd.port.mk>

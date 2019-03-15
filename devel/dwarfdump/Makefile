@@ -16,11 +16,10 @@ BUILD_DEPENDS=	${LOCALBASE}/lib/libdwarf.a:devel/libdwarf
 
 WRKSRC=		${WRKDIR}/dwarf-${PORTVERSION}/dwarfdump
 
-GNU_CONFIGURE=	yes
-LDFLAGS+=	-L${LOCALBASE}/lib
-CFLAGS+=	-I${LOCALBASE}/include
+USE_HARDENING=	pie:off
 
-NOPIE_PORTS=	yes
+USES=		localbase:ldflags
+GNU_CONFIGURE=	yes
 
 PLIST_FILES=	bin/dwarfdump man/man1/dwarfdump.1.gz
 
@@ -40,6 +39,6 @@ post-patch:
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/dwarfdump ${STAGEDIR}${PREFIX}/bin
-	${INSTALL_DATA} ${WRKSRC}/dwarfdump.1 ${STAGEDIR}${MANPREFIX}/man/man1
+	${INSTALL_MAN} ${WRKSRC}/dwarfdump.1 ${STAGEDIR}${MANPREFIX}/man/man1
 
 .include <bsd.port.post.mk>

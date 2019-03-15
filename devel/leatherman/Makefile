@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	leatherman
-PORTVERSION=	1.2.1
+PORTVERSION=	1.5.4
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	puppet@FreeBSD.org
@@ -12,15 +13,13 @@ LICENSE=	APACHE20
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs \
 		libcurl.so:ftp/curl
 
-BROKEN_armv6=		fails to configure: CMake: execution of make failed
-BROKEN_powerpc64=	fails to compile: cc1plus: error: unrecognized command line option "-std=c++11"
-
+USES=		compiler:c++11-lang cmake gettext
 USE_GITHUB=	yes
 GH_ACCOUNT=	puppetlabs
 
-USES=		cmake gettext
 USE_RUBY=	yes
-CMAKE_ARGS=	-DLEATHERMAN_SHARED:BOOL=ON
+CMAKE_ON=	LEATHERMAN_SHARED
+CMAKE_OFF=	ENABLE_CXX_WERROR
 USE_LDCONFIG=	yes
 TEST_TARGET=	test
 

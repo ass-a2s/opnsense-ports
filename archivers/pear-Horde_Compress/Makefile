@@ -1,9 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	Horde_Compress
-PORTVERSION=	2.2.1
+PORTVERSION=	2.2.2
 CATEGORIES=	archivers www pear
-PKGNAMEPREFIX=	pear-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde Compression API

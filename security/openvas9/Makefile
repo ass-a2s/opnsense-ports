@@ -3,7 +3,7 @@
 
 PORTNAME=	openvas9
 PORTVERSION=	9.0
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 
 MAINTAINER=	acm@FreeBSD.org
@@ -28,6 +28,5 @@ RUN_DEPENDS+=	${LOCALBASE}/sbin/gsad:security/greenbone-security-assistant${OPEN
 
 SUB_FILES=	pkg-message
 OPENVAS_VER=	9
-
 
 .include <bsd.port.mk>

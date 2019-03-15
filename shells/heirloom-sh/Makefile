@@ -11,16 +11,18 @@ COMMENT=	Portable version of OpenSolaris' Bourne Shell
 
 BROKEN_aarch64=	Fails to link: missing sbrk
 
+USE_HARDENING=	pie:off
+
 USES=		tar:bzip2
 MAKEFILE=	makefile
 PLIST_FILES=	bin/jsh \
 		man/man1/jsh.1.gz
 PORTDOCS=	CALDERA.LICENSE OPENSOLARIS.LICENSE CHANGES README
 
-NOPIE_PORTS=	yes
-
 PKGINSTALL=	pkg-install
 PKGDEINSTALL=	pkg-deinstall
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/jsh ${STAGEDIR}${PREFIX}/bin

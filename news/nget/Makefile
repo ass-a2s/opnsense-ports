@@ -3,10 +3,10 @@
 
 PORTNAME=	nget
 PORTVERSION=	0.27.1
-PORTREVISION=	2
+DISTVERSIONSUFFIX=	+uulib
+PORTREVISION=	6
 CATEGORIES=	news
 MASTER_SITES=	SF
-DISTNAME=	nget-${PORTVERSION}+uulib
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Auto-resuming command line nntp file grabber
@@ -14,16 +14,26 @@ COMMENT=	Auto-resuming command line nntp file grabber
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		gmake
-# Fails to build with GCC 4.9, cf. PR 196913.
-USE_GCC=	4.8
+USES=		compiler:c++11-lang gmake
 GNU_CONFIGURE=	yes
+
+# Skip check if the C++ compiler supports exceptions.  We know both
+# Clang and GCC do.  The configure test fails on FreeBSD 10.3 because
+# it passes -fhandle-exceptions to the compiler and Clang 3.4.1 does
+# not know to ignore it yet.
+CONFIGURE_ARGS=	my_cv_exceptions=1
 
 OPTIONS_DEFINE=	DOCS
 
-post-extract:
-	@${LN} -s nget-${PORTVERSION} ${WRKDIR}/${DISTNAME}
+WRKSRC=	${WRKDIR}/nget-${PORTVERSION}
 
+.include <bsd.port.pre.mk>
+
+.if ${ARCH:Mmips*} || ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
+CXXFLAGS+=	-std=c++11
+.else
+CXXFLAGS+=	-std=c++98
+.endif
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/nget ${STAGEDIR}${PREFIX}/bin
 	${INSTALL_PROGRAM} ${WRKSRC}/ngetlite ${STAGEDIR}${PREFIX}/bin
@@ -36,4 +46,4 @@ do-install-DOCS-on:
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

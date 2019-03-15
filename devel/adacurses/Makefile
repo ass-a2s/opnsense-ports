@@ -2,16 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	adacurses
-PORTVERSION=	20150808
-PORTREVISION=	4
+DISTVERSION=	20180127
 CATEGORIES=	devel
-MASTER_SITES=	ftp://invisible-island.net/AdaCurses/
-DISTNAME=	AdaCurses-${PORTVERSION}
+MASTER_SITES=	ftp://ftp.invisible-island.net/AdaCurses/
+DISTNAME=	AdaCurses-${DISTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ada95 bindings for ncurses
 
 LICENSE=	MIT
+
+USE_HARDENING=	pie:off retpoline:off
 
 USES=		ada gmake pkgconfig ncurses:port tar:tgz
 GNU_CONFIGURE=	yes
@@ -23,11 +24,7 @@ CONFIGURE_ARGS=	--with-ada-include=${PREFIX}/include/adacurses \
 PORTDOCS=	ada Ada95.html
 PLIST_SUB=	atic=adacurses/terminal_interface-curses
 
-NOPIE_PORTS=	yes
-
 OPTIONS_DEFINE=	DOCS
-
-MAKE_JOBS_UNSAFE=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e '/(INSTALL_PROG)/d' -e 's|@ADAGEN_LDFLAGS@||' \

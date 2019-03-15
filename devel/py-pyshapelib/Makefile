@@ -5,7 +5,7 @@ PORTNAME=	pyshapelib
 PORTVERSION=	1.0
 CATEGORIES=	devel python geography
 MASTER_SITES=	http://wald.intevation.org/frs/download.php/899/:py \
-		http://download.osgeo.org/shapelib/:c
+		https://download.osgeo.org/shapelib/:c
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}:py ${SHAPELIB}${EXTRACT_SUFX}:c
 
@@ -14,7 +14,7 @@ COMMENT=	Python bindings for Shapelib
 
 LICENSE=	LGPL20
 
-USES=		python
+USES=		python:2.7
 USE_LDCONFIG=	yes
 USE_PYTHON=	distutils
 
@@ -33,7 +33,7 @@ post-extract:
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for f in ${PORTDOCS}
-	${INSTALL_MAN} ${WRKSRC}/$f ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/$f ${STAGEDIR}${DOCSDIR}
 .endfor
 
 post-install-EXAMPLES-on:
@@ -42,10 +42,4 @@ post-install-EXAMPLES-on:
 	${INSTALL_DATA} ${WRKSRC}/$f ${STAGEDIR}${EXAMPLESDIR}
 .endfor
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_MAJOR_VER} != 2
-IGNORE=	does not work with ${PYTHON_VERSION}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

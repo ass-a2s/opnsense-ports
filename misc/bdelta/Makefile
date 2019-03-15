@@ -6,10 +6,10 @@ PORTVERSION=	0.3.1
 DISTVERSIONPREFIX=v
 CATEGORIES=	misc devel
 
-MAINTAINER=	novel@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Advanced delta creator, patcher, and library
 
-LICENSE=	MPL
+LICENSE=	MPL20
 
 WRKSRC_SUBDIR=	src
 

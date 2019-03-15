@@ -1,6 +1,6 @@
---- src/misc/newinstall.cxx.orig	2017-05-12 11:32:10 UTC
+--- src/misc/newinstall.cxx.orig	2018-02-24 13:42:49 UTC
 +++ src/misc/newinstall.cxx
-@@ -67,7 +67,7 @@ text[3] = " btu <NAME> <CALL> de <MYCALL
+@@ -67,7 +67,7 @@ text[3] = " btu <NAME> <CALL> de <MYCALL> k\n\
  
  label[4] = "SK @||";
  text[4] = "\n\

@@ -3,7 +3,6 @@
 
 PORTNAME=	munin
 PORTVERSION=	${MUNIN_VERSION}
-PORTREVISION=	1
 CATEGORIES=	sysutils perl5
 MASTER_SITES=	${MUNIN_SITES}
 PKGNAMESUFFIX=	-master
@@ -39,8 +38,6 @@ RUN_DEPENDS=	munin-common>=${MUNIN_VERSION}:sysutils/munin-common \
 
 USES=		gmake perl5 cpe
 
-PKGMESSAGE=	${WRKDIR}/pkg-message
-
 .include "${.CURDIR}/../munin-common/munin.mk"
 
 ALL_TARGET=	infiles build-master build-man
@@ -49,6 +46,8 @@ NO_ARCH=	yes
 
 SUB_FILES=	pkg-message
 PLIST_SUB+=	WWWOWN=${WWWOWN} WWWGRP=${WWWGRP}
+
+PORTSCOUT=	ignore:1
 
 post-install:
 	(cd ${WRKSRC}/build/doc; \

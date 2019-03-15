@@ -2,27 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	requests-futures
-PORTVERSION=	0.9.7
+PORTVERSION=	0.9.9
 CATEGORIES=	www python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	HTTP library written in Python for human beings
 
 LICENSE=	APACHE20
 
-USES=		python
-USE_PYTHON=	autoplist distutils
+RUN_DEPENDS=	${PY_FUTURES} \
+		${PYTHON_PKGNAMEPREFIX}requests>=1.2.0:www/py-requests@${PY_FLAVOR}
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
 
-.include <bsd.port.pre.mk>
-
-.if ${PYTHON_VER} == "2.7"
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}futures>0:devel/py-futures
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

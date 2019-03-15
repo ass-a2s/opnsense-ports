@@ -3,7 +3,7 @@
 
 PORTNAME=	patchage
 PORTVERSION=	0.5.0
-PORTREVISION=	7
+PORTREVISION=	16
 CATEGORIES=	audio
 MASTER_SITES=	http://download.drobilla.net/ \
 		http://frugalware.mirrors.tds.net/pub/linux/frugalware/frugalware-current/source/xmultimedia-extra/patchage/
@@ -13,6 +13,8 @@ COMMENT=	Modular patch bay for Jack
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+USE_HARDENING=	safestack
 
 LIB_DEPENDS=	libjack.so:audio/jack \
 		libraul.so:audio/raul \
@@ -30,8 +32,6 @@ CONFIGURE_ARGS+=	--mandir=${MANPREFIX}/man \
 			--no-lash
 
 CFLAGS+=	-I${LOCALBASE}/include
-
-EXPLICIT_SAFESTACK=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e \

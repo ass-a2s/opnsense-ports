@@ -9,7 +9,7 @@ MASTER_SITES?=	http://ioquake3.org/files/${DISTVERSION}/
 # Using zip this way enables slaves to override it.
 EXTRACT_SUFX?=	.zip
 
-MAINTAINER?=	kami@FreeBSD.org
+MAINTAINER?=	ports@FreeBSD.org
 COMMENT?=	Cleaned-up and enhanced version of Quake 3
 
 LICENSE?=	GPLv2
@@ -17,10 +17,10 @@ LICENSE_FILE?=	${WRKSRC}/COPYING.txt
 
 USES=		pkgconfig gmake
 
-EXPLICIT_SAFESTACK=	yes
+USE_HARDENING=	safestack
 
 # Port configuration flags:
-# 	CLIENT SERVER TOOLS DLRENDERER GAMELIBS OPUS OPENGL2
+#	CLIENT SERVER TOOLS DLRENDERER GAMELIBS OPUS OPENGL2
 IOQ3?=		CLIENT TOOLS GAMELIBS
 IOQ3ARCH?=	${ARCH}
 IOQ3SDL?=	sdl
@@ -43,7 +43,7 @@ OPTIONS_DEFINE+=	${IOQ3_OPTIONS} DOCS
 OPTIONS_DEFAULT+=	${IOQ3_OPTIONS}
 
 TOOLS_DESC=	Enable modding tools
-DLRENDERER_DESC=	Build dynamically loaded renderer
+DLRENDERER_DESC=Build dynamically loaded renderer
 GAMELIBS_DESC=	Build game libraries
 
 MAKE_ARGS+=	DEFAULT_BASEDIR="${Q3DIR}" \
@@ -54,6 +54,7 @@ MAKE_ARGS+=	DEFAULT_BASEDIR="${Q3DIR}" \
 		TOOLS_CC="${CC}" \
 		USE_LOCAL_HEADERS=0
 ALL_TARGET=	release
+LLD_UNSAFE=	yes
 
 LIBDIR=		lib/${PORTNAME}${PKGNAMESUFFIX}
 DOCSDIR=	share/doc/${PORTNAME}${PKGNAMESUFFIX}

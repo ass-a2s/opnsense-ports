@@ -3,6 +3,7 @@
 
 PORTNAME=	bacula-web
 DISTVERSION=	7.2.0
+PORTREVISION=	1
 CATEGORIES=	www sysutils
 MASTER_SITES=	http://www.bacula-web.org/files/bacula-web.org/downloads/
 
@@ -12,9 +13,8 @@ COMMENT=	Bacula-web provides a summarized output of Bacula jobs
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/docs/COPYING
 
-USES=		tar:tgz
+USES=		php:web tar:tgz
 USE_PHP=	gd gettext session
-WANT_PHP_WEB=	yes
 NO_BUILD=	yes
 NO_ARCH=	yes
 NO_WRKSUBDIR=	yes

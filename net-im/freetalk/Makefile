@@ -4,10 +4,10 @@
 PORTNAME=	freetalk
 PORTVERSION=	4.1
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
+PORTREVISION=	6
 CATEGORIES=	net-im
 
-MAINTAINER=	olevole@olevole.ru
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GNU console based Jabber client
 
 LICENSE=	GPLv3+
@@ -21,7 +21,7 @@ USES=		autoreconf gettext-runtime localbase makeinfo pkgconfig readline
 USE_GNOME=	glib20
 GNU_CONFIGURE=	yes
 
-EXPLICIT_SAFESTACK=	yes
+USE_HARDENING=	safestack
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	GNUFreetalk

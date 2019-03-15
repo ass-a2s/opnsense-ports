@@ -7,6 +7,8 @@ CATEGORIES=	security
 MAINTAINER=	shawn.webb@hardenedbsd.org
 COMMENT=	Quantum Insert detector and 0-day catcher
 
+BROKEN=		fails to build
+
 BUILD_DEPENDS=	go:lang/go
 
 USE_GITHUB=	yes
@@ -31,7 +33,7 @@ LICENSE=	GPLv3
 
 do-build:
 .for bin in ${BIN_FILES}
-	cd ${WRKSRC}/src/github.com/david415/HoneyBadger/cmd/${bin}; ${SETENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build
+	cd ${WRKSRC}/src/github.com/david415/HoneyBadger/cmd/${bin}; ${SETENV} ${MAKE_ENV} ${BUILD_ENV} GOPATH=${WRKSRC} go build
 .endfor
 
 do-install:

@@ -3,6 +3,7 @@
 
 PORTNAME=	kaptain
 PORTVERSION=	0.73
+PORTREVISION=	1
 CATEGORIES=	devel
 MASTER_SITES=	SF
 
@@ -12,8 +13,11 @@ COMMENT=	Tool for building/running Qt GUIs for command line programs
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		qmake tar:tgz
-USE_QT4=	qt3support moc_build
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake qt:4 tar:tgz
+USE_QT=		qt3support moc_build
 
 INFO=		kaptain
 PORTDOCS=	*

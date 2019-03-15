@@ -10,8 +10,10 @@ PKGNAMEPREFIX=	qt4-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt Meta-Object Compiler
 
-USE_QT4=	qmake_build
-QT_DIST=	yes
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qt-dist:4 qmake:no_env
 
 HAS_CONFIGURE=	yes
 

@@ -3,7 +3,7 @@
 
 PORTNAME=	Gtk2-WebKit
 PORTVERSION=	0.09
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:FLORA
@@ -19,6 +19,9 @@ BUILD_DEPENDS=	p5-Cairo>=0:graphics/p5-Cairo \
 		p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
 		${LOCALBASE}/libdata/pkgconfig/webkit-1.0.pc:www/webkit-gtk2
 RUN_DEPENDS=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2
+
+DEPRECATED=	Uses webkit-gtk2 which has security issues
+EXPIRATION_DATE=2019-03-24
 
 MAKE_JOBS_UNSAFE=	yes
 

@@ -3,13 +3,13 @@
 
 PORTNAME=	xneur
 PORTVERSION=	0.17.0
-PORTREVISION=	2
 DISTVERSIONSUFFIX=.orig
+PORTREVISION=	6
 CATEGORIES=	deskutils
 MASTER_SITES=	https://launchpad.net/~andrew-crew-kuznetsov/+archive/xneur-stable/+files/
 DISTNAME=	${PORTNAME}_${DISTVERSIONPREFIX}${DISTVERSION}${DISTVERSIONSUFFIX}
 
-MAINTAINER=	admin@lissyara.su
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Auto keyboard switcher
 
 LICENSE=	GPLv2
@@ -17,10 +17,17 @@ LICENSE=	GPLv2
 LIB_DEPENDS=	libnotify.so:devel/libnotify \
 		libpcre.so:devel/pcre
 
-USES=		compiler:nestedfct iconv libtool localbase pathfix pkgconfig
+USES=		compiler:nestedfct gnome iconv libtool localbase pathfix \
+		pkgconfig
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --libdir=${PREFIX}/lib/xneur
+CFLAGS_mips=	-fnested-functions
+CFLAGS_mips64=	-fnested-functions
+CFLAGS_powerpc=	-fnested-functions
+CFLAGS_powerpcspe=	-fnested-functions
+CFLAGS_powerpc64=	-fnested-functions
+CFLAGS_sparc64=	-fnested-functions
 
 USE_LDCONFIG=	${PREFIX}/lib/xneur ${PREFIX}/lib/xneur/xneur
 INSTALLS_ICONS=	yes

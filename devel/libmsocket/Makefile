@@ -3,18 +3,20 @@
 
 PORTNAME=	libmsocket
 PORTVERSION=	0.4
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	devel net
 MASTER_SITES=	SF/kageki/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	Socket abstraction library for C programmers
 
+LICENSE=	BSD2CLAUSE
+
 LIB_DEPENDS=	libevent.so:devel/libevent
 
 OPTIONS_DEFINE=	DEBUG
 
-USES=		tar:bzip2 desthack
+USES=		tar:bzip2 desthack ssl
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--enable-throttling \
@@ -28,7 +30,7 @@ PLIST_FILES=	lib/libmsocket.so \
 
 CFLAGS_aarch64+=-fPIC -DPIC
 CFLAGS_amd64+=	-fPIC -DPIC
-CFLAGS_iad64+=	-fPIC -DPIC
+CFLAGS_i386+=	-fPIC -DPIC
 
 DEBUG_CONFIGURE_ON=	--enable-debug
 

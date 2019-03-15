@@ -1,8 +1,8 @@
-# Created by: John W. O'Brien <john@saltant.com>
 # $FreeBSD$
 
 PORTNAME=	pysmi
-PORTVERSION=	0.0.7
+PORTVERSION=	0.3.3
+PORTREVISION=	2
 CATEGORIES=	net-mgmt python
 MASTER_SITES=	CHEESESHOP \
 		SF/pysmi/pysmi/${PORTVERSION}
@@ -13,23 +13,19 @@ COMMENT=	SNMP/SMI MIB parsing in Python
 
 LICENSE=	BSD2CLAUSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}ply>=0:devel/py-ply@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USES=		python shebangfix
-USE_PYTHON=	autoplist concurrent distutils
-SHEBANG_FILES=	scripts/mibdump.py
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
-BASEDOCS=	CHANGES.txt README.txt TODO.txt
-
-post-patch:
-	${CP} ${FILESDIR}/tests__init__.py ${WRKSRC}/tests/__init__.py
-	${MV} ${WRKSRC}/tests ${WRKSRC}/${PORTNAME}
+BASEDOCS=	CHANGES.rst README.md THANKS.txt TODO.txt
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

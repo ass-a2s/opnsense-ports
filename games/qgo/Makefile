@@ -10,10 +10,15 @@ DISTNAME=	${PORTNAME}_2~svn764.orig
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Go board and SGF editor written with the Qt library
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+BROKEN=		fails to build
+
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-USES=		desktop-file-utils qmake tar:bzip2
-USE_QT4=	gui network qtestlib moc_build rcc_build uic_build
+USES=		desktop-file-utils qmake qt:4 tar:bzip2
+USE_QT=		gui network qtestlib moc_build rcc_build uic_build
 
 PLIST_FILES=	bin/qgo share/applications/qgo.desktop share/pixmaps/qgo.png
 

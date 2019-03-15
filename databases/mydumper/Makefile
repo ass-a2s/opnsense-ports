@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mydumper
-PORTVERSION=	0.9.3
+PORTVERSION=	0.9.5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	databases
 
@@ -13,9 +13,9 @@ LICENSE=	GPLv3
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-CMAKE_ARGS=	-DBUILD_DOCS=OFF -DWITH_BINLOG=OFF
+CMAKE_OFF=	BUILD_DOCS WITH_BINLOG
 USE_GNOME=	glib20
-USES=		cmake gnome mysql pkgconfig
+USES=		cmake:insource gnome mysql pkgconfig
 
 PLIST_FILES=	sbin/mydumper sbin/myloader
 

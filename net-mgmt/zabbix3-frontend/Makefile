@@ -5,11 +5,6 @@ PORTNAME=	zabbix3
 CATEGORIES=	net-mgmt
 PKGNAMESUFFIX=	-frontend
 
-MAINTAINER=	pg@pakhom.spb.ru
-COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/^-//}) LTS
-
-LICENSE=	GPLv2
-
 MASTERDIR=	${.CURDIR}/../zabbix3-server
 
 NO_BUILD=	yes
@@ -22,17 +17,11 @@ USE_PHP=	bcmath ctype dom gd gettext json ldap mbstring pcre \
 
 USES=	php:web gettext
 
-OPTIONS_DEFINE=		MYSQL MYSQLI PGSQL SQLITE ORACLE
+OPTIONS_DEFINE=		MYSQLI PGSQL SQLITE ORACLE
 OPTIONS_DEFAULT=	MYSQLI
 MYSQLI_DESC=		MySQLI backend
 
-MYSQL_VARS=	IGNORE_WITH_PHP+=70 71
-
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MMYSQL}
-USE_PHP+=	mysql
-.endif
 
 .if ${PORT_OPTIONS:MMYSQLI}
 USE_PHP+=	mysqli

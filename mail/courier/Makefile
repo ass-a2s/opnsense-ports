@@ -3,15 +3,19 @@
 
 PORTNAME=	courier
 PORTVERSION=	0.65.3
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	mail ipv6
 MASTER_SITES=	SF
 
 MAINTAINER=	bsd@dino.sk
 COMMENT=	Courier SMTP IMAP POP3 HTTP mail server suite
 
+LICENSE=	GPLv3
+LICENSE_FILE=	${WRKSRC}/COPYING.GPL
+
 BUILD_DEPENDS=	courierauthconfig:security/courier-authlib-base
-LIB_DEPENDS=	libpcre.so:devel/pcre
+LIB_DEPENDS=	libidn.so:dns/libidn \
+		libpcre.so:devel/pcre
 RUN_DEPENDS=	courierauthconfig:security/courier-authlib-base \
 		${LOCALBASE}/share/sysconftool/sysconftool:devel/sysconftool \
 		${LOCALBASE}/etc/mime.types:misc/mime-support \
@@ -20,7 +24,7 @@ RUN_DEPENDS=	courierauthconfig:security/courier-authlib-base \
 
 CONFLICTS=	courier-imap-2.* couriermlm-0.* \
 		exim-4.* maildrop-1.* \
-		postfix-1.* postfix-2.* \
+		panda-imap-201* postfix-1.* postfix-2.* \
 		qmail-*-1.* qmail-1.* \
 		sendmail-*-8.* sendmail-8.* \
 		smail-3.* sqwebmail-3.* \
@@ -264,6 +268,11 @@ pre-patch:
 	@${CP} ${TEMPLATES}/config.guess ${TEMPLATES}/config.sub ${WRKSRC}
 
 post-patch:
+	@${REINPLACE_CMD} -i '' -e 's|#! perl|#!${PERL}|g' \
+		${WRKSRC}/webadmin/*.pl \
+		${WRKSRC}/webadmin/*.pl.in \
+		${WRKSRC}/courier/webadmin/*.pl \
+		${WRKSRC}/courier/webadmin/*.pl.in
 	@${REINPLACE_CMD} -e 's|^PROG=\./|PROG=exec ./|g' \
 		${WRKSRC}/courier/module.*/courier.config
 	@${REINPLACE_CMD} -e 's|@mydatadir@|@sysconfdir@|g' \
@@ -290,6 +299,10 @@ post-patch:
 		${WRKSRC}/courier/perms.sh.in
 	@${REINPLACE_CMD} '/^courieresmtp_LDADD =/s/$$/ -lcourierauth/' \
 		${WRKSRC}/courier/module.esmtp/Makefile.in
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${REINPLACE_CMD} -i .c++20 's/>version$$/&.txt/' ${WRKSRC}/configure
+	@${FIND} ${WRKSRC} -name configure -exec ${REINPLACE_CMD} \
+		-i .c++20 '/^version.*cat/s,/version,&.txt,' {} +
 
 post-build:
 	@${PERL} -pi -e 's|^(auth)\s+(required).*|$$1\t\t$$2\tpam_unix.so\ttry_first_pass|g;' \

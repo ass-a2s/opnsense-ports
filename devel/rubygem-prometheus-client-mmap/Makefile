@@ -1,18 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	prometheus-client-mmap
-DISTVERSION=	0.7.0.beta5
+DISTVERSION=	0.9.5
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
-MAINTAINER=	tz@FreeBSD.org
+MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	Suite of instrumentation metric primitives
 
-LICENSE=	RUBY
+LICENSE=	APACHE20
 
-RUN_DEPENDS=	rubygem-mmap2>=2.2.6:devel/rubygem-mmap2
-
-NO_ARCH=	yes
 USES=		gem
 USE_RUBY=	yes
 

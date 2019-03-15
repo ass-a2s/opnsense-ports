@@ -3,7 +3,7 @@
 
 PORTNAME=	qadsl
 PORTVERSION=	1.3.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	net
 MASTER_SITES=	SAVANNAH/alive
 
@@ -33,6 +33,5 @@ post-patch:
 		'/echo $${CFLAGS}/s|^|#| ; \
 		 /echo $${CXXFLAGS}/s|^|#| ; \
 		 s|$$OPTIMIZER_CFLAGS||' ${WRKSRC}/configure
-
 
 .include <bsd.port.mk>

@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	luasec
-PORTVERSION=	0.6
+PORTVERSION=	0.7
 DISTVERSIONPREFIX=	${PORTNAME}-
 CATEGORIES=	security
 PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
@@ -34,16 +34,10 @@ post-patch:	.SILENT
 	${REINPLACE_CMD} -Ee '/^(INC|LIB)DIR/s/[^?]=/?=/' \
 		${WRKSRC}/Makefile
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
 do-install:
 	${MKDIR} ${STAGEDIR}${LUA_MODSHAREDIR}/ssl ${STAGEDIR}${LUA_MODLIBDIR}
 	${INSTALL_LIB} ${WRKSRC}/src/ssl.so ${STAGEDIR}${LUA_MODLIBDIR}
 	${INSTALL_DATA} ${WRKSRC}/src/ssl.lua ${STAGEDIR}${LUA_MODSHAREDIR}
 	${INSTALL_DATA} ${WRKSRC}/src/https.lua ${STAGEDIR}${LUA_MODSHAREDIR}/ssl
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

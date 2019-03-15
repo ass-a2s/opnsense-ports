@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	flightgear-data
-PORTVERSION=	2017.1.3
+PORTVERSION=	2018.3.2
 CATEGORIES=	games
 MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 DISTNAME=	FlightGear-${PORTVERSION}-data
@@ -12,17 +12,17 @@ COMMENT=	FlightGear scenery, textures, and aircraft models
 
 LICENSE=	GPLv2
 
-NO_BUILD=	yes
+BROKEN_aarch64=		Fails to install: runaway process
+BROKEN_mips64=		Fails to install: runaway process
+
 USES=		tar:bzip2
+
+NO_BUILD=	yes
 WRKSRC=		${WRKDIR}/fgdata
 DATADIR=	${PREFIX}/share/flightgear
 
 PLIST=		${WRKDIR}/pkg-plist
 PLIST_DIRS=	%%DATADIR%%
-
-BROKEN_aarch64=		Fails to install: runaway process
-BROKEN_armv6=		Fails to install: runaway process
-BROKEN_mips64=		Fails to install: runaway process
 
 post-patch:
 	@${RM} ${WRKSRC}/COPYING

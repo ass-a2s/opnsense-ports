@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	Dist-Zilla
-PORTVERSION=	6.010
+PORTVERSION=	6.012
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -9,14 +9,15 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Distribution builder
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	p5-App-Cmd>=0.330:devel/p5-App-Cmd \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-App-Cmd>=0.330:devel/p5-App-Cmd \
 		p5-CPAN-Uploader>=0.103004:devel/p5-CPAN-Uploader \
 		p5-Class-Load>=0.17:devel/p5-Class-Load \
-		p5-Config-MVP>=2.200010:devel/p5-Config-MVP \
+		p5-Config-MVP>=2.200011:devel/p5-Config-MVP \
 		p5-Config-MVP-Reader-INI>=2.101461:devel/p5-Config-MVP-Reader-INI \
 		p5-Data-Section>=0.200002:devel/p5-Data-Section \
 		p5-DateTime>=0.44:devel/p5-DateTime \
@@ -48,26 +49,26 @@ BUILD_DEPENDS=	p5-App-Cmd>=0.330:devel/p5-App-Cmd \
 		p5-Sub-Exporter-ForMethods>=0:devel/p5-Sub-Exporter-ForMethods \
 		p5-Term-Encoding>=0:devel/p5-Term-Encoding \
 		p5-Term-ReadKey>=0:devel/p5-Term-ReadKey \
+		p5-Term-UI>=0:devel/p5-Term-UI \
 		p5-Text-Glob>=0.08:textproc/p5-Text-Glob \
 		p5-Text-Template>=0:textproc/p5-Text-Template \
 		p5-Try-Tiny>=0:lang/p5-Try-Tiny \
 		p5-YAML-Tiny>=0:textproc/p5-YAML-Tiny \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-CPAN-Meta-Check>=0.011:devel/p5-CPAN-Meta-Check \
 		p5-Test-Deep>=0:devel/p5-Test-Deep \
 		p5-Test-FailWarnings>=0:devel/p5-Test-FailWarnings \
 		p5-Test-Fatal>=0:devel/p5-Test-Fatal \
 		p5-Test-File-ShareDir>=0:devel/p5-Test-File-ShareDir
 
-NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
+
+NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 
 .if ${PERL_LEVEL} < 502501
-BUILD_DEPENDS+=	p5-Scalar-List-Utils>=1.45:lang/p5-Scalar-List-Utils
 RUN_DEPENDS+=	p5-Scalar-List-Utils>=1.45:lang/p5-Scalar-List-Utils
 .endif
 

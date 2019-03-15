@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	libsass
-PORTVERSION=	3.4.4
-PORTREVISION=	0
+DISTVERSION=	3.5.5
+PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	nivit@FreeBSD.org
@@ -12,16 +12,20 @@ COMMENT=	C/C++ implementation of a Sass compiler
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	sass
-
 USES=		autoreconf compiler:c++11-lib gmake libtool pathfix
+USE_GITHUB=	yes
+USE_LDCONFIG=	yes
+
+CONFIGURE_ARGS=	--disable-static
+
+GH_ACCOUNT=	sass
 GNU_CONFIGURE=	yes
-MAKEFILE=	GNUmakefile
-PATHFIX_MAKEFILEIN=	GNUmakefile.am
+
 INSTALL_TARGET=	install-strip
 
-USE_LDCONFIG=	yes
+MAKEFILE=	GNUmakefile
+
+PATHFIX_MAKEFILEIN=	GNUmakefile.am
 
 post-patch:
 	@${ECHO_CMD} "${ECHO_CMD} \"${PORTVERSION}\"" > ${WRKSRC}/version.sh

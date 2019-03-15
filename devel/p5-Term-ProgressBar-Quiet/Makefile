@@ -11,13 +11,13 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension to display a progress bar, if interactive
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Term-ProgressBar>=0:devel/p5-Term-ProgressBar \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Term-ProgressBar>=0:devel/p5-Term-ProgressBar \
 		p5-Test-MockObject>0:devel/p5-Test-MockObject \
 		p5-IO-Interactive>=0:devel/p5-IO-Interactive
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		perl5
 USE_PERL5=	configure

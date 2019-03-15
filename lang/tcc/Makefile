@@ -3,10 +3,10 @@
 PORTNAME=	tcc
 DISTVERSIONPREFIX=	release_
 DISTVERSION=	0_9_26
-PORTREVISION=	5
+PORTREVISION=	6
 CATEGORIES=	lang
 
-MAINTAINER=	cpm@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tiny C Compiler
 
 LICENSE=	LGPL21
@@ -20,14 +20,13 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	TinyCC
 GH_PROJECT=	tinycc
 
+USE_HARDENING=	pie:off relro:off
+
 USES=		gmake makeinfo perl5
 USE_PERL5=	build
 HAS_CONFIGURE=	yes
 CONFIGURE_ARGS=	--prefix="${PREFIX}" --cc="${CC}"
 MAKE_ARGS=	CONFIG_NOLDL=1
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
 
@@ -60,8 +59,7 @@ CFLAGS+=	-fheinous-gnu-extensions
 
 post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/tcc
-	${INSTALL_DATA} ${WRKSRC}/tcc-doc.info ${STAGEDIR}${PREFIX}/info
-	${RM} -r ${STAGEDIR}${PREFIX}/share/info
+	${INSTALL_DATA} ${WRKSRC}/tcc-doc.info ${STAGEDIR}${PREFIX}/${INFO_PATH}
 	${INSTALL_MAN} ${WRKSRC}/tcc.1 ${STAGEDIR}${MAN1PREFIX}/man/man1
 	${RM} -r ${STAGEDIR}${PREFIX}/share/man
 .for f in ${FILES}

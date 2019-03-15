@@ -2,17 +2,17 @@
 # $FreeBSD$
 
 PORTNAME=	lzma
-PORTVERSION=	16.04
+PORTVERSION=	18.05
 CATEGORIES=	archivers
 MASTER_SITES=	SF/sevenzip/LZMA%20SDK/
 DISTNAME=	lzma${PORTVERSION:S/.//g}
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ndowens@yahoo.com
 COMMENT=	High-ratio LZMA compressor
 
-EXPLICIT_SAFESTACK=		yes
-
 CONFLICTS=	lzmautils-[0-9]* xz-[0-9]*
+
+USE_HARDENING=	safestack
 
 USES=		7z gmake dos2unix
 NO_WRKSUBDIR=	yes

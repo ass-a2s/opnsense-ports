@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pdal
-PORTVERSION=	1.5.0
+DISTVERSION=	1.8.0
 CATEGORIES=	math databases graphics
 
 MAINTAINER=	lbartoletti@tuxfamily.org
@@ -20,7 +20,7 @@ LIB_DEPENDS=	libgdal.so:graphics/gdal \
 		liblaszip.so:archivers/laszip \
 		libjsoncpp.so:devel/jsoncpp
 
-USES=		cmake:outsource compiler:c++11-lib pathfix pkgconfig execinfo
+USES=		cmake compiler:c++11-lib pathfix pkgconfig
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	${PORTNAME:tu}
@@ -29,7 +29,7 @@ GH_PROJECT=	${GH_ACCOUNT}
 # Unhide std::to_string() to fix build with GCC (see ports/193528 for details).
 CXXFLAGS+=	-D_GLIBCXX_USE_C99
 
-CMAKE_ARGS+=	-DWITH_LASZIP:BOOL=TRUE #Doesn't build without laszip. LASZIP is recommended
+CMAKE_ON=	WITH_LASZIP #LASZIP is recommended
 
 OPTIONS_DEFINE=	BASH \
 		ICEBRIDGE PGPOINTCLOUD SQLITE MBIO \

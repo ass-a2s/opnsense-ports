@@ -3,8 +3,8 @@
 #    $MCom: ports/print/gutenprint-base/Makefile,v 1.8 2007/03/30 16:45:02 ahze Exp $
 
 PORTNAME=	gutenprint
-PORTVERSION=	5.2.12
-PORTREVISION?=	2	# also print/gimp-gutenprint
+PORTVERSION=	5.2.14
+PORTREVISION?=	0
 CATEGORIES=	print
 MASTER_SITES=	SF/gimp-print/gutenprint-5.2/${PORTVERSION}
 
@@ -19,7 +19,8 @@ CONFLICTS=	gimp-print-[0-9]*
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --enable-simplified-cups-ppds DLOPEN_LIBS=" "
 INSTALL_TARGET=	install-strip
-USES=		gettext gmake libtool pathfix perl5 pkgconfig tar:bzip2
+USES=		compiler:c11 gettext gmake libtool pathfix perl5 pkgconfig \
+		tar:bzip2
 
 .if !defined(GUT_SLAVE)
 LIB_DEPENDS+=	libcupsimage.so:print/cups
@@ -31,7 +32,10 @@ USE_LDCONFIG=	yes
 LIB_DEPENDS+=	libgutenprint.so:print/gutenprint
 MAKE_ARGS+=	GUTENPRINT_LIBS='`$$(PKG_CONFIG) --libs gutenprint`'
 .if ${GUT_SLAVE} == "gimp"
-LIB_DEPENDS+=	libgimp-2.0.so:graphics/gimp-app
+USE_GNOME+=	cairo gdkpixbuf2
+LIB_DEPENDS+=	libfontconfig.so:x11-fonts/fontconfig \
+		libfreetype.so:print/freetype2 \
+		libgimp-2.0.so:graphics/gimp-app
 CONFIGURE_ARGS+=--enable-libgutenprintui2 --with-gimp2
 BUILD_WRKSRC=	${WRKSRC}/src/gimp2
 INSTALL_WRKSRC=	${WRKSRC}/src/gimp2

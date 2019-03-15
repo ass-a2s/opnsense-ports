@@ -15,7 +15,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
 
-USES=		gmake localbase
+USES=		gl gmake localbase
+USE_CXXSTD=	c++98
 GNU_CONFIGURE=	yes
 USE_SDL=	image sdl
 USE_GL=		gl glu

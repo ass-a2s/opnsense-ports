@@ -2,7 +2,7 @@
 
 PORTNAME=	auto-multiple-choice
 PORTVERSION=	1.3.0
-PORTREVISION=	6
+PORTREVISION=	8
 CATEGORIES=	misc
 MASTER_SITES=	http://download.gna.org/auto-qcm/
 DISTNAME=	auto-multiple-choice_${PORTVERSION}_precomp
@@ -11,6 +11,8 @@ MAINTAINER=	hiroto.kagotani@gmail.com
 COMMENT=	Multiple-choice questionnaire management with automated marking
 
 LICENSE=	GPLv2
+
+USE_HARDENING=	pie:off
 
 LIB_DEPENDS=	libcairo.so:graphics/cairo \
 		libnetpbm.so:graphics/netpbm \
@@ -39,10 +41,9 @@ MANLANG=	"" fr ja
 SHARED_MIMEINFO_DIR=	${PREFIX}/share/mime/packages
 LANG_GTKSOURCEVIEW_DIR=	${PREFIX}/share/gtksourceview-2.0/language-specs
 
+USES+=		compiler:c++11-lang gettext gmake iconv:build perl5 \
+		pkgconfig shared-mime-info
 USE_TEX=	latex texhash
-USES+=		gettext gmake iconv:build perl5 pkgconfig shared-mime-info
-
-NOPIE_PORTS=	yes
 
 OPTIONS_DEFINE=	DOCS
 

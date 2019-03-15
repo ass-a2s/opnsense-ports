@@ -4,6 +4,7 @@
     COMMENT = Desktop publishing
 
     SUBDIR += R-cran-knitr
+    SUBDIR += R-cran-tinytex
     SUBDIR += a2pdf
     SUBDIR += a2ps
     SUBDIR += abcm2ps
@@ -11,7 +12,6 @@
     SUBDIR += afm
     SUBDIR += alignmargins
     SUBDIR += ansiprint
-    SUBDIR += apsfilter
     SUBDIR += asprint
     SUBDIR += auctex
     SUBDIR += bibcursed
@@ -20,11 +20,11 @@
     SUBDIR += c2ps
     SUBDIR += catdvi
     SUBDIR += cdlabelgen
+    SUBDIR += cloud-print-connector
     SUBDIR += cloudprint
     SUBDIR += cups
     SUBDIR += cups-bjnp
     SUBDIR += cups-cloud-print
-    SUBDIR += cups-connector
     SUBDIR += cups-filters
     SUBDIR += cups-fxlinuxprint
     SUBDIR += cups-pdf
@@ -43,6 +43,7 @@
     SUBDIR += enscript-letter
     SUBDIR += enscript-letterdj
     SUBDIR += epson-inkjet-printer-201401w
+    SUBDIR += epson-inkjet-printer-201601w
     SUBDIR += epson-inkjet-printer-escpr
     SUBDIR += epsonepl
     SUBDIR += fig2dev
@@ -61,7 +62,6 @@
     SUBDIR += freetype2
     SUBDIR += frescobaldi
     SUBDIR += ft2demos
-    SUBDIR += ggv
     SUBDIR += ghostscript7-base
     SUBDIR += ghostscript7-commfont
     SUBDIR += ghostscript7-jpnfont
@@ -75,19 +75,14 @@
     SUBDIR += ghostscript9-x11
     SUBDIR += gimp-gutenprint
     SUBDIR += gl2ps
-    SUBDIR += gnome-cups-manager
-    SUBDIR += gnomephotoprinter
-    SUBDIR += gribouy
     SUBDIR += gsfonts
     SUBDIR += gspdf
-    SUBDIR += gsview
     SUBDIR += gtklp
     SUBDIR += gutenprint
     SUBDIR += gv
     SUBDIR += harfbuzz
     SUBDIR += harfbuzz-icu
     SUBDIR += hp2xx
-    SUBDIR += hpijs
     SUBDIR += hplip
     SUBDIR += hplip-plugin
     SUBDIR += hs-hscolour
@@ -96,9 +91,7 @@
     SUBDIR += hyperlatex
     SUBDIR += indexinfo
     SUBDIR += jabref
-    SUBDIR += kde4-print-manager
     SUBDIR += kde_poster
-    SUBDIR += kover
     SUBDIR += kpdftool
     SUBDIR += latex-beamer
     SUBDIR += latex-biber
@@ -117,7 +110,6 @@
     SUBDIR += libotf
     SUBDIR += libpagemaker
     SUBDIR += libpaper
-    SUBDIR += libppd
     SUBDIR += libspectre
     SUBDIR += lilypond
     SUBDIR += lilypond-devel
@@ -125,7 +117,6 @@
     SUBDIR += linux-c7-cups-libs
     SUBDIR += linux-c7-harfbuzz
     SUBDIR += lout
-    SUBDIR += lpr-wrapper
     SUBDIR += lprps
     SUBDIR += lyx
     SUBDIR += magicfilter
@@ -156,7 +147,9 @@
     SUBDIR += papersize-default-letter
     SUBDIR += paps
     SUBDIR += pcal
+    SUBDIR += pdf-redact-tools
     SUBDIR += pdf-renderer
+    SUBDIR += pdf-tools
     SUBDIR += pdf4tcl
     SUBDIR += pdfbox
     SUBDIR += pdfcube
@@ -165,9 +158,7 @@
     SUBDIR += pdfstitch
     SUBDIR += pdftk
     SUBDIR += pear-File_PDF
-    SUBDIR += pecl-haru
     SUBDIR += pecl-pdflib
-    SUBDIR += pecl-ps
     SUBDIR += pfbtopfa
     SUBDIR += photoprint
     SUBDIR += pic2fig
@@ -182,6 +173,7 @@
     SUBDIR += pmw
     SUBDIR += pnm2ppa
     SUBDIR += poster
+    SUBDIR += print-manager
     SUBDIR += ps2eps
     SUBDIR += pscal
     SUBDIR += psdim
@@ -194,6 +186,7 @@
     SUBDIR += py-pdf2
     SUBDIR += py-pollyreports
     SUBDIR += py-preppy
+    SUBDIR += py-psautohint
     SUBDIR += py-pycups
     SUBDIR += py-pyscript
     SUBDIR += py-python-ly
@@ -204,8 +197,6 @@
     SUBDIR += py-rtf
     SUBDIR += py-stapler
     SUBDIR += py-trml2pdf
-    SUBDIR += py3-fonttools
-    SUBDIR += py3-pycups
     SUBDIR += qpdf
     SUBDIR += qpdfview
     SUBDIR += qt5-printsupport
@@ -232,6 +223,7 @@
     SUBDIR += rubygem-rbpdf-font
     SUBDIR += rubygem-ttfunk
     SUBDIR += scribus
+    SUBDIR += scribus-devel
     SUBDIR += sgf2tex
     SUBDIR += splix
     SUBDIR += system-config-printer

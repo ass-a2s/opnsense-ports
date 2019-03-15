@@ -12,8 +12,11 @@ COMMENT=	Graphical file and directories comparator and merge tool
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		bison gmake tar:bz2
-USE_QT4=	gui moc_build qmake_build uic_build
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		bison gmake qt:4 tar:bz2
+USE_QT=		gui moc_build qmake_build uic_build
 
 BUILD_WRKSRC=	${WRKSRC}/src
 

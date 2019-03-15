@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	pinentry
-PORTVERSION=	1.0.0
-PORTREVISION?=	2
+PORTVERSION=	1.1.0
+PORTREVISION?=	3
 CATEGORIES=	security
 MASTER_SITES=	GNUPG/pinentry
 
@@ -22,7 +22,7 @@ NO_BUILD=	yes
 PLIST_FILES=	bin/pinentry
 
 OPTIONS_SINGLE=	FRONTEND
-OPTIONS_SINGLE_FRONTEND=	TTY NCURSES GTK2 QT4 QT5 GNOME3
+OPTIONS_SINGLE_FRONTEND=	TTY NCURSES FLTK GTK2 QT4 QT5 GNOME3
 OPTIONS_DEFAULT=	TTY
 
 FRONTEND_DESC=	Default frontend
@@ -34,6 +34,10 @@ TTY_RUN_DEPENDS=	${PINENTRY_TTY}:security/pinentry-tty
 NCURSES_DESC=	Curses frontend
 PINENTRY_NCURSES=	pinentry-curses
 NCURSES_RUN_DEPENDS=	${PINENTRY_NCURSES}:security/pinentry-curses
+
+FLTK_DESC=	FLTK frontend
+PINENTRY_FLTK=	pinentry-fltk
+FLTK_RUN_DEPENDS=	${PINENTRY_FLTK}:security/pinentry-fltk
 
 GTK2_DESC=	Gtk+ 2 frontend
 PINENTRY_GTK2=	pinentry-gtk-2
@@ -58,6 +62,11 @@ GNOME3_RUN_DEPENDS=	${PINENTRY_GNOME3}:security/pinentry-gnome3
 PINENTRY_BIN=	${PINENTRY_${gui}}
 . endif
 .endfor
+
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 do-install:
 	${LN} -sf ${PINENTRY_BIN} ${STAGEDIR}${PREFIX}/bin/pinentry
@@ -90,14 +99,14 @@ CONFIGURE_ARGS+=--disable-pinentry-gnome3
 .endif
 
 .if ${PINENTRY_GUI} == "qt4"
-USES+=		compiler:c++11-lib
-USE_QT4=	corelib gui moc_build
+USES+=		compiler:c++11-lib qt:4
+USE_QT=		corelib gui moc_build
 PLIST_FILES=	bin/pinentry-qt4
 CONFIGURE_ARGS+=--disable-pinentry-qt5 \
 		--program-suffix=4
 .elif ${PINENTRY_GUI} == "qt5"
-USES+=		compiler:c++11-lib
-USE_QT5=	core gui widgets buildtools_build
+USES+=		compiler:c++11-lib qt:5
+USE_QT=		core gui widgets buildtools_build
 PLIST_FILES=	bin/pinentry-qt5
 CONFIGURE_ARGS+=--enable-pinentry-qt5 \
 		--program-suffix=5
@@ -110,6 +119,14 @@ USE_GNOME+=	gtk20
 PLIST_FILES=	bin/pinentry-gtk-2
 .else
 CONFIGURE_ARGS+=--disable-pinentry-gtk2
+.endif
+
+.if ${PINENTRY_GUI} == "fltk"
+USES+=		compiler:c++11-lib
+LIB_DEPENDS+=	libfltk.so:x11-toolkits/fltk
+PLIST_FILES=	bin/pinentry-fltk
+.else
+CONFIGURE_ARGS+=--disable-pinentry-fltk
 .endif
 
 .if ${PINENTRY_GUI} == "curses"
@@ -127,7 +144,7 @@ CONFIGURE_ARGS+=--disable-pinentry-tty
 
 post-install:
 	${RM} ${STAGEDIR}${PREFIX}/bin/pinentry \
-		${STAGEDIR}${PREFIX}/info/pinentry.info
+		${STAGEDIR}${PREFIX}/share/info/pinentry.info
 
 .endif # !defined(PINENTRY_GUI)
 

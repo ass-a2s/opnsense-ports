@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	sdcv
-PORTVERSION=	0.5.1
+PORTVERSION=	0.5.2
+PORTREVISION=	2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	1
 CATEGORIES=	textproc
 
 MAINTAINER=	citrin@citrin.ru
@@ -13,7 +13,7 @@ COMMENT=	Text-based utility for work with dictionaries in StarDict's format #'
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		cmake:outsource pkgconfig readline
+USES=		cmake compiler:c++11-lang pkgconfig readline
 USE_GNOME=	glib20
 
 SUB_FILES=	pkg-message

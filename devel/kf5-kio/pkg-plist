@@ -3,6 +3,7 @@ bin/ktelnetservice5
 bin/ktrash5
 bin/protocoltojson
 etc/xdg/accept-languages.codes
+etc/xdg/kio.categories
 etc/xdg/kshorturifilterrc
 include/KF5/KIOCore/KACL
 include/KF5/KIOCore/KCoreDirLister
@@ -11,6 +12,7 @@ include/KF5/KIOCore/KDiskFreeSpaceInfo
 include/KF5/KIOCore/KFileItem
 include/KF5/KIOCore/KFileItemListProperties
 include/KF5/KIOCore/KIO/AuthInfo
+include/KF5/KIOCore/KIO/BatchRenameJob
 include/KF5/KIOCore/KIO/ChmodJob
 include/KF5/KIOCore/KIO/ConnectionServer
 include/KF5/KIOCore/KIO/CopyJob
@@ -69,6 +71,7 @@ include/KF5/KIOCore/kdiskfreespaceinfo.h
 include/KF5/KIOCore/kfileitem.h
 include/KF5/KIOCore/kfileitemlistproperties.h
 include/KF5/KIOCore/kio/authinfo.h
+include/KF5/KIOCore/kio/batchrenamejob.h
 include/KF5/KIOCore/kio/chmodjob.h
 include/KF5/KIOCore/kio/connectionserver.h
 include/KF5/KIOCore/kio/copyjob.h
@@ -132,6 +135,7 @@ include/KF5/KIOFileWidgets/KDirSortFilterProxyModel
 include/KF5/KIOFileWidgets/KEncodingFileDialog
 include/KF5/KIOFileWidgets/KFileCopyToMenu
 include/KF5/KIOFileWidgets/KFileFilterCombo
+include/KF5/KIOFileWidgets/KFilePlaceEditDialog
 include/KF5/KIOFileWidgets/KFilePlacesModel
 include/KF5/KIOFileWidgets/KFilePlacesView
 include/KF5/KIOFileWidgets/KFilePreviewGenerator
@@ -149,6 +153,7 @@ include/KF5/KIOFileWidgets/kdirsortfilterproxymodel.h
 include/KF5/KIOFileWidgets/kencodingfiledialog.h
 include/KF5/KIOFileWidgets/kfilecopytomenu.h
 include/KF5/KIOFileWidgets/kfilefiltercombo.h
+include/KF5/KIOFileWidgets/kfileplaceeditdialog.h
 include/KF5/KIOFileWidgets/kfileplacesmodel.h
 include/KF5/KIOFileWidgets/kfileplacesview.h
 include/KF5/KIOFileWidgets/kfilepreviewgenerator.h
@@ -605,12 +610,16 @@ share/doc/HTML/pt_BR/kioslave5/telnet/index.cache.bz2
 share/doc/HTML/pt_BR/kioslave5/telnet/index.docbook
 share/doc/HTML/pt_BR/kioslave5/webdav/index.cache.bz2
 share/doc/HTML/pt_BR/kioslave5/webdav/index.docbook
+share/doc/HTML/ru/kcontrol5/proxy/index.cache.bz2
+share/doc/HTML/ru/kcontrol5/proxy/index.docbook
 share/doc/HTML/ru/kioslave5/data/index.cache.bz2
 share/doc/HTML/ru/kioslave5/data/index.docbook
 share/doc/HTML/ru/kioslave5/file/index.cache.bz2
 share/doc/HTML/ru/kioslave5/file/index.docbook
 share/doc/HTML/ru/kioslave5/ftp/index.cache.bz2
 share/doc/HTML/ru/kioslave5/ftp/index.docbook
+share/doc/HTML/ru/kioslave5/help/documentationnotfound/index.cache.bz2
+share/doc/HTML/ru/kioslave5/help/documentationnotfound/index.docbook
 share/doc/HTML/ru/kioslave5/help/index.cache.bz2
 share/doc/HTML/ru/kioslave5/help/index.docbook
 share/doc/HTML/ru/kioslave5/telnet/index.cache.bz2
@@ -750,17 +759,13 @@ share/doc/HTML/uk/kioslave5/telnet/index.docbook
 share/doc/HTML/uk/kioslave5/webdav/index.cache.bz2
 share/doc/HTML/uk/kioslave5/webdav/index.docbook
 share/kf5/kcookiejar/domain_info
+share/kconf_update/filepicker.upd
 share/knotifications5/proxyscout.notifyrc
 share/kservices5/cache.desktop
 share/kservices5/cookies.desktop
 share/kservices5/data.protocol
-share/kservices5/fixhosturifilter.desktop
 share/kservices5/http_cache_cleaner.desktop
 share/kservices5/kcmtrash.desktop
-share/kservices5/kshorturifilter.desktop
-share/kservices5/kuriikwsfilter.desktop
-share/kservices5/kurisearchfilter.desktop
-share/kservices5/localdomainurifilter.desktop
 share/kservices5/mms.protocol
 share/kservices5/mmst.protocol
 share/kservices5/mmsu.protocol
@@ -780,7 +785,6 @@ share/kservices5/searchproviders/backports.desktop
 share/kservices5/searchproviders/baidu.desktop
 share/kservices5/searchproviders/beolingus.desktop
 share/kservices5/searchproviders/bing.desktop
-share/kservices5/searchproviders/blip.desktop
 share/kservices5/searchproviders/bugft.desktop
 share/kservices5/searchproviders/bugno.desktop
 share/kservices5/searchproviders/call.desktop
@@ -794,7 +798,6 @@ share/kservices5/searchproviders/de2en.desktop
 share/kservices5/searchproviders/de2fr.desktop
 share/kservices5/searchproviders/deb.desktop
 share/kservices5/searchproviders/dictfr.desktop
-share/kservices5/searchproviders/dmoz.desktop
 share/kservices5/searchproviders/docbook.desktop
 share/kservices5/searchproviders/doi.desktop
 share/kservices5/searchproviders/duckduckgo.desktop
@@ -806,7 +809,6 @@ share/kservices5/searchproviders/en2es.desktop
 share/kservices5/searchproviders/en2fr.desktop
 share/kservices5/searchproviders/en2it.desktop
 share/kservices5/searchproviders/es2en.desktop
-share/kservices5/searchproviders/ethicle.desktop
 share/kservices5/searchproviders/facebook.desktop
 share/kservices5/searchproviders/feedster.desktop
 share/kservices5/searchproviders/flickr.desktop
@@ -818,7 +820,7 @@ share/kservices5/searchproviders/freecode.desktop
 share/kservices5/searchproviders/freedb.desktop
 share/kservices5/searchproviders/fsd.desktop
 share/kservices5/searchproviders/github.desktop
-share/kservices5/searchproviders/gitorious.desktop
+share/kservices5/searchproviders/gitlab.desktop
 share/kservices5/searchproviders/google.desktop
 share/kservices5/searchproviders/google_advanced.desktop
 share/kservices5/searchproviders/google_code.desktop
@@ -832,7 +834,6 @@ share/kservices5/searchproviders/google_shopping.desktop
 share/kservices5/searchproviders/grec.desktop
 share/kservices5/searchproviders/hyperdictionary.desktop
 share/kservices5/searchproviders/hyperdictionary_thesaurus.desktop
-share/kservices5/searchproviders/ibl.desktop
 share/kservices5/searchproviders/identica_groups.desktop
 share/kservices5/searchproviders/identica_notices.desktop
 share/kservices5/searchproviders/identica_people.desktop
@@ -844,7 +845,6 @@ share/kservices5/searchproviders/kde.desktop
 share/kservices5/searchproviders/kde_apps.desktop
 share/kservices5/searchproviders/kde_forums.desktop
 share/kservices5/searchproviders/kde_look.desktop
-share/kservices5/searchproviders/kde_projects.desktop
 share/kservices5/searchproviders/kde_techbase.desktop
 share/kservices5/searchproviders/kde_userbase.desktop
 share/kservices5/searchproviders/leo.desktop
@@ -953,7 +953,6 @@ share/kservicetypes5/searchprovider.desktop
 share/kservicetypes5/uasprovider.desktop
 share/locale/af/LC_MESSAGES/kio5.mo
 share/locale/ar/LC_MESSAGES/kio5.mo
-share/locale/ast/LC_MESSAGES/kio5.mo
 share/locale/be/LC_MESSAGES/kio5.mo
 share/locale/be@latin/LC_MESSAGES/kio5.mo
 share/locale/bg/LC_MESSAGES/kio5.mo
@@ -986,6 +985,7 @@ share/locale/hr/LC_MESSAGES/kio5.mo
 share/locale/hsb/LC_MESSAGES/kio5.mo
 share/locale/hu/LC_MESSAGES/kio5.mo
 share/locale/ia/LC_MESSAGES/kio5.mo
+share/locale/id/LC_MESSAGES/kio5.mo
 share/locale/is/LC_MESSAGES/kio5.mo
 share/locale/it/LC_MESSAGES/kio5.mo
 share/locale/ja/LC_MESSAGES/kio5.mo

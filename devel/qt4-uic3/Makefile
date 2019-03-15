@@ -10,8 +10,11 @@ PKGNAMEPREFIX=	qt4-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt 3-compatible User Interface Compiler
 
-USE_QT4=	qmake_build qt3support corelib gui network sql xml porting
-QT_DIST=	yes
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake:no_env qt-dist:4
+USE_QT=		qt3support corelib gui network sql xml porting
 
 HAS_CONFIGURE=	yes
 

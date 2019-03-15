@@ -6,7 +6,7 @@ PORTVERSION=	4.6.0
 CATEGORIES=	audio
 MASTER_SITES=	http://ccrma.stanford.edu/software/stk/release/
 
-MAINTAINER=	yuri@rawbw.com
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Synthesis ToolKit in C++
 
 LICENSE=	MIT
@@ -14,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libjack.so:audio/jack
 
-USES=		autoreconf dos2unix gmake pkgconfig localbase
+USES=		autoreconf compiler:c++11-lang dos2unix gmake localbase pkgconfig
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-jack --with-oss

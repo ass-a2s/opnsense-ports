@@ -3,6 +3,7 @@
 
 PORTNAME=	gmp
 PORTVERSION=	6.1.2
+PORTREVISION=	1
 CATEGORIES=	math devel
 MASTER_SITES=	GNU
 
@@ -18,9 +19,10 @@ USES=		libtool makeinfo tar:xz
 HAS_CONFIGURE=	yes
 CONFIGURE_ENV=	MAKEINFO="${MAKEINFO} --no-split"
 CONFIGURE_ARGS=	--prefix=${PREFIX} \
-		--infodir=${PREFIX}/info \
+		--infodir=${PREFIX}/${INFO_PATH} \
 		--mandir=${PREFIX}/man \
 		--enable-cxx
+MAKE_JOBS_UNSAFE=yes
 USE_LDCONFIG=	yes
 
 INFO=		gmp
@@ -44,8 +46,5 @@ CONFIGURE_ENV+=	ABI="32"
 
 post-extract:
 	@${RM} ${WRKSRC}/doc/gmp.info*
-
-regression-test check: build
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ${MAKE} check
 
 .include <bsd.port.post.mk>

@@ -5,7 +5,7 @@ PORTNAME=	craft
 PORTVERSION=	1.0
 DISTVERSIONPREFIX=	v
 DISTVERSIONSUFFIX=	fbsd
-PORTREVISION=	4
+PORTREVISION=	7
 CATEGORIES=	games
 
 MAINTAINER=	danilo@FreeBSD.org
@@ -22,13 +22,13 @@ SERVER_DESC=		Install the craft server
 OPTIONS_DEFAULT=	SERVER
 OPTIONS_SUB=		yes
 
-USES=		cmake compiler:c11
+USES=		cmake:insource compiler:c11
 USE_XORG=	x11 xi xrandr
 USE_GL=		gl glu
 
-SERVER_USES=		python
-SERVER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.2:www/py-requests \
-			${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3
+SERVER_USES=		python:2.7
+SERVER_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}requests>=2.2:www/py-requests@${PY_FLAVOR} \
+			${PYTHON_PKGNAMEPREFIX}sqlite3>=0:databases/py-sqlite3@${PY_FLAVOR}
 SERVER_CMAKE_ON=	-DSERVER:BOOL=ON
 
 .include <bsd.port.options.mk>

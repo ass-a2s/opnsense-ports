@@ -1,10 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	iroffer
-PORTVERSION=	3.30
+PORTVERSION=	3.31
 PORTREVISION=	2
 CATEGORIES=	irc
-MASTER_SITES=	http://iroffer.dinoex.net/
+MASTER_SITES=	https://iroffer.net/
 PKGNAMESUFFIX=	-dinoex${PKGNAMESUFFIX2}
 DISTNAME=	iroffer-dinoex-${PORTVERSION}
 
@@ -15,14 +15,14 @@ LICENSE=	GPLv2
 
 CONFLICTS=	iroffer-1* iroffer-lamm-1.*
 
+USES=		ssl
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	Configure
 CONFIGURE_ARGS=	CC="${CC}" LDFLAGS="${LDFLAGS}" LOCALBASE="${LOCALBASE}"
 ALL_TARGET=	all-lang doc
 USE_RC_SUBR=	iroffer-dinoex
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
+USE_HARDENING=	pie:off relro:off
 
 IROFFER_DOCS=	README README.modDinoex LIESMICH.modDinoex \
 		LICENSE THANKS TODO \
@@ -42,8 +42,8 @@ IROFFER_EXAMPLES=	iroffer.cron \
 IROFFER_HTDOCS=	iroffer-state.css robots.txt \
 		info.txt.rb json.txt.rb md5.txt.rb sfv.txt.rb
 
-OPTIONS_DEFINE=	CURL RUBY UPNP GEOIP DOCS EXAMPLES
-OPTIONS_DEFAULT=CURL RUBY UPNP GEOIP
+OPTIONS_DEFINE=	CURL RUBY UPNP DOCS EXAMPLES
+OPTIONS_DEFAULT=CURL RUBY UPNP
 
 CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 CURL_CONFIGURE_ON=	-curl
@@ -52,8 +52,16 @@ RUBY_LIB_DEPENDS=	lib${RUBY_NAME}.so:${RUBY_PORT}
 RUBY_CONFIGURE_ON=	-ruby
 UPNP_LIB_DEPENDS=	libminiupnpc.so:net/miniupnpc
 UPNP_CONFIGURE_ON=	-upnp
-GEOIP_LIB_DEPENDS=	libGeoIP.so:net/GeoIP
-GEOIP_CONFIGURE_ON=	-geoip
+
+.include <bsd.port.pre.mk>
+
+.if ${PORT_OPTIONS:MRUBY}
+# make stage-qa happy
+# keep in sync with all platforms where libunwind is available
+.if (${ARCH} == amd64 || ${ARCH} == i386)
+LIB_DEPENDS+=	libunwind.so:devel/libunwind
+.endif
+.endif
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/iroffer ${STAGEDIR}${PREFIX}/bin/
@@ -78,4 +86,4 @@ do-install-EXAMPLES-on:
 	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${EXAMPLESDIR}/
 .endfor
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

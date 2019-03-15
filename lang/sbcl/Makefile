@@ -1,7 +1,13 @@
 # $FreeBSD$
 
+# All *-sbcl ports and any other port [1] with SBCL fasl files must get a
+# PORTREVISION bump when lang/sbcl is updated.  The compiled fasl files are
+# pinned to exact versions of everything used to build them.
+#
+# [1] x11-wm/stumpwm
+
 PORTNAME=	sbcl
-DISTVERSION=	1.3.21
+DISTVERSION=	1.5.0
 DISTVERSIONSUFFIX=	-source
 PORTEPOCH=	1
 CATEGORIES=	lang lisp
@@ -12,10 +18,9 @@ DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
 MAINTAINER=	krion@FreeBSD.org
 COMMENT=	Common Lisp development system derived from the CMU CL system
 
-LICENSE=	${PORTNAME}
-LICENSE_NAME=	public domain | FreeBSD
+LICENSE=	PD BSD2CLAUSE
+LICENSE_COMB=	dual
 LICENSE_FILE=	${WRKSRC}/COPYING
-LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept dist-sell pkg-sell
 
 ONLY_FOR_ARCHS=	amd64 i386
 
@@ -25,7 +30,7 @@ RUN_DEPENDS=	cl-asdf>=0:devel/cl-asdf
 
 USES=		gmake makeinfo tar:bzip2
 
-USE_HARDENING=	relro
+USE_HARDENING=	pie:off
 
 BOOTVERSION=	1.2.7
 SBCL_BOOT_LIST=	${BOOTVERSION}-x86-64-freebsd \
@@ -48,11 +53,11 @@ MAKE_SH_ARGS?=	--prefix="${PREFIX}" \
 MAKE_SH_ARGS+=	--dynamic-space-size=${DYNAMIC_SPACE_SIZE}
 .endif
 
-SUB_FILES=	sbclrc
+SUB_FILES=	pkg-message sbclrc
 
 # All options explained into file: ${WRKSRC}/base-target-features.lisp-expr
 OPTIONS_DEFINE=	DOCS QSHOW RENAME SAFEPOINT THREADS UNICODE XREF ZLIB
-OPTIONS_DEFAULT=	RENAME SBCL UNICODE
+OPTIONS_DEFAULT=	RENAME SBCL THREADS UNICODE
 
 QSHOW_DESC=	C runtime with low-level debugging output
 RENAME_DESC=	Rename suffix .core to _core

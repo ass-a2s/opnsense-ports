@@ -1,14 +1,13 @@
---- includes/common.php.orig	2017-03-26 12:06:00 UTC
+--- includes/common.php.orig	2018-10-17 10:33:28 UTC
 +++ includes/common.php
-@@ -1098,10 +1098,8 @@ function version_info($remote = true)
-             curl_setopt($api, CURLOPT_CONNECTTIMEOUT, 5);
-             $output['github'] = json_decode(curl_exec($api), true);
-         }
--        list($local_sha, $local_date) = explode('|', rtrim(`git show --pretty='%H|%ct' -s HEAD`));
--        $output['local_sha']    = $local_sha;
-+        $output['local_sha']    = '%%PORTVERSION%%';
+@@ -1158,6 +1158,10 @@ function version_info($remote = false)
+         $output['local_sha']    = $local_sha;
          $output['local_date']   = $local_date;
--        $output['local_branch'] = rtrim(`git rev-parse --abbrev-ref HEAD`);
+         $output['local_branch'] = rtrim(`git rev-parse --abbrev-ref HEAD`);
++    } else {
++        $output['local_ver']  = '%%PORTVERSION%%';
++        # obtained via git show --pretty='%H|%ct' -s %%PORTVERSION%%
++        $output['local_date'] = %%RELEASE_TIMESTAMP%%;
      }
-     $output['db_schema']   = dbFetchCell('SELECT version FROM dbSchema');
+     $output['db_schema']   = dbIsConnected() ? get_db_schema() : '?';
      $output['php_ver']     = phpversion();

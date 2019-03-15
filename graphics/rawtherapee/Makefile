@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	rawtherapee
-PORTVERSION=	5.2
+PORTVERSION=	5.5
 #DISTNAME=	${PORTNAME}-${PORTVERSION:R}-r${PORTVERSION:E}${DISTVERSIONSUFFIX}
 CATEGORIES=	graphics
 MASTER_SITES=	http://rawtherapee.com/shared/source/
@@ -12,7 +12,9 @@ COMMENT=	Powerful RAW image processing application
 
 LICENSE=	GPLv3
 
-LIB_DEPENDS=	libcanberra-gtk.so:audio/libcanberra \
+LIB_DEPENDS=	\
+		liblensfun.so:graphics/lensfun \
+		libcanberra-gtk.so:audio/libcanberra \
 		libcanberra-gtk3.so:audio/libcanberra-gtk3 \
 		libexpat.so:textproc/expat2 \
 		libfftw3.so:math/fftw3 \
@@ -25,7 +27,7 @@ LIB_DEPENDS=	libcanberra-gtk.so:audio/libcanberra \
 		libsigc-2.0.so:devel/libsigc++20 \
 		libtiff.so:graphics/tiff
 
-USES=		cmake:outsource desktop-file-utils dos2unix \
+USES=		cmake desktop-file-utils gnome dos2unix \
 		jpeg localbase:ldflags pkgconfig tar:xz
 DOS2UNIX_REGEX=	.*\.(cc|h)
 LDFLAGS+=	-Wl,--as-needed # fontconfig, freetype, gettext, libX11
@@ -49,6 +51,8 @@ CMAKE_ARGS+=	-DDOCDIR="${DOCSDIR}" \
 # linker flags are passed. Else -lomp is not found with clang.
 # See: https://cmake.org/cmake/help/v3.4/policy/CMP0056.html
 
+SUB_FILES=	run-rawtherapee
+
 INSTALLS_ICONS=	yes
 
 .if defined(PACKAGE_BUILDING) && empty(CFLAGS:M-march*)
@@ -57,7 +61,7 @@ CMAKE_ARGS+=	-DPROC_TARGET_NUMBER="1"
 
 RTDIR=		${PREFIX}/libdata/${PORTNAME}
 
-OPTIONS_DEFINE=		OPTIMIZED_CFLAGS OPENMP NATIVE
+OPTIONS_DEFINE=		DOCS OPTIMIZED_CFLAGS OPENMP NATIVE
 OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS OPENMP
 OPENMP_DESC=		Enable multicore processing using OpenMP (amd64)
 OPTIMIZED_CFLAGS_DESC=	Use extra compiler optimizations (requires SSE2 support)
@@ -74,6 +78,7 @@ OPTIMIZED_CFLAGS_CFLAGS=	-O3 -funroll-loops -msse2
 #
 
 BROKEN_aarch64=		fails to build: gcc5: error: unrecognized command line option -msse2
+BROKEN_powerpc64=	fails to build: gcc6: error: unrecognized command line option -msse2
 
 .if ${OPSYS} == FreeBSD
 .if ${OSVERSION} >= 1200000
@@ -107,7 +112,7 @@ USES+=		compiler:c++11-lib
 # support OpenMP, and those seeking ultimate performance need to use
 # amd64. Workaround implemented below.
 .else
-USES+=		compiler:gcc-c++11-lib
+USES+=		compiler:c++14-lang
 .endif
 
 # -------------------------------------------------------------------
@@ -128,7 +133,16 @@ post-patch:
 # paranoia: run rawtherapee --help to be sure it finds all its
 # shared libraries (this hinges on proper RPATH setting and propagation)
 post-install:
-	${SETENV} LANG= LC_ALL=C LANGUAGE= DISPLAY= HOME=/dev/null ${STAGEDIR}${PREFIX}/bin/rawtherapee --help 2>&1 \
-	    | ${EGREP} -q "RawTherapee, version ${PKGVERSION:C/_.*//:C/,.*//}|cannot open display:"
+	@${ECHO_MSG} "===> Running smoke tests"
+	@TMP=$$(mktemp -d -t ${PORTNAME}) && trap "rc=$$? ; rm -rf \"$$TMP\" ; exit \$$rc" 0 && \
+	${SETENV} LANG= LC_ALL=C LANGUAGE= DISPLAY= HOME="$$TMP" ${STAGEDIR}${PREFIX}/bin/rawtherapee --help 2>&1 \
+	    | ${EGREP} -q "RawTherapee, version ${PKGVERSION:C/_.*//:C/,.*//}|cannot open display:" && \
+	${SETENV} LANG= LC_ALL=C LANGUAGE= DISPLAY= HOME="$$TMP" ${STAGEDIR}${PREFIX}/bin/rawtherapee-cli --version 2>&1 \
+	    | ${EGREP} -q "RawTherapee, version ${PKGVERSION:C/_.*//:C/,.*//}"
+	@${ECHO_MSG} "===> Wrapping rawtherapee to prevent core dumps unless \$$DEBUG is nonempty"
+	# wrap things in a script that prevents core dumps
+	${MV} ${STAGEDIR}${PREFIX}/bin/rawtherapee ${STAGEDIR}${PREFIX}/bin/rawtherapee.real
+	${INSTALL_SCRIPT} ${WRKDIR}/run-rawtherapee ${STAGEDIR}${PREFIX}/bin/rawtherapee
+	
 
 .include <bsd.port.post.mk>

@@ -1,3 +1,3 @@
-TIMESTAMP = 1499538656
-SHA256 (cabal/feed-0.3.12.0.tar.gz) = cc2d6a3b91027d75b91a0a4c0f83f2df68bee3ce0d7338ea5ae0bcab6dd47942
-SIZE (cabal/feed-0.3.12.0.tar.gz) = 102415
+TIMESTAMP = 1545834803
+SHA256 (cabal/feed-1.0.1.0.tar.gz) = 87bd055b13c43f54e997f716a33d647c6bc1cdb78337c840d144c0b5fdccd31c
+SIZE (cabal/feed-1.0.1.0.tar.gz) = 105930

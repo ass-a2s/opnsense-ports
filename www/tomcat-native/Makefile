@@ -2,7 +2,8 @@
 # $FreeBSD: head/www/tomcat-native/Makefile 422874 2016-09-28 13:47:53Z mat $
 
 PORTNAME=	tomcat-native
-PORTVERSION=	1.2.12
+PORTVERSION=	1.2.16
+PORTREVISION=	2
 CATEGORIES=	www java
 MASTER_SITES=	APACHE/tomcat/tomcat-connectors/native/${PORTVERSION}/source
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
@@ -28,15 +29,9 @@ CONFIGURE_ARGS=	--with-apr=${LOCALBASE} \
 PLIST_FILES=	lib/libtcnative-1.a \
 		lib/libtcnative-1.so \
 		lib/libtcnative-1.so.0 \
-		lib/libtcnative-1.so.0.2.12
+		lib/libtcnative-1.so.0.2.16
 
 post-install:
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtcnative-1.so.0.2.12
+	${STRIP_CMD} ${STAGEDIR}${PREFIX}/lib/libtcnative-1.so.0.2.16
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT} == base
-IGNORE_FreeBSD_10=	Requires OpenSSL 1.0.2 (set DEFAULT_VERSIONS+=ssl=openssl)
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	irssi
-PORTVERSION=	1.0.4
+PORTVERSION=	1.2.0
 PORTEPOCH=	1
 CATEGORIES?=	irc
 MASTER_SITES=	https://github.com/irssi/irssi/releases/download/${PORTVERSION}/
@@ -9,28 +9,44 @@ MASTER_SITES=	https://github.com/irssi/irssi/releases/download/${PORTVERSION}/
 MAINTAINER=	dor.bsd@xm0.uk
 COMMENT=	Modular IRC client with many features
 
-LICENSE=	GPLv2
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-EXPLICIT_SAFESTACK=	yes
+USE_HARDENING=	safestack
 
-USES=		cpe gettext-runtime gmake libtool ncurses pkgconfig tar:xz
-GNU_CONFIGURE=	yes
-INSTALL_TARGET=	install-strip
+USES=		autoreconf cpe gettext-runtime gmake gnome libtool ncurses \
+		pkgconfig tar:xz
 USE_GNOME=	glib20
 
-OPTIONS_DEFINE=	PERL PROXY SOCKS BOT DOCS TRUECOLOR
-OPTIONS_DEFAULT=	PERL
+GNU_CONFIGURE=	yes
+INSTALL_TARGET=	install-strip
+
+OPTIONS_DEFINE=	BOT CAPSICUM DOCS OTR PERL PROXY SOCKS TRUECOLOR UTF8PROC
+OPTIONS_DEFAULT=	CAPSICUM PERL
+
 OPTIONS_SUB=	yes
-SOCKS_DESC=	Socks proxy support
-SOCKS_CONFIGURE_WITH=	socks
 BOT_DESC=	Bot support
 BOT_CONFIGURE_WITH=	bot
+CAPSICUM_DESC=	Capsicum support
+CAPSICUM_CONFIGURE_WITH=	capsicum
+OTR_DESC=	OTR (off-the-record) support
+OTR_CONFIGURE_ON=	--with-otr \
+			--with-libotr-inc-prefix=${PREFIX}/include
+OTR_CONFIGURE_OFF=	--with-otr=no
+OTR_CONFIGURE_WITH=	otr
+OTR_LIB_DEPENDS=	libgcrypt.so:security/libgcrypt \
+			libgpg-error.so:security/libgpg-error \
+			libotr.so:security/libotr
 PERL_USES=	perl5
 PERL_CONFIGURE_ON=	--with-perl-lib=site
 PERL_CONFIGURE_OFF=	--with-perl=no
 PROXY_CONFIGURE_WITH=	proxy
+SOCKS_DESC=	Socks proxy support
+SOCKS_CONFIGURE_WITH=	socks
 TRUECOLOR_DESC=	Truecolor (24bit) support
 TRUECOLOR_CONFIGURE_ENABLE=	true-color
+UTF8PROC_DESC=	utf8proc support
+UTF8PROC_LIB_DEPENDS=	libutf8proc.so:textproc/utf8proc
 
 .if defined(WITHOUT_SSL)
 CONFIGURE_ARGS+=	--disable-ssl
@@ -42,11 +58,10 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|/usr|${PREFIX}|' -e 's|/etc|${PREFIX}&|' \
 		${WRKSRC}/docs/irssi.1
 
-post-configure:
-	@${MV} ${WRKSRC}/irssi.conf ${WRKSRC}/irssi.conf.sample
-
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/lib/irssi/modules
+	@${MV} ${STAGEDIR}${PREFIX}/etc/irssi.conf \
+		${STAGEDIR}${PREFIX}/etc/irssi.conf.sample
 
 post-install-PERL-on:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/${SITE_ARCH_REL}/auto/Irssi/Irssi.so

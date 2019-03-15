@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	psqueues
-PORTVERSION=	0.2.3.0
+PORTVERSION=	0.2.6.0
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

@@ -14,11 +14,14 @@ COMMENT=	Mesh viewer
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 WRKSRC=		${WRKDIR}/mview-${PORTVERSION}
 
-USES=		gmake pkgconfig
+USES=		gmake pkgconfig qt:4
 USE_GL=		glu
-USE_QT4=	corelib gui opengl moc_build
+USE_QT=		corelib gui opengl moc_build
 CXXFLAGS+=	-I. -Imesh -Imathvector \
 		`pkg-config --cflags QtOpenGL glu`
 LDFLAGS+=	-lpthread `pkg-config --libs QtOpenGL glu`

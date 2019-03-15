@@ -2,10 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	tk
-PORTVERSION=	8.6.7
+DISTVERSION=	${TK_VERSION}${TK_RC}
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
-MASTER_SITES=	SF/tcl/Tcl/${PORTVERSION} TCLTK/tcl8_6
-PKGNAMESUFFIX=	${PORTVERSION:R:S/.//}
+MASTER_SITES=	SF/tcl/Tcl/${TK_VERSION}
+PKGNAMESUFFIX=	${SHORT_TK_VER}
 DISTNAME=	${PORTNAME}${PORTVERSION}-src
 
 MAINTAINER=	tcltk@FreeBSD.org
@@ -20,7 +21,7 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
 OPTIONS_DEFINE=	TKMAN DEMOS THREADS
-OPTIONS_DEFAULT=THREADS
+OPTIONS_DEFAULT=TKMAN THREADS
 OPTIONS_SUB=	yes
 TKMAN_DESC=	Install Tk function manpages
 DEMOS_DESC=	Install demos
@@ -30,6 +31,7 @@ WRKSRC=		${WRKDIR}/${PORTNAME}${PORTVERSION}/unix
 
 ALL_TARGET=	all
 INSTALL_TARGET=	install-strip
+TEST_TARGET=	test
 
 USES+=		tcl:${SHORT_TK_VER},tea
 USE_LDCONFIG=	yes
@@ -44,7 +46,9 @@ CONFIGURE_ENV=	PORTSDIR=${PORTSDIR}
 CFLAGS+=	-I${TCL_INCLUDEDIR} \
 		-I${LOCALBASE}/include
 
-TK_VER=		${PORTVERSION:R}
+TK_VERSION=	8.6.9
+TK_VER=		${TK_VERSION:R}
+TK_RC=		# Nothin
 SHORT_TK_VER=	${TK_VER:S/.//}
 MAN_SUFFIX=	${PKGBASE}
 
@@ -64,9 +68,10 @@ post-patch:
 	     s|@TK_BUILD_STUB_LIB_PATH@|@TK_STUB_LIB_PATH@|; \
 	     s|@TK_SRC_DIR@|${PREFIX}/include/tk${TK_VER}|' \
 	     ${WRKSRC}/tkConfig.sh.in
+	${REINPLACE_CMD} -e '/^Requires/s|tcl|tcl${SHORT_TK_VER}|' \
+	    ${WRKSRC}/tk.pc.in
 
-regression-test:	build
-	cd ${WRKSRC}; ${MAKE} test
+post-test:
 	${ECHO_CMD} "package require Tk" | tclsh${TK_VER}
 	${ECHO_CMD} "load libtk${SHORT_TK_VER}.so" | tclsh${TK_VER}
 

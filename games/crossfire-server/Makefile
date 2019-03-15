@@ -22,7 +22,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libpng.so:graphics/png
 RUN_DEPENDS=	bash:shells/bash
 
-USES=		autoreconf gmake libtool perl5 python shebangfix tar:bzip2 \
+USES=		autoreconf gmake libtool perl5 python:2.7 shebangfix tar:bzip2 \
 		uidfix
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--disable-static --with-check=no --localstatedir=/var/games
@@ -49,7 +49,6 @@ CFLOGGER_DESC=		SQLite logging plugin
 CFLOGGER_USES=		sqlite:3
 CFLOGGER_CONFIGURE_ON=	--enable-logger=yes
 CFNEWSPAPER_DESC=	Newspaper plugin
-CFLOGGER_USES=		sqlite:3
 CFNEWSPAPER_CONFIGURE_ON=	--enable-newspaper=yes
 CFRHG_DESC=		Random house genetor plugin
 CFRHG_CONFIGURE_ON=	--enable-cfrhg=yes

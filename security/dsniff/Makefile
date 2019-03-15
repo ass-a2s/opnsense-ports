@@ -14,19 +14,21 @@ COMMENT=	Various sniffing utilities for penetration testing
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libnet.so:net/libnet
-BUILD_DEPENDS=	${LOCALBASE}/lib/libnids.a:net/libnids
+BROKEN_SSL=	openssl111
+BROKEN_SSL_REASON_openssl111=	incomplete definition of type 'struct rsa_st'
 
-BROKEN_FreeBSD_12=	fails to compile: pcaputil.c: '/usr/include/pcap-int.h' file not found
+BUILD_DEPENDS=	${LOCALBASE}/lib/libnids.a:net/libnids
+LIB_DEPENDS=	libnet.so:net/libnet
+
+USES=		gettext pkgconfig ssl
+USE_GNOME=	glib20
+
+USE_HARDENING=	pie:off
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-libnet=${LOCALBASE}
 DESTDIRNAME=	install_prefix
-USES=		gettext pkgconfig ssl
-USE_GNOME=	glib20
-WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C/(.*)..$/\1/}
-
-NOPIE_PORTS=	yes
+WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION:C/..$//}
 
 OPTIONS_DEFINE=	X11
 OPTIONS_DEFAULT=	X11

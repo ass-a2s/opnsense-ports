@@ -2,161 +2,191 @@
 # $FreeBSD$
 
 PORTNAME=	csound
-PORTVERSION=	5.19.01
-PORTREVISION=	8
+DISTVERSION=	6.12.2-83
+DISTVERSIONSUFFIX=	-gdf2edd269
+PORTREVISION=	3
 CATEGORIES=	audio lang
-MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}5/${PORTNAME}${PORTVERSION:R} \
-		SF/${PORTNAME}/${PORTNAME}5/${PORTNAME}${PORTVERSION:R}/manual:manual
-DISTFILES=	${PORTNAME:S/c/C/}${PORTVERSION}${EXTRACT_SUFX}
-DIST_SUBDIR=	csound
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Sound synthesizer
 
-LICENSE=	LGPL21
+LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-BUILD_DEPENDS=	swig13>0:devel/swig13 \
-		eigen>0:math/eigen3 \
+BUILD_DEPENDS=	boost-libs>0:devel/boost-libs \
+		swig3.0:devel/swig30 \
 		gmm++>0:math/gmm++
-LIB_DEPENDS=	libsndfile.so:audio/libsndfile
+LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate \
+		libsndfile.so:audio/libsndfile
 
-BROKEN_powerpc64=	Does not build
+USE_HARDENING=	pie:off relro:off
 
-PORTSCOUT=	limit:^5\.
-
-CONFLICTS_INSTALL=	outguess-* csound6
-
-WRKSRC=		${WRKDIR}/${PORTNAME:S/c/C/}${PORTVERSION}
-
-USES=		bison cpe gettext scons compiler:gcc-c++11-lib python
-USE_CSTD=	gnu89
-# math/gmm++ requires c++11
-USE_CXXSTD=	c++11
-CPE_VENDOR=	csounds
-MAKE_ARGS=	instdir="${STAGEDIR}" prefix="${PREFIX}" \
-		CC="${CC}" CXX="${CXX}" \
-		buildCsoundAC=0 buildCsoundVST=0 buildInterfaces=1 \
-		buildRelease=1 buildVirtual=1 dynamicCsoundLibrary=1 \
-		install=1 noDebug=1 useDouble=1 \
-		useGettext=1 usePortMIDI=0
+USES=		alias bison cmake compiler:c++11-lib eigen:3 localbase ncurses python:2.7
+USE_GITHUB=	yes
 USE_LDCONFIG=	yes
-SSP_UNSAFE=	yes
 
-CFLAGS+=	-fPIC -fopenmp -DUSE_OPENMP
-LDFLAGS+=	-pthread -Wl,-export-dynamic
-LINKFLAGS=	# empty
+CFLAGS_powerpc=	-maltivec
+CFLAGS_powerpcspe=	-DPFFFT_SIMD_DISABLE
+CFLAGS_powerpc64=	-maltivec
+CMAKE_ARGS=	-DBUILD_CSOUNDVST:BOOL=OFF \
+		-DBUILD_PD_CLASS:BOOL=OFF \
+		-DPYTHON_MODULE_INSTALL_DIR:PATH="${PYTHONPREFIX_SITELIBDIR}" \
+		-DOPSYS:STRING="${OPSYS}"
+CMAKE_OFF=	USE_ALSA BUILD_JAVA_INTERFACE BUILD_TESTS
+SSP_UNSAFE=	yes
+BINARY_ALIAS=	swig=swig3.0
+LDFLAGS+=	-lexecinfo
 
 SUB_FILES=	pkg-message
 
-OPTIONS_DEFINE=	ALSA PNG DSSI FLTK FLUIDSYNTH JACK OSC PORTAUDIO PULSEAUDIO DOCS
-OPTIONS_DEFAULT=FLTK
-OPTIONS_SUB=	yes
+OPTIONS_DEFINE=		CURL FLTK HDF5 NLS OPENMP PORTAUDIO PULSEAUDIO
+OPTIONS_GROUP=		PLUGINS
+OPTIONS_GROUP_PLUGINS=	BUCHLA CHUA DSSI EXCITER FAUST FLUIDSYNTH IMAGE JACK LUA LINALG OSC P5GLOVE PADSYNTH PLATEREV PVSGENDY SCANSYN SELECT SERIAL STACK STK WIIMOTE # Opcodes/CMakeLists.txt, Opcodes/stk/CMakeLists.txt
+OPTIONS_DEFAULT=	FLTK OPENMP
+OPTIONS_DEFAULT+=	BUCHLA CHUA DSSI EXCITER FAUST IMAGE JACK LINALG OSC P5GLOVE PADSYNTH PLATEREV SCANSYN SELECT SERIAL STACK STK # for PLUGINS
+OPTIONS_SUB=		yes
 
-ALSA_DESC=		ALSA I/O module
-ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
-ALSA_MAKE_ARGS=		useALSA=1
-ALSA_MAKE_ARGS_OFF=	useALSA=0
-ALSA_VARS=		ALSA_H=alsa/asoundlib.h
-ALSA_VARS_OFF=		ALSA_H=##alsa/asoundlib.h##
+BUCHLA_DESC=		Build the Buchla filter opcode
+BUCHLA_CMAKE_BOOL=	BUILD_BUCHLA_OPCODES
 
-PNG_DESC=		Image opcodes
-PNG_LIB_DEPENDS=	libpng.so:graphics/png
-PNG_MAKE_ARGS=		buildImageOpcodes=1
-PNG_MAKE_ARGS_OFF=	buildImageOpcodes=0
+CHUA_DESC=		Build the chua opcodes
+CHUA_CMAKE_BOOL=	BUILD_CHUA_OPCODES
 
-DSSI_DESC=		DSSI/LADSPA host opcodes
-DSSI_BUILD_DEPENDS=	dssi>=0:audio/dssi
-DSSI_LIB_DEPENDS=	libasound.so:audio/alsa-lib
-DSSI_RUN_DEPENDS=	dssi>=0:audio/dssi
-DSSI_MAKE_ARGS=		buildDSSI=1
-DSSI_MAKE_ARGS_OFF=	buildDSSI=0
+CURL_CMAKE_BOOL=	USE_CURL # see https://github.com/csound/csound/issues/1067
+CURL_LIB_DEPENDS=	libcurl.so:ftp/curl
 
-FLUIDSYNTH_DESC=	FluidSynth opcodes
-FLUIDSYNTH_LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
-FLUIDSYNTH_VARS=	FLUIDSYNTH_H=fluidsynth.h
-FLUIDSYNTH_VARS_OFF=	FLUIDSYNTH_H=##fluidsynth.h##
+DSSI_DESC=		Build DSSI opcodes
+DSSI_BUILD_DEPENDS=	dssi>0:audio/dssi
+DSSI_LIB_DEPENDS=	libdssialsacompat.so:audio/libdssialsacompat
+DSSI_RUN_DEPENDS=	dssi>0:audio/dssi
+DSSI_CMAKE_BOOL=	BUILD_DSSI_OPCODES
+DSSI_CFLAGS=		-isystem ${LOCALBASE}/include/dssi
 
-JACK_DESC=		Jack I/O module and opcodes
-JACK_LIB_DEPENDS=	libjack.so:audio/jack
-JACK_MAKE_ARGS=		useJack=1
-JACK_MAKE_ARGS_OFF=	useJack=0
+EXCITER_DESC=		Build the exciter opcode
+EXCITER_CMAKE_BOOL=	BUILD_EXCITER_OPCODES
 
-OSC_DESC=		OSC opcodes
-OSC_LIB_DEPENDS=	liblo.so:audio/liblo
-OSC_MAKE_ARGS=		useOSC=1
-OSC_MAKE_ARGS_OFF=	useOSC=0
-
-PORTAUDIO_DESC=		PortAudio I/O module
-PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
-PORTAUDIO_MAKE_ARGS=	usePortAudio=1
-PORTAUDIO_MAKE_ARGS_OFF=usePortAudio=0
-
-PULSEAUDIO_DESC=	PulseAudio I/O module
-PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
-PULSEAUDIO_VARS=	PULSEAUDIO_H=pulse/simple.h
-PULSEAUDIO_VARS_OFF=	PULSEAUDIO_H=##pulse/simple.h##
-
-FLTK_DESC=		FLTK plugin and GUI
+FLTK_DESC=		Build FLTK plugin and GUI
+FLTK_USE=		XORG=ice,sm,x11,xext
 FLTK_LIB_DEPENDS=	libfltk.so:x11-toolkits/fltk
-FLTK_MAKE_ARGS=		buildCsound5GUI=1 buildCSEditor=1 buildWinsound=1 useFLTK=1
-FLTK_MAKE_ARGS_OFF=	buildCsound5GUI=0 buildCSEditor=0 buildWinsound=0 useFLTK=0
+FLTK_CMAKE_ON=		-DBUILD_WINSOUND:BOOL=ON
+FLTK_CMAKE_OFF=		-DBUILD_CSOUND_AC:BOOL=OFF \
+			-DBUILD_VIRTUAL_KEYBOARD:BOOL=OFF \
+			-DUSE_FLTK:BOOL=OFF
 
-DOCS_DISTFILES=		Csound${PORTVERSION:R}_manual_html.zip:manual
+FAUST_DESC=		Build the Faust opcodes
+FAUST_USES=		ssl
+FAUST_LLVM_VERSION=	60
+FAUST_BUILD_DEPENDS=	faust>0:audio/faust
+FAUST_RUN_DEPENDS=	faust>0:audio/faust \
+			llvm${FAUST_LLVM_VERSION}>0:devel/llvm${FAUST_LLVM_VERSION}
+FAUST_CMAKE_BOOL=	BUILD_FAUST_OPCODES
+FAUST_CMAKE_ON=		-DFAUST_LLVM_VERSION:STRING=${FAUST_LLVM_VERSION}
 
-.include <bsd.port.pre.mk>
+FLUIDSYNTH_DESC=	Building FluidSynth opcodes
+FLUIDSYNTH_LIB_DEPENDS=	libfluidsynth.so:audio/fluidsynth
+FLUIDSYNTH_CMAKE_BOOL=	BUILD_FLUID_OPCODES
+FLUIDSYNTH_BROKEN=	FluidSynth 2.x is broken upstream: https://github.com/csound/csound/issues/1078#issuecomment-441459803
 
-.if ${ARCH} == amd64 || ${ARCH} == sparc64
-MAKE_ARGS+=	Word64=1
-.endif
+HDF5_DESC=		Build HDF5 read/write opcodes
+HDF5_LIB_DEPENDS=	libhdf5.so:science/hdf5 \
+			libsz.so:science/szip
+HDF5_CMAKE_BOOL=	BUILD_HDF5_OPCODES
 
-.if ${OPSYS} == FreeBSD
-CXXLIB=		c++
-.endif
+JACK_DESC=		Build the JACK related opcodes
+JACK_LIB_DEPENDS=	libjack.so:audio/jack
+JACK_CMAKE_BOOL=	BUILD_JACK_OPCODES USE_JACK
+
+LINALG_DESC=		Build the linear algebra opcodes
+LINALG_CMAKE_BOOL=	BUILD_LINEAR_ALGEBRA_OPCODES
+LINALG_CXXFLAGS=	-DGMM_VERSION=x # workaround based on https://github.com/csound/csound/issues/1069#issuecomment-439648756
+
+LUA_DESC=		Build Lua Interface and opcodes
+LUA_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
+LUA_CMAKE_OFF=		-DBUILD_CSOUND_AC_LUA_INTERFACE:BOOL=OFF \
+			-DBUILD_LUA_INTERFACE:BOOL=OFF \
+			-DBUILD_LUA_OPCODES:BOOL=OFF
+NLS_USES=		gettext
+NLS_CMAKE_OFF=		-DGETTEXT_MSGFMT_EXECUTABLE:FILEPATH="" \
+			-DGETTEXT_MSGMERGE_EXECUTABLE:FILEPATH="" \
+			-DLIBINTL_LIBRARY:FILEPATH="" \
+			-DUSE_GETTEXT:BOOL=OFF
+OPENMP_CMAKE_BOOL=	USE_OPEN_MP
+
+OSC_DESC=		Build OSC opcodes
+OSC_LIB_DEPENDS=	liblo.so:audio/liblo
+OSC_CMAKE_BOOL=		BUILD_OSC_OPCODES
+
+PADSYNTH_DESC=		Build the Padsynth opcode
+PADSYNTH_CMAKE_BOOL=	BUILD_PADSYNTH_OPCODES
+
+IMAGE_DESC=		Build Image opcodes
+IMAGE_LIB_DEPENDS=	libpng.so:graphics/png
+IMAGE_CMAKE_BOOL=	BUILD_IMAGE_OPCODES
+
+P5GLOVE_DESC=		Build PortAudio I/O module
+P5GLOVE_CMAKE_BOOL=	BUILD_P5GLOVE_OPCODES
+
+PORTAUDIO_DESC=		Build PortAudio I/O module
+PORTAUDIO_LIB_DEPENDS=	libportaudio.so:audio/portaudio
+PORTAUDIO_CMAKE_BOOL=	USE_PORTAUDIO
+
+PULSEAUDIO_DESC=	Build PulseAudio I/O module
+PULSEAUDIO_LIB_DEPENDS=	libpulse-simple.so:audio/pulseaudio
+PULSEAUDIO_CMAKE_BOOL=	USE_PULSEAUDIO
+
+PLATEREV_DESC=		Build the platerev opcode
+PLATEREV_CMAKE_BOOL=	BUILD_PLATEREV_OPCODES
+
+PVSGENDY_DESC=		Build the pvsgendy opcode
+PVSGENDY_CMAKE_BOOL=	BUILD_PVSGENDY_OPCODE
+
+SCANSYN_DESC=		Build the select opcodes
+SCANSYN_CMAKE_BOOL=	BUILD_SCANSYN_OPCODES
+
+SELECT_DESC=		Build the select opcode
+SELECT_CMAKE_BOOL=	BUILD_SELECT_OPCODE
+
+SERIAL_DESC=		Build the serial opcode
+SERIAL_CMAKE_BOOL=	BUILD_SERIAL_OPCODES
+
+STACK_DESC=		Build the stack opcodes
+STACK_CMAKE_BOOL=	BUILD_STACK_OPCODES
+
+STK_DESC=		Build the stk opcodes
+STK_CMAKE_BOOL=		BUILD_STK_OPCODES
+STK_LIB_DEPENDS=	libstk-4.6.0.so:audio/stk
+
+WIIMOTE_DESC=		Build the Wiimote opcodes
+WIIMOTE_CMAKE_BOOL=	BUILD_WIIMOTE_OPCODES
+WIIMOTE_BROKEN=		Need to port wiiuse: https://github.com/rpavlik/wiiuse
 
 post-patch:
-	@${SED} -e "s|%%LOCALBASE%%|${LOCALBASE}|g; \
-		s|%%PYTHON_INCLUDEDIR%%|${PYTHON_INCLUDEDIR}|" \
-		< ${FILESDIR}/custom.py.in > ${WRKSRC}/custom.py
-	@${REINPLACE_CMD} -e "s|'unsupported'|'linux'|; \
-		s|Exit(-1)|print \"\"|; \
-		/CCFLAGS/s|\['-Wno-format'\]|Split('${CFLAGS}')|; \
-		/CXXFLAGS/s|\['-Wno-format'\]|Split('${CXXFLAGS}')|; \
-		s|/usr/local|${LOCALBASE}|; \
-		s|/usr/X11R6|${LOCALBASE}|; \
-		/LINKFLAGS/s|\['-Wl,-Bdynamic'\]|Split('${LDFLAGS}')|; \
-		s|\"pthread\"|\"\"|; \
-		s|'pthread'|''|; \
-		s|\"boost/any.hpp\"|\"##boost/any.hpp##\"|; \
-		s|\"alsa/asoundlib.h\"|\"${ALSA_H}\"|; \
-		s|'xmlfile.h'|'##xmlfile.h##'|; \
-		s|\"pulse/simple.h\"|\"${PULSEAUDIO_H}\"|; \
-		s|\"m_pd.h\"|\"##m_pd.h##\"|; \
-		s|\"tcl.h\"|\"##tcl.h##\"|; \
-		s|'5.2'|'5'|; \
-		s|'dl'|''|; \
-		s|'stdc++'|'${CXXLIB}'|; \
-		/linuxjoystick/s|^.*|    print \"\"|; \
-		s|\"fluidsynth.h\"|\"${FLUIDSYNTH_H}\"|; \
-		/mixer_main.c/s|'mixer'|'csmixer'|; \
-		/jpluginEnvironment/s|'asound'|''|; \
-		/portaudioEnvironment/s|'asound'|''|; \
-		/jackEnvironment/s|'asound'|''|" ${WRKSRC}/SConstruct
-	@${REINPLACE_CMD} -e "s|linux/if.h|sys/types.h|" \
-		${WRKSRC}/OOps/remote.c
-	@${REINPLACE_CMD} -e "/Str/!s|fdclose|my_fdclose|" \
-		${WRKSRC}/OOps/*.c \
-		${WRKSRC}/Top/csound.c \
-		${WRKSRC}/Engine/auxfd.c \
-		${WRKSRC}/H/prototyp.h
+	@${REINPLACE_CMD} -e \
+		's|/usr/local|${LOCALBASE}|' \
+		${WRKSRC}/InOut/CMakeLists.txt
+	@${REINPLACE_CMD} -e \
+		's|/usr/include/Python2.7|${PYTHON_INCLUDEDIR}| ; \
+		 s|/usr/local|${LOCALBASE}| ; \
+		 /linuxjoystick/s|^|#| ; \
+		 s| dl)|)|' \
+		${WRKSRC}/Opcodes/CMakeLists.txt
+	@${REINPLACE_CMD} -e \
+		'/CMAKE_SYSTEM_NAME/s|"Linux"|"${OPSYS}"|' \
+		${WRKSRC}/Frontends/CMakeLists.txt
+	@${REINPLACE_CMD} -e \
+		's| mixer)| csmixer)|' \
+		${WRKSRC}/util/CMakeLists.txt
+.for i in Engine/auxfd.c H/prototyp.h OOps/diskin2.c OOps/dumpf.c \
+	Opcodes/partials.c Top/csound.c
+	@${REINPLACE_CMD} -e \
+		's|\([[:blank:]]fd\)\(close\)|\1__\2|' ${WRKSRC}/${i}
+.endfor
 
 post-install:
-	${LN} -sf libcsound64.so.5 ${STAGEDIR}${PREFIX}/lib/libcsound64.so
-	${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/* ${STAGEDIR}${PREFIX}/lib/*.so* \
-		${STAGEDIR}${PREFIX}/lib/csound/plugins64/*.so
+	@${LN} -sf libcsnd6.so.6.0 ${STAGEDIR}${PREFIX}/lib/libcsnd6.so.6
+	@${LN} -sf libcsound64.so.6.0 ${STAGEDIR}${PREFIX}/lib/libcsound64.so.6
 
-post-install-DOCS-on:
-	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	(cd ${WRKDIR}/html && ${COPYTREE_SHARE} . ${STAGEDIR}${DOCSDIR})
+post-install-FLTK-on:
+	@${LN} -sf libCsoundAC.so.6.0 ${STAGEDIR}${PREFIX}/lib/libCsoundAC.so.6
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

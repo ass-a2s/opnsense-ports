@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	Net-IMAP-Server
-PORTVERSION=	1.38
-PORTREVISION=	1
+PORTVERSION=	1.39
 CATEGORIES=	mail perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -11,10 +10,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	culot@FreeBSD.org
 COMMENT=	Single-threaded multiplexing IMAP server implementation
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-AnyEvent>0:devel/p5-AnyEvent \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-AnyEvent>0:devel/p5-AnyEvent \
 		p5-Class-Accessor>0:devel/p5-Class-Accessor \
 		p5-Coro>0:devel/p5-Coro \
 		p5-DateTime>0:devel/p5-DateTime \
@@ -28,9 +28,9 @@ BUILD_DEPENDS=	p5-AnyEvent>0:devel/p5-AnyEvent \
 		p5-Net-Server-Coro>=0.6:net/p5-Net-Server-Coro \
 		p5-Regexp-Common>0:textproc/p5-Regexp-Common \
 		p5-UNIVERSAL-require>0:devel/p5-UNIVERSAL-require
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-IO-Socket-SSL>0:security/p5-IO-Socket-SSL
 
+NO_ARCH=	yes
 USES=		perl5
 USE_PERL5=	configure
 

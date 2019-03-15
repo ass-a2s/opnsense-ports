@@ -11,8 +11,6 @@ COMMENT=	RAID5 geom class
 
 LICENSE=	BSD2CLAUSE
 
-BROKEN_powerpc64=	fails to compile: pcpu.h: size of array '__assert_0' is negative
-
 NO_PACKAGE=	should be recompiled for a particular FreeBSD kernel
 
 MAINVERSION=1.3
@@ -21,9 +19,6 @@ VERSIONDATE=20140711.62
 MAKE_ENV+=	KMODDIR=${KMODDIR} SRC_BASE=${SRC_BASE}
 
 USES=		tar:bzip2 kmod uidfix
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 .include <bsd.port.pre.mk>
 

@@ -11,9 +11,12 @@ PKGNAMESUFFIX=	-tools
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt utilities for generating documentation
 
-USE_QT4=	qmake_build moc_build rcc_build uic_build corelib \
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake:no_env qt-dist:4
+USE_QT=		moc_build rcc_build uic_build corelib \
 		gui sql xml doc help
-QT_DIST=	yes
 
 HAS_CONFIGURE=	yes
 

@@ -3,19 +3,22 @@
 
 PORTNAME=	mosml
 PORTVERSION=	2.10.1
+PORTREVISION=	1
 DISTVERSIONPREFIX=	ver-
 CATEGORIES=	lang
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	Lightweight implementation of Standard ML
 
+BROKEN_mips=		does not configure: this architecture seems to be neither big endian nor little endian
+BROKEN_mips64=		does not configure: this architecture seems to be neither big endian nor little endian
+BROKEN_powerpc64=	does not configure: this architecture seems to be neither big endian nor little endian
+
 LIB_DEPENDS=	libgmp.so:math/gmp \
 		libgdbm.so:databases/gdbm
 
 GH_ACCOUNT=	kfl
 USE_GITHUB=	yes
-
-BROKEN_powerpc64=	does not configure: this architecture seems to be neither big endian nor little endian
 
 RESTRICTED=	Restrictions on for-profit distribution
 

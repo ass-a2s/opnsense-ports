@@ -4,7 +4,7 @@
 PORTNAME=	yorick
 DISTVERSIONPREFIX=	y_
 DISTVERSION=	2_2_04
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang math
 
 MAINTAINER=	johans@FreeBSD.org
@@ -12,6 +12,8 @@ COMMENT=	Interpreted language for scientific simulations
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+USE_HARDENING=	pie:off
 
 USES=		makeinfo
 USE_XORG=	x11
@@ -24,8 +26,6 @@ INFO=		yorick
 PORTDOCS=	FILE_FORMATS README drat.doc graph.doc hex.doc \
 		library.doc math.doc refs.pdf refs.tex std.doc \
 		yorick.pdf yorick.tex
-
-NOPIE_PORTS=	yes
 
 OPTIONS_DEFINE=	DOCS
 

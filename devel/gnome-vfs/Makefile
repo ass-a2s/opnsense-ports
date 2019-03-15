@@ -3,7 +3,7 @@
 
 PORTNAME=	gnome-vfs
 PORTVERSION=	2.24.4
-PORTREVISION?=	6
+PORTREVISION?=	10
 CATEGORIES=	devel gnome
 MASTER_SITES=	GNOME
 DIST_SUBDIR=	gnome2
@@ -11,13 +11,20 @@ DIST_SUBDIR=	gnome2
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME Virtual File System
 
+LICENSE=	LGPL20 LGPL20+  # dbus-utils.c is LGPL20 only
+LICENSE_COMB=	multi
+LICENSE_FILE_LGPL20=	${WRKSRC}/COPYING.LIB
+LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING.LIB
+
 USES=		tar:bzip2
 
 .if !defined(REFERENCE_PORT)
 
 RUN_DEPENDS=	update-mime-database:misc/shared-mime-info
+LIB_DEPENDS=	libdbus-glib-1.so:devel/dbus-glib \
+		libdbus-1.so:devel/dbus
 
-USES+=		gettext gmake libtool:keepla pathfix pkgconfig ssl
+USES+=		gettext gmake gnome libtool:keepla pathfix pkgconfig ssl
 USE_GNOME=	gconf2 gnomemimedata intlhack referencehack
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
@@ -26,7 +33,8 @@ CONFIGURE_ARGS=	--enable-openssl \
 		--disable-gnutls \
 		--disable-howl \
 		--with-hal-mount=/sbin/mount \
-		--with-hal-umount=/sbin/umount
+		--with-hal-umount=/sbin/umount \
+		ac_cv_header_sys_inotify_h=no
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 

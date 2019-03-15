@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	redis
-PORTVERSION=	3.1.3
+PORTVERSION=	4.2.0
 CATEGORIES=	databases
 
 MAINTAINER=	daniel@blodan.se
@@ -12,6 +12,8 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		php:pecl
 USE_PHP=	session:build
+
+CONFLICTS_INSTALL=	pecl-redis3
 
 OPTIONS_DEFINE=	IGBINARY
 IGBINARY_DESC=	Build with Igbinary serializer

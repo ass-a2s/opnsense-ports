@@ -3,6 +3,7 @@
 
 PORTNAME=	tk
 PORTVERSION=	8.5.19
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	TCLTK/tcl8_5 SF/tcl/Tcl/${PORTVERSION}
 PKGNAMESUFFIX=	${SHORT_TK_VER}
@@ -41,7 +42,7 @@ DATADIR=	${PREFIX}/share/${PORTNAME}${TK_VER}
 SUB_FILES=	pkgIndex.tcl
 
 OPTIONS_DEFINE=	TK85_MAN DEMOS THREADS
-OPTIONS_DEFAULT=THREADS
+OPTIONS_DEFAULT=TK85_MAN THREADS
 OPTIONS_SUB=	yes
 TK85_MAN_DESC=	Install tk 8.5 function manpages
 DEMOS_DESC=	Install demos
@@ -63,6 +64,8 @@ post-patch:
 	     s|@TK_BUILD_STUB_LIB_PATH@|@TK_STUB_LIB_PATH@|; \
 	     s|@TK_SRC_DIR@|${PREFIX}/include/tk${TK_VER}|' \
 	     ${WRKSRC}/tkConfig.sh.in
+	${REINPLACE_CMD} -e '/^Requires/s|tcl|tcl${SHORT_TK_VER}|' \
+	    ${WRKSRC}/tk.pc.in
 	@${REINPLACE_CMD} -e 's|X11/Intrinsic.h|X11/Xlib.h|g' ${WRKSRC}/configure
 	@${REINPLACE_CMD} -e 's|@TK_SHARED_BUILD@|#@TK_SHARED_BUILD@|g; s|%%LOCALBASE%%|${LOCALBASE}|g' ${WRKSRC}/Makefile.in
 

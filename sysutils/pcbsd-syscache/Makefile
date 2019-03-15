@@ -3,6 +3,7 @@
 
 PORTNAME=	pcbsd-syscache
 PORTVERSION=	1439494375
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -11,8 +12,8 @@ COMMENT=	PC-BSD SysCache Utility
 LICENSE=	BSD3CLAUSE
 
 WRKSRC_SUBDIR=	src-sh/syscache
-USE_QT5=	core network buildtools qmake
-USES=		pkgconfig
+USE_QT=		core network buildtools qmake
+USES=		pkgconfig qt:5
 NO_BUILD=	yes
 MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 

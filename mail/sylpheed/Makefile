@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	sylpheed
-PORTVERSION=	3.6.0
-PORTREVISION=	1
+PORTVERSION=	3.7.0
+PORTREVISION=	3
 CATEGORIES=	mail ipv6
 MASTER_SITES=	http://sylpheed.sraoss.jp/sylpheed/v${PORTVERSION:C/\.[^\.]*$//}/  \
 		LOCAL/ehaupt
@@ -21,8 +21,9 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 USES=		gettext iconv gmake pkgconfig tar:bzip2 desktop-file-utils \
 		libtool
 USE_GNOME=	gtk20 cairo gdkpixbuf2
-GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
+
+GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 
 CPPFLAGS+=	-I${LOCALBASE}/include
@@ -75,7 +76,7 @@ JPILOT_CONFIGURE_ENABLE=	jpilot
 LDAP_CONFIGURE_ENABLE=		ldap
 LDAP_USE=			openldap=yes
 
-ONIGURUMA_LIB_DEPENDS=		libonig.so:devel/oniguruma6
+ONIGURUMA_LIB_DEPENDS=		libonig.so:devel/oniguruma
 ONIGURUMA_CONFIGURE_ENABLE=	oniguruma
 
 SSL_CONFIGURE_ENABLE=		ssl
@@ -100,7 +101,7 @@ post-patch:
 		${WRKSRC}/src/Makefile.in
 
 .if empty(PORT_OPTIONS:MDOCS)
-	@${REINPLACE_CMD} -e 's|^SUBDIRS = ac libsylph src plugin po manual faq nsis$$|SUBDIRS = ac libsylph src plugin po nsis|g' \
+	@${REINPLACE_CMD} -e '/^SUBDIRS = /s/manual faq//' \
 		${WRKSRC}/Makefile.in
 .else
 .for i in ${MAKEFILES}

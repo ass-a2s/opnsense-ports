@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	syslogd
-PORTVERSION=	11.0
+PORTVERSION=	11.2
 CATEGORIES=	sysutils
 DISTFILES=
 
@@ -11,7 +11,7 @@ COMMENT=	FreeBSD syslogd with additions
 
 LICENSE=	BSD3CLAUSE
 
-USE_HARDENING=	pie relro safestack
+USE_HARDENING=	safestack
 
 OPTIONS_DEFINE=	CLOG IPV6
 OPTIONS_DEFAULT=CLOG
@@ -24,6 +24,9 @@ CLOG_RUN_DEPENDS=	clog:opnsense/clog
 CLOG_USES=		localbase
 
 IPV6_CFLAGS=		-DINET6
+
+MAKE_ENV=		SRCTOP=${.CURDIR}/files/src \
+			MK_INET6_SUPPORT=no
 
 do-extract:
 	${CP} -r ${FILESDIR}/src ${WRKSRC}

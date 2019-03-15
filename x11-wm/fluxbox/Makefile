@@ -3,7 +3,7 @@
 
 PORTNAME=	fluxbox
 PORTVERSION=	1.3.7
-PORTREVISION=	1
+PORTREVISION=	4
 CATEGORIES=	x11-wm
 MASTER_SITES=	SF
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -11,8 +11,6 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	jgh@FreeBSD.org
 COMMENT=	Small and fast window manager based on BlackBox
-
-EXPLICIT_SAFESTACK=		yes
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -22,9 +20,11 @@ LIB_DEPENDS=	libfribidi.so:converters/fribidi \
 		libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
 
-USE_XORG=	x11 xext xextproto xft xpm xrandr
+USE_XORG=	x11 xext xorgproto xft xpm xrandr
 USES=		gmake pkgconfig
 GNU_CONFIGURE=	yes
+
+USE_HARDENING=	safestack
 
 PORTDATA=	*
 PORTDOCS=	*

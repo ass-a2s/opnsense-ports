@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	portupgrade
-PORTVERSION=	2.4.15
+PORTVERSION=	2.4.16
 PORTREVISION=	0
 PORTEPOCH=	2
 CATEGORIES=	ports-mgmt
@@ -12,8 +12,6 @@ MASTER_SITES=	LOCAL/bdrewery/${PORTNAME}/ \
 
 MAINTAINER=	bdrewery@FreeBSD.org
 COMMENT=	FreeBSD ports/packages administration and management tool suite
-
-EXPLICIT_SAFESTACK=		yes
 
 LICENSE=	BSD3CLAUSE
 
@@ -27,6 +25,8 @@ GH_ACCOUNT=	freebsd
 DIST_SUBDIR=	${PORTNAME}
 USES=		uidfix
 USE_RUBY=	yes
+
+USE_HARDENING=	safestack
 
 USE_LDCONFIG=	${PREFIX}/lib/compat/pkg
 

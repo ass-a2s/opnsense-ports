@@ -56,6 +56,7 @@ lib/postgresql/uuid-ossp.so
 %%PORTDOCS%%%%DOCSDIR%%/extension/moddatetime.example
 %%PORTDOCS%%%%DOCSDIR%%/extension/refint.example
 %%PORTDOCS%%%%DOCSDIR%%/extension/timetravel.example
+%%DATADIR%%/extension/adminpack--1.0--1.1.sql
 %%DATADIR%%/extension/adminpack--1.0.sql
 %%DATADIR%%/extension/adminpack.control
 %%DATADIR%%/extension/amcheck--1.0.sql
@@ -176,6 +177,7 @@ lib/postgresql/uuid-ossp.so
 %%DATADIR%%/extension/pg_stat_statements--1.2--1.3.sql
 %%DATADIR%%/extension/pg_stat_statements--1.3--1.4.sql
 %%DATADIR%%/extension/pg_stat_statements--1.4--1.5.sql
+%%DATADIR%%/extension/pg_stat_statements--1.5--1.6.sql
 %%DATADIR%%/extension/pg_stat_statements--1.4.sql
 %%DATADIR%%/extension/pg_stat_statements--unpackaged--1.0.sql
 %%DATADIR%%/extension/pg_stat_statements.control

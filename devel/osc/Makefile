@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	osc
-PORTVERSION=	0.159.0
+PORTVERSION=	0.164.2
 CATEGORIES=	devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -11,20 +11,18 @@ COMMENT=	Command Line Interface to work with an openSUSE Build Service
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}m2crypto>0:security/py-m2crypto \
-		${PYTHON_PKGNAMEPREFIX}urlgrabber>0:www/py-urlgrabber
-BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}urlgrabber>0:www/py-urlgrabber
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}m2crypto>0:security/py-m2crypto@${PY_FLAVOR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	openSUSE
 
-CPE_VENDOR=	suse
-CPE_PRODUCT=	opensuse_osc
-
-USES=		cpe python
+USES=		cpe python:2.7
 USE_PYTHON=	autoplist distutils
 PLIST_FILES=	bin/osc
 NO_ARCH=	yes
+
+CPE_VENDOR=	suse
+CPE_PRODUCT=	opensuse_osc
 
 PORTDOCS=	*
 

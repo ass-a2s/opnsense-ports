@@ -1,23 +1,28 @@
 # $FreeBSD$
 
 PORTNAME=	libkgeomap
-PORTVERSION=	${KDE4_APPLICATIONS_VERSION}
-PORTREVISION=	4
-CATEGORIES=	astro kde
-MASTER_SITES=	KDE/${KDE4_APPLICATIONS_BRANCH}/applications/${PORTVERSION}/src
-DIST_SUBDIR=	KDE/${PORTVERSION}
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+CATEGORIES=	astro kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	KDE4 library for browsing photos on a map
+COMMENT=	KDE library for browsing photos on a map
 
-LICENSE=	GPLv2+ LGPL20+
+LICENSE=	GPLv2+ BSD3CLAUSE
 LICENSE_COMB=	multi
+LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
+LICENSE_FILE_BSD3CLAUSE=${WRKSRC}/COPYING-CMAKE-SCRIPTS
 
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/graph/buffer_concepts.hpp:devel/boost-libs
+LIB_DEPENDS=	libopencv_video.so:graphics/opencv
 
-USES=		cmake:outsource kde:4 pathfix tar:xz
-USE_KDE=	kdelibs automoc4 marble
+USES=		cmake compiler:c++11-lang gettext kde:5 pkgconfig \
+		qt:5 tar:xz
+USE_KDE=	config coreaddons ecm i18n kio marble service textwidgets
+USE_QT=		concurrent core gui network webkit widgets xml \
+		buildtools_build qmake_build
+
 USE_LDCONFIG=	yes
-USE_QT4=	network phonon xml moc_build qmake_build rcc_build uic_build
+
+OPTIONS_DEFINE=	DOCS
 
 .include <bsd.port.mk>

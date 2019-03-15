@@ -5,7 +5,7 @@ PORTNAME=	qdbm
 PORTVERSION=	1.8.78
 PORTREVISION=	4
 CATEGORIES=	databases
-MASTER_SITES=	http://fallabs.com/qdbm/
+MASTER_SITES=	https://fallabs.com/qdbm/
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Quick Database Manager
@@ -29,8 +29,10 @@ MAKE_ARGS=	MYDATADIR="${DOCSDIR}" MYDOCS="${PORTDOCS}" \
 INSTALL_TARGET=	install-strip
 PORTDOCS=	ChangeLog NEWS
 
+OPTIONS_DEFINE=	DOCS
+
 post-patch:
-.if defined(WITH_DEBUG) && !defined(WITHOUT_DEBUG)
+.if defined(WITH_DEBUG)
 	@${REINPLACE_CMD} 's/-DNDEBUG//' ${WRKSRC}/Makefile.in
 .endif
 

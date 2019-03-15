@@ -1,9 +1,9 @@
 # $FreeBSD$
 
 PORTNAME=	sysadm-client
-PORTVERSION=	1.0
-PORTREVISION=	2
+PORTVERSION=	1.1
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	kmoore@FreeBSD.org
@@ -13,8 +13,8 @@ LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/../LICENSE
 
 WRKSRC_SUBDIR=	src-qt5
-USE_QT5=	core buildtools_build gui network qmake websockets widgets svg concurrent
-USES=		pkgconfig tar:xz qmake ssl
+USES=		compiler:c++11-lang gmake pkgconfig qmake ssl qt:5 tar:xz
+USE_QT=		core buildtools_build gui network qmake websockets widgets svg concurrent
 USE_GL+=	gl
 MAKE_ARGS=	PREFIX=${STAGEDIR}${PREFIX}
 

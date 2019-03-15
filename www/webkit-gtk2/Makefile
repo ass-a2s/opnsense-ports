@@ -3,9 +3,9 @@
 
 PORTNAME=	webkit
 PORTVERSION=	2.4.11
-PORTREVISION=	10
+PORTREVISION=	19
 CATEGORIES=	www
-MASTER_SITES=	http://webkitgtk.org/releases/
+MASTER_SITES=	https://webkitgtk.org/releases/
 PKGNAMESUFFIX=	-gtk2
 DISTNAME=	${PORTNAME}gtk-${PORTVERSION}
 
@@ -14,14 +14,13 @@ COMMENT=	Opensource browser engine using the GTK+ 2 toolkit
 
 BUILD_DEPENDS=	gtkdoc-rebase:textproc/gtk-doc \
 		p5-Switch>0:lang/p5-Switch \
-		python:lang/python \
 		geoclue>=0:net/geoclue
 LIB_DEPENDS=	libenchant.so:textproc/enchant \
 		libsecret-1.so:security/libsecret \
 		libicutu.so:devel/icu \
 		libharfbuzz.so:print/harfbuzz \
 		libharfbuzz-icu.so:print/harfbuzz-icu \
-		libpng16.so:graphics/png \
+		libpng.so:graphics/png \
 		libwebp.so:graphics/webp \
 		libcurl.so:ftp/curl \
 		libsoup-2.4.so:devel/libsoup \
@@ -31,12 +30,17 @@ LIB_DEPENDS=	libenchant.so:textproc/enchant \
 		libgstreamer-1.0.so:multimedia/gstreamer1
 RUN_DEPENDS=	geoclue>=0:net/geoclue
 
+DEPRECATED=	Known and unfixed security issues
+EXPIRATION_DATE=2019-03-24
+FORBIDDEN=	Known and unfixed security issues
+
 PORTSCOUT=	limit:^2\.4\.
 
+BINARY_ALIAS=	python=${PYTHON_CMD}
 USE_GSTREAMER1=	yes
 USE_XORG=	x11 xcomposite xdamage xfixes xrender xt
-USES=		bison compiler:c++11-lib gettext gmake gperf jpeg libtool \
-		localbase pathfix perl5 pkgconfig shebangfix sqlite tar:xz
+USES=		bison compiler:c++11-lib gettext gl gmake gnome gperf jpeg libtool \
+		localbase pathfix perl5 pkgconfig python:build shebangfix sqlite tar:xz
 PATHFIX_MAKEFILEIN=	GNUmakefile.in
 USE_RUBY=	yes
 RUBY_NO_RUN_DEPENDS=yes
@@ -84,7 +88,7 @@ DEBUG_CONFIGURE_OFF=	--disable-debug-symbols
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc64 || ${ARCH} == powerpc || ${ARCH} == sparc64
+.if ${ARCH:Mpowerpc*} || ${ARCH} == sparc64
 CONFIGURE_ARGS+=	--disable-jit
 CFLAGS+=		-DENABLE_YARR_JIT=0
 .endif

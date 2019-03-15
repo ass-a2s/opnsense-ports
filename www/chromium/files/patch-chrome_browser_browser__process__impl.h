@@ -1,11 +1,20 @@
---- chrome/browser/browser_process_impl.h.orig	2017-06-05 19:03:02 UTC
-+++ chrome/browser/browser_process_impl.h
-@@ -343,7 +343,7 @@ class BrowserProcessImpl : public BrowserProcess,
+--- chrome/browser/browser_process_impl.h.orig	2019-02-12 16:33:04.676012000 +0100
++++ chrome/browser/browser_process_impl.h	2019-02-12 16:33:35.429453000 +0100
+@@ -367,7 +367,7 @@
+   std::unique_ptr<ChromeResourceDispatcherHostDelegate>
+       resource_dispatcher_host_delegate_;
  
-   std::unique_ptr<ChromeDeviceClient> device_client_;
+-#if defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
++#if defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+   base::RepeatingTimer autoupdate_timer_;
  
--#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
-+#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX) || defined(OS_BSD)
-   // Any change to this #ifdef must be reflected as well in
-   // chrome/browser/memory/tab_manager_browsertest.cc
-   std::unique_ptr<memory::TabManager> tab_manager_;
+   // Gets called by autoupdate timer to see if browser needs restart and can be
+@@ -376,7 +376,7 @@
+   bool IsRunningInBackground() const;
+   void OnPendingRestartResult(bool is_update_pending_restart);
+   void RestartBackgroundInstance();
+-#endif  // defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS))
++#endif  // defined(OS_WIN) || (defined(OS_LINUX) && !defined(OS_CHROMEOS)) || defined(OS_BSD)
+ 
+   // component updater is normally not used under ChromeOS due
+   // to concerns over integrity of data shared between profiles,

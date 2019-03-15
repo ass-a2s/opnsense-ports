@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	xfce4-timer-plugin
-PORTVERSION=	1.6.0
+PORTVERSION=	1.7.0
 PORTREVISION=	1
 CATEGORIES=	x11-clocks xfce
 MASTER_SITES=	XFCE/src/panel-plugins/${PORTNAME}/${PORTVERSION:R}
@@ -13,10 +13,18 @@ COMMENT=	Timer plugin for Xfce
 
 LICENSE=	GPLv2
 
-INSTALLS_ICONS=	yes
-GNU_CONFIGURE=	yes
-USE_GNOME=	glib20 gtk20 intltool intlhack
+USES=		gettext-tools gmake gnome libtool pkgconfig tar:bzip2 xfce:gtk3
+USE_GNOME=	cairo gtk30 intltool
 USE_XFCE=	panel
-USES=		pkgconfig gettext gmake xfce tar:bzip2
+
+GNU_CONFIGURE=	yes
+INSTALLS_ICONS=	yes
+INSTALL_TARGET=	install-strip
+
+OPTIONS_DEFINE=		NLS
+OPTIONS_SUB=		yes
+
+NLS_USES=		gettext-runtime
+NLS_CONFIGURE_ENABLE=	nls
 
 .include <bsd.port.mk>

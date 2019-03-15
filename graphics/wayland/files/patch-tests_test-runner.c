@@ -1,4 +1,4 @@
---- tests/test-runner.c.orig	2016-11-18 00:32:40 UTC
+--- tests/test-runner.c.orig	2018-08-24 18:04:36 UTC
 +++ tests/test-runner.c
 @@ -25,6 +25,12 @@
  
@@ -13,11 +13,11 @@
  #include <unistd.h>
  #include <stdio.h>
  #include <stdlib.h>
-@@ -37,18 +43,35 @@
+@@ -37,19 +43,36 @@
  #include <errno.h>
  #include <limits.h>
  #include <sys/ptrace.h>
-+#ifdef __linux__
++#ifdef HAVE_SYS_PRCTL_H
  #include <sys/prctl.h>
 +#endif
  #ifndef PR_SET_PTRACER
@@ -39,16 +39,17 @@
  static void* (*sys_realloc)(void*, size_t);
  static void* (*sys_calloc)(size_t, size_t);
 +#endif
-+
+ 
 +#ifdef __FreeBSD__
 +/* XXX review ptrace() usage */
 +#define PTRACE_ATTACH PT_ATTACH
 +#define PTRACE_CONT PT_CONTINUE
 +#define PTRACE_DETACH PT_DETACH
 +#endif
- 
++
  /* when set to 1, check if tests are not leaking memory and opened files.
   * It is turned on by default. It can be turned off by
+  * WAYLAND_TEST_NO_LEAK_CHECK environment variable. */
 @@ -57,7 +80,7 @@ int leak_check_enabled;
  
  /* when this var is set to 0, every call to test_set_timeout() is
@@ -83,7 +84,7 @@
  	pid = fork();
  	if (pid == -1) {
  		perror("fork");
-@@ -312,7 +339,7 @@ is_debugger_attached(void)
+@@ -312,13 +339,14 @@ is_debugger_attached(void)
  			_exit(1);
  		if (!waitpid(-1, NULL, 0))
  			_exit(1);
@@ -92,7 +93,25 @@
  		ptrace(PTRACE_DETACH, ppid, NULL, NULL);
  		_exit(0);
  	} else {
-@@ -346,17 +373,19 @@ int main(int argc, char *argv[])
+ 		close(pipefd[0]);
+ 
+ 		/* Enable child to ptrace the parent process */
++#if defined(HAVE_PRCTL)
+ 		rc = prctl(PR_SET_PTRACER, pid);
+ 		if (rc != 0 && errno != EINVAL) {
+ 			/* An error prevents us from telling if a debugger is attached.
+@@ -328,7 +356,9 @@ is_debugger_attached(void)
+ 			 */
+ 			perror("prctl");
+ 			write(pipefd[1], "-", 1);
+-		} else {
++		} else
++#endif
++		{
+ 			/* Signal to client that parent is ready by passing '+' */
+ 			write(pipefd[1], "+", 1);
+ 		}
+@@ -346,17 +376,19 @@ int main(int argc, char *argv[])
  	const struct test *t;
  	pid_t pid;
  	int total, pass;
@@ -115,7 +134,7 @@
  	if (is_debugger_attached()) {
  		leak_check_enabled = 0;
  		timeouts_enabled = 0;
-@@ -364,6 +393,16 @@ int main(int argc, char *argv[])
+@@ -364,7 +396,17 @@ int main(int argc, char *argv[])
  		leak_check_enabled = !getenv("WAYLAND_TEST_NO_LEAK_CHECK");
  		timeouts_enabled = !getenv("WAYLAND_TEST_NO_TIMEOUTS");
  	}
@@ -125,14 +144,15 @@
 +	/* XXX review later */
 +	timeouts_enabled = 0;
 +#endif
-+
+ 
 +	if (isatty(fileno(stderr)))
 +		is_atty = 1;
 +
- 
++
  	if (argc == 2 && strcmp(argv[1], "--help") == 0)
  		usage(argv[0], EXIT_SUCCESS);
-@@ -395,7 +434,8 @@ int main(int argc, char *argv[])
+ 
+@@ -395,7 +437,8 @@ int main(int argc, char *argv[])
  		if (pid == 0)
  			run_test(t); /* never returns */
  
@@ -142,7 +162,7 @@
  			stderr_set_color(RED);
  			fprintf(stderr, "waitid failed: %m\n");
  			stderr_reset_color();
-@@ -426,6 +466,25 @@ int main(int argc, char *argv[])
+@@ -426,6 +469,25 @@ int main(int argc, char *argv[])
  
  			break;
  		}

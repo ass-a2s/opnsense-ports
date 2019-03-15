@@ -15,9 +15,7 @@ COMMENT=	Practical high-level network game engine
 
 LICENSE=	GPLv2+
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted
-
-OPTIONS_DEFINE=	EXAMPLES
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}twisted>=0:devel/py-twisted@${PY_FLAVOR}
 
 NO_ARCH=	yes
 USES=		python tar:bzip2

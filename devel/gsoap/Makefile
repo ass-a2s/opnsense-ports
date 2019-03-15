@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gsoap
-PORTVERSION=	2.8.50
+PORTVERSION=	2.8.79
 CATEGORIES=	devel
 MASTER_SITES=	SF/${PORTNAME}2/gsoap-2.8
 DISTNAME=	${PORTNAME}_${PORTVERSION}
@@ -12,10 +12,11 @@ COMMENT=	Generator Tools for Coding SOAP/XML Web Services in C and C++
 
 LICENSE=	GPLv2
 
+USES=		autoreconf pathfix ssl zip
+
 CONFIGURE_ENV=	LEX=flex YACC=yacc
 GNU_CONFIGURE=	yes
 MAKE_JOBS_UNSAFE=	yes
-USES=		autoreconf pathfix zip
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION:R}
 
 OPTIONS_RADIO=	SSL
@@ -34,7 +35,7 @@ post-patch:
 	    -e 's|-DSOAPCPP_IMPORT_PATH=|-DSOAPCPP2_IMPORT_PATH=|' \
 	    -e 's|-DWSDL_IMPORT_PATH=|-DWSDL2H_IMPORT_PATH=|' \
 	    ${WRKSRC}/configure.ac
-	${REINPLACE_CMD} -e 's|$$(libdir)|$$(libdir)data|' \
+	@${REINPLACE_CMD} -e 's|$$(libdir)|$$(libdir)data|' \
 	    ${WRKSRC}/Makefile.am
 
 post-install:

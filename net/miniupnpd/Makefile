@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	miniupnpd
-PORTVERSION=	1.9.20160113
+PORTVERSION=	2.0.20180503
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	http://miniupnp.tuxfamily.org/files/ \
@@ -20,7 +20,7 @@ PLIST_FILES=	etc/miniupnpd.conf.sample sbin/miniupnpd \
 MAKE_JOBS_UNSAFE=yes
 USE_RC_SUBR=	miniupnpd
 
-USE_HARDENING=	pie relro safestack
+USE_HARDENING=	safestack
 
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}

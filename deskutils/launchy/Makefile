@@ -3,7 +3,7 @@
 
 PORTNAME=	launchy
 PORTVERSION=	2.5
-PORTREVISION=	5
+PORTREVISION=	11
 CATEGORIES=	deskutils
 MASTER_SITES=	SF/${PORTNAME}/Launchy%20on%20Linux/${PORTVERSION}
 
@@ -13,16 +13,21 @@ COMMENT=	Open source keystroke launcher
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 BUILD_DEPENDS=	${LOCALBASE}/include/boost/shared_ptr.hpp:devel/boost-libs
 RUN_DEPENDS=	${LOCALBASE}/bin/xdg-open:devel/xdg-utils
 
-USES=		dos2unix qmake
+USES=		dos2unix qmake qt:4
 DOS2UNIX_FILES=	readme.lyx readme.txt
-USE_QT4=	moc_build rcc_build uic_build gui network
+USE_QT=		moc_build rcc_build uic_build gui network
 LDFLAGS+=	-lX11
 PORTDOCS=	*
 
 MAKE_JOBS_UNSAFE=	yes
+
+OPTIONS_DEFINE=	DOCS
 
 post-patch:
 	@${REINPLACE_CMD} 's,/usr,${PREFIX},' \

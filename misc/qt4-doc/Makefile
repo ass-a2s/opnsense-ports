@@ -10,8 +10,10 @@ PKGNAMEPREFIX=	qt4-
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt documentation
 
-USE_QT4=	# empty
-QT_DIST=	yes
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake:no_configure qt-dist:4
 NO_BUILD=	yes
 
 EXTRACT_AFTER_ARGS=	'${DISTNAME}/doc'

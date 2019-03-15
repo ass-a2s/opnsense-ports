@@ -4,9 +4,9 @@
 #
 # Feature:		cmake
 # Usage:		USES=cmake or USES=cmake:ARGS
-# Valid ARGS:		outsource, run, noninja
+# Valid ARGS:		insource, run, noninja
 # ARGS description:
-# outsource		perform an out-of-source build
+# insource		do not perform an out-of-source build
 # noninja		don't use ninja instead of make
 #			Setting this should be an exception, and hints to an issue
 #			inside the ports build system.
@@ -25,6 +25,8 @@
 #			Default: not set, unless BATCH or PACKAGE_BUILDING is defined
 #
 # Variables for ports:
+# CMAKE_ON		Appends -D<var>:bool=ON  to the CMAKE_ARGS,
+# CMAKE_OFF		Appends -D<var>:bool=OFF to the CMAKE_ARGS.
 # CMAKE_ARGS		- Arguments passed to cmake
 #			Default: see below
 # CMAKE_BUILD_TYPE	- Type of build (cmake predefined build types).
@@ -44,7 +46,7 @@
 .if !defined(_INCLUDE_USES_CMAKE_MK)
 _INCLUDE_USES_CMAKE_MK=	yes
 
-_valid_ARGS=		outsource run noninja
+_valid_ARGS=		insource run noninja
 
 # Sanity check
 .for arg in ${cmake_ARGS}
@@ -89,6 +91,13 @@ CMAKE_ARGS+=		-DCMAKE_C_COMPILER:STRING="${CC}" \
 			-DCMAKE_INSTALL_RPATH_USE_LINK_PATH=YES \
 			-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 
+# Handle the option-like CMAKE_ON and CMAKE_OFF lists.
+.for _bool_kind in ON OFF
+.  if defined(CMAKE_${_bool_kind})
+CMAKE_ARGS+=		${CMAKE_${_bool_kind}:C/.*/-D&:BOOL=${_bool_kind}/}
+.  endif
+.endfor
+
 CMAKE_INSTALL_PREFIX?=	${PREFIX}
 
 .if defined(BATCH) || defined(PACKAGE_BUILDING)
@@ -102,7 +111,7 @@ CMAKE_ARGS+=		-DCMAKE_COLOR_MAKEFILE:BOOL=OFF
 _CMAKE_MSG=		"===>  Performing in-source build"
 CMAKE_SOURCE_PATH?=	${WRKSRC}
 
-.if ${cmake_ARGS:Moutsource}
+.if empty(cmake_ARGS:Minsource)
 _CMAKE_MSG=		"===>  Performing out-of-source build"
 CONFIGURE_WRKSRC=	${WRKDIR}/.build
 BUILD_WRKSRC?=		${CONFIGURE_WRKSRC}

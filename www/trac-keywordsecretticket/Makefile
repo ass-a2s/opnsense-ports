@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	keywordsecretticket
-PORTVERSION=	1.0.1.${GITDATE}
+PORTVERSION=	1.0.2
 CATEGORIES=	www devel python
 PKGNAMEPREFIX=	trac-
 
@@ -14,13 +14,12 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	tracd:www/trac
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	KKBOX
-GH_PROJECT=	trac-keyword-secret-ticket-plugin
-GH_TAGNAME=	98edea2
-GITDATE=	20130401
+USES=		python:2.7
 
-USES=		python:2
+USE_GITHUB=	yes
+GH_ACCOUNT=	trac-hacks
+GH_PROJECT=	trac-keyword-secret-ticket-plugin
+
 USE_PYTHON=	distutils autoplist
 NO_ARCH=	yes
 

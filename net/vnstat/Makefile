@@ -5,8 +5,8 @@ PORTNAME=	vnstat
 PORTVERSION=	1.15
 PORTREVISION=	0
 CATEGORIES=	net
-MASTER_SITES=	http://humdi.net/vnstat/ \
-		http://mirror.mcx2.org/
+MASTER_SITES=	https://humdi.net/vnstat/ \
+		https://source.ipfire.org/source-2.x/
 
 MAINTAINER=	feld@FreeBSD.org
 COMMENT=	Console-based network traffic monitor
@@ -18,6 +18,8 @@ USE_RC_SUBR=	vnstat
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 GNU_CONFIGURE=	yes
+
+USE_HARDENING=	cfi safestack
 
 USES=	gmake
 USERS=	vnstat

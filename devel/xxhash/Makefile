@@ -5,7 +5,7 @@ PORTVERSION=	0.6.2
 DISTVERSIONPREFIX=	v
 CATEGORIES=	devel
 
-MAINTAINER=	rezny@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extremely fast non-cryptographic hash algorithm
 
 LICENSE=	BSD2CLAUSE
@@ -15,7 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Cyan4973
 GH_PROJECT=	xxHash
 
-USES=		cmake:outsource
+USES=		cmake
 USE_LDCONFIG=	yes
 CMAKE_SOURCE_PATH=	${WRKSRC}/cmake_unofficial
 

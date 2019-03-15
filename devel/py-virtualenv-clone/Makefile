@@ -2,8 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	virtualenv-clone
-PORTVERSION=	0.2.5
-PORTREVISION=	0
+PORTVERSION=	0.4.0
 CATEGORIES=	devel
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -11,8 +10,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Python virtualenv cloning script
 
-# Python3 ready
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
 USES=		python
-USE_PYTHON=	distutils autoplist
+
+NO_ARCH=	yes
+
+USE_PYTHON=	autoplist concurrent distutils
 
 .include <bsd.port.mk>

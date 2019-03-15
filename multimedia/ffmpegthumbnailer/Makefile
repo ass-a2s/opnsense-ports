@@ -3,7 +3,7 @@
 
 PORTNAME=	ffmpegthumbnailer
 PORTVERSION=	2.2.0
-PORTREVISION=	2
+PORTREVISION=	8
 CATEGORIES=	multimedia graphics
 
 MAINTAINER=	clutton@zoho.com
@@ -15,12 +15,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libswscale.so:multimedia/ffmpeg
 
-BROKEN_powerpc64=	fails to compile: moviedecoder.cpp: error: 'to_string' is not a member of 'std'
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	dirkvdb
 
-USES=		cmake:outsource compiler:c++11-lib jpeg localbase pathfix pkgconfig
+USES=		cmake compiler:c++11-lib jpeg localbase pathfix pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 

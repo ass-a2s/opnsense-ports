@@ -4,13 +4,15 @@
     COMMENT = Shells
 
     SUBDIR += 44bsd-csh
-    SUBDIR += ambit
+    SUBDIR += ammonite
     SUBDIR += bash
     SUBDIR += bash-completion
     SUBDIR += bash-static
     SUBDIR += bashc
+    SUBDIR += bicon
     SUBDIR += ch
     SUBDIR += dash
+    SUBDIR += envy
     SUBDIR += es
     SUBDIR += esh
     SUBDIR += fd
@@ -22,9 +24,11 @@
     SUBDIR += jailkit
     SUBDIR += klish
     SUBDIR += ksh93
+    SUBDIR += ksh93-devel
     SUBDIR += lshell
     SUBDIR += mksh
     SUBDIR += nologinmsg
+    SUBDIR += oksh
     SUBDIR += osh
     SUBDIR += p5-Bash-Completion
     SUBDIR += p5-Shell-Perl
@@ -45,7 +49,10 @@
     SUBDIR += viewglob
     SUBDIR += vshnu
     SUBDIR += wcd
+    SUBDIR += xonsh
     SUBDIR += zsh
+    SUBDIR += zsh-antigen
+    SUBDIR += zsh-completions
     SUBDIR += zsh-navigation-tools
 
 .include <bsd.port.subdir.mk>

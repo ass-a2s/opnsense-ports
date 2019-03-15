@@ -2,14 +2,14 @@
 # $FreeBSD$
 
 PORTNAME=	gobject
-PORTVERSION=	3.18.2
+PORTVERSION=	3.28.3
 PORTREVISION=	0
 CATEGORIES=	devel python
 MASTER_SITES=	GNOME/sources/pygobject/${PORTVERSION:C/^([0-9]+\.[0-9]+).*/\1/}
 PKGNAMEPREFIX?=	py
 PKGNAMESUFFIX?=	3-common
 DISTNAME=	pygobject-${PORTVERSION}
-DIST_SUBDIR=	gnome3
+DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Common files for the Python bindings for GObject
@@ -36,7 +36,7 @@ MAKE_ARGS=	PYTHON_VERSION=${PYTHON_VER}
 .if ${SLAVE_PORT} == no
 PORTSCOUT?=	limitw:1,even
 
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR}
 USES+=		gnome python:build
 USE_GNOME=	glib20:build introspection:build
 NO_BUILD=	yes
@@ -50,21 +50,16 @@ do-install:
 .else
 PORTSCOUT=	ignore:1
 
-USES+=		gnome
-USE_GNOME+=	glib20 introspection
+USES+=		gettext-runtime gnome
+USE_GNOME+=	cairo glib20 introspection
 LIB_DEPENDS+=	libffi.so:devel/libffi
 RUN_DEPENDS+=	pygobject3-common>=0:devel/pygobject3-common
 
-.if ${SLAVE_PORT} == python2
-USES+=		python:2
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/pycairo.pc:graphics/py-cairo
-.endif
-
-.if ${SLAVE_PORT} == python3
-USES+=		python:3
-BUILD_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/py3cairo.pc:graphics/py3-cairo
-RUN_DEPENDS+=	${LOCALBASE}/libdata/pkgconfig/py3cairo.pc:graphics/py3-cairo
+.if ${SLAVE_PORT} == python
+USES+=		python
+USE_PYTHON=	flavors py3kplist
+BUILD_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR}
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}cairo>=0:graphics/py-cairo@${PY_FLAVOR}
 .endif
 
 post-install:

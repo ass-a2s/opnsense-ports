@@ -2,7 +2,7 @@
 
 PORTNAME=	byteorder
 PORTVERSION=	1.0.4
-PORTREVISION=	8
+PORTREVISION=	12
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

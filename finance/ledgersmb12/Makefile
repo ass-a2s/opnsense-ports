@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	ledgersmb
-PORTVERSION=	1.2.17
-PORTREVISION=	2
+PORTVERSION=	1.2.26
+PORTREVISION=	1
 CATEGORIES=	finance perl5
-MASTER_SITES=	SF/ledger-smb/Releases/archive-1.2/${PORTVERSION}
+MASTER_SITES=	http://download.ledgersmb.org/f/Releases/archive-1.2/${PORTVERSION}/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Double entry accounting system

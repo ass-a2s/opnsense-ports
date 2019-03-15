@@ -9,13 +9,15 @@ MASTER_SITES=	http://silicone.homelinux.org/release/netsed/
 MAINTAINER=	koue@chaosophia.net
 COMMENT=	Alters the contents of network packets in real time
 
-EXPLICIT_SAFESTACK=		yes
+USE_HARDENING=	safestack
 
 USES=		gmake
 MAKE_ARGS=	CFLAGS="${CFLAGS}"
 
 PLIST_FILES=	bin/${PORTNAME}
 PORTDOCS=	README
+
+OPTIONS_DEFINE=	DOCS
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin

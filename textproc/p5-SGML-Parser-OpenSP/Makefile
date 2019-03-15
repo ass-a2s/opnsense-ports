@@ -13,13 +13,13 @@ COMMENT=	Parse SGML documents using OpenSP
 
 # The port's README says the port "is licensed under the same terms as Perl
 # itself".
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	onsgmls:textproc/opensp \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	onsgmls:textproc/opensp \
 		p5-Class-Accessor>=0:devel/p5-Class-Accessor \
 		p5-Test-Exception>=0:devel/p5-Test-Exception
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 USES=		dos2unix perl5
 USE_PERL5=	configure

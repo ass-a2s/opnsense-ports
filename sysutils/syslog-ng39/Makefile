@@ -3,37 +3,40 @@
 
 PORTNAME=	syslog-ng
 DISTVERSION=	3.9.1
+PORTREVISION=	6
 CATEGORIES=	sysutils
 DISTFILES=	syslog-ng-${DISTVERSION}.tar.gz
 MASTER_SITES=	https://github.com/balabit/syslog-ng/releases/download/syslog-ng-${DISTVERSION}/
+
+.if !defined(MASTERDIR)
 PKGNAMESUFFIX=	39
+.endif
 
 MAINTAINER=	cy@FreeBSD.org
 COMMENT=	Powerful syslogd replacement
 
 LIB_DEPENDS=	libevtlog.so:sysutils/eventlog \
 		libpcre.so:devel/pcre \
-		libuuid.so:misc/e2fsprogs-libuuid \
-		libbson-1.0.so:devel/libbson
+		libuuid.so:misc/e2fsprogs-libuuid
 
-BROKEN_powerpc64=	fails to link: Internal error: Segmentation fault (program ld)
 BROKEN_sparc64=		fails to link: Internal error: Segmentation fault (program ld)
 
 CONFLICTS?=	syslog-ng-[0-9]* syslog-ng[0-9]-[0-9]* \
 		syslog-ng[0-9][0-9]-[0-9]* \
 		syslog-ng[0-9][0-9][0-9]-[0-9]* \
-		syslog-ng-devel-[0-9]*
+		syslog-ng-devel-[0-9]* \
+		syslog-ng-incubator-*
+
 WRKSRC=		${WRKDIR}/${PORTNAME}-${DISTVERSION}
 
 MAKE_JOBS_UNSAFE=	yes
-OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON GEOIP DOCS REDIS JAVA PYTHON MONGO CURL JAVA_MOD
-OPTIONS_DEFAULT=	JSON
+OPTIONS_DEFINE=	TCP_WRAPPERS SQL SPOOF IPV6 SMTP JSON DOCS REDIS JAVA PYTHON MONGO CURL JAVA_MOD
+OPTIONS_DEFAULT=	CURL JSON
 TCP_WRAPPERS_DESC=	Build with TCP Wrappers
 SQL_DESC=		Build with database (libdbi) support
 SPOOF_DESC=		Build with spoof source support
 SMTP_DESC=		Build with SMTP support
 JSON_DESC=		Build with JSON-C support
-GEOIP_DESC=		Build with GeoIP support
 REDIS_DESC=		Build with Redis support
 JAVA_DESC=		Build with Java support (no modules)
 JAVA_MOD_DESC=		Build with Java modules (needs Maven / Internet access)
@@ -64,11 +67,6 @@ SPOOF_CONFIGURE_ENABLE=		spoof-source
 
 IPV6_CONFIGURE_ENABLE=		ipv6
 
-GEOIP_CONFIGURE_ENABLE=		geoip
-GEOIP_LIB_DEPENDS=		libGeoIP.so:net/GeoIP
-GEOIP_CONFIGURE_ENV=		GEOIP_LIBS="-L${LOCALBASE}/lib -lGeoIP"
-GEOIP_PLIST_FILES=		lib/syslog-ng/libgeoip-plugin.so
-
 REDIS_CONFIGURE_ENABLE=		redis
 REDIS_LIB_DEPENDS=		libhiredis.so:databases/hiredis
 REDIS_PLIST_FILES=		lib/syslog-ng/libredis.so
@@ -86,21 +84,22 @@ SQL_PLIST_FILES=		lib/syslog-ng/libafsql.so
 
 MONGO_CONFIGURE_ENABLE=		mongodb
 MONGO_LIB_DEPENDS=		libmongoc-1.0.so:devel/mongo-c-driver
+MONGO_LIB_DEPENDS+=		libbson-1.0.so:devel/libbson
 MONGO_PLIST_FILES=		lib/syslog-ng/libafmongodb.so
 
 JSON_CONFIGURE_ENABLE=		json
 JSON_LIB_DEPENDS=		libjson-c.so:devel/json-c
-JSON_PLIST_FILES= 		lib/syslog-ng/libjson-plugin.so \
+JSON_PLIST_FILES=		lib/syslog-ng/libjson-plugin.so \
 				share/syslog-ng/include/scl/cim/template.conf
 
 JAVA_CONFIGURE_ENABLE=		java
-JAVA_USE_JAVA=			yes
-JAVA_PLIST_FILES= 		lib/syslog-ng/libmod-java.so \
+JAVA_USE=			JAVA=yes
+JAVA_PLIST_FILES=		lib/syslog-ng/libmod-java.so \
 				lib/syslog-ng/java-modules/syslog-ng-core.jar
 
 JAVA_MOD_CONFIGURE_ENABLE=	java-modules
 # JAVA_MOD_BROKEN=		Unsupported maven downloads.
-JAVA_MOD_USE_JAVA=		yes
+JAVA_MOD_USE=			JAVA=yes
 JAVA_MOD_BUILD_DEPENDS=		gradle:devel/gradle \
 				bash:shells/bash
 JAVA_MOD_PLIST_DIRS=		lib/syslog-ng/java-modules/elastic-jest-client
@@ -129,11 +128,11 @@ JAVA_MOD_PLIST_FILES=		lib/syslog-ng/java-modules/log4j-1.2.16.jar \
 PYTHON_CONFIGURE_ENABLE=	python
 PYTHON_CONFIGURE_WITH=		python=2.7
 PYTHON_USES=			python:2.7
-PYTHON_PLIST_FILES= 		lib/syslog-ng/libmod-python.so
+PYTHON_PLIST_FILES=		lib/syslog-ng/libmod-python.so
 
 CURL_CONFIGURE_OFF=		--with-libcurl=off
 CURL_LIB_DEPENDS=		libcurl.so:ftp/curl
-CURL_PLIST_FILES= 		lib/syslog-ng/libcurl.so
+CURL_PLIST_FILES=		lib/syslog-ng/libcurl.so
 
 .include <bsd.port.pre.mk>
 

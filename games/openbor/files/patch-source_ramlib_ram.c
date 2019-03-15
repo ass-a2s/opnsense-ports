@@ -1,6 +1,6 @@
 Implement Linux-like memory stats for BSDs
 
---- source/ramlib/ram.c.orig	2017-04-22 14:20:08 UTC
+--- source/ramlib/ram.c.orig	2018-07-06 15:13:16 UTC
 +++ source/ramlib/ram.c
 @@ -25,6 +25,21 @@
  #include <mach/task.h>
@@ -36,7 +36,7 @@ Implement Linux-like memory stats for BSDs
  static unsigned long elfOffset = 0x00000000;
  static unsigned long stackSize = 0x00000000;
  #endif
-@@ -56,7 +74,10 @@ static unsigned long stackSize = 0x00000
+@@ -56,7 +74,10 @@ static unsigned long stackSize = 0x00000000;
  /////////////////////////////////////////////////////////////////////////////
  // Symbols
  
@@ -48,7 +48,7 @@ Implement Linux-like memory stats for BSDs
  #if (__GNUC__ > 3)
  extern unsigned long _end;
  extern unsigned long _start;
-@@ -93,6 +114,49 @@ u64 getFreeRam(int byte_size)
+@@ -93,6 +114,48 @@ u64 getFreeRam(int byte_size)
          return 0;
      }
      return (u64)(((vms.inactive_count + vms.free_count) * size) / byte_size);
@@ -62,9 +62,8 @@ Implement Linux-like memory stats for BSDs
 +    return (u64)((vms.v_free_count + vms.v_inactive_count
 +                  + vms.v_cache_count) * getpagesize()) / byte_size;
 +#elif defined(__FreeBSD__) || defined(__FreeBSD_kernel__)
-+    u_int v_free_count, v_inactive_count, v_cache_count;
++    u_int v_free_count = 0, v_inactive_count = 0, v_cache_count = 0;
 +    size_t sz = sizeof(u_int);
-+    v_free_count = v_inactive_count = v_cache_count = 0;
 +    sysctlbyname("vm.stats.vm.v_free_count",
 +                 &v_free_count, &sz, NULL, 0);
 +    sysctlbyname("vm.stats.vm.v_inactive_count",
@@ -98,10 +97,10 @@ Implement Linux-like memory stats for BSDs
  #elif LINUX
      struct sysinfo info;
      sysinfo(&info);
-@@ -133,11 +197,29 @@ void setSystemRam()
-     stat.dwLength = sizeof(MEMORYSTATUS);
-     GlobalMemoryStatus(&stat);
-     systemRam = stat.dwTotalPhys;
+@@ -133,11 +196,29 @@ void setSystemRam()
+     stat.dwLength = sizeof(MEMORYSTATUSEX);
+     GlobalMemoryStatusEx(&stat);
+     systemRam = stat.ullTotalPhys;
 -#elif DARWIN
 -    u64 mem;
 -    size_t len = sizeof(mem);
@@ -133,7 +132,7 @@ Implement Linux-like memory stats for BSDs
  #elif LINUX
      struct sysinfo info;
      sysinfo(&info);
-@@ -183,7 +265,10 @@ void setSystemRam()
+@@ -183,7 +264,10 @@ void setSystemRam()
      stackSize = 0x00000000;
      systemRam = getFreeRam(BYTES);
  #endif
@@ -145,7 +144,7 @@ Implement Linux-like memory stats for BSDs
      stackSize = (int)&_end - (int)&_start + ((int)&_start - elfOffset);
  #endif
      getRamStatus(BYTES);
-@@ -212,6 +297,42 @@ u64 getUsedRam(int byte_size)
+@@ -215,6 +299,42 @@ u64 getUsedRam(int byte_size)
          return 0;
      }
      return info.resident_size / byte_size;

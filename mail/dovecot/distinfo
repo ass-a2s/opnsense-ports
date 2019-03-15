@@ -1,3 +1,3 @@
-TIMESTAMP = 1503592198
-SHA256 (dovecot-2.2.32.tar.gz) = 160b2151e2af359877f69cb2dcdfe1a3f4138ad3766e3b8562b96616e2f6bc2e
-SIZE (dovecot-2.2.32.tar.gz) = 6100268
+TIMESTAMP = 1551804380
+SHA256 (dovecot-2.3.5.tar.gz) = bfe112ec6d11f7d6c6f7f0440e3b6e2c840c15cec1e99466b5495765d54aaaff
+SIZE (dovecot-2.3.5.tar.gz) = 6970480

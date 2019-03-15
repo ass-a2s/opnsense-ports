@@ -14,6 +14,7 @@ COMMENT=	Plan9 cpu client
 LICENSE=	MIT
 
 USES=	tar:tgz
+USE_HARDENING=	cfi safestack
 USE_XORG=	x11 xt
 
 PLIST_FILES=	bin/drawterm
@@ -24,13 +25,11 @@ MAKE_ARGS=	CONF=pthread
 
 OPTIONS_DEFINE=	DOCS
 
-NOPIE_PORTS=	yes
-
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/drawterm ${STAGEDIR}${PREFIX}/bin
 
 post-install-DOCS-on:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/README ${WRKSRC}/LICENSE ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${WRKSRC}/LICENSE ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	dbtool
 PORTVERSION=	1.9.1
+PORTREVISION=	1
 CATEGORIES=	databases
 MASTER_SITES=	http://www.daemon.de/idisk/Apps/dbtool/
 
@@ -14,13 +15,10 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libpcre.so:devel/pcre
 
-USES=		gmake shebangfix
+USES=		gmake localbase shebangfix
 SHEBANG_FILES=	samples/account-db/accdb
 bash_OLD_CMD=	/bin/sh
 GNU_CONFIGURE=	yes
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 PORTEXAMPLES=	*
 PLIST_FILES=	bin/dbtool man/man1/dbtool.1.gz

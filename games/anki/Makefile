@@ -2,51 +2,63 @@
 # $FreeBSD$
 
 PORTNAME=	anki
-PORTVERSION=	2.0.36
-PORTREVISION=	2
+DISTVERSION=	2.1.11
 CATEGORIES=	games python
-MASTER_SITES=	http://ankisrs.net/download/mirror/
+MASTER_SITES=	https://apps.ankiweb.net/downloads/current/
+DISTNAME=	anki-${PORTVERSION}-source
 DIST_SUBDIR=	python
 
-MAINTAINER=	trebbu@googlemail.com
+MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Flashcard trainer with spaced repetition
 
 LICENSE=	AGPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	lame:audio/lame \
-		mplayer:multimedia/mplayer \
-		${PYTHON_PKGNAMEPREFIX}pyaudio>0:audio/py-pyaudio \
-		${PYTHON_PKGNAMEPREFIX}sqlalchemy10>0:databases/py-sqlalchemy10 \
-		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3 \
-		${PYTHON_PKGNAMEPREFIX}beautifulsoup32>=0:www/py-beautifulsoup32 \
-		${PYTHON_PKGNAMEPREFIX}httplib2>0:www/py-httplib2 \
-		${PYTHON_PKGNAMEPREFIX}send2trash>0:deskutils/py-send2trash
+BROKEN=		Depends on www/py-qt5-webengine that is still broken
 
-USES=		desktop-file-utils pyqt:4 python:2 shared-mime-info shebangfix tar:tgz
-SHEBANG_FILES=	tools/build_ui.sh tools/tests.sh
-USE_PYQT=	network_run webkit_run
-USE_QT4=	network_run webkit_run
-OPTIONS_DEFINE=	NLS
-OPTIONS_SUB=	yes
-NLS_USES=	gettext-runtime gettext-tools
+RUN_DEPENDS=	lame:audio/lame \
+		${PYTHON_PKGNAMEPREFIX}pyaudio>0:audio/py-pyaudio@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sqlite3>0:databases/py-sqlite3@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}decorator>0:devel/py-decorator@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}send2trash>0:deskutils/py-send2trash@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}markdown>0:textproc/py-markdown@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}beautifulsoup>0:www/py-beautifulsoup@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}requests>0:www/py-requests@${PY_FLAVOR}
+
+USES=		desktop-file-utils pyqt:5 python:3.6+ shebangfix tar:tgz
+USE_PYQT=	core_run gui_run printsupport_run sip_run webengine_run widgets_run
 
 NO_ARCH=	yes
+SHEBANG_FILES=	tools/runanki.system.in
+WRKSRC=		${WRKDIR}/anki-${PORTVERSION}
+
+OPTIONS_DEFINE=		NLS
+OPTIONS_DEFAULT=	MPV
+OPTIONS_GROUP=		PLAYER
+OPTIONS_GROUP_PLAYER=	MPLAYER MPV
+OPTIONS_SUB=		yes
+
+MPV_DESC=	mpv media player support
+
+MPLAYER_RUN_DEPENDS=	mplayer:multimedia/mplayer
+MPV_RUN_DEPENDS=	mpv:multimedia/mpv
+
+NLS_USES=	gettext-runtime gettext-tools
 
 post-patch:
-	@${REINPLACE_CMD} -e 's|/usr/bin/env python|${PYTHON_CMD}|; \
-		s|/usr/share/anki|${DATADIR}|' \
-		${WRKSRC}/runanki
-	@${REINPLACE_CMD} -e \
-		's|/usr/share/anki/locale|${PREFIX}/share/locale|' \
+	@${REINPLACE_CMD} -i '' \
+		's|%%PREFIX%%|${PREFIX}|' \
 		${WRKSRC}/anki/lang.py
 
 post-patch-NLS-off:
-	@${REINPLACE_CMD} -i '' '/mkdir -p qt-locale/,/cp -av locale/s/^/#/' \
+	@${REINPLACE_CMD} -i '' '/locale/s/^/#/' \
 		${WRKSRC}/Makefile
 
 do-build:
 	@${PYTHON_CMD} -m compileall ${WRKSRC}
 	@${PYTHON_CMD} -O -m compileall ${WRKSRC}
+
+post-install:
+	${INSTALL_SCRIPT} ${WRKSRC}/tools/runanki.system ${STAGEDIR}${PREFIX}/bin/anki
 
 .include <bsd.port.mk>

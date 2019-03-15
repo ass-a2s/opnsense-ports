@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pkg-rmleaf
-PORTVERSION=	0.3
+PORTVERSION=	0.4
 CATEGORIES=	ports-mgmt
 MASTER_SITES=	# none
 DISTFILES=	# none
@@ -13,7 +13,7 @@ COMMENT=	Remove leaf packages
 LICENSE=	BSD2CLAUSE
 
 NO_BUILD=	yes
-WRKSRC=		${WRKDIR}
+NO_WRKSUBDIR=	yes
 
 PLIST_FILES=	sbin/pkg-rmleaf
 

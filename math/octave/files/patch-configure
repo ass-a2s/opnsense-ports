@@ -1,16 +1,16 @@
---- configure.orig	2014-01-21 15:52:33.000000000 -0700
-+++ configure	2014-01-21 15:54:59.000000000 -0700
-@@ -68380,6 +68380,13 @@
+--- configure.orig	2019-03-10 01:37:34 UTC
++++ configure
+@@ -78809,6 +78809,13 @@ $as_echo_n "checking for include file <jni.h>... " >&6
+         JAVA_CPPFLAGS="-I${JAVA_HOME}/include -I${JAVA_HOME}/include/darwin"
        fi
-       JAVA_LIBS="-framework JavaVM"
      ;;
 +    freebsd*)
 +      if test -n "$JAVA_CPPFLAGS"; then
-+        JAVA_CPPFLAGS="-I${JAVA_CPPFLAGS}/include -I${JAVA_CPPFLAGS}/include/freebsd"
++        JAVA_CPPFLAGS="-I${JAVA_CPPFLAGS} -I${JAVA_CPPFLAGS}/freebsd"
 +      else
 +        JAVA_CPPFLAGS="-I${JAVA_HOME}/include -I${JAVA_HOME}/include/freebsd"
 +      fi
 +    ;;
      *)
        if test -n "$JAVA_CPPFLAGS"; then
-         JAVA_CPPFLAGS="-I${JAVA_CPPFLAGS}/include -I${JAVA_CPPFLAGS}/include/linux"
+         JAVA_CPPFLAGS="-I${JAVA_CPPFLAGS} -I${JAVA_CPPFLAGS}/linux"

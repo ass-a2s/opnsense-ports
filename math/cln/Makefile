@@ -3,6 +3,7 @@
 
 PORTNAME=	cln
 PORTVERSION=	1.3.4
+PORTREVISION=	1
 CATEGORIES=	math devel
 MASTER_SITES=	http://www.ginac.de/CLN/ \
 		http://www.mirrors.wiretapped.net/security/cryptography/libraries/math/cln/ \
@@ -21,12 +22,13 @@ USE_LDCONFIG=	yes
 
 INFO=		cln
 
-BROKEN_aarch64=	Fails to compile: error: declaration of divu_64_rest in global scope conflicts with declaration with C language linkage
-
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == aarch64 || ${ARCH} == armv6
+.if ${ARCH} == aarch64 || ${ARCH} == armv6 || ${ARCH} == armv7
 CPPFLAGS+=	-DNO_ASM
+EXTRA_PATCHES+=	${PATCHDIR}/extra-patch-src_base_cl__low.h \
+		${PATCHDIR}/extra-patch-src_base_low_cl__low__div.cc \
+		${PATCHDIR}/extra-patch-src_base_low_cl__low__mul.cc
 .endif
 
 .include <bsd.port.post.mk>

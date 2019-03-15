@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	foreach
-PORTVERSION=	1.4.3
+PORTVERSION=	1.4.4
+PORTREVISION=	1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
@@ -11,7 +12,9 @@ COMMENT=	Foreach looping construct for R
 
 LICENSE=	APACHE20
 
-RUN_DEPENDS=	R-cran-iterators>=1.0.0:devel/R-cran-iterators
+CRAN_DEPENDS=	R-cran-iterators>=1.0.0:devel/R-cran-iterators
+BUILD_DEPENDS=	${CRAN_DEPENDS}
+RUN_DEPENDS=	${CRAN_DEPENDS}
 
 USES=	cran:auto-plist
 

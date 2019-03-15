@@ -3,7 +3,7 @@
 
 PORTNAME=	gmerlin
 PORTVERSION=	1.2.0
-PORTREVISION=	12
+PORTREVISION=	14
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
@@ -17,6 +17,8 @@ LIB_DEPENDS=	libexif.so:graphics/libexif \
 		libgavl.so:multimedia/gavl \
 		libfontconfig.so:x11-fonts/fontconfig
 
+USE_HARDENING=	pie:off relro:off
+
 USES=		gettext libtool makeinfo pathfix pkgconfig sqlite
 USE_GNOME=	gtk20 libxml2
 USE_XORG=	x11 xext xfixes xinerama xv
@@ -24,8 +26,10 @@ USE_GL=		gl
 GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	ac_cv_func_inotify_init=no
 CONFIGURE_ARGS=	--disable-v4l --disable-v4l2 --disable-v4lconvert \
-		--without-doxygen --with-cpuflags=none --disable-musicbrainz
+		--without-doxygen --with-cpuflags=none --disable-musicbrainz \
+		--disable-esd
 USE_LDCONFIG=	yes
+LLD_UNSAFE=	yes
 INSTALL_TARGET=	install-strip
 INSTALL_ICONS=	yes
 
@@ -33,12 +37,9 @@ CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
 LDFLAGS+=	-Wl,--add-needed
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
-
 INFO=		gmerlin
 
-OPTIONS_DEFINE= 	ALSA CDDB CDIO ESOUND JACK JPEG LIBVISUAL \
+OPTIONS_DEFINE=		ALSA CDDB CDIO JACK JPEG LIBVISUAL \
 			OPTIMIZED_CFLAGS PNG PULSEAUDIO QUICKTIME TIFF DOCS
 OPTIONS_DEFAULT=	CDDB JACK JPEG LIBVISUAL \
 			OPTIMIZED_CFLAGS PNG PULSEAUDIO QUICKTIME TIFF
@@ -48,11 +49,9 @@ ALSA_LIB_DEPENDS=	libasound.so:audio/alsa-lib
 ALSA_CONFIGURE_OFF=	--disable-alsa --disable-alsamixer
 CDDB_LIB_DEPENDS=	libcddb.so:audio/libcddb
 CDDB_CONFIGURE_OFF=	--disable-cddb
-CDIO_LIB_DEPENDS=	libcdio.so:sysutils/libcdio
+CDIO_LIB_DEPENDS=	libcdio.so:sysutils/libcdio \
+			libcdio_cdda.so:sysutils/libcdio-paranoia
 CDIO_CONFIGURE_OFF=	--disable-libcdio
-CDIO_BROKEN=		fails to build with new libcdio
-ESOUND_USE=		gnome=esound
-ESOUND_CONFIGURE_OFF=	--disable-esd
 JACK_LIB_DEPENDS=	libjack.so:audio/jack
 JACK_CONFIGURE_OFF=	--disable-jack
 JPEG_USES=		jpeg

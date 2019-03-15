@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	mygui
-PORTVERSION=	3.2.2
-DISTVERSIONPREFIX=	MyGUI
-PORTREVISION?=	2
+PORTVERSION=	3.2.3.git20171212
+PORTREVISION=	2
 CATEGORIES=	x11-toolkits graphics devel
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -12,8 +11,6 @@ COMMENT?=	Fast, simple and flexible GUI system for games and 3D applications
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING.MIT
-
-BROKEN_powerpc64=	Does not build
 
 .if !defined(MASTERDIR)
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
@@ -27,18 +24,16 @@ INSTALL_WRKSRC=	${WRKSRC}/${MYGUI_SUBDIR}
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	MyGUI
+GH_TAGNAME=	b1e4bc8
 
 MYGUI_RENDERSYSTEM?=	0
 
-USES=		cmake compiler:c++11-lib pkgconfig
+USES=		cmake:insource compiler:c++11-lib pkgconfig
 CMAKE_ARGS=	-DMYGUI_BUILD_DEMOS=FALSE \
 		-DMYGUI_BUILD_TOOLS=FALSE \
 		-DMYGUI_BUILD_DOCS=FALSE \
 		-DMYGUI_RENDERSYSTEM=${MYGUI_RENDERSYSTEM}
 USE_LDCONFIG=	yes
-
-USE_CXXSTD=	c++11
-CXXFLAGS+=	-fPIC
 
 PLIST=		${.CURDIR}/pkg-plist
 

@@ -2,7 +2,7 @@
 
 PORTNAME=	cvs
 PORTVERSION=	1.20120905
-PORTREVISION?=	4
+PORTREVISION?=	6
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/eadler
 
@@ -24,7 +24,8 @@ IPV6_PATCH_SITES=	ftp://ftp.kame.net/pub/kame/misc/
 IPV6_PATCHFILES=	${DISTNAME}-v6-20140105.diff.gz:-p1
 KERBEROS_MAKE_ARGS=	KERBEROS_SUPPORT=yes
 
-USES=		makeinfo shebangfix tar:xz uidfix
+USES=		cpe makeinfo shebangfix tar:xz uidfix
+CPE_VENDOR=	gnu
 SHEBANG_FILES=	contrib/clmerge contrib/cln_hist \
 		contrib/commit_prep contrib/cvs_acls \
 		contrib/easy-import contrib/log \
@@ -38,6 +39,8 @@ INFO=		cvs cvsclient
 DESTDIRNAME=	NADA
 MAKE_ARGS=	DESTDIR=${STAGEDIR}${PREFIX}
 
+post-patch:
+	@${REINPLACE_CMD} -e "s,/info/,/${INFO_PATH}/,g" ${WRKSRC}/Makefile.inc
 pre-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}/contrib
 

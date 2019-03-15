@@ -11,8 +11,9 @@ DIST_SUBDIR=	${PORTNAME}
 MAINTAINER=	lme@FreeBSD.org
 COMMENT=	Port of "Jagged Alliance 2" using SDL
 
+BROKEN=		fails to build
 # Ignore this if you feel adventurous
-ONLY_FOR_ARCHS=		amd64 arm i386
+ONLY_FOR_ARCHS=		aarch64 amd64 arm armv6 armv7 i386
 ONLY_FOR_ARCHS_REASON=	Needs a little endian environment
 
 NO_CDROM=	License only permits non-commerical use

@@ -1,19 +1,23 @@
-# Created by: Li-Wen Hsu <lwhsu@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	pybloom
-PORTVERSION=	1.1
-PORTREVISION=	1
+PORTVERSION=	3.0.0
+DISTVERSIONPREFIX=	v
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Probabilistic data structure
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bitarray>0:devel/py-bitarray
+LICENSE=	MIT
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}bitarray>0:devel/py-bitarray@${PY_FLAVOR}
 
 USES=		python
 USE_PYTHON=	distutils autoplist
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	joseph-fox
+GH_PROJECT=	python-bloomfilter
 
 .include <bsd.port.mk>

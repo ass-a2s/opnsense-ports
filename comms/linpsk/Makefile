@@ -9,11 +9,14 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Simple Qt PSK31, RTTY, and MSK31 client
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 LIB_DEPENDS=	libfftw3.so:math/fftw3 \
 		libasound.so:audio/alsa-lib
 
-USES=		qmake tar:tgz
-USE_QT4=	gui network corelib moc_build uic_build rcc_build qmake_build
+USES=		qmake qt:4 tar:tgz
+USE_QT=		gui network corelib moc_build uic_build rcc_build qmake_build
 DESKTOP_ENTRIES="LinPsk" "${COMMENT}" \
 		"${DATADIR}/linpsk.png" "linpsk" "Audio;HamRadio;" \
 		false

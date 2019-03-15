@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	openxpki
-PORTVERSION=	1.16.2
+PORTVERSION=	2.2.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	security perl5
 PKGNAMEPREFIX=	p5-
@@ -11,13 +11,17 @@ MAINTAINER=	svysh.fbsd@gmail.com
 COMMENT=	Perl based trustcenter for PKI: universal server building block
 
 LICENSE=	APACHE20
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	bash:shells/bash \
+BROKEN_SSL=	openssl111
+
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	bash:shells/bash \
 		openca-tools-forked>=1.4.0:security/openca-tools-forked \
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip \
+		p5-CGI>=4.21:www/p5-CGI \
 		p5-CGI-Fast>=2.10:www/p5-CGI-Fast \
 		p5-CGI-Session>=0:www/p5-CGI-Session \
-		p5-CGI>=4.21:www/p5-CGI \
 		p5-Class-Accessor-Chained>=0:devel/p5-Class-Accessor-Chained \
 		p5-Class-Std>=0:devel/p5-Class-Std \
 		p5-Config-GitLike>=0:devel/p5-Config-GitLike \
@@ -29,6 +33,8 @@ BUILD_DEPENDS=	bash:shells/bash \
 		p5-Crypt-PKCS10>=1.3:security/p5-Crypt-PKCS10 \
 		p5-Crypt-SMIME>=0:security/p5-Crypt-SMIME \
 		p5-Crypt-SSLeay>=0:security/p5-Crypt-SSLeay \
+		p5-Crypt-X509>=0:security/p5-Crypt-X509 \
+		p5-Crypt-X509-CRL>=0.1:security/p5-Crypt-X509-CRL \
 		p5-DBD-Mock>=0:databases/p5-DBD-Mock \
 		p5-DBIx-Handler>=0:databases/p5-DBIx-Handler \
 		p5-Data-Password>=0:security/p5-Data-Password \
@@ -42,6 +48,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 		p5-LWP-Protocol-connect>=0:www/p5-LWP-Protocol-connect \
 		p5-LWP-Protocol-https>=0:www/p5-LWP-Protocol-https \
 		p5-Locale-libintl>=0:devel/p5-Locale-libintl \
+		p5-Log-Log4perl-Layout-JSON>=0:devel/p5-Log-Log4perl-Layout-JSON \
 		p5-Mail-RFC822-Address>=0:mail/p5-Mail-RFC822-Address \
 		p5-Moose>=0:devel/p5-Moose \
 		p5-MooseX-Params-Validate>=0:devel/p5-MooseX-Params-Validate \
@@ -50,6 +57,7 @@ BUILD_DEPENDS=	bash:shells/bash \
 		p5-Net-Server>=0:net/p5-Net-Server \
 		p5-NetAddr-IP>=0:net-mgmt/p5-NetAddr-IP \
 		p5-Path-Class>=0:devel/p5-Path-Class \
+		p5-Proc-Daemon>=0:devel/p5-Proc-Daemon \
 		p5-Proc-ProcessTable>=0:devel/p5-Proc-ProcessTable \
 		p5-Proc-SafeExec>=0:devel/p5-Proc-SafeExec \
 		p5-RT-Client-REST>=0:www/p5-RT-Client-REST \
@@ -68,18 +76,17 @@ BUILD_DEPENDS=	bash:shells/bash \
 		p5-XML-Filter-XInclude>=0:textproc/p5-XML-Filter-XInclude \
 		p5-XML-SAX-Writer>=0:textproc/p5-XML-SAX-Writer \
 		p5-XML-Validator-Schema>=0:textproc/p5-XML-Validator-Schema \
-		p5-openxpki-i18n>=0.20.0.1:security/p5-openxpki-i18n \
+		p5-openxpki-i18n>=2.0.3:security/p5-openxpki-i18n \
 		p5-perl-ldap>=0:net/p5-perl-ldap
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 CONFLICTS=	p5-openxpki-client-[0-9]* \
 		p5-openxpki-client-scep-[0-9]* \
 		p5-openxpki-client-deployment-[0-9]* \
 		p5-openxpki-client-html-mason-[0-9]*
 
+USES=		gmake perl5 ssl
 USE_GITHUB=	yes
 USE_PERL5=	configure
-USES=		gmake perl5 ssl
 USE_RC_SUBR=	openxpki
 SUB_FILES=	pkg-message
 PORTDOCS=	*

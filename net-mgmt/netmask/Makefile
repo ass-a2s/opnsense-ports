@@ -3,7 +3,7 @@
 
 PORTNAME=	netmask
 PORTVERSION=	2.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://trap.mtview.ca.us/~talby/
 DISTNAME=	netmask_${PORTVERSION}
@@ -11,11 +11,11 @@ DISTNAME=	netmask_${PORTVERSION}
 MAINTAINER=	mike@urgle.com
 COMMENT=	Tool for generating terse netmasks in several common formats
 
+USE_HARDENING=	pie:off
+
 WRKSRC=		${WRKDIR}/${DISTNAME:S/_/-/}
 GNU_CONFIGURE=	yes
 USES=		gmake
-
-NOPIE_PORTS=	yes
 
 INFO=		netmask
 PLIST_FILES=	bin/netmask \

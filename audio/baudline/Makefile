@@ -28,6 +28,7 @@ OPTIONS_DEFAULT=	MPG123
 
 MMPG123_RUN_DEPENDS=	mpg123:audio/mpg123
 
+.include <bsd.port.pre.mk>
 .if !exists(${DISTDIR}/${DISTNAME}${EXTRACT_SUFX}) && !defined(PACKAGE_BUILDING)
 IGNORE=		may not be automatically fetched due to licensing\
 		restrictions. You must manually fetch ${DISTFILES} from\
@@ -40,9 +41,10 @@ do-build:
 	${BRANDELF} -t Linux ${WRKSRC}/baudline
 
 do-install:
-	@${INSTALL_PROGRAM} ${WRKSRC}/baudline ${STAGEDIR}${PREFIX}/bin
-do-install-DOCS-on:
-	@${INSTALL} -d ${STAGEDIR}${DOCSDIR}
-	@cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
+	${INSTALL_PROGRAM} ${WRKSRC}/baudline ${STAGEDIR}${PREFIX}/bin
 
-.include <bsd.port.mk>
+do-install-DOCS-on:
+	@${MKDIR} ${STAGEDIR}${DOCSDIR}
+	cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR}/
+
+.include <bsd.port.post.mk>

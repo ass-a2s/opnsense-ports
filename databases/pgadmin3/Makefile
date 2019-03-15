@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pgadmin3
-PORTVERSION=	1.22.1
-PORTREVISION=	4
+PORTVERSION=	1.22.2
+PORTREVISION=	2
 CATEGORIES=	databases
-MASTER_SITES=	PGSQL/pgadmin3/release/v${PORTVERSION}/src
+MASTER_SITES=	PGSQL/pgadmin/pgadmin3/v${PORTVERSION}/src
 DIST_SUBDIR=	postgresql
 
 MAINTAINER=	fjoe@FreeBSD.org
@@ -15,16 +15,17 @@ LICENSE=	PostgreSQL
 
 BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 
-USES=		compiler:c++11-lib gettext gmake pgsql:9.0+
-GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-wx-version=${USE_WX} --enable-databasedesigner
-CXXFLAGS=	-Wno-c++11-narrowing
+USES=		compiler:c++11-lib gettext gmake pgsql:9.0+ ssl
 USE_GNOME=	libxml2 libxslt
 USE_WX=		3.0
 USE_CXXSTD=	c++11
+
 WX_COMPS=	wx
 INSTALLS_ICONS=	yes
 ICON_SIZES=	16 32
+GNU_CONFIGURE=	yes
+CONFIGURE_ARGS=	--with-wx-version=${USE_WX} --enable-databasedesigner
+CXXFLAGS+=	-Wno-c++11-narrowing
 
 PLIST_FILES=	bin/pgadmin3 share/applications/pgadmin3.desktop
 .for SZ in ${ICON_SIZES}
@@ -34,7 +35,7 @@ PORTDATA=	*
 
 post-patch:
 	@${REINPLACE_CMD} -e 's,/wx-config,/${WX_CONFIG:T},' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e 's,wxrc,wxrc-gtk2u-${WX_VERSION},' ${WRKSRC}/pgadmin/ui/embed-xrc
+	@${REINPLACE_CMD} -e 's,wxrc ,${WXRC_CMD:T} ,' ${WRKSRC}/pgadmin/ui/embed-xrc
 	@${REINPLACE_CMD} -e 's,/usr/bin/xterm,${LOCALBASE}/bin/xterm,' ${WRKSRC}/plugins.d/plugins.ini
 	@${REINPLACE_CMD} -e 's,/bin/bash,/bin/sh,' ${WRKSRC}/pgadmin/ver_svn.sh
 	@${REINPLACE_CMD} -e 's,Exec=/usr/bin/pgadmin3,Exec=${LOCALBASE}/bin/pgadmin3,'\

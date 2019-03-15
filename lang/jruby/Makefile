@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	jruby
-PORTVERSION=	9.1.10.0
+PORTVERSION=	9.2.5.0
 DISTVERSIONPREFIX=	bin-
 CATEGORIES=	lang ruby java
 MASTER_SITES=	http://jruby.org.s3.amazonaws.com/downloads/${PORTVERSION}/
@@ -16,9 +16,10 @@ LICENSE_COMB=	dual
 RUN_DEPENDS=	bash:shells/bash
 
 USES=		cpe
-NO_BUILD=	yes
 USE_JAVA=	yes
+
 JAVA_VERSION=	1.8+
+NO_BUILD=	yes
 
 JRUBY_HOME?=	${PREFIX}/share/${PORTNAME}
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
@@ -54,13 +55,13 @@ post-patch:
 	@${REINPLACE_CMD} -i "" ${REPLACE_LIST_TEMP} ${WRKSRC}/bin/jruby
 
 do-install:
-	${MKDIR} ${STAGEDIR}${JRUBY_HOME}/bin
-	${MKDIR} ${STAGEDIR}${JRUBY_HOME}/lib
+	${MKDIR} ${STAGEDIR}${JRUBY_HOME}/bin ${STAGEDIR}${JRUBY_HOME}/lib
 	(cd ${WRKSRC}/bin && ${COPYTREE_BIN} . ${STAGEDIR}${JRUBY_HOME}/bin/)
 	(cd ${WRKSRC}/lib && ${COPYTREE_SHARE} . ${STAGEDIR}${JRUBY_HOME}/lib)
 .for f in jruby jirb jgem
-	${LN} -sf ${JRUBY_HOME}/bin/${f} ${STAGEDIR}${PREFIX}/bin/${f}
+	${RLN} ${STAGEDIR}${JRUBY_HOME}/bin/${f} ${STAGEDIR}${PREFIX}/bin/${f}
 .endfor
+	${RLN} ${STAGEDIR}${JRUBY_HOME}/bin/rake ${STAGEDIR}${PREFIX}/bin/jrake
 	${FIND} ${STAGEDIR}${JRUBY_HOME}/lib/jni/x86_64-FreeBSD -type f -name '*\.so' -exec ${STRIP_CMD} {} \;
 
 do-install-EXAMPLES-on:

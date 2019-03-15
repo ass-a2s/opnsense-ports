@@ -2,22 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	azpainter
-PORTVERSION=	2.1.0
+PORTVERSION=	2.1.3
+PORTREVISION=	1
 CATEGORIES=	graphics
-MASTER_SITES=	http://aarnet.dl.osdn.jp/azpainter/68231/ \
-		http://acc.dl.osdn.jp/azpainter/68231/ \
-		http://c3sl.dl.osdn.jp/azpainter/68231/ \
-		http://cznic.dl.osdn.jp/azpainter/68231/ \
-		http://gigenet.dl.osdn.jp/azpainter/68231/ \
-		http://iij.dl.osdn.jp/azpainter/68231/ \
-		http://jaist.dl.osdn.jp/azpainter/68231/ \
-		http://master.dl.osdn.jp/azpainter/68231/ \
-		http://nchc.dl.osdn.jp/azpainter/68231/ \
-		http://onet.dl.osdn.jp/azpainter/68231/ \
-		http://osdn.dl.osdn.jp/azpainter/68231/ \
-		http://pumath.dl.osdn.jp/azpainter/68231/ \
-		http://rwthaachen.dl.osdn.jp/azpainter/68231/ \
-		http://ymu.dl.osdn.jp/azpainter/68231/
+MASTER_SITES=	OSDN/${PORTNAME}/70132
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	16-bit RGB full color painting application
@@ -28,9 +16,8 @@ LIB_DEPENDS=	libfontconfig.so:x11-fonts/fontconfig \
 		libfreetype.so:print/freetype2 \
 		libpng.so:graphics/png
 
-BROKEN_powerpc64=	fails to build: mListDef.h: redefinition of typedef 'mList'
-
-USES=		desktop-file-utils jpeg localbase shared-mime-info tar:xz
+USES=		compiler:c11 desktop-file-utils jpeg localbase \
+		shared-mime-info tar:xz
 USE_XORG=	x11 xext xi
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-freetype-dir=${LOCALBASE}/include/freetype2
@@ -46,7 +33,7 @@ post-patch-NLS-off:
 
 pre-build-NLS-on:
 	cd ${WRKSRC}/translation && ${CC} ${CFLAGS} -o mtrconv mtrconv.c
-.for lang in en ru uk
+.for lang in be ru zh_CN
 	cd ${WRKSRC}/translation && ./mtrconv ${lang} ../data/tr/${lang}.mtr
 .endfor
 

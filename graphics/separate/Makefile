@@ -6,7 +6,7 @@ PORTVERSION=	0.5.8
 PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	graphics
-MASTER_SITES=	SFJP/separate-plus/47873
+MASTER_SITES=	OSDN/separate-plus/47873
 DISTNAME=	${PORTNAME}+-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
@@ -19,7 +19,9 @@ BUILD_DEPENDS=	gccmakedep:devel/gccmakedep
 LIB_DEPENDS=	liblcms.so.1:graphics/lcms \
 		libgimp-2.0.so:graphics/gimp-app
 
-USES=		gettext-tools gmake pkgconfig zip
+USE_HARDENING=	safestack
+
+USES=		compiler:c++11-lang gettext-tools gmake pkgconfig zip
 
 BIN_TARGETS=	separate separate_import icc_colorspace
 L10N_TARGETS=	cs es fr ja ko pl ru
@@ -38,8 +40,6 @@ MAKE_ENV=	TARGETS="${BIN_TARGETS}" \
 		PREFIX=${STAGEDIR}${PREFIX}
 
 OPTIONS_DEFINE=	DOCS EXAMPLES
-
-EXPLICIT_SAFESTACK=	yes
 
 post-patch:
 	@${REINPLACE_CMD} \

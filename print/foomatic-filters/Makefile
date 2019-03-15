@@ -10,8 +10,6 @@ MASTER_SITES=	http://www.openprinting.org/download/foomatic/
 MAINTAINER=	jrm@FreeBSD.org
 COMMENT=	Foomatic wrapper scripts
 
-EXPLICIT_SAFESTACK=		yes
-
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -33,6 +31,8 @@ CONFIGURE_ENV=	ac_cv_path_A2PS=${LOCALBASE}/bin/a2ps \
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+USE_HARDENING=	safestack
 
 OPTIONS_DEFINE=			A2PS DBUS CUPS_IMAGE MPAGE
 OPTIONS_RADIO=			ENSCRIPT
@@ -57,7 +57,7 @@ MPAGE_RUN_DEPENDS=		mpage:print/mpage
 post-patch:
 	@${REINPLACE_CMD} -e 's|/bin/bash|${SH}|g' ${WRKSRC}/foomaticrip.c
 	@${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|g' \
-		   	  ${WRKSRC}/foomaticrip.c
+			 ${WRKSRC}/foomaticrip.c
 	@${REINPLACE_CMD} -e 's|ln -sf $$(BINDIR)|ln -sf ../../../bin|g' \
 			  -e '/filter.conf/ s|if.*||' \
 			  ${WRKSRC}/Makefile.am

@@ -95,6 +95,7 @@ include/xercesc/dom/impl/DOMLSOutputImpl.hpp
 include/xercesc/dom/impl/DOMLSSerializerImpl.hpp
 include/xercesc/dom/impl/DOMLocatorImpl.hpp
 include/xercesc/dom/impl/DOMNamedNodeMapImpl.hpp
+include/xercesc/dom/impl/DOMNodeBase.hpp
 include/xercesc/dom/impl/DOMNodeIDMap.hpp
 include/xercesc/dom/impl/DOMNodeImpl.hpp
 include/xercesc/dom/impl/DOMNodeIteratorImpl.hpp
@@ -263,7 +264,7 @@ include/xercesc/util/KeyValuePair.hpp
 include/xercesc/util/LogicalPath.c
 include/xercesc/util/MsgLoaders/InMemory/InMemMsgLoader.hpp
 include/xercesc/util/MsgLoaders/InMemory/XercesMessages_en_US.hpp
-include/xercesc/util/MutexManagers/PosixMutexMgr.hpp
+include/xercesc/util/MutexManagers/%%MUTEXMGR%%.hpp
 include/xercesc/util/Mutexes.hpp
 include/xercesc/util/NameIdPool.c
 include/xercesc/util/NameIdPool.hpp

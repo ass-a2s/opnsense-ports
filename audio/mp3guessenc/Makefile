@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	mp3guessenc
-PORTVERSION=	0.27.2
+PORTVERSION=	0.27.4
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION:C/\.[0-9]*$//}
 
@@ -15,8 +15,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 PLIST_FILES=	bin/mp3guessenc
 SRC=		decode.c mp3guessenc.c bit_utils.c tags.c
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
+USE_HARDENING=	pie:off relro:off
 
 do-build:
 .for f in ${SRC}

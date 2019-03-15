@@ -1,11 +1,10 @@
 # $FreeBSD$
 
 PORTNAME=	smbclient
-PORTVERSION=	0.9.0
-PORTREVISION=	2
+PORTVERSION=	1.0.0
 CATEGORIES=	net pear
 
-MAINTAINER=	kevlo@FreeBSD.org
+MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Smbclient wrapper extension
 
 LICENSE=	BSD2CLAUSE

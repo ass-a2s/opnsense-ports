@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	pydot
-PORTVERSION=	1.2.3
+PORTVERSION=	1.4.1
 CATEGORIES=	graphics python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
@@ -14,10 +14,11 @@ LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 RUN_DEPENDS=	dot:graphics/graphviz \
-		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.1.4:devel/py-pyparsing
+		${PYTHON_PKGNAMEPREFIX}pyparsing>=2.1.4:devel/py-pyparsing@${PY_FLAVOR}
+
+USES=		python
+USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
-USE_PYTHON=	autoplist concurrent distutils
-USES=		python
 
 .include <bsd.port.mk>

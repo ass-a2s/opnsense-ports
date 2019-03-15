@@ -2,8 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	botan
-PORTVERSION=	1.10.13
-PORTREVISION=	3
+DISTVERSION=	1.10.17
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	http://botan.randombit.net/releases/
 PKGNAMESUFFIX=	110
@@ -15,58 +15,51 @@ COMMENT=	Portable, easy to use, and efficient C++ crypto library
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
 
-OPTIONS_DEFINE=		SSL GMP ECC DOCS
-OPTIONS_DEFAULT=	SSL GMP ECC
-ECC_DESC=	ECC support
+BROKEN_aarch64=		Fails to configure: unknown or unidentifiable processor arm64
 
-USES=		compiler gmake python:build tar:tgz
+OPTIONS_DEFINE=		SSL GMP DOCS
+OPTIONS_DEFAULT=	SSL GMP
+
+USES=		compiler gmake python:build shebangfix tar:tgz
 HAS_CONFIGURE=	yes
 CONFIGURE_SCRIPT=	configure.py
-CONFIGURE_ARGS=	--prefix=${PREFIX} --with-bzip2 --with-zlib
-MAKE_ARGS=	CXX="${CXX}" LIB_OPT="${CXXFLAGS}"
+CONFIGURE_ARGS=	--prefix=${PREFIX} --cc ${CHOSEN_COMPILER_TYPE} \
+		--with-tr1-implementation=system --with-bzip2 --with-zlib
+MAKE_ARGS=	CXX="${CXX}" CHECK_OPT="${CXXFLAGS}" LIB_OPT="${CXXFLAGS}"
 USE_LDCONFIG=	yes
 PLIST_FILES=	bin/botan-config-1.10 lib/libbotan-1.10.a lib/libbotan-1.10.so lib/libbotan-1.10.so.1 \
-		lib/libbotan-1.10.so.1.13 libdata/pkgconfig/botan-1.10.pc
+		lib/libbotan-1.10.so.1.17 libdata/pkgconfig/botan-1.10.pc
+SHEBANG_FILES=	configure.py
+TEST_TARGET=	check
 
 DOCSDIR=	${PREFIX}/share/doc/${PORTNAME}-${PORTVERSION}
 PORTDOCS=	*
 
-BROKEN_aarch64=		Fails to configure: unknown or unidentifiable processor arm64
+SSL_USES=		ssl
+SSL_CONFIGURE_WITH=	openssl
 
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MSSL}
-USES+=		ssl
-CONFIGURE_ARGS+=--with-openssl
-.endif
-
-.if ${PORT_OPTIONS:MGMP}
-LIB_DEPENDS+=	libgmp.so:math/gmp
-CONFIGURE_ARGS+=--with-gnump
-MAKE_ARGS+=	LDFLAGS="-L${LOCALBASE}/lib"
-.endif
-
-.if ${PORT_OPTIONS:MECC}
-BUILD_DEPENDS+=	${LOCALBASE}/include/boost/tr1/memory.hpp:devel/boost-libs
-CONFIGURE_ARGS+=--with-tr1-implementation=boost
-CXXFLAGS+=	-I${LOCALBASE}/include
-.else
-CONFIGURE_ARGS+=--with-tr1-implementation=none
-.endif
+GMP_USES=		localbase:ldflags
+GMP_LIB_DEPENDS=	libgmp.so:math/gmp
+GMP_CONFIGURE_WITH=	gnump
 
 .include <bsd.port.pre.mk>
 
-CONFIGURE_ARGS+=--cc ${COMPILER_TYPE}
+.if (${OPSYS} == FreeBSD && ${OSVERSION} > 1200084) || ${SSL_DEFAULT:Mopenssl111} || ${SSL_DEFAULT:M*-devel}
+EXTRA_PATCHES+=	${FILESDIR}/extra-patch-openssl11
+.endif
 
 post-patch:
-	${REINPLACE_CMD} -e "s|#!/usr/bin/env python|#!${PYTHON_CMD}|" \
-			${WRKSRC}/configure.py
-.if ! ${PORT_OPTIONS:MDOCS}
-	${REINPLACE_CMD} -e '/DOCDIR/d' \
-			${WRKSRC}/src/build-data/makefile/unix_shr.in
-.endif
+	@${REINPLACE_CMD} -e "s|#!/usr/bin/env python|#!${PYTHON_CMD}|" \
+		${WRKSRC}/configure.py
+
+post-patch-DOCS-off:
+	@${REINPLACE_CMD} -e '/DOCDIR/d' \
+		${WRKSRC}/src/build-data/makefile/unix_shr.in
 
 post-install:
 	@(cd "${STAGEDIR}${PREFIX}"; ${FIND} -s include/botan-1.10 -not -type d) >> ${TMPPLIST}
+
+post-test:
+	cd ${WRKSRC} && ${SETENV} LD_LIBRARY_PATH="." ./check --test
 
 .include <bsd.port.post.mk>

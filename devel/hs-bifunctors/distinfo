@@ -1,3 +1,3 @@
-TIMESTAMP = 1499542053
-SHA256 (cabal/bifunctors-5.4.2.tar.gz) = 38620267824abbf834f708f1b7cf10307c1d2719b1a0f8ae49330a1002dfdc8d
-SIZE (cabal/bifunctors-5.4.2.tar.gz) = 39535
+TIMESTAMP = 1545676170
+SHA256 (cabal/bifunctors-5.5.3.tar.gz) = d434528fd2ea765bace57c4ade0bc9fa32ba2c425f563b33a4b60f625ecfc9ca
+SIZE (cabal/bifunctors-5.5.3.tar.gz) = 40366

@@ -1,28 +1,11 @@
---- ui/gl/BUILD.gn.orig	2017-08-03 00:05:41.000000000 +0200
-+++ ui/gl/BUILD.gn	2017-08-10 12:59:44.155432000 +0200
-@@ -14,7 +14,7 @@
-                        (target_cpu == "x86" || target_cpu == "x64")
- }
- 
--use_egl = is_win || is_android || is_linux
-+use_egl = is_win || is_android || is_linux || is_bsd
- use_glx = use_x11 || ozone_platform_x11
- 
- if (is_android) {
-@@ -173,14 +173,14 @@
-       "gl_surface_egl.h",
-     ]
- 
--    if (is_linux) {
-+    if (is_linux || is_bsd) {
-       sources += [
-         "gl_image_native_pixmap.cc",
-         "gl_image_native_pixmap.h",
+--- ui/gl/BUILD.gn.orig	2018-12-03 21:18:06.000000000 +0100
++++ ui/gl/BUILD.gn	2018-12-15 20:36:26.132070000 +0100
+@@ -203,7 +203,7 @@
        ]
      }
-   }
--  if (is_android || is_linux) {
-+  if (is_android || is_linux || is_bsd) {
-     sources += [
-       "gl_implementation_osmesa.cc",
-       "gl_implementation_osmesa.h",
+ 
+-    if (is_posix && !is_fuchsia && !is_mac) {
++    if (is_posix && !is_fuchsia && !is_mac && !is_bsd) {
+       # Windows has USE_EGL but doesn't support base::FileDescriptor.
+       # libsync isn't supported or needed on MacOSX.
+       # Fuchsia is excluded due to a libsync dependency and because it's

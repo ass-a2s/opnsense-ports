@@ -2,9 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	tcpreplay
-PORTVERSION=	4.2.6
+PORTVERSION=	4.3.2
 DISTVERSIONPREFIX=	v
-PORTREVISION=	3
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	ehaupt@FreeBSD.org
@@ -16,9 +15,11 @@ LIB_DEPENDS=	libopts.so:devel/autogen \
 		libdnet.so:net/libdnet
 BUILD_DEPENDS=	pcapnav-config:net/libpcapnav
 
-USES=		autoreconf libtool pkgconfig
+USES=		autoreconf gmake libtool pkgconfig
 USE_GITHUB=	yes
+
 GNU_CONFIGURE=	yes
+TEST_TARGET=	test
 
 GH_ACCOUNT=	appneta
 
@@ -41,8 +42,5 @@ LIBPCAP_PORTS_LIB_DEPENDS=	libpcap.so:net/libpcap
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|-Wall -O3||' ${WRKSRC}/${CONFIGURE_SCRIPT}.ac
-
-regression-test: build
-	@cd ${WRKSRC} && ${MAKE} -s test
 
 .include <bsd.port.mk>

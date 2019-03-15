@@ -12,9 +12,10 @@ MAINTAINER=	sobomax@FreeBSD.org
 COMMENT=	Tool to convert a RSA key in PEM format into a PVK file and vice versa
 
 USES=		ssl
-WRKSRC=		${WRKDIR}
 CFLAGS+=	-I${OPENSSLINC}
 LDFLAGS+=	-L${OPENSSLLIB}
+
+NO_WRKSUBDIR=	yes
 
 post-patch:
 	${REINPLACE_CMD} -e 's|\(-lcrypto\)|$$(LDFLAGS) \1|g' \
@@ -23,6 +24,6 @@ post-patch:
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/pvk ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${DOCSDIR}
-	${INSTALL_MAN} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/README ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	keepassx
 PORTVERSION=	2.0.3
+PORTREVISION=	2
 PORTEPOCH=	2
 CATEGORIES=	security
 MASTER_SITES=	https://www.keepassx.org/releases/${PORTVERSION}/
@@ -20,19 +21,22 @@ LICENSE_FILE_NOKIA-LGPL-EXCEPTION=	${WRKSRC}/LICENSE.NOKIA-LGPL-EXCEPTION
 LICENSE_PERMS_BOOST-1.0=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 LICENSE_PERMS_NOKIA-LGPL-EXCEPTION=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 LIB_DEPENDS=	libgcrypt.so:security/libgcrypt
 
 CONFLICTS_INSTALL=	keepassx-0.* keepassx-devel-* keepassxc-*
 
-EXPLICIT_SAFESTACK=	yes
-
-USES=		cmake compiler:features desktop-file-utils shared-mime-info
+USES=		cmake compiler:features desktop-file-utils qt:4 shared-mime-info
 USE_LDCONFIG=	yes
 INSTALLS_ICONS=	yes
-USE_QT4=	corelib gui xml qtestlib uic_build moc_build \
+USE_QT=		corelib gui xml qtestlib uic_build moc_build \
 		qmake_build rcc_build linguisttools
-USE_XORG=	ice inputproto sm x11 xcursor xext xfixes xi xrandr xrender \
+USE_XORG=	ice xorgproto sm x11 xcursor xext xfixes xi xrandr xrender \
 		xt xtst
+
+USE_HARDENING=	safestack
 
 .include <bsd.port.pre.mk>
 

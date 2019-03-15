@@ -11,6 +11,12 @@ COMMENT=	Graphical font manager
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+BROKEN_armv6=		fails to compile: src/fminfodisplay.cpp:155:17: no matching function for call to 'qMax'
+BROKEN_armv7=		fails to compile: src/fminfodisplay.cpp:155:17: no matching function for call to 'qMax'
+
 RUN_DEPENDS=	${LOCALBASE}/share/icons/hicolor/index.theme:misc/hicolor-icon-theme
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 		libfontconfig.so:x11-fonts/fontconfig
@@ -18,8 +24,8 @@ LIB_DEPENDS=	libfreetype.so:print/freetype2 \
 USE_GITHUB=	yes
 GH_ACCOUNT=	fontmatrix
 
-USES=		cmake execinfo
-USE_QT4=	corelib xml gui svg network moc_build uic_build rcc_build qmake_build \
+USES=		cmake qt:4
+USE_QT=		corelib xml gui svg network moc_build uic_build rcc_build qmake_build \
 		linguisttools_build opengl sql webkit
 INSTALLS_ICONS=	yes
 MANDIRS=	${PREFIX}/share/man/man1

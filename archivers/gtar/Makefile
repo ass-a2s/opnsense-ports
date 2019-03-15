@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	tar
-PORTVERSION=	1.29
+PORTVERSION=	1.32
 CATEGORIES=	archivers sysutils
 MASTER_SITES=	GNU
 PKGNAMEPREFIX=	g
@@ -10,14 +10,14 @@ PKGNAMEPREFIX=	g
 MAINTAINER=	naddy@FreeBSD.org
 COMMENT=	GNU version of the traditional tape archiver
 
-EXPLICIT_SAFESTACK=	yes
-
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 INFO=		tar
 
-USES=		charsetfix cpe iconv:${STATIC_ARGS} localbase makeinfo tar:xz
+USE_HARDENING=	safestack
+
+USES=		charsetfix cpe iconv:${STATIC_ARGS} localbase tar:xz
 CPE_VENDOR=	gnu
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--program-prefix=g
@@ -40,9 +40,5 @@ STATIC_CONFIGURE_ENV=	SHLIBEXT=""
 
 STATIC_VARS=	STATIC_ARGS=build
 STATIC_VARS_OFF=	STATIC_ARGS=lib
-
-# do not rebuild tar.info
-post-patch:
-	${TOUCH} -r ${WRKSRC}/doc/stamp-vti ${WRKSRC}/configure
 
 .include <bsd.port.mk>

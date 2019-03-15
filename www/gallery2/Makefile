@@ -3,7 +3,7 @@
 
 PORTNAME=	gallery2
 PORTVERSION=	2.3.2
-PORTREVISION=	5
+PORTREVISION=	10
 CATEGORIES=	www
 MASTER_SITES=	SF/gallery/${PORTNAME}/${PORTVERSION}
 DISTNAME=	gallery-${PORTVERSION}-full
@@ -22,18 +22,18 @@ OPTIONS_DEFAULT=IMAGEMAGICK JHEAD MYSQL
 
 NO_ARCH=	yes
 NO_BUILD=	yes
+USES=		php:web
 USE_PHP=	pcre session
-WANT_PHP_WEB=	yes
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 SUB_FILES=	pkg-message
 
 DCRAW_RUN_DEPENDS=	dcraw:graphics/dcraw
-FFMPEG_LIB_DEPENDS=	libavcodec.so:multimedia/ffmpeg
+FFMPEG_RUN_DEPENDS=	ffmpeg:multimedia/ffmpeg
 GD_RUN_DEPENDS=		pngtogd:graphics/gd
 GD_USE=			PHP=gd
 GRAPHMAGICK_RUN_DEPENDS=gm:graphics/GraphicsMagick
-IMAGEMAGICK_RUN_DEPENDS=convert:graphics/ImageMagick
+IMAGEMAGICK_RUN_DEPENDS=convert:graphics/ImageMagick6
 JHEAD_RUN_DEPENDS=	jhead:graphics/jhead
 MYSQL_USE=		PHP=mysqli
 NETPBM_RUN_DEPENDS=	giftopnm:graphics/netpbm

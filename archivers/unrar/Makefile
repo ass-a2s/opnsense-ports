@@ -2,12 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	unrar
-PORTVERSION=	5.50b4
-PORTEPOCH=	5
+DISTVERSION=	5.70
+PORTEPOCH=	6
 CATEGORIES+=	archivers
-MASTER_SITES=	http://www.rarlab.com/rar/ \
+MASTER_SITES=	https://rarlab.com/rar/ \
 		LOCAL/sunpoet
-DISTNAME=	unrarsrc-5.5.5
+DISTNAME=	unrarsrc-5.7.3
 
 MAINTAINER?=	sunpoet@FreeBSD.org
 COMMENT=	Extract, view & test RAR archives
@@ -17,30 +17,26 @@ LICENSE_FILE=	${WRKSRC}/license.txt
 LICENSE_NAME=	UnRAR license
 LICENSE_PERMS=	auto-accept dist-mirror pkg-mirror
 
-EXPLICIT_SAFESTACK=		yes
-
-BROKEN_SSL=	openssl-devel
+USE_HARDENING=	pie:off safestack
 
 OPTIONS_DEFINE=	OPENSSL_AES
 OPTIONS_DEFAULT=OPENSSL_AES
 OPENSSL_AES_DESC=	Use OpenSSL implementation of AES
 
-CONFLICTS_INSTALL?=	zh-unrar unrar-iconv
+CONFLICTS_INSTALL?=	unrar-iconv
 
 LDFLAGS+=	-lpthread
-MAKE_ARGS=	CXX=${CXX} CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}" STRIP=${STRIP_CMD}
+MAKE_ARGS=	CXX="${CXX}" CXXFLAGS="${CXXFLAGS}" LDFLAGS="${LDFLAGS}" STRIP="${STRIP_CMD}"
 MAKEFILE=	makefile
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 PLIST_FILES=	bin/unrar
 
-SLAVEDIRS=	archivers/unrar-iconv chinese/unrar
+SLAVEDIRS=	archivers/unrar-iconv
 
 OPENSSL_AES_CPPFLAGS=	-DOPENSSL_AES -I${OPENSSLINC}
 OPENSSL_AES_LDFLAGS=	-L${OPENSSLLIB} -lcrypto
 OPENSSL_AES_USES=	ssl
-
-NOPIE_PORTS=	yes
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/unrar ${STAGEDIR}${PREFIX}/bin/

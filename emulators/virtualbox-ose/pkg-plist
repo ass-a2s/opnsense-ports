@@ -377,8 +377,6 @@ lib/virtualbox/VBoxBalloonCtrl
 lib/virtualbox/VBoxBugReport
 lib/virtualbox/VBoxDD.so
 lib/virtualbox/VBoxDD2.so
-lib/virtualbox/VBoxDD2R0.r0
-lib/virtualbox/VBoxDD2RC.rc
 lib/virtualbox/VBoxDDR0.r0
 lib/virtualbox/VBoxDDRC.rc
 lib/virtualbox/VBoxDDU.so
@@ -424,7 +422,7 @@ lib/virtualbox/VMMR0.r0
 lib/virtualbox/VMMRC.rc
 %%QT%%@(root,%%VBOXGROUP%%,4510) lib/virtualbox/VirtualBox
 %%QT%%lib/virtualbox/VirtualBox.so
-lib/virtualbox/sdk
+%%SDK%%lib/virtualbox/sdk
 %%WEBSERVICE%%lib/virtualbox/vboxwebsrv
 %%WEBSERVICE%%lib/virtualbox/webtest
 %%VNC%%lib/virtualbox/ExtensionPacks/VNC/ExtPack-license.html
@@ -545,11 +543,12 @@ lib/virtualbox/components/VirtualBox_XPCOM.xpt
 %%NLS%%%%DATADIR%%/nls/VirtualBox_en.qm
 %%NLS%%%%DATADIR%%/nls/VirtualBox_es.qm
 %%NLS%%%%DATADIR%%/nls/VirtualBox_eu.qm
-%%NLS%%%%DATADIR%%/nls/VirtualBox_fa_IR.qm
+%%NLS%%%%DATADIR%%/nls/VirtualBox_fa.qm
 %%NLS%%%%DATADIR%%/nls/VirtualBox_fi.qm
 %%NLS%%%%DATADIR%%/nls/VirtualBox_fr.qm
-%%NLS%%%%DATADIR%%/nls/VirtualBox_gl_ES.qm
+%%NLS%%%%DATADIR%%/nls/VirtualBox_gl.qm
 %%NLS%%%%DATADIR%%/nls/VirtualBox_he.qm
+%%NLS%%%%DATADIR%%/nls/VirtualBox_hr_HR.qm
 %%NLS%%%%DATADIR%%/nls/VirtualBox_hu.qm
 %%NLS%%%%DATADIR%%/nls/VirtualBox_id.qm
 %%NLS%%%%DATADIR%%/nls/VirtualBox_it.qm
@@ -582,11 +581,12 @@ lib/virtualbox/components/VirtualBox_XPCOM.xpt
 %%NLS%%%%DATADIR%%/nls/qt_en.qm
 %%NLS%%%%DATADIR%%/nls/qt_es.qm
 %%NLS%%%%DATADIR%%/nls/qt_eu.qm
-%%NLS%%%%DATADIR%%/nls/qt_fa_IR.qm
+%%NLS%%%%DATADIR%%/nls/qt_fa.qm
 %%NLS%%%%DATADIR%%/nls/qt_fi.qm
 %%NLS%%%%DATADIR%%/nls/qt_fr.qm
-%%NLS%%%%DATADIR%%/nls/qt_gl_ES.qm
+%%NLS%%%%DATADIR%%/nls/qt_gl.qm
 %%NLS%%%%DATADIR%%/nls/qt_he.qm
+%%NLS%%%%DATADIR%%/nls/qt_hr_HR.qm
 %%NLS%%%%DATADIR%%/nls/qt_hu.qm
 %%NLS%%%%DATADIR%%/nls/qt_id.qm
 %%NLS%%%%DATADIR%%/nls/qt_it.qm

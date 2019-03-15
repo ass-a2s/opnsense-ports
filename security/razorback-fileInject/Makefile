@@ -3,7 +3,7 @@
 
 PORTNAME=	fileInject
 PORTVERSION=	0.5.0
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	security
 MASTER_SITES=	SF/razorbacktm/Nuggets
 PKGNAMEPREFIX=	razorback-
@@ -18,6 +18,8 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	librazorback_api.so:security/razorback-api \
 		libjson-c.so:devel/json-c
 
+USE_HARDENING=	pie:off relro:off
+
 OPTIONS_DEFINE=	DEBUG ASSERT
 
 GNU_CONFIGURE=	yes
@@ -27,8 +29,5 @@ LDFLAGS+=	-L${LOCALBASE}/lib
 
 DEBUG_CONFIGURE_ENABLE=	debug
 ASSERT_CONFIGURE_ENABLE=assert
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 .include <bsd.port.mk>

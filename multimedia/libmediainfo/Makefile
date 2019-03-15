@@ -2,9 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	libmediainfo
-PORTVERSION=	0.7.98
+PORTVERSION=	18.12
 CATEGORIES=	multimedia
-MASTER_SITES=	http://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
+MASTER_SITES=	https://mediaarea.net/download/binary/mediainfo/${PORTVERSION}/ \
 		LOCAL/sunpoet
 DISTNAME=	MediaInfo_CLI_${PORTVERSION}_GNU_FromSource
 
@@ -22,11 +22,13 @@ OPTIONS_DEFINE=	CURL MMS TINYXML2
 OPTIONS_DEFAULT=TINYXML2
 TINYXML2_DESC=	Use textproc/tinyxml2 instead of bundled one
 
+USES=		alias compiler:c++11-lang libtool localbase pathfix pkgconfig tar:xz
+
 CONFIGURE_ARGS=	--enable-shared --enable-static
 GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
+USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
-USES=		alias libtool localbase pathfix pkgconfig tar:xz
 
 WRKSRC=		${WRKDIR}/MediaInfo_CLI_GNU_FromSource/MediaInfoLib/Project/GNU/Library
 
@@ -38,7 +40,6 @@ TINYXML2_CONFIGURE_ON=	--with-libtinyxml2=yes
 TINYXML2_LIB_DEPENDS=	libtinyxml2.so:textproc/tinyxml2
 
 post-patch:
-	@${TOUCH} ${WRKSRC}/aclocal.m4
 	@${REINPLACE_CMD} \
 		-e 's|lib/pkgconfig/|libdata/pkgconfig/|g' \
 		-e 's|-DMEDIAINFO_LIBMMS_FROMSOURCE||g' \

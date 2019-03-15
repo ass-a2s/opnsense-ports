@@ -12,9 +12,11 @@ DISTNAME=	${PORTNAME}_${PORTVERSION}
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Navigate a mech through a 3D world and fire at enemies
 
-USES=		gmake openal:al,alut
+USES=		gl gmake openal:al,alut sdl
 USE_GL=		gl glu
 USE_SDL=	sdl
+LLD_UNSAFE=	yes
+USE_CXXSTD=	gnu++98
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
@@ -29,8 +31,8 @@ DESKTOP_ENTRIES="LinWarrior 3D" \
 		false
 
 post-extract:
-	@${FIND} ${WRKSRC} -type d -exec chmod a+rx {} \;
-	@${FIND} ${WRKSRC} -type f -exec chmod a+r {} \;
+	@${FIND} ${WRKSRC} -type d -exec ${CHMOD} a+rx {} \;
+	@${FIND} ${WRKSRC} -type f -exec ${CHMOD} a+r {} \;
 
 post-patch:
 	@${REINPLACE_CMD} -e '/hash_set/ d' ${WRKSRC}/source/cAlert.h

@@ -2,21 +2,22 @@
 # $FreeBSD$
 
 PORTNAME=	toxic
-PORTVERSION=	0.8.0
+PORTVERSION=	0.8.3
 DISTVERSIONPREFIX=	v
+PORTREVISION=	1
 CATEGORIES=	net-im
 
 MAINTAINER=	thierry@FreeBSD.org
 COMMENT=	Console client for Tox
 
 LICENSE=	GPLv3+
-LICENSE_FILE=	${WRKSRC}/COPYING
+LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libtoxcore.a:net-im/tox	\
 		${LOCALBASE}/include/linux/videodev2.h:multimedia/v4l_compat
 LIB_DEPENDS=	libvpx.so:multimedia/libvpx		\
 		libsodium.so:security/libsodium		\
-		libpng16.so:graphics/png		\
+		libpng.so:graphics/png		\
 		libopus.so:audio/opus			\
 		libcurl.so:ftp/curl			\
 		libv4l2.so:multimedia/libv4l		\
@@ -27,20 +28,23 @@ RUN_DEPENDS=	${LOCALBASE}/lib/libtoxcore.a:net-im/tox
 USE_GITHUB=	yes
 GH_ACCOUNT=	JFreegman
 
+USES=		desktop-file-utils gettext-runtime gmake ncurses:port openal:al,alut pkgconfig
+
 OPTIONS_DEFINE=	X11 PYTHON
 OPTIONS_DEFAULT=X11
 
+X11_USES=	gnome
 X11_USE=	GNOME=gdkpixbuf2,glib20 XORG=x11
 X11_MAKE_ARGS_OFF=	DISABLE_X11=1 DISABLE_DESKTOP_NOTIFY=1
 X11_LIB_DEPENDS=libnotify.so:devel/libnotify
 
-PYTHON_VARS=	USES+=python:3.3+
+PYTHON_USES=	python:3.3+
 PYTHON_MAKE_ARGS=	ENABLE_PYTHON=1
 
-MAKE_ENV=	USER_CFLAGS="${CFLAGS}" USER_LDFLAGS="${LDFLAGS}"
+MAKE_ENV=	USER_CFLAGS="${CFLAGS}" USER_LDFLAGS="${LDFLAGS}"	\
+		MANDIR="${MANPREFIX}/man"
+LLD_UNSAFE=	yes
 SUB_FILES=	pkg-message
-
-USES=		desktop-file-utils gettext-runtime gmake ncurses openal:al,alut pkgconfig
 
 pre-configure:
 	${REINPLACE_CMD} -e 's|PREFIX =|PREFIX?=|;s|$$(shell git rev-list HEAD.*$$|${GH_TAGNAME}|'	\

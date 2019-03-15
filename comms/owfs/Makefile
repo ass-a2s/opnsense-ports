@@ -2,10 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	owfs
-PORTVERSION=	3.1p1
-PORTREVISION=	1
+PORTVERSION=	3.2p3
+DISTVERSIONPREFIX=	v
 CATEGORIES=	comms
-MASTER_SITES=	SF/owfs/owfs/${PORTVERSION}
 
 MAINTAINER=	johan@stromnet.se
 COMMENT=	OWFS -- 1-Wire file system
@@ -18,6 +17,8 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_LDCONFIG=	yes
 
+USE_GITHUB=	yes
+
 .include "Makefile.options"
 
 OPTIONS_SUB=yes
@@ -27,6 +28,12 @@ CONFIGURE_ARGS=		--enable-owlib
 # Linux specific kernel driver
 CONFIGURE_ARGS+=	--disable-w1
 CONFIGURE_ARGS+=	--disable-parport
+
+AVAHI_CONFIGURE_ENABLE=		avahi
+AVAHI_LIB_DEPENDS=		libavahi-client.so:net/avahi-app
+
+FDTDI_CONFIGURE_EANBLE=		ftdi
+FTDI_LIB_DEPENDS=		libftdi.so:devel/libftdi
 
 OWDEBUG_CONFIGURE_ENABLE=	debug
 OWMUTEXDEBUG_CONFIGURE_ENABLE=	mutexdebug
@@ -48,6 +55,7 @@ OWMON_CONFIGURE_ENABLE=		owmon
 OWMON_USES=			tk:wrapper
 
 OWCAPI_CONFIGURE_ENABLE=	owcapi
+OWEXTERNAL_CONFIGURE_ENABLE=	owexternal
 
 OWPERL_CONFIGURE_ENABLE=	owperl
 OWPERL_USES=			perl5
@@ -57,7 +65,7 @@ OWPERL_USE=			perl5=build,run
 OWPHP_CONFIGURE_ENABLE=		owphp
 
 OWPYTHON_CONFIGURE_ENABLE=	owpython
-OWPYTHON_USES=			python
+OWPYTHON_USES=			python:2.7
 
 # Additional CONFIGURE_ARGS is done below
 OWTCL_CONFIGURE_ENABLE=		owtcl
@@ -100,14 +108,21 @@ PLIST_SUB+=			OWNETPYTHON="@comment "
 
 # If Perl, Python or PHP is requested, enable SWIG
 .if ${PORT_OPTIONS:MOWPERL} || ${PORT_OPTIONS:MOWPYTHON} || ${PORT_OPTIONS:MOWPHP}
-BUILD_DEPENDS+=			${LOCALBASE}/bin/swig2.0:devel/swig20
-CONFIGURE_ARGS+=		--enable-swig SWIG=${LOCALBASE}/bin/swig2.0
+BUILD_DEPENDS+=			swig3.0:devel/swig30
+CONFIGURE_ARGS+=		--enable-swig SWIG=${LOCALBASE}/bin/swig3.0
 .else
 CONFIGURE_ARGS+=		--disable-swig
 .endif
 
 .if ${PORT_OPTIONS:MOWTCL}
 CONFIGURE_ARGS+=		--enable-owtcl --with-tcl=${TCL_LIBDIR}
+.endif
+
+.if ${PORT_OPTIONS:MOWEXTERNAL}
+PLIST_SUB+=			OWEXTERNAL=""
+.else
+PLIST_SUB+=			OWEXTERNAL="@comment "
+CONFIGURE_ARGS+=		--disable-owexternal
 .endif
 
 # This takes a few seconds so give the user some notice

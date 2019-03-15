@@ -4,25 +4,20 @@
 ######################################################################
 # Anytime PORTVERSION changes please bump PORTREVISION of            #
 # mail/dovecot-pigeonhole. See ports/146029 for an explanation.      #
-#                                                                    #
-# Please be careful when updating this port as changes to this port  #
-# can break mail/dovecot-pigeonhole. In order to ensure the least    #
-# amount of breakage possible please consult the maintainer of that  #
-# port before updating this one.                                     #
 ######################################################################
 
 PORTNAME=	dovecot
-PORTVERSION=	2.2.32
+PORTVERSION=	2.3.5
 CATEGORIES=	mail ipv6
-MASTER_SITES=	https://www.dovecot.org/releases/2.2/
+MASTER_SITES=	https://www.dovecot.org/releases/2.3/
 
-MAINTAINER=	adamw@FreeBSD.org
+MAINTAINER=	ler@FreeBSD.org
 COMMENT=	Secure, fast and powerful IMAP and POP3 server
 
 LICENSE=	LGPL21 MIT
 LICENSE_COMB=	dual
 
-USES=		cpe iconv libtool ssl
+USES=		cpe iconv libtool pkgconfig ssl
 USE_RC_SUBR=	dovecot
 
 GNU_CONFIGURE=	yes
@@ -38,8 +33,10 @@ INSTALL_TARGET=	install-strip
 USERS=		dovecot dovenull
 GROUPS=		${USERS}
 
-OPTIONS_DEFINE=	KQUEUE LIBWRAP LZ4 VPOPMAIL DOCS EXAMPLES
-OPTIONS_DEFAULT=KQUEUE GSSAPI_NONE
+CONFLICTS_INSTALL=	dovecot22
+
+OPTIONS_DEFINE=	LIBSODIUM LIBWRAP LUA LZ4 VPOPMAIL DOCS EXAMPLES
+OPTIONS_DEFAULT=GSSAPI_NONE LIBWRAP
 OPTIONS_SUB=	yes
 
 OPTIONS_GROUP=		DB FTS
@@ -49,7 +46,6 @@ OPTIONS_GROUP_FTS=	ICU LUCENE SOLR TEXTCAT
 OPTIONS_SINGLE=		GSSAPI
 OPTIONS_SINGLE_GSSAPI=	GSSAPI_NONE GSSAPI_BASE GSSAPI_HEIMDAL GSSAPI_MIT
 
-KQUEUE_DESC=	kqueue(2) support
 LZ4_DESC=	LZ4 compression support
 VPOPMAIL_DESC=	vpopmail support
 
@@ -68,10 +64,14 @@ GSSAPI_HEIMDAL_DESC=	Use Heimdal GSSAPI from security/heimdal
 GSSAPI_MIT_DESC=	Use MIT GSSAPI from security/krb5
 
 # General options
-KQUEUE_CONFIGURE_OFF=	--with-ioloop=poll --with-notify=none
-KQUEUE_CONFIGURE_ON=	--with-ioloop=kqueue --with-notify=kqueue
+LIBSODIUM_DESC=		support libsodium based crypts (ARGON2I/ARGON2ID)
+LIBSODIUM_LIB_DEPENDS=	libsodium.so:security/libsodium
+LIBSODIUM_CONFIGURE_WITH=	sodium
 
 LIBWRAP_CONFIGURE_WITH=	libwrap
+
+LUA_CONFIGURE_WITH=	lua
+LUA_USES=		lua
 
 LZ4_CONFIGURE_WITH=	lz4
 LZ4_LIB_DEPENDS=	liblz4.so:archivers/liblz4
@@ -92,13 +92,12 @@ MYSQL_CONFIGURE_WITH=	mysql
 PGSQL_USES=		pgsql
 PGSQL_CONFIGURE_WITH=	pgsql
 
-SQLITE_USES=		sqlite:3
+SQLITE_USES=		sqlite
 SQLITE_CONFIGURE_WITH=	sqlite
 
 # FTS
 ICU_CONFIGURE_WITH=	icu
 ICU_LIB_DEPENDS=	libicui18n.so:devel/icu
-ICU_USES=		pkgconfig
 
 LUCENE_CONFIGURE_WITH=	lucene
 LUCENE_LIB_DEPENDS=	libclucene-core.so:textproc/clucene
@@ -117,7 +116,7 @@ GSSAPI_BASE_USES=		gssapi
 GSSAPI_HEIMDAL_USES=		gssapi:heimdal
 GSSAPI_MIT_USES=		gssapi:mit
 
-DOCS=		AUTHORS COPYING COPYING.LGPL COPYING.MIT INSTALL NEWS TODO README
+DOCS=		AUTHORS COPYING INSTALL NEWS TODO README
 PORTDOCS=	*
 PORTEXAMPLES=	*
 
@@ -144,8 +143,12 @@ post-patch:
 	@${REINPLACE_CMD} -e '/^exampledir =/s|\$$(docdir)|${ETCDIR}|' \
 		${WRKSRC}/doc/example-config/Makefile.in \
 		${WRKSRC}/doc/example-config/conf.d/Makefile.in
-	@${REINPLACE_CMD} -e '/^[^#]/s|/usr|${LOCALBASE}|' \
+	@${REINPLACE_CMD} -e 's|/usr/bin|${LOCALBASE}/bin|' \
 		${WRKSRC}/src/plugins/fts/decode2text.sh
+
+post-patch-LUA-on:
+	@${REINPLACE_CMD} -e '/^libdovecot_lua_la_DEPENDENCIES =/ s|LUA_LIBS|true|' \
+		${WRKSRC}/src/lib-lua/Makefile.in
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}

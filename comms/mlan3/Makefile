@@ -13,11 +13,13 @@ COMMENT=	Version 3.00 beta API for Dallas Semiconductors 1-wire lan devices
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/license.txt
 
+USE_HARDENING=	pie:off
+
 NO_WRKSUBDIR=	yes
 USES=		dos2unix uidfix zip
 DOS2UNIX_GLOB=	*.c *.h
 
-NOPIE_PORTS=	yes
+CONFLICTS_INSTALL=	shells/fish
 
 post-patch:
 	@${REINPLACE_CMD} -e '/int main/s/short argc/int argc/' \

@@ -2,7 +2,9 @@
 # $FreeBSD$
 
 PORTNAME=	treesheets
-PORTVERSION=	0.0.20170806
+PORTVERSION=	1.0.1
+PORTREVISION=	2
+DISTVERSIONPREFIX=	v
 CATEGORIES=	deskutils
 
 MAINTAINER=	lightside@gmx.com
@@ -11,11 +13,10 @@ COMMENT=	Free form data organizer
 LICENSE=	ZLIB
 LICENSE_FILE=	${WRKSRC}/ZLIB_LICENSE.txt
 
-USES=		compiler:c++11-lib desktop-file-utils
+USES=		compiler:c++17-lang desktop-file-utils
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	aardappel
-GH_TAGNAME=	8a54e43
 
 USE_WX=		3.0+
 INSTALLS_ICONS=	yes
@@ -24,7 +25,7 @@ BUILD_WRKSRC=	${WRKSRC}/src
 PACKAGE_VERSION=	\"${PORTVERSION}\"
 MAKE_ENV=	PACKAGE_VERSION=${PACKAGE_VERSION:Q}
 
-PORTDATA=	images
+PORTDATA=	images scripts translations/*/*.mo
 PORTDOCS=	docs *.html
 PORTEXAMPLES=	*
 

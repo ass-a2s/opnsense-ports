@@ -1,26 +1,42 @@
 # $FreeBSD$
 
 PORTNAME=	kstars
-PORTVERSION=	${KDE4_VERSION}
-PORTREVISION=	4
-CATEGORIES=	astro kde kde-kde4
+DISTVERSION=	3.1.1
+PORTEPOCH=	1
+CATEGORIES=	astro kde
+MASTER_SITES=	KDE/stable/${PORTNAME}
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	KDE 4 desktop planetarium
+COMMENT=	KDE desktop planetarium
+
+LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcfitsio.so:astro/cfitsio \
+		libqt5keychain.so:security/qtkeychain \
+		libraw.so:graphics/libraw \
+		libsecret-1.so:security/libsecret \
 		libwcs.so:astro/wcslib
-BUILD_DEPENDS=	${LOCALBASE}/libdata/pkgconfig/eigen3.pc:math/eigen3 \
-		xplanet:astro/xplanet
+BUILD_DEPENDS=	xplanet:astro/xplanet
 RUN_DEPENDS=	xplanet:astro/xplanet
 
-USES=		cmake:outsource compiler:c++11-lib kde:4 tar:xz
-USE_KDE=	kdelibs automoc4
-USE_QT4=	opengl qmake_build moc_build rcc_build uic_build
+USES=		cmake compiler:c++11-lib desktop-file-utils eigen:3 \
+		gettext gnome kde:5 localbase:ldflags pkgconfig qt:5 tar:xz
+USE_GNOME=	glib20
+USE_KDE=	attica auth bookmarks codecs completion config configwidgets\
+		coreaddons crash dbusaddons doctools ecm guiaddons i18n \
+		iconthemes init itemviews jobwidgets kio newstuff notifications \
+		notifyconfig parts plotting service solid texteditor \
+		widgetsaddons xmlgui
+USE_QT=		concurrent core datavis3d dbus declarative gui multimedia \
+		network opengl printsupport sql svg testlib websockets widgets \
+		xml \
+		buildtools_build qmake_build
 
-OPTIONS_DEFINE=	PYKDE
-
-PYKDE_DESC=	Support for updating supernovae data
-PYKDE_USE=	KDE=pykde4_run
+post-patch:
+# climits defines ULLONG_MAX and LLONG_MAX
+	${REINPLACE_CMD} -e 's#ULONG_LONG_MAX#ULLONG_MAX#g' \
+			 -e 's#LONG_LONG_MAX#LLONG_MAX#g' \
+		${WRKSRC}/kstars/fitsviewer/fitsdata.cpp
 
 .include <bsd.port.mk>

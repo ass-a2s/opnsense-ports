@@ -8,6 +8,7 @@
     SUBDIR += aleefonts-ttf
     SUBDIR += baekmukfonts-bdf
     SUBDIR += baekmukfonts-ttf
+    SUBDIR += d2coding-ttf
     SUBDIR += engdic
     SUBDIR += fcitx-hangul
     SUBDIR += gimp-help
@@ -22,7 +23,6 @@
     SUBDIR += imhangul-gtk2
     SUBDIR += imhangul-gtk3
     SUBDIR += kaistfonts
-    SUBDIR += kde4-l10n
     SUBDIR += ko.TeX
     SUBDIR += ko.TeX-fonts-base
     SUBDIR += ko.TeX-fonts-extra
@@ -38,6 +38,8 @@
     SUBDIR += qt4-codecs-kr
     SUBDIR += scim-hangul
     SUBDIR += scim-tables
+    SUBDIR += sourcehansans-otf
+    SUBDIR += sourcehanserif-otf
     SUBDIR += unfonts-core
     SUBDIR += unfonts-extra
     SUBDIR += uniksc

@@ -5,7 +5,6 @@ PORTNAME=	qpage
 PORTVERSION=	3.3
 PORTREVISION=	8
 CATEGORIES=	comms
-MASTER_SITES=	http://www.qpage.org/download/
 MASTER_SITES=	http://tomiii.com/qpage/qpage.org/download/
 
 MAINTAINER=	rand@iteris.com
@@ -50,7 +49,9 @@ pre-patch:
 	@${ECHO_MSG} ""
 	@${ECHO_MSG} "Press ^C now to stop the build and set make options."
 	@${ECHO_MSG} "You may find it necessary to 'make clean' before restarting the build."
+.  if !(defined(PACKAGE_BUILDING) || defined(BATCH))
 	@sleep 2
+.  endif
 .endif
 
 post-patch:

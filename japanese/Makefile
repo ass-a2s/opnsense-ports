@@ -48,7 +48,6 @@
     SUBDIR += edict-fpw
     SUBDIR += edict-utf-8
     SUBDIR += edyvalue
-    SUBDIR += egg-canna
     SUBDIR += eijiro-fpw
     SUBDIR += epwutil
     SUBDIR += esecanna
@@ -64,6 +63,7 @@
     SUBDIR += font-aozoramincho
     SUBDIR += font-ayu18
     SUBDIR += font-ayu20
+    SUBDIR += font-cica
     SUBDIR += font-elisa10
     SUBDIR += font-elisa8
     SUBDIR += font-genjyuugothic
@@ -108,7 +108,6 @@
     SUBDIR += gd
     SUBDIR += gedy
     SUBDIR += gimp-help
-    SUBDIR += gjiten
     SUBDIR += groff
     SUBDIR += gskk
     SUBDIR += gsuica
@@ -124,12 +123,9 @@
     SUBDIR += japaneseAFM
     SUBDIR += jargon-fpw
     SUBDIR += jcode.pl
-    SUBDIR += jd
     SUBDIR += jed
     SUBDIR += jishyo
     SUBDIR += jls
-    SUBDIR += jmode
-    SUBDIR += jmode-skk
     SUBDIR += jpilot
     SUBDIR += jstrings
     SUBDIR += jvim3
@@ -140,7 +136,6 @@
     SUBDIR += kbanner
     SUBDIR += kcc
     SUBDIR += kcode
-    SUBDIR += kde4-l10n
     SUBDIR += kdrill
     SUBDIR += kinput2
     SUBDIR += kiten
@@ -171,7 +166,6 @@
     SUBDIR += mg
     SUBDIR += mh
     SUBDIR += migemo
-    SUBDIR += migemo-emacs23
     SUBDIR += migemo.el
     SUBDIR += mime_pls
     SUBDIR += ming
@@ -221,8 +215,6 @@
     SUBDIR += p5-WWW-MobileCarrierJP
     SUBDIR += p5-nkf
     SUBDIR += pejv-fpw
-    SUBDIR += php5-mecab
-    SUBDIR += php_doc
     SUBDIR += plain2
     SUBDIR += plan
     SUBDIR += prn
@@ -265,7 +257,8 @@
     SUBDIR += skkserv
     SUBDIR += slimeforest
     SUBDIR += slrn
-    SUBDIR += spamassassin
+    SUBDIR += sourcehansans-otf
+    SUBDIR += sourcehanserif-otf
     SUBDIR += srd-fpw-package
     SUBDIR += suicavalue
     SUBDIR += t2ps
@@ -294,7 +287,6 @@
     SUBDIR += wordpress
     SUBDIR += wwasw-fpw
     SUBDIR += xdtp
-    SUBDIR += xgate
     SUBDIR += xpdf
     SUBDIR += xshodou
     SUBDIR += xtr

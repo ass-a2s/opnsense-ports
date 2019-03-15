@@ -11,11 +11,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	SAC CSS (Simple API for CSS) parser
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Class-ArrayObjects>=0.04:devel/p5-Class-ArrayObjects
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Class-ArrayObjects>=0.04:devel/p5-Class-ArrayObjects
 
 USES=		perl5
 USE_PERL5=	configure

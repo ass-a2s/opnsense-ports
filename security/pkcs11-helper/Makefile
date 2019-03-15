@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	pkcs11-helper
-PORTVERSION=	1.11
-PORTREVISION=	3
+PORTVERSION=	1.25.1
+PORTREVISION=	1
 CATEGORIES=	security devel
-MASTER_SITES=	SF/opensc/pkcs11-helper/
+MASTER_SITES=	https://github.com/OpenSC/pkcs11-helper/releases/download/pkcs11-helper-${PORTVERSION}/
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Helper library for multiple PKCS\#11 providers
@@ -21,10 +21,13 @@ USES=		libtool:keepla pathfix pkgconfig tar:bzip2 ssl
 USE_LDCONFIG=	yes
 
 CONFIGURE_ENV=	OPENSSL_CFLAGS="-I${OPENSSLINC}" \
-		OPENSSL_LIBS="-L${OPENSSLLIB} -lssl"
+		OPENSSL_LIBS="-L${OPENSSLLIB} -lcrypto"
 
 CONFIGURE_ARGS=	--disable-crypto-engine-gnutls \
-		--disable-crypto-engine-nss
+		--disable-crypto-engine-nss \
+		--disable-crypto-engine-polarssl \
+		--disable-crypto-engine-mbedtls \
+		--disable-crypto-engine-cryptoapi
 
 OPTIONS_DEFINE=	DOCS
 
@@ -36,10 +39,4 @@ post-patch:
 	@${REINPLACE_CMD} 's|install-data-am: install-apidocDATA|install-data-am:|' \
 		${WRKSRC}/doc/api/Makefile.in
 
-.include <bsd.port.pre.mk>
-
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

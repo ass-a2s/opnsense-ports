@@ -3,7 +3,8 @@
 
 PORTNAME=	pg_stat_kcache
 DISTVERSIONPREFIX=	REL
-DISTVERSION=	2_0_3
+DISTVERSION=	2_1_1
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	girgen@FreeBSD.org
@@ -11,11 +12,12 @@ COMMENT=	Gather statistics about PostgreSQL I/O and CPU usage
 
 LICENSE=	PostgreSQL
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	dalibo
-
 USES=		gmake pgsql:9.4+
+LLD_UNSAFE=	yes
 WANT_PGSQL=	server contrib
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	powa-team
 
 pre-patch:
 	@${MV} ${BUILD_WRKSRC}/README.rst ${BUILD_WRKSRC}/${PORTNAME}-README.rst

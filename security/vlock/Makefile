@@ -10,8 +10,6 @@ MASTER_SITES=	http://cthulhu.c3d2.de/~toidinamai/vlock/archive/
 MAINTAINER=	martymac@FreeBSD.org
 COMMENT=	Locks a terminal
 
-EXPLICIT_SAFESTACK=		yes
-
 LICENSE=	GPLv2
 
 HAS_CONFIGURE=	yes
@@ -26,7 +24,9 @@ CONFIGURE_ARGS=	--enable-plugins --enable-pam \
 USES=	gmake
 USE_CSTD=	gnu99
 
-OPTIONS_DEFINE=	ROOTPWD VLOCKSCRIPTS CACASAVER
+USE_HARDENING=	safestack
+
+OPTIONS_DEFINE=	ROOTPWD VLOCKSCRIPTS CACASAVER DOCS
 OPTIONS_DEFAULT=	ROOTPWD
 OPTIONS_SUB=	yes
 ROOTPWD_DESC=	Enable unlock using root password

@@ -3,7 +3,7 @@
 
 PORTNAME=	Emplacken
 PORTVERSION=	0.01
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 MASTER_SITE_SUBDIR=	CPAN:DROLSKY
@@ -14,7 +14,8 @@ COMMENT=	Manage multiple plack apps with a directory of config files
 
 LICENSE=	ART20
 
-BUILD_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
 		p5-Config-Any>=0:devel/p5-Config-Any \
 		p5-File-Pid>=0:devel/p5-File-Pid \
 		p5-List-AllUtils>=0:devel/p5-List-AllUtils \
@@ -25,9 +26,7 @@ BUILD_DEPENDS=	p5-Class-Load>=0:devel/p5-Class-Load \
 		p5-MooseX-Types-Perl>=0:devel/p5-MooseX-Types-Perl \
 		p5-Path-Class>=0:devel/p5-Path-Class \
 		p5-Text-Template>=0:textproc/p5-Text-Template \
-		p5-autodie>=0:devel/p5-autodie \
 		p5-namespace-autoclean>=0:devel/p5-namespace-autoclean
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 NO_ARCH=	yes
 USE_PERL5=	configure

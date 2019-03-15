@@ -3,15 +3,17 @@
 
 PORTNAME=	orafce
 PORTVERSION=	3.4.0
+PORTREVISION=	1
 CATEGORIES=	databases
 PKGNAMEPREFIX=	postgresql${PGSQL_VER:S/.//}-
 
-MAINTAINER=	amutu@amutu.com
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Oracle's compatibility functions and packages for PostgreSQL
 
 LICENSE=	PostgreSQL
 
 USES=		gmake bison pgsql:9.2+
+LLD_UNSAFE=	yes
 USE_GITHUB=	yes
 GH_TAGNAME=	ffea9cc
 

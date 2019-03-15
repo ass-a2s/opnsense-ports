@@ -10,8 +10,11 @@ PKGNAMESUFFIX=	-opengl
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt OpenGL rendering engine (experimental)
 
-USE_QT4=	qmake_build opengl
-QT_DIST=	yes
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake:no_env qt-dist:4
+USE_QT=		opengl
 
 HAS_CONFIGURE=	yes
 USE_GL=		glu

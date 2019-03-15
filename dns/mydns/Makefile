@@ -3,7 +3,7 @@
 
 PORTNAME=	mydns
 PORTVERSION=	1.1.0
-PORTREVISION=	7
+PORTREVISION=	8
 CATEGORIES=	dns databases
 MASTER_SITES=	http://mydns.bboy.net/download/
 
@@ -21,7 +21,6 @@ USES=		tar:bzip2 iconv
 USE_RC_SUBR=	mydns
 
 SUB_FILES=	pkg-message
-PKGMESSAGE=	${WRKDIR}/pkg-message
 
 INFO=		mydns
 

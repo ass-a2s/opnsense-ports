@@ -3,7 +3,7 @@
 
 PORTNAME=	aegisub
 PORTVERSION=	3.2.2
-PORTREVISION=	19
+PORTREVISION=	36
 CATEGORIES=	multimedia
 MASTER_SITES=	http://ftp.aegisub.org/pub/archives/releases/source/ \
 		ftp://ftp.aegisub.org/pub/archives/releases/source/ \
@@ -28,6 +28,7 @@ WX_CONF_ARGS=	absolute
 USE_GL=		gl
 USE_CSTD=	c99
 USE_CXXSTD=	c++11
+CPPFLAGS+=	-DU_USING_ICU_NAMESPACE=1
 CXXFLAGS+=	-D_GLIBCXX_USE_C99 # XXX ports/193528
 LDFLAGS+=	-Wl,--as-needed # freetype
 GNU_CONFIGURE=	yes
@@ -53,7 +54,7 @@ FFMPEG_LIB_DEPENDS=	libffms2.so:multimedia/ffms2
 FFMPEG_CONFIGURE_OFF=	--without-ffms
 FFTW_LIB_DEPENDS=	libfftw3.so:math/fftw3
 FFTW_CONFIGURE_OFF=	--without-fftw3
-HUNSPELL_LIB_DEPENDS=	libhunspell-1.6.so:textproc/hunspell
+HUNSPELL_LIB_DEPENDS=	libhunspell-1.7.so:textproc/hunspell
 HUNSPELL_CONFIGURE_OFF=	--without-hunspell
 OPENAL_USES=		openal
 OPENAL_CONFIGURE_OFF=	--without-openal

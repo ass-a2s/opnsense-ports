@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	gdbm
-PORTVERSION=	${PYTHON_PORTVERSION}
+PORTREVISION=	1
 CATEGORIES=	databases python
 
 MAINTAINER=	python@FreeBSD.org

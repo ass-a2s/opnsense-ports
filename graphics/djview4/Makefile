@@ -3,7 +3,7 @@
 
 PORTNAME=	djview
 PORTVERSION=	4.10.6
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	graphics
 MASTER_SITES=	SF/djvu/DjView/${PORTVERSION:R}
 
@@ -33,9 +33,18 @@ OPTIONS_SINGLE_QT=	QT4 QT5
 OPTIONS_DEFAULT=	QT5
 QT_DESC=		Qt toolkit
 
-QT4_USE=	QT4=corelib,gui,network,opengl,linguisttools_build,moc_build,qmake_build,rcc_build,uic_build
+QT4_USES=	qt:4
+QT4_USE=	QT=corelib,gui,network,opengl,linguisttools_build,moc_build,qmake_build,rcc_build,uic_build
 QT4_USE+=	XORG=x11
-QT5_USE=	QT5=core,gui,network,opengl,printsupport,widgets,buildtools_build,linguisttools_build,qmake_build
+QT5_USES=	qt:5
+QT5_USE=	QT=core,gui,network,opengl,printsupport,widgets,buildtools_build,linguisttools_build,qmake_build
+
+.include <bsd.port.options.mk>
+
+.if ${PORT_OPTIONS:MQT4}
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+.endif
 
 post-patch:
 # Use prebuilt icons, without using conversion tool

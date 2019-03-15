@@ -2,21 +2,25 @@
 # $FreeBSD$
 
 PORTNAME=	bearssl
-PORTVERSION=	0.4
-PORTREVISION=	2
+PORTVERSION=	0.6
 CATEGORIES=	security devel
 MASTER_SITES=	https://bearssl.org/
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Implementation of TLS/SSL in C
 
 LICENSE=	MIT
 
-MAKE_ARGS=	CC="${CC}" LD="${CC}" CFLAGS="${CFLAGS} -fPIC" LDDLL="${CC}"
+LIBBEARSSL=	libbearssl.so.0
+
+MAKE_ARGS=	CC="${CC}" LD="${CC}" CFLAGS="${CFLAGS} -fPIC" LDDLL="${CC}" LDDLLFLAGS="-shared -Wl,-soname=${LIBBEARSSL}" \
+		BEARSSLDLL=${LIBBEARSSL}
+MAKE_JOBS_UNSAFE=	yes
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/build/brssl ${STAGEDIR}${LOCALBASE}/bin/
-	${INSTALL_LIB} ${WRKSRC}/build/libbearssl.so ${STAGEDIR}${LOCALBASE}/lib/
-	(cd ${WRKSRC}/inc && ${COPYTREE_SHARE} \* ${STAGEDIR}${LOCALBASE}/include)
+	${INSTALL_PROGRAM} ${WRKSRC}/build/brssl ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_LIB} ${WRKSRC}/${LIBBEARSSL} ${STAGEDIR}${PREFIX}/lib/
+	${RLN} ${STAGEDIR}${PREFIX}/lib/${LIBBEARSSL} ${STAGEDIR}${PREFIX}/lib/libbearssl.so
+	(cd ${WRKSRC}/inc && ${COPYTREE_SHARE} \* ${STAGEDIR}${PREFIX}/include)
 
 .include <bsd.port.mk>

@@ -9,9 +9,12 @@ MASTER_SITES=	http://www.antlr2.org/download/
 MAINTAINER=	makc@FreeBSD.org
 COMMENT=	ANother Tool for Language Recognition
 
+LICENSE=	PD
+LICENSE_FILE=	${WRKSRC}/LICENSE.txt
+
 CONFLICTS=	pccts-[0-9]*
 
-USES=		gmake
+USES=		compiler:c++11-lang gmake
 USE_JAVA=	yes
 
 HAS_CONFIGURE=	yes
@@ -34,7 +37,7 @@ PORTDOCS=	ANTLRException.gif closure.gif cpp-runtime.html \
 OPTIONS_DEFINE=	PYTHON DOCS
 OPTIONS_SUB=	yes
 
-PYTHON_USES=		python
+PYTHON_USES=		python:2.7
 PYTHON_PORTDOCS=	python-runtime.html
 
 post-extract:

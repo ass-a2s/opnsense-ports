@@ -3,6 +3,7 @@
 
 PORTNAME=	naev
 PORTVERSION=	0.7.0
+PORTREVISION=	6
 CATEGORIES=	games
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 
@@ -15,8 +16,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libpng.so:graphics/png \
 		libfreetype.so:print/freetype2 \
 		libvorbisfile.so:audio/libvorbis \
-		libzip.so:archivers/libzip \
-		libcsparse.so:math/suitesparse
+		libzip.so:archivers/libzip
 RUN_DEPENDS=	${LOCALBASE}/${DATADIR_REL}/${DISTNAME}-ndata.zip:games/naev-data
 
 USES=		autoreconf:build compiler:features gmake pkgconfig tar:bzip2
@@ -51,6 +51,7 @@ LUA_JIT_DESC=		Use LuaJIT from lang/luajit
 LUA_JIT_LIB_DEPENDS=	libluajit-5.1.so:lang/luajit
 OPENAL_USES=	openal
 OPENAL_CONFIGURE_WITH=	openal
+OPENAL_VARS=	LLD_UNSAFE=yes # cf. PR 226980
 SDL_MIXER_DESC=	SDL_mixer sound backend
 SDL_MIXER_CONFIGURE_WITH=	sdlmixer
 SDL2_DESC=	Use SDL2 instead of SDL

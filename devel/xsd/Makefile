@@ -3,7 +3,7 @@
 PORTNAME=	xsd
 PORTVERSION=	4.0.0
 DISTVERSIONSUFFIX=	+dep
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	devel
 MASTER_SITES=	http://www.codesynthesis.com/download/${PORTNAME}/${PORTVERSION:R}/
 
@@ -33,12 +33,15 @@ MAKE_ARGS=	EXTERNAL_LIBCUTL=y \
 		install_prefix=${STAGEDIR}${PREFIX} \
 		install_man_dir=${STAGEDIR}${MANPREFIX}/man \
 		verbose=1
-USES=		gmake tar:bzip2
+USES=		compiler:c++11-lang gmake tar:bzip2
 
 post-patch:
 # Use devel/build instead of the port's bundled copy.
 	${RM} -r ${WRKSRC}/build-0.3
 	${LN} -s ${LOCALBASE}/include/build-0.3 ${WRKSRC}/build-0.3
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/libxsd-frontend/version \
+		${WRKSRC}/libxsd-frontend/version.txt
 
 post-install:
 # Install examples into the right directory.

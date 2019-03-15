@@ -12,12 +12,15 @@ COMMENT=	Graphical tool for designing finite state machines
 
 LICENSE=	GPLv3+
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 OPTIONS_DEFINE=	GRAPHVIZ DOCS EXAMPLES
 
+USES=		qt:4 tar:bzip2 cmake desktop-file-utils
 USE_XORG=	xi
-USE_QT4=	corelib gui qt3support svg xml \
+USE_QT=		corelib gui qt3support svg xml \
 		moc_build qmake_build rcc_build uic_build
-USES=		tar:bzip2 cmake desktop-file-utils
 INSTALLS_ICONS=	yes
 
 GRAPHVIZ_BUILD_DEPENDS=	graphviz>=2.22:graphics/graphviz

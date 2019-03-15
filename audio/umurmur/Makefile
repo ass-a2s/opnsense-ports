@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	umurmur
-PORTVERSION=	0.2.16
+DISTVERSION=	0.2.17
+PORTREVISION=	1
 CATEGORIES=	audio net
 
 MAINTAINER=	ayu@commun.jp
@@ -11,22 +12,18 @@ COMMENT=	Minimalistic Murmur (Mumble server)
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libconfig.so:devel/libconfig \
-		libprotobuf-c.so:devel/protobuf-c
-
 BROKEN_aarch64=		fails to compile: fatal error: byteswap.h file not found
 BROKEN_armv6=		fails to compile: fatal error: byteswap.h file not found
 
-USE_GITHUB=	yes
+LIB_DEPENDS=	libconfig.so:devel/libconfig \
+		libprotobuf-c.so:devel/protobuf-c
 
-USES=		autoreconf gmake libtool ssl
+USES=		autoreconf gmake libtool localbase ssl
 GNU_CONFIGURE=	yes
+USE_GITHUB=	yes
 CONFIGURE_ARGS=	--with-ssl=openssl
 
 USE_RC_SUBR=	umurmur
-
-CPPFLAGS+=	-I${LOCALBASE}/include
-LDFLAGS+=	-L${LOCALBASE}/lib
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/configure.ac

@@ -9,8 +9,6 @@ MASTER_SITES=	SF/${PORTNAME}
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Makes a DVD file structure from one or more MPEG2 streams
 
-EXPLICIT_SAFESTACK=		yes
-
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
@@ -27,6 +25,8 @@ USES=		gmake iconv localbase pkgconfig
 USE_GNOME=	libxml2
 GNU_CONFIGURE=	yes
 
+USE_HARDENING=	safestack
+
 SUB_FILES=	README.FreeBSD
 
 PORTDOCS=	*
@@ -39,7 +39,7 @@ VIDEO-FORMAT_DESC=	Use default video format
 NTSC_DESC=	Default video format NTSC
 PAL_DESC=	Default video format PAL
 
-IMAGEMAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick
+IMAGEMAGICK_LIB_DEPENDS=	libMagick++-6.so:graphics/ImageMagick6
 
 NTSC_CONFIGURE_ON=	--enable-default-video-format=NTSC
 PAL_CONFIGURE_ON=	--enable-default-video-format=PAL

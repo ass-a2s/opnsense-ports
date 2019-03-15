@@ -1,14 +1,14 @@
 # $FreeBSD$
 
-PORTVERSION=	3.15.1
+PORTVERSION=	3.17.3
 CATEGORIES?=	mail
 MASTER_SITES=	http://www.claws-mail.org/download.php?file=releases/
 
-MAINTAINER=	pawel@FreeBSD.org
+MAINTAINER=	joneum@FreeBSD.org
 
 LICENSE=	GPLv3
 
-USES+=		gettext-runtime gmake iconv libtool pkgconfig tar:xz
+USES+=		autoreconf gettext-tools gmake iconv libtool pkgconfig tar:xz
 GNU_CONFIGURE=	yes
 
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_ARG} --disable-dbus --disable-static

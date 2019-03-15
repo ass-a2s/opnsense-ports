@@ -2,13 +2,12 @@
 # $FreeBSD$
 
 PORTNAME=	flightgear
-PORTVERSION=	2017.1.3
-PORTREVISION=	6
+PORTVERSION=	2018.3.2
 CATEGORIES=	games
 MASTER_SITES=	SF/flightgear/release-${PORTVERSION:R}
 
 MAINTAINER=	martymac@FreeBSD.org
-COMMENT=	The FlightGear flight simulator
+COMMENT=	FlightGear flight simulator
 
 LICENSE=	GPLv2
 
@@ -22,19 +21,22 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libcurl.so:ftp/curl \
 		libudev.so:devel/libudev-devd
 BUILD_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib \
-		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear
+		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear \
+		${LOCALBASE}/include/linux/input.h:devel/evdev-proto
 RUN_DEPENDS=	${LOCALBASE}/lib/libplibsl.a:x11-toolkits/plib \
 		${LOCALBASE}/lib/libSimGearCore.a:devel/simgear \
 		${LOCALBASE}/share/flightgear/version:games/flightgear-data
 
+# Disable ninja, see https://sourceforge.net/p/flightgear/codetickets/2118/
+USES=		alias cmake:noninja compiler cpe dos2unix gl jpeg openal:al,alut \
+		sqlite tar:bzip2
 USE_XORG=	ice sm x11 xext xft xi xinerama xmu xt
 USE_GL=		gl glew glu glut
 
-USES=		alias cmake compiler cpe dos2unix jpeg openal:al,alut sqlite \
-		tar:bzip2
+LLD_UNSAFE=	yes
+
 DOS2UNIX_REGEX=	.*\.(c|h|cxx|cpp|hxx|hpp)
-CMAKE_ARGS+=	-DENABLE_JS_SERVER:BOOL=ON \
-		-DSYSTEM_SQLITE:BOOL=ON \
+CMAKE_ARGS+=	-DSYSTEM_SQLITE:BOOL=ON \
 		-DFG_DATA_DIR:PATH=${LOCALBASE}/share/${PORTNAME} \
 		-DCMAKE_INSTALL_MANDIR:PATH=${MANPREFIX}/man \
 		-DFGCOM_DATA_PATH:PATH=${DATADIR}
@@ -48,18 +50,13 @@ DBUS_CMAKE_ON=	-DUSE_DBUS:BOOL=ON
 DBUS_CMAKE_OFF=	-DUSE_DBUS:BOOL=OFF
 QT5_CMAKE_ON=	-DENABLE_QT:BOOL=ON
 QT5_CMAKE_OFF=	-DENABLE_QT:BOOL=OFF
-QT5_USE=	QT5=core,buildtools,gui,qmake,widgets
+QT5_USES=	qt:5
+QT5_USE=	QT=core,buildtools,gui,declarative,network,qmake,widgets,svg
 
-.include <bsd.port.pre.mk>
+post-patch:
+# Avoid conflict with C++20 <version> by adding .txt suffix
+	@${MV} ${WRKSRC}/version ${WRKSRC}/version.txt
+	@${REINPLACE_CMD} -Ei .c++20 '/file|set_prop/s/version[[:>:]]/&.txt/' \
+		${WRKSRC}/CMakeLists.txt
 
-# Chase devel/simgear compiler version
-.if ${COMPILER_TYPE} == gcc && ${COMPILER_VERSION} < 46
-USE_GCC=	yes
-CXXFLAGS+=	-D_GLIBCXX_USE_C99
-.endif
-
-post-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/utils/js_server/js_server \
-		${STAGEDIR}${PREFIX}/bin
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

@@ -3,6 +3,7 @@
 
 PORTNAME=	mp3blaster
 PORTVERSION=	3.2.6
+PORTREVISION=	2
 CATEGORIES=	audio
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -15,7 +16,7 @@ LICENSE_FILE=	${WRKSRC}/COPYING
 USES=		gmake localbase:ldflags ncurses
 GNU_CONFIGURE=	yes
 
-OPTIONS_DEFINE=	DOCS ESOUND LIRC NAS SDL SIDPLAY VORBIS
+OPTIONS_DEFINE=	DOCS LIRC NAS SDL SIDPLAY VORBIS
 OPTIONS_DEFAULT=	SIDPLAY VORBIS
 SIDPLAY_DESC=	Sidplayer support
 
@@ -31,14 +32,12 @@ VORBIS_LIB_DEPENDS=		libvorbisfile.so:audio/libvorbis
 VORBIS_CONFIGURE_WITH=		oggvorbis
 
 SDL_CONFIGURE_WITH=	sdl
-SDL_USE=		SDL=yes
+SDL_USE=		SDL=sdl
 
 NAS_CONFIGURE_WITH=	nas
 NAS_LIB_DEPENDS=	libaudio.so:audio/nas
 NAS_LDFLAGS=		-laudio
-
-ESOUND_CONFIGURE_WITH=	esd
-ESOUND_USE=		GNOME=esound
+NAS_USE=		XORG=x11,xt,ice,sm
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/usr/local/share/mp3blaster/win2koi.tbl|${DATADIR}/charmap/win2koi.tbl|' \
@@ -47,7 +46,7 @@ post-patch:
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 .for i in ${PORTDOCS}
-	@${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${WRKSRC}/${i} ${STAGEDIR}${DOCSDIR}
 .endfor
 
 .include <bsd.port.mk>

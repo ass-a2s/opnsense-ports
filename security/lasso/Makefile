@@ -7,13 +7,15 @@ PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://dev.entrouvert.org/releases/lasso/
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Free Liberty Alliance Implementation
 
 LICENSE=	GPLv2
 
 BUILD_DEPENDS=	xmlsec1:security/xmlsec1
 RUN_DEPENDS:=	${BUILD_DEPENDS}
+
+USE_HARDENING=	pie:off relro:off
 
 USES=		cpe libtool pathfix pkgconfig ssl
 CPE_VENDOR=	entrouvert
@@ -22,9 +24,6 @@ CONFIGURE_ARGS=	--disable-java --with-zlib
 USE_GNOME=	glib20 libxml2
 USE_LDCONFIG=	yes
 INSTALL_TARGET=	install-strip
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 OPTIONS_DEFINE=	PERL PHP PYTHON DOCS
 
@@ -54,9 +53,9 @@ PLIST_SUB+=	PHP5="@comment "
 .if ${PORT_OPTIONS:MPYTHON}
 CONFIGURE_ARGS+=	--enable-python
 PLIST_SUB+=	PYTHON=""
-USES+=		python
+USES+=		python:2.7
 .else
-USES+=		python:build
+USES+=		python:2.7,build
 CONFIGURE_ARGS+=	--disable-python
 PLIST_SUB+=	PYTHON="@comment "
 .endif

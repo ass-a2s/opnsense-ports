@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	uftp
-PORTVERSION=	4.9.3
+PORTVERSION=	4.9.9
 PORTEPOCH=	1
 CATEGORIES=	ftp
 MASTER_SITES=	SF/uftp-multicast/source-tar
@@ -11,6 +11,8 @@ MAINTAINER=	demon@FreeBSD.org
 COMMENT=	Multicast capable FTP client and server
 
 LICENSE=	GPLv3
+
+USE_HARDENING=	safestack
 
 MAKEFILE=	makefile
 USES=		gmake ssl

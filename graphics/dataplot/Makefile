@@ -3,7 +3,7 @@
 
 PORTNAME=	dataplot
 PORTVERSION=	20132012
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.nist.gov/pub/dataplot/unix/:source \
 		LOCAL/beech:source \
@@ -26,9 +26,6 @@ USES=		fortran jpeg
 USE_XORG=	x11 xi
 NO_WRKSUBDIR=	yes
 MAXOBV?=	400000	# Change if you need more observations/variable
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 .include <bsd.port.options.mk>
 

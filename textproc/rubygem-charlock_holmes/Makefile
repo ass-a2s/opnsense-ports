@@ -1,18 +1,20 @@
 # $FreeBSD$
 
 PORTNAME=	charlock_holmes
-PORTVERSION=	0.7.3
-PORTREVISION=	5
+DISTVERSION=	0.7.6
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	kuriyama@FreeBSD.org
 COMMENT=	Gems for character encoding detection
 
+LICENSE=	MIT
+
 LIB_DEPENDS=	libicui18n.so:devel/icu
 
-USE_RUBY=	yes
 USES=		gem
+USE_RUBY=	yes
+
 CONFIGURE_ARGS=	--with-icu-include=${LOCALBASE}/include
 
 .include <bsd.port.mk>

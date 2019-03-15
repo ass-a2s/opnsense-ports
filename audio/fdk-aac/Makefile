@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	fdk-aac
-PORTVERSION=	0.1.5
+PORTVERSION=	2.0.0
 CATEGORIES=	audio
 MASTER_SITES=	SF/opencore-amr/${PORTNAME}
 
@@ -17,10 +17,11 @@ LICENSE_PERMS=	dist-mirror pkg-mirror auto-accept
 NOT_FOR_ARCHS=		sparc64
 NOT_FOR_ARCHS_REASON=	not yet ported to this architecture
 
+USES=		libtool pathfix
+
 LIBS+=		-lm
 GNU_CONFIGURE=	yes
 USE_LDCONFIG=	yes
-USES=		libtool pathfix
 INSTALL_TARGET=	install-strip
 
 .include <bsd.port.mk>

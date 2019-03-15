@@ -3,25 +3,29 @@
 
 PORTNAME=	mobility
 PORTVERSION=	1.2.2
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	multimedia
 MASTER_SITES=	http://dev.gentoo.org/~pesa/distfiles/ \
 		LOCAL/vg
 PKGNAMEPREFIX=	qt4-
 DISTNAME=	qt-${PORTNAME}-${PORTVERSION}_p${DATE}
 
-MAINTAINER=	vg@FreeBSD.org
+MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Qt APIs for mobile devices and desktop platforms
 
 LICENSE=	LGPL21
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 LIB_DEPENDS=	libblkid.so:misc/e2fsprogs-libblkid
 
 DATE=	20130703
-USES=		pkgconfig qmake shebangfix tar:xz
+USES=		perl5 pkgconfig qmake qt:4 shebangfix tar:xz
 SHEBANG_FILES=	bin/pathhelper bin/syncheaders
-USE_QT4=declarative corelib dbus gui linguist_build moc_build
+USE_QT=		declarative corelib dbus gui linguist_build moc_build rcc_build
 USE_LDCONFIG=	yes
+USE_PERL5=	build
 MOBILITY_MODS=
 
 OPTIONS_DEFINE=	BEARER CONNECTIVITY CONTACTS FEEDBACK GALLERY LOCATION \
@@ -29,33 +33,35 @@ OPTIONS_DEFINE=	BEARER CONNECTIVITY CONTACTS FEEDBACK GALLERY LOCATION \
 		SERVICEFRAMEWORK SYSTEMINFO VERSIT
 OPTIONS_SUB=	yes
 
+USE_CXXSTD=	gnu++98
+
 BEARER_DESC=		Bearer module
 CONNECTIVITY_DESC=	Connectivity module
-CONNECTIVITY_USE=	qt4=rcc_build
+CONNECTIVITY_USE=	qt=rcc_build
 
 CONTACTS_DESC=		Contacts module
 FEEDBACK_DESC=		Feedback module
 GALLERY_DESC=		Gallery module
 LOCATION_DESC=		Location module
-LOCATION_USE=		qt4=rcc_build,sql
+LOCATION_USE=		qt=rcc_build,sql
 
 MESSAGING_DESC=		Messaging module
 
 MULTIMEDIA_DESC=	Multimedia module
 MULTIMEDIA_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 MULTIMEDIA_BUILD_DEPENDS=	v4l_compat>=1.0.20120501:multimedia/v4l_compat
-MULTIMEDIA_USE=		qt4=opengl gstreamer=bad
+MULTIMEDIA_USE=		qt=opengl gstreamer=bad
 
 ORGANIZER_DESC=		Organizer module
 PUBLISHSUBSCRIBE_DESC=	Publishsubscribe module
 SENSORS_DESC=		(BROKEN) Sensors module
 SERVICEFRAMEWORK_DESC=	(BROKEN) ServiceFramework module
-SERVICEFRAMEWORK_USE=	qt4=sql
+SERVICEFRAMEWORK_USE=	qt=sql
 
 SYSTEMINFO_DESC=	(BROKEN) Systeminfo module
-SYSTEMINFO_USE=		qt4=network
+SYSTEMINFO_USE=		qt=network
 VERSIT_DESC=		Versit module
-VERSIT_USE=		qt4=rcc_build
+VERSIT_USE=		qt=rcc_build
 
 OPTIONS_DEFAULT=BEARER CONNECTIVITY CONTACTS FEEDBACK GALLERY LOCATION \
 		MESSAGING MULTIMEDIA ORGANIZER PUBLISHSUBSCRIBE VERSIT

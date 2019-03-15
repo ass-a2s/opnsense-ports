@@ -3,7 +3,7 @@
 
 PORTNAME=	sfft
 PORTVERSION=	0.1.0
-PORTREVISION=	6
+PORTREVISION=	10
 CATEGORIES=	math
 MASTER_SITES=	http://spiral.net/software/sfft/ LOCAL/bf
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
@@ -14,13 +14,16 @@ COMMENT=	Optimized Sparse Fast Fourier Transform
 
 LICENSE=	GPLv2
 
+ONLY_FOR_ARCHS=		amd64 i386
+ONLY_FOR_ARCHS_REASON=	requires SSE instructions, which are x86-specific
+
 LIB_DEPENDS=	libfftw3.so:math/fftw3
+
+USE_HARDENING=	pie:off
 
 USES=		uidfix zip
 USE_GCC=	yes
 USE_LDCONFIG=	yes
-
-NOPIE_PORTS=	yes
 
 OPTIONS_DEFINE=		OPTIMIZED_CFLAGS PROFILE DOCS
 OPTIONS_DEFAULT=	OPTIMIZED_CFLAGS
@@ -111,6 +114,6 @@ post-install:
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	@${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
+	${INSTALL_DATA} ${_DISTDIR}/${PORTDOCS} ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

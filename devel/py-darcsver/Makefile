@@ -11,11 +11,13 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Generate a version number from darcs history
 
-USES=		python
+LICENSE=	BSD
+
+USES=		python:2.7
 USE_PYTHON=	distutils autoplist
+NO_ARCH=	yes
 
 post-patch:
 	@${REINPLACE_CMD} -e 's#(doc_loc, data_fnames)##g' ${WRKSRC}/setup.py
-
 
 .include <bsd.port.mk>

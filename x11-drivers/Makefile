@@ -24,6 +24,7 @@
     SUBDIR += xf86-video-ark
     SUBDIR += xf86-video-ast
     SUBDIR += xf86-video-ati
+    SUBDIR += xf86-video-ati-legacy
     SUBDIR += xf86-video-chips
     SUBDIR += xf86-video-cirrus
     SUBDIR += xf86-video-dummy
@@ -37,6 +38,7 @@
     SUBDIR += xf86-video-neomagic
     SUBDIR += xf86-video-nv
     SUBDIR += xf86-video-openchrome
+    SUBDIR += xf86-video-qxl
     SUBDIR += xf86-video-r128
     SUBDIR += xf86-video-rendition
     SUBDIR += xf86-video-s3

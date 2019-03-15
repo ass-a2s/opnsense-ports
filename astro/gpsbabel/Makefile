@@ -3,7 +3,8 @@
 
 PORTNAME=	gpsbabel
 DISTVERSIONPREFIX=	${PORTNAME}_
-DISTVERSION=	1_5_3
+DISTVERSION=	1_5_4
+PORTREVISION=	2
 CATEGORIES=	astro geography
 
 MAINTAINER=	dev2@heesakkers.info
@@ -19,17 +20,18 @@ USE_GITHUB=	yes
 
 CONFLICTS=	gpsbabel14-[0-9]*
 
-USE_QT4=	corelib qmake_build
+USES=		compiler:c++11-lang localbase qt:5 qt:5
+USE_QT=		core qmake_build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-zlib=system
-USES=		localbase
 
 OPTIONS_DEFINE=	GUI
-OPTIONS_SUB=	GUI
+OPTIONS_SUB=	yes
 
 GUI_ALL_TARGET=	gui
-GUI_USE=	QT4=gui,xml,network,webkit
-GUI_USE+=	QT4=linguisttools_build,moc_build,rcc_build,uic_build
+GUI_USES=	qt:5 qt:5
+GUI_USE=	QT=gui,xml,network,webkit
+GUI_USE+=	QT=linguisttools_build,moc_build,rcc_build,uic_build
 GUI_VARS=	MAKE_JOBS_UNSAFE=yes
 
 post-patch:

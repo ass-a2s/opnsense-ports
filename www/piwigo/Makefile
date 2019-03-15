@@ -2,9 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	piwigo
-PORTVERSION=	2.9.1
+DISTVERSION=	2.9.4
+PORTREVISION=	2
 CATEGORIES=	www
-MASTER_SITES=	http://piwigo.org/download/dlcounter.php?code=${PORTVERSION}&/
+MASTER_SITES=	https://piwigo.org/download/dlcounter.php?code=${PORTVERSION}&/
 
 MAINTAINER=	tremere@cainites.net
 COMMENT=	PHP based Web Gallery
@@ -14,11 +15,11 @@ LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
 NO_BUILD=	yes
 NO_ARCH=	yes
+USES=		cpe php:web zip
 USE_PHP=	calendar ctype dom exif filter gd gettext hash iconv json \
 		mbstring mcrypt mysqli openssl pcre pdf pdo posix \
 		session simplexml sockets spl tokenizer xml xmlreader \
 		xmlwriter zlib
-USES=		cpe php:web zip
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 SUB_FILES=	pkg-deinstall pkg-message
@@ -43,9 +44,9 @@ PLIST_SUB+=	WWWOWN="${WWWOWN}" \
 
 .if ${PORT_OPTIONS:MIMAGICK}
 .if ${PORT_OPTIONS:MX11}
-RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick
+RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick6
 .else
-RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick-nox11
+RUN_DEPENDS+=	${LOCALBASE}/bin/convert:graphics/ImageMagick6-nox11
 .endif
 .endif
 

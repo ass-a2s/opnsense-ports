@@ -3,8 +3,9 @@
 
 PORTNAME=	mplus
 PORTVERSION=	0.6.0
+PORTREVISION=	1
 CATEGORIES=	japanese x11-fonts
-MASTER_SITES=	SFJP/${PORTNAME}-fonts/62344/
+MASTER_SITES=	OSDN/${PORTNAME}-fonts/62344/
 PKGNAMEPREFIX=	ja-font-
 PKGNAMESUFFIX=	-outline
 DISTNAME=	${PORTNAME}-TESTFLIGHT-060
@@ -12,7 +13,7 @@ DISTNAME=	${PORTNAME}-TESTFLIGHT-060
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	M+ Outline Fonts
 
-RUN_DEPENDS=	mkfontdir:x11-fonts/mkfontdir \
+RUN_DEPENDS=	mkfontscale>=0:x11-fonts/mkfontscale \
 		mkfontscale:x11-fonts/mkfontscale
 
 USES=		fonts:fc tar:xz

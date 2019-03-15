@@ -3,31 +3,31 @@
 
 PORTNAME=	grub2-pcbsd
 PORTVERSION=	2.02q
-PORTREVISION=	10
+PORTREVISION=	16
 CATEGORIES=	sysutils
 MASTER_SITES=	http://www.pcbsd.org/~kris/software/ \
 		ftp://ftp.pcbsd.org/pub/software/
 DISTNAME=	grub-2.02_8
 
-MAINTAINER=	kmoore@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multiboot boot loader
 
 LICENSE=	GPLv3
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	${LOCALBASE}/bin/flex:textproc/flex \
 		${LOCALBASE}/bin/bash:shells/bash \
 		help2man:misc/help2man
 
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
+USE_HARDENING=	pie:off relro:off
 
 WRKSRC=		${WRKDIR}/grub-2.02
-CONFLICTS=	grub-0* grub2-2*
+CONFLICTS=	grub2-2*
 SSP_UNSAFE=	yes
 USE_GCC=	yes
-ACLOCAL_ARGS=	-Im4
 GNU_CONFIGURE=	yes
-USES=		autoreconf bison cpe gettext gmake makeinfo python tar:xz
+USES=		autoreconf:build bison cpe gettext gmake makeinfo python tar:xz
 ONLY_FOR_ARCHS=	i386 amd64
 INFO=		grub grub-dev
 MAKE_JOBS_UNSAFE=	yes
@@ -43,6 +43,8 @@ SUB_FILES=	00_header 10_kfreebsd 10_ktrueos 30_os-prober 50_otherbe
 
 OPTIONS_DEFINE=	MKFONT FUSE
 OPTIONS_DEFAULT=MKFONT
+OPTIONS_SUB=	yes
+
 MKFONT_DESC=	Build grub-mkfont (require freetype2)
 FUSE_DESC=	Build grub-mount (require FUSE)
 
@@ -58,24 +60,17 @@ PLIST_SUB+=	EFIEMU=${EFIEMU}
 LIB_DEPENDS+=	libfreetype.so:print/freetype2
 BUILD_DEPENDS+=	${LOCALBASE}/share/fonts/dejavu/DejaVuSans.ttf:x11-fonts/dejavu \
 		${LOCALBASE}/share/fonts/gnu-unifont/unifont.pcf.gz:x11-fonts/gnu-unifont
-MAN1+=		grub-mkfont.1
 CONFIGURE_ARGS+=	--enable-grub-mkfont
 .else
 CONFIGURE_ARGS+=	--disable-grub-mkfont
-MKFONT=		"@comment "
 .endif
-
-PLIST_SUB+=	MKFONT=${MKFONT}
 
 .if ${PORT_OPTIONS:MFUSE}
 LIB_DEPENDS+=	libfuse.so:sysutils/fusefs-libs
 CONFIGURE_ARGS+=	--enable-grub-mount
 .else
 CONFIGURE_ARGS+=	--disable-grub-mount
-FUSE=		"@comment "
 .endif
-
-PLIST_SUB+=	FUSE=${FUSE}
 
 post-patch:
 	@${TOUCH} -t 200001010000 ${WRKSRC}/Makefile.util.def

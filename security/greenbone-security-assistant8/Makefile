@@ -2,7 +2,7 @@
 
 PORTNAME?=	greenbone-security-assistant8
 PORTVERSION?=	6.0.12
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	security
 MASTER_SITES?=	http://wald.intevation.org/frs/download.php/2442/
 DISTNAME=	${PORTNAME:S/${OPENVAS_VER}//}-${PORTVERSION}
@@ -21,7 +21,7 @@ LIB_DEPENDS=	libgnutls.so:security/gnutls \
 
 CONFLICTS?=	${PORTNAME:S/${OPENVAS_VER}/9/}-*
 
-USES=		cmake:outsource gettext gnome pkgconfig
+USES=		cmake gettext gnome pkgconfig
 USE_GNOME=	glib20 libxml2 libxslt
 USE_RC_SUBR=	gsad
 ETCDIR=		${PREFIX}/etc/openvas

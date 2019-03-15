@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	rt
-DISTVERSION=	4.2.14
+DISTVERSION=	4.2.16
 CATEGORIES=	www
 MASTER_SITES=	http://download.bestpractical.com/pub/rt/release/
 PKGNAMESUFFIX=	42
@@ -11,7 +11,7 @@ COMMENT=	RT is an industrial-grade ticketing system written in Perl
 
 LICENSE=	GPLv2
 
-CONFLICTS_INSTALL=	rt40-4.0* rt44-4.4* brlcad-[0-9]*
+CONFLICTS_INSTALL=	rt44-4.4* brlcad-[0-9]*
 
 NO_ARCH=	yes
 
@@ -138,7 +138,6 @@ CONFIGURE_ARGS+=	--enable-layout=${RT_LAYOUT} \
 
 CONFIGURE_ENV+=	PERL=${LOCALBASE}/bin/perl
 
-PKGMESSAGE=	${WRKDIR}/pkg-message
 SUB_FILES=	pkg-message
 SUB_LIST=	RT_ETC_PATH=${RT_ETC_PATH}
 PLIST_SUB=	RT_ETC_DIR=${RT_ETC_DIR}

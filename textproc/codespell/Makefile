@@ -1,7 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	codespell
-PORTVERSION=	1.8
+PORTVERSION=	1.14
 CATEGORIES=	textproc
 
 MAINTAINER=	gjb@FreeBSD.org
@@ -10,7 +10,7 @@ COMMENT=	Source code spelling checker
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		python:3
+USES=		python:3.4+
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	lucasdemarchi

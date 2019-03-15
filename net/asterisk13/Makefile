@@ -1,14 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	asterisk
-PORTVERSION=	13.17.1
+PORTVERSION=	13.25.0
 CATEGORIES=	net
-MASTER_SITES=	http://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
+MASTER_SITES=	https://downloads.asterisk.org/pub/telephony/%SUBDIR%/:DEFAULT,g729
 MASTER_SITE_SUBDIR=	asterisk/ \
 			asterisk/old-releases/ \
 			sounds/releases/:g729
 PKGNAMESUFFIX=	13
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX}
+DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Open Source PBX and telephony toolkit
@@ -19,33 +20,32 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 LIB_DEPENDS=	libuuid.so:misc/e2fsprogs-libuuid \
 		libjansson.so:devel/jansson
 
-BROKEN_armv6=		fails to configure: the SPANDSP installation appears to be missing or broken
-ONLY_FOR_ARCHS=		amd64 armv6 i386 powerpc sparc64
+ONLY_FOR_ARCHS=	amd64 armv6 armv7 i386 powerpc sparc64
 
 EXTRACT_ONLY:=	${DISTNAME}${EXTRACT_SUFX}
 
-USES=		bison cpe gmake iconv libedit localbase \
+USE_HARDENING=	pie:off relro:off
+
+USES=		bison cpe gmake gnome iconv libedit localbase \
 		shebangfix sqlite ssl ncurses
 USE_CSTD=	gnu89
 USE_GNOME=	libxml2
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	asterisk
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
+USE_GITHUB=	nodefault
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS+=	--datarootdir=${DATADIR} \
-			--with-ilbc=internal \
-			--with-crypto=${OPENSSLBASE} \
-			--with-ssl=${OPENSSLBASE}
+CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
+		--with-ilbc=internal \
+		--with-crypto=${OPENSSLBASE} \
+		--with-ssl=${OPENSSLBASE}
 
 CPE_VENDOR=	digium
 
 SHEBANG_FILES=	agi/agi-test.agi \
 		agi/jukebox.agi \
 		contrib/scripts/astversion
-
+LDFLAGS=	-L.
 MAKE_ENV=	PTHREAD_LIBS="-lpthread" \
 		MKDIR="${MKDIR}" \
 		PWLIBDIR=${LOCALBASE}/share/pwlib \
@@ -58,13 +58,13 @@ MAKE_ARGS+=	NOISY_BUILD=yes \
 
 CONFLICTS=		ossp-uuid-[0-9]*
 CONFLICTS_BUILD=	linuxthreads-*
-CONFLICTS_INSTALL=	asterisk*-1.8* asterisk*-11*
+CONFLICTS_INSTALL=	asterisk15 asterisk16
 
 OPTIONS_DEFINE=			ASTVERSION BACKTRACE CURL EXCHANGE FREETDS LDAP LUA \
 				MP3PLAYER OOH323 OPTIMIZED_CFLAGS PJSIP PORTAUDIO RADIUS SNMP \
 				SPANDSP SRTP SYSINFO XMPP
 OPTIONS_DEFAULT=		CURL FREETDS GSM LUA MP3PLAYER NEWT ODBC MYSQL PGSQL PJSIP \
-				PORTAUDIO RADIUS SNMP SPANDSP SPEEX SQLITE2 VORBIS
+				PORTAUDIO RADIUS SNMP SPANDSP SPEEX SRTP SQLITE2 VORBIS
 
 OPTIONS_DEFINE_i386=		DAHDI
 OPTIONS_DEFINE_amd64=		DAHDI
@@ -75,9 +75,10 @@ OPTIONS_DEFAULT_amd64=		DAHDI BASE XMPP
 OPTIONS_DEFAULT_sparc64=	DAHDI GCC XMPP
 OPTIONS_DEFAULT_powerpc=	GCC XMPP
 OPTIONS_DEFAULT_armv6=		BASE
+OPTIONS_DEFAULT_armv7=		BASE
 
 OPTIONS_GROUP=			CODECS
-OPTIONS_GROUP_CODECS=		GSM NEWG711 SPEEX VORBIS
+OPTIONS_GROUP_CODECS=		GSM NEWG711 OPUS SPEEX VORBIS
 CODECS_DESC=			Encoder/Decoder (Codec) Support
 
 OPTIONS_SINGLE=			COMPILER
@@ -94,9 +95,10 @@ MENU_DESC=			Menuselect Interface Backend
 NEWT_DESC=			Newt User Interface
 
 OPTIONS_GROUP+=			SOUNDS
-OPTIONS_GROUP_SOUNDS=		G729
+OPTIONS_GROUP_SOUNDS=		G729 JAPANESE
 SOUNDS_DESC=			Core and Music-on-Hold (MoH) Sound Files
 G729_DESC=			Install G.729 format sounds
+JAPANESE_DESC=			Install Japanese voice prompts
 ASTERISK_CORE_G729_SOUNDS=	asterisk-core-sounds-en-g729-1.5.tar.gz
 ASTERISK_MOH_G729_SOUNDS=	asterisk-moh-opsound-g729-2.03.tar.gz
 G729_DISTFILES=			${ASTERISK_CORE_G729_SOUNDS}:g729 \
@@ -104,12 +106,13 @@ G729_DISTFILES=			${ASTERISK_CORE_G729_SOUNDS}:g729 \
 
 ASTVERSION_DESC?= Install astversion (requires bash)
 BACKTRACE_DESC?= Stack backtrace support via (lib)execinfo
-BASE_DESC=	Use base compiler (experimental)
+BASE_DESC=	Use base compiler
 DAHDI_DESC?=	DAHDI support
 EXCHANGE_DESC?=	Exchange calendar support
 MP3PLAYER_DESC=	Install MP3 Player for Music-On-Hold (mpg123)
 NEWG711_DESC?=	New G711 Codec
 OOH323_DESC?=	ooh323 support
+OPUS_DESC?=	Opus Codec
 PJSIP_DESC?=	Build the PJSIP based SIP channel
 SRTP_DESC?=	SecureRTP support
 SYSINFO_DESC?=	Use devel/libsysinfo to get system information
@@ -120,7 +123,6 @@ OPTIONS_SUB=		yes
 ASTVERSION_RUN_DEPENDS=		bash:shells/bash
 
 BACKTRACE_CONFIGURE_WITH=	execinfo
-BACKTRACE_USES=			execinfo
 
 CURL_CONFIGURE_ON=	--with-libcurl
 CURL_CONFIGURE_OFF=	--with-libcurl=no
@@ -133,7 +135,9 @@ DAHDI_LIB_DEPENDS=	libpri.so:misc/libpri \
 			libtonezone.so:misc/dahdi
 
 EXCHANGE_CONFIGURE_OFF=	--without-neon --without-neon29
-EXCHANGE_LIB_DEPENDS=	libneon.so:www/neon
+EXCHANGE_LIB_DEPENDS=	libneon.so:www/neon \
+			libexpat.so:textproc/expat2
+EXCHANGE_USES=		gettext-runtime
 
 FREETDS_CONFIGURE_ON=	--with-tds=${LOCALBASE}
 FREETDS_CONFIGURE_OFF=	--without-tds
@@ -144,11 +148,13 @@ GCC_USE=		GCC=yes
 GSM_CONFIGURE_WITH=	gsm
 GSM_LIB_DEPENDS=	libgsm.so:audio/gsm
 
+JAPANESE_RUN_DEPENDS=	${LOCALBASE}/share/asterisk/sounds/ja/digits/0.gsm:japanese/asterisk-sounds
+
 LDAP_CONFIGURE_WITH=	ldap
 LDAP_USE=		OPENLDAP=yes
 
 LUA_CONFIGURE_WITH=	lua
-LUA_USES=		lua:51
+LUA_USES=		lua
 LUA_CFLAGS=		-I${LUA_INCDIR}
 LUA_LDFLAGS=		-L${LUA_LIBDIR}
 
@@ -165,10 +171,9 @@ ODBC_CONFIGURE_ON=	--with-ltdl
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC \
 			libltdl.so:devel/libltdl
 
-OOH323_CPPFLAGS=	-I${LOCALBASE}/include/openh323
-OOH323_LIB_DEPENDS=     libpt_r.so:devel/pwlib \
-			libh323_r.so:net/openh323
-OOH323_MAKE_ENV=	OPENH323DIR=${LOCALBASE}/share/openh323
+OPUS_LIB_DEPENDS=	libopus.so:audio/opus
+OPUS_EXTRACT_ONLY=	${DISTFILE_opus}
+OPUS_GH_TUPLE=		traud:asterisk-opus:83e1b458c77e0e287adeca494eeb79edb077b0ff:opus
 
 PGSQL_CONFIGURE_WITH=	postgres
 PGSQL_USES=		pgsql
@@ -200,6 +205,7 @@ SQLITE2_CONFIGURE_WITH=	sqlite
 SQLITE2_LIB_DEPENDS=	libsqlite.so:databases/sqlite2
 
 SRTP_CONFIGURE_WITH=	srtp
+SRTP_LIB_DEPENDS=	libsrtp2.so:net/libsrtp2
 
 SYSINFO_LIB_DEPENDS=	libsysinfo.so:devel/libsysinfo
 
@@ -222,8 +228,6 @@ GROUPS=	${ASTERISK_GROUP} dahdi
 LIB_DEPENDS+=	libpj.so:net/pjsip-extsrtp
 .elif ${PORT_OPTIONS:MPJSIP} && ! ${PORT_OPTIONS:MSRTP}
 LIB_DEPENDS+=   libpj.so:net/pjsip
-.elif ! ${PORT_OPTIONS:MPJSIP} && ${PORT_OPTIONS:MSRTP}
-LIB_DEPENDS+=   libsrtp.so:net/libsrtp
 .endif
 
 .include <bsd.port.pre.mk>
@@ -248,8 +252,13 @@ post-extract:
 	@${FIND} ${WRKSRC} -name '*.d' -delete
 
 post-extract-G729-on:
-	${CP} ${DISTDIR}/${ASTERISK_CORE_G729_SOUNDS} ${WRKSRC}/sounds
-	${CP} ${DISTDIR}/${ASTERISK_MOH_G729_SOUNDS} ${WRKSRC}/sounds
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/${ASTERISK_CORE_G729_SOUNDS} ${WRKSRC}/sounds
+	${CP} ${DISTDIR}/${DIST_SUBDIR}/${ASTERISK_MOH_G729_SOUNDS} ${WRKSRC}/sounds
+
+post-extract-OPUS-on:
+	${CP} ${WRKSRC_opus}/include/asterisk/* ${WRKSRC}/include/asterisk
+	${CP} ${WRKSRC_opus}/codecs/* ${WRKSRC}/codecs
+	${CP} ${WRKSRC_opus}/res/* ${WRKSRC}/res
 
 post-patch:
 	@${REINPLACE_CMD} -e 's|/var/lib|${PREFIX}/share|g' ${WRKSRC}/configs/samples/musiconhold.conf.sample

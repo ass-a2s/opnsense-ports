@@ -3,6 +3,7 @@
 
 PORTNAME=	cltune
 PORTVERSION=	2.7.0
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	jmd@FreeBSD.org
@@ -15,12 +16,11 @@ BUILD_DEPENDS=	opencl>=0:devel/opencl
 LIB_DEPENDS=	libOpenCL.so:devel/ocl-icd
 RUN_DEPENDS=	opencl>=0:devel/opencl
 
+USES=		cmake compiler:c++11-lang
+USE_LDCONFIG=	yes
 USE_GITHUB=	yes
 GH_ACCOUNT=	CNugteren
 GH_PROJECT=	CLTune
-
-USE_LDCONFIG=	yes
-USES=		cmake
 
 PLIST_FILES=	include/cltune.h \
 		lib/libcltune.so \

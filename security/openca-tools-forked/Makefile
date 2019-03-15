@@ -4,7 +4,7 @@
 PORTNAME=	openca-tools-forked
 PORTVERSION=	1.4.0
 DISTVERSIONPREFIX=	v
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	security
 
 MAINTAINER=	svysh.fbsd@gmail.com
@@ -12,11 +12,14 @@ COMMENT=	Tools to deal with SCEP and PKCS7 messages
 
 LICENSE=	APACHE20
 
-USE_GITHUB=	yes
-GH_ACCOUNT=	openxpki
+BROKEN_SSL=	openssl111
+
+USES=		gmake perl5 ssl
 
 GNU_CONFIGURE=	yes
-USES=		gmake perl5 ssl
+
+USE_GITHUB=	yes
+GH_ACCOUNT=	openxpki
 
 CONFIGURE_ARGS+=	--with-openssl-prefix=${OPENSSLBASE}
 
@@ -28,8 +31,8 @@ post-install:
 
 .include <bsd.port.pre.mk>
 
-.if ${SSL_DEFAULT:Mopenssl-devel}
-BROKEN=		Does not build with openssl-devel
+.if ${OPSYS} == FreeBSD && ${OSVERSION} >= 1200000 && ${SSL_DEFAULT} == base
+BROKEN=	OpenSSL-1.1.1 not supported by the upstream
 .endif
 
 .include <bsd.port.post.mk>

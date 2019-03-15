@@ -3,7 +3,7 @@
 
 PORTNAME=	autoconf
 PORTVERSION=	2.13.000227
-PORTREVISION=	6
+PORTREVISION=	7
 CATEGORIES=	devel
 MASTER_SITES=	LOCAL/ade/gnu
 DISTNAME=	autoconf-000227
@@ -14,6 +14,9 @@ PKGNAMESUFFIX=	213
 # discretion.
 MAINTAINER=	tijl@FreeBSD.org
 COMMENT=	Automatically configure source code on many Un*x platforms (legacy 2.13)
+
+LICENSE=	GPLv2+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 BUILD_DEPENDS=	gm4:devel/m4
 RUN_DEPENDS=	gm4:devel/m4 \

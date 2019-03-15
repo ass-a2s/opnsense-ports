@@ -16,7 +16,7 @@ ALL_TARGET=	clobber all
 MAKE_ARGS=	LIBS="-lncurses -lc"
 CFLAGS+=	-Wno-return-type
 
-NOPIE_PORTS=	yes
+USE_HARDENING=	pie:off
 
 PLIST_FILES=	bin/vnless \
 		bin/vnlesskey \

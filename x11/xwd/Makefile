@@ -1,11 +1,13 @@
 # $FreeBSD$
 
 PORTNAME=	xwd
-PORTVERSION=	1.0.6
+PORTVERSION=	1.0.7
 CATEGORIES=	x11
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	Dump an image of an X window
+
+USE_HARDENING=	safestack
 
 LICENSE=	MIT
 

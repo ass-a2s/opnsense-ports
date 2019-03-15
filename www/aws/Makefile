@@ -3,6 +3,7 @@
 
 PORTNAME=	aws
 PORTVERSION=	17.1
+PORTREVISION=	1
 CATEGORIES=	www
 
 MAINTAINER=	ports@FreeBSD.org
@@ -17,10 +18,12 @@ BUILD_DEPENDS=	gprbuild:devel/gprbuild \
 		gnatpython>=20101207:devel/gnatpython
 RUN_DEPENDS=	xmlada>=4.4:textproc/xmlada
 
-USES=		ada:run gmake python shebangfix tar:bzip2
+USES=		ada:run gmake python shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	AdaCore
 GH_TUPLE=	AdaCore:templates-parser:${PORTVERSION}:tp/templates_parser
+
+USE_HARDENING=	pie:off relro:off
 
 GNU_CONFIGURE=	yes
 NO_MTREE=	yes
@@ -41,9 +44,6 @@ OPTIONS_SUB=		yes
 NO_OPTIONS_SORT=	yes
 DOCS_BUILD_DEPENDS=	sphinx-build:textproc/py-sphinx
 OPTIONS_SINGLE_Secure-Socket-Layer= SSL GNUTLS
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 SHARED_DESC=		Build shared libraries in addition to static ones
 IP6_DESC=		Support IPv6 instead of IPv4

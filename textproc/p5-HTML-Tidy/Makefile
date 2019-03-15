@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	HTML-Tidy
-PORTVERSION=	1.58
+PORTVERSION=	1.60
 CATEGORIES=	textproc www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
@@ -12,9 +12,9 @@ COMMENT=	Web validation in a Perl object using tidy
 
 LICENSE=	ART20
 
-BUILD_DEPENDS=	p5-libwww>=0:www/p5-libwww
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-libwww>=0:www/p5-libwww
 LIB_DEPENDS=	libtidyp.so:textproc/tidyp
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 
 OPTIONS_DEFINE=	DOCS
 

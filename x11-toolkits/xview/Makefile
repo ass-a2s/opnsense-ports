@@ -3,7 +3,7 @@
 
 PORTNAME=	xview
 PORTVERSION=	3.2.1.4.19c
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://www.physionet.org/physiotools/xview/src/ \
 		http://komquats.com/distfiles/ \
@@ -15,8 +15,7 @@ COMMENT=	X Window-System-based Visual/Integrated Environment for Workstations
 
 MAKE_JOBS_UNSAFE=	yes
 
-BUILD_DEPENDS=	mkfontdir:x11-fonts/mkfontdir \
-		mkfontscale:x11-fonts/mkfontscale
+BUILD_DEPENDS=	mkfontscale:x11-fonts/mkfontscale
 
 ONLY_FOR_ARCHS=	i386
 REINPLACE_ARGS=	-i ""
@@ -34,8 +33,6 @@ X11BASE2FIX=	clients/olwmslave/help_file.c	lib/libxview/help/help_file.c	\
 		lib/libxview/misc/gettext.h	lib/libxview/textsw/txt_e_menu.c
 
 OPTIONS_DEFINE=	DOCS
-
-.include <bsd.port.pre.mk>
 
 post-extract:
 	@${MV} ${WRKSRC}/xview.man ${WRKSRC}/XView.man
@@ -60,12 +57,12 @@ pre-install:
 	@${FIND} ${WRKSRC}/config ${WRKSRC}/fonts -type f -name Makefile | ${XARGS} ${REINPLACE_CMD} -e '/PROJECTROOT = /!s+${PREFIX}+${STAGEDIR}${PREFIX}+g'
 
 post-install:
-.if ${PORT_OPTIONS:MDOCS}
-	@(cd ${WRKSRC}/doc; ${MAKE} install)
-.endif
 	@${RM} ${STAGEDIR}${PREFIX}/lib/help/clock.info
 	@${RM} ${STAGEDIR}${PREFIX}/lib/help/olwm.info
 	@${RM} ${STAGEDIR}${PREFIX}/lib/help/props.info
 	@${RM} ${STAGEDIR}${PREFIX}/lib/help/textedit.info
 
-.include <bsd.port.post.mk>
+post-install-DOCS-on:
+	@(cd ${WRKSRC}/doc; ${MAKE} install)
+
+.include <bsd.port.mk>

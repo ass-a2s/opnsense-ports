@@ -2,11 +2,11 @@
 # $FreeBSD$
 
 PORTNAME=	polygraph
-PORTVERSION=	4.9.0
-PORTREVISION=	3
-DISTVERSIONSUFFIX=	-src
+DISTVERSION=	4.13.0
+PORTREVISION=	1
 CATEGORIES=	benchmarks www
 MASTER_SITES=	http://www.web-polygraph.org/downloads/srcs/
+EXTRACT_SUFX=	-src.tgz
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Benchmarking tool for Web proxies
@@ -14,15 +14,13 @@ COMMENT=	Benchmarking tool for Web proxies
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
-
-USES=		gmake ncurses shebangfix tar:tgz
+USES=		gmake ncurses shebangfix
 SHEBANG_FILES=	tools/*.pl
 USE_GCC=	any
 GNU_CONFIGURE=	yes
 
 # The port does not build with C++11 or later (bug 219275).
-USE_CXXSTD=	gnu++03
+USE_CXXSTD=	gnu++98
 
 CONFLICTS=	ltrace-0*
 

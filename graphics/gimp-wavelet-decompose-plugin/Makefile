@@ -26,8 +26,6 @@ PLIST_FILES=	${PLUGIN_DIR}/wavelet-decompose
 
 LANGUAGES=	de ru it pl
 
-EXPLICIT_SAFESTACK=	yes
-
 OPTIONS_DEFINE=	NLS
 
 .for language in ${LANGUAGES}

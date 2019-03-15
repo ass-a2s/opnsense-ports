@@ -1,7 +1,8 @@
 # $FreeBSD$
 
 PORTNAME=	unordered-containers
-PORTVERSION=	0.2.8.0
+PORTVERSION=	0.2.9.0
+PORTREVISION=	2
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

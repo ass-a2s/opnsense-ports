@@ -10,11 +10,11 @@ PKGNAMEPREFIX=	p5-
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Retrieve the Mandarin (PinYin) of Chinese character (HanZi)
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-Lingua-Han-Utils>=0.10:chinese/p5-Lingua-Han-Utils
-RUN_DEPENDS:=	${BUILD_DEPENDS}
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-Lingua-Han-Utils>=0.10:chinese/p5-Lingua-Han-Utils
 
 NO_ARCH=	yes
 USES=		perl5

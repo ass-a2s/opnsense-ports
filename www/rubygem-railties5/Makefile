@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	railties
-PORTVERSION=	5.1.4
+PORTVERSION=	5.1.6.1
 CATEGORIES=	www rubygems
 MASTER_SITES=	RG
 PKGNAMESUFFIX=	5
@@ -19,11 +19,14 @@ RUN_DEPENDS=	rubygem-actionpack5>=${PORTVERSION}:www/rubygem-actionpack5 \
 		rubygem-rake>=0.8.7:devel/rubygem-rake \
 		rubygem-thor>=0.18.1:devel/rubygem-thor
 
-CONFLICTS_INSTALL=	rubygem-railties rubygem-railties4 rubygem-railties41
+CONFLICTS_INSTALL=	rubygem-railties4 rubygem-railties50
+
+PORTSCOUT=	limit:^5\.1\.
+
+USES=		gem
+USE_RUBY=	yes
 
 NO_ARCH=	yes
-USE_RUBY=	yes
-USES=		gem
 
 PLIST_FILES=	bin/rails
 

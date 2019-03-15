@@ -3,9 +3,9 @@
 
 PORTNAME=	solarwolf
 PORTVERSION=	1.5
-PORTREVISION=	9
+PORTREVISION=	12
 CATEGORIES=	games
-MASTER_SITES=	http://www.pygame.org/shredwheat/solarwolf/
+MASTER_SITES=	https://www.pygame.org/shredwheat/solarwolf/
 
 MAINTAINER=	mail@maxlor.com
 COMMENT=	Action/arcade game originally based of SolarFox on the Atari 2600
@@ -13,9 +13,10 @@ COMMENT=	Action/arcade game originally based of SolarFox on the Atari 2600
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/lgpl.txt
 
-RUN_DEPENDS=	${PYTHON_SITELIBDIR}/pygame/__init__.py:devel/py-game
+RUN_DEPENDS=	${PYGAME}
 
-USES=		python:2
+USES=		python:2.7 shebangfix
+SHEBANG_FILES=	solarwolf.py
 
 DESKTOP_ENTRIES=	"SolarWolf" "${COMMENT}" "solarwolf" \
 	"solarwolf" "Game;ArcadeGame;" false

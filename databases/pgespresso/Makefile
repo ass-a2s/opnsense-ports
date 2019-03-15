@@ -3,6 +3,7 @@
 
 PORTNAME=	pgespresso
 PORTVERSION=	1.2
+PORTREVISION=	1
 CATEGORIES=	databases
 
 MAINTAINER=	matthew@FreeBSD.org
@@ -14,6 +15,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	2ndquadrant-it
 
 USES=		gmake pgsql:9.2+
+LLD_UNSAFE=	yes
 WANT_PGSQL=	server
 
 PLIST_FILES=	lib/postgresql/pgespresso.so				\
@@ -26,6 +28,8 @@ PORTDOCS=	README.asciidoc
 
 INSTALL_TARGET=	install-strip
 MAKE_ARGS=	INSTALL="${INSTALL} -c"
+
+OPTIONS_DEFINE=	DOCS
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DOCSDIR}/

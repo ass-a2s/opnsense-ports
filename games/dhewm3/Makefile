@@ -2,7 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	dhewm3
-PORTVERSION=	1.4.1
+PORTVERSION=	1.5.0
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
@@ -15,13 +15,12 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libogg.so:audio/libogg \
 		libvorbis.so:audio/libvorbis
 
-BROKEN_armv6=		dumps core: Assertion failed: (!NodePtr->isKnownSentinel()), function operator*, file ilist_iterator.h
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	dhewm
 
-USES=		cmake jpeg openal:al
+USES=		cmake compiler:c++11-lang jpeg openal:al
 USE_SDL=	sdl2
+LLD_UNSAFE=	yes
 
 WRKSRC_SUBDIR=	neo
 

@@ -7,16 +7,12 @@ CATEGORIES=	devel python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	feld@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Pure-Python asynchronous I/O using coroutines
 
 LICENSE=	MIT
 
 USES=		python
-USE_PYTHON=	distutils
-
-PLIST_FILES=	%%PYTHON_SITELIBDIR%%/bluelet.py \
-		%%PYTHON_SITELIBDIR%%/bluelet.pyc \
-		%%PYTHON_SITELIBDIR%%/bluelet.pyo
+USE_PYTHON=	distutils autoplist
 
 .include <bsd.port.mk>

@@ -5,7 +5,7 @@ PORTNAME=	canna
 PORTVERSION=	3.7p3
 PORTREVISION=	9
 CATEGORIES=	japanese
-MASTER_SITES=	SFJP/canna/9565
+MASTER_SITES=	OSDN/canna/9565
 PKGNAMESUFFIX=	-lib
 DISTNAME=	Canna${PORTVERSION:S/.//g}
 
@@ -15,13 +15,12 @@ COMMENT=	Kana-to-Kanji conversion system, library part
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
 
+USE_HARDENING=	pie:off relro:off
+
 USES=		imake:notall,noman tar:bzip2
 USE_LDCONFIG=	yes
 ALL_TARGET=	canna
 INSTALL_TARGET=	instsgs
 MAKE_JOBS_UNSAFE=	yes
-
-NOPIE_PORTS=	yes
-NORELRO_PORTS=	yes
 
 .include <bsd.port.mk>

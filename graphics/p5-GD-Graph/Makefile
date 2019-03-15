@@ -11,12 +11,12 @@ DISTNAME=	GDGraph-${PORTVERSION}
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Graph plotting module for perl5
 
-LICENSE=	ART10 GPLv1
+LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
 
-BUILD_DEPENDS=	p5-GD>=0:graphics/p5-GD \
+BUILD_DEPENDS=	${RUN_DEPENDS}
+RUN_DEPENDS=	p5-GD>=0:graphics/p5-GD \
 		p5-GD-TextUtil>=0:graphics/p5-GD-TextUtil
-RUN_DEPENDS:=	${BUILD_DEPENDS}
 TEST_DEPENDS=	p5-Capture-Tiny>=0:devel/p5-Capture-Tiny \
 		p5-Test-Exception>=0.40:devel/p5-Test-Exception
 

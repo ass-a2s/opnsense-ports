@@ -2,7 +2,8 @@
 # $FreeBSD$
 
 PORTNAME=	fgl
-PORTVERSION=	5.5.3.1
+PORTVERSION=	5.7.0.1
+PORTREVISION=	1
 CATEGORIES=	devel haskell
 
 MAINTAINER=	haskell@FreeBSD.org

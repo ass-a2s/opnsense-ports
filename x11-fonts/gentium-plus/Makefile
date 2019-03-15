@@ -2,6 +2,7 @@
 # $FreeBSD$
 
 PORTNAME=	GentiumPlus
+PORTREVISION=	1
 PORTVERSION=	5.000
 CATEGORIES=	x11-fonts
 MASTER_SITES=	http://software.sil.org/downloads/gentium/
@@ -30,6 +31,8 @@ OPTIONS_DEFINE=	DOCS
 do-install:
 	@${MKDIR} ${STAGEDIR}${FONTSDIR}
 	${INSTALL_DATA} ${WRKSRC}/*.ttf ${STAGEDIR}${FONTSDIR}
+
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	${INSTALL_DATA} ${DOCSLIST:S,^,${WRKSRC}/,} ${STAGEDIR}${DOCSDIR}
 

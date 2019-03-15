@@ -3,27 +3,29 @@
 
 PORTNAME=	smalltalk
 PORTVERSION=	3.2.5
-PORTREVISION=	9
+PORTREVISION=	13
 CATEGORIES=	lang
 MASTER_SITES=	GNU
 
 MAINTAINER=	johans@FreeBSD.org
 COMMENT=	GNU Smalltalk
 
+BROKEN_aarch64=		Fails to link: undefined reference to sbrk
+BROKEN_powerpc64=	Fails to build: gst-package: did not understand #~
+BROKEN_sparc64=		Fails to install
+
 BUILD_DEPENDS=	zip:archivers/zip \
 		gawk:lang/gawk
 LIB_DEPENDS=	libgdbm.so:databases/gdbm \
 		libcairo.so:graphics/cairo
 
-OPTIONS_DEFINE=	TK PGSQL SDL
-OPTIONS_DEFAULT=TK PGSQL SDL
+OPTIONS_DEFINE=	PGSQL SDL
+OPTIONS_DEFAULT=PGSQL SDL
 OPTIONS_SUB=	yes
-TK_USES=	tk:84
-TK_CONFIGURE_WITH=tcl=${LOCALBASE}/lib/tcl8.4 tk=${LOCALBASE}/lib/tk8.4
 PGSQL_USES=	pgsql
 SDL_USE=	SDL=image,mixer,sdl,sound,ttf
 
-USES=		execinfo gmake iconv libtool localbase makeinfo pathfix pkgconfig \
+USES=		gmake iconv libtool localbase makeinfo pathfix pkgconfig \
 		shebangfix sqlite tar:xz
 USE_GNOME=	pango
 USE_XORG=	ice xi xmu
@@ -45,9 +47,6 @@ PLIST_SUB=	VERSION="${PORTVERSION}"
 PORTDATA=	*
 
 INFO=		gst gst-base gst-libs
-
-BROKEN_aarch64=	Fails to link: undefined reference to sbrk
-BROKEN_sparc64=	Fails to install on sparc64
 
 post-patch:
 	@${REINPLACE_CMD} -e 's/ia64-\*-\* /&|amd64-*-* /' \

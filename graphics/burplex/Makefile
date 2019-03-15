@@ -12,10 +12,13 @@ COMMENT=	Preview and select images for batch processing
 
 LICENSE=	BSD2CLAUSE
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 RUN_DEPENDS=	${LOCALBASE}/bin/dcraw:graphics/dcraw
 
-USES=		qmake
-USE_QT4=	gui uic_build moc_build rcc_build \
+USES=		qmake qt:4
+USE_QT=		gui uic_build moc_build rcc_build \
 		imageformats_run
 WRKSRC=		${WRKDIR}/${PORTNAME}
 

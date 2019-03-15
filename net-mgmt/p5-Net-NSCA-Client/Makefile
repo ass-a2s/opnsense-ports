@@ -7,7 +7,7 @@ CATEGORIES=	net-mgmt perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
-MAINTAINER=	tj@FreeBSD.org
+MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for sending passive service checks to nagios
 
 RUN_DEPENDS=	p5-Const-Fast>=0.013:devel/p5-Const-Fast \
@@ -48,8 +48,5 @@ USE_PERL5=	modbuild
 post-patch:
 	@cd ${WRKSRC} && ${RM} bin/send_nsca
 	@cd ${WRKSRC} && ${RM} t/send_nsca.t
-
-regression-test: build
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} ./Build test
 
 .include <bsd.port.mk>

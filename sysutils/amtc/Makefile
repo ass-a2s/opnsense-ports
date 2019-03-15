@@ -9,9 +9,11 @@ COMMENT=	Threaded Intel AMT/vPro mass management tool
 
 LICENSE=	CC-BY-3.0
 
-BUILD_DEPENDS=	xxd:editors/vim-lite
+BUILD_DEPENDS=	xxd:editors/vim-console
 LIB_DEPENDS+=	libgcrypt.so:security/libgcrypt \
 		libcurl.so:ftp/curl
+
+USE_HARDENING=	pie:off
 
 USES=		perl5 shebangfix
 USE_GITHUB=	yes
@@ -19,8 +21,6 @@ GH_ACCOUNT=	schnoddelbotz
 GH_TAGNAME=	e7822e8
 USE_PERL5=	build
 SHEBANG_FILES=	${WRKSRC}/../amtc-web/cli/amtc-web.phpsh
-
-NOPIE_PORTS=	yes
 
 WRKSRC_SUBDIR=	src
 

@@ -1,17 +1,17 @@
 # $FreeBSD$
 
 PORTNAME=	python-docx
-PORTVERSION=	0.8.6
+PORTVERSION=	0.8.10
 CATEGORIES=	textproc python
 MASTER_SITES=	CHEESESHOP
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	jjachuf@gmail.com
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Python library for creating and updating Microsoft Word files
 
 LICENSE=	MIT
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=3.3.4:devel/py-lxml
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}lxml>=3.3.4:devel/py-lxml@${PY_FLAVOR}
 
 # Python3 ready
 USES=		python

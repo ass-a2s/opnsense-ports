@@ -1,33 +1,38 @@
 # $FreeBSD$
 
 PORTNAME=	noseofyeti
-PORTVERSION=	1.5.1
+PORTVERSION=	1.8
+DISTVERSIONPREFIX=	v
 CATEGORIES=	devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	truckman@FreeBSD.org
 COMMENT=	Nose plugin providing BDD dsl for Python
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose \
-		${PYTHON_PKGNAMEPREFIX}fudge>0:devel/py-fudge \
-		${PYTHON_PKGNAMEPREFIX}should_dsl>0:devel/py-should_dsl
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/LICENSE
+
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>0:devel/py-six@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}fudge>0:devel/py-fudge@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}should_dsl>0:devel/py-should_dsl@${PY_FLAVOR}
 
 OPTIONS_DEFINE=	DOCS
 DOCS_BUILD_DEPENDS=	\
-		${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose \
-		${PYTHON_PKGNAMEPREFIX}fudge>0:devel/py-fudge \
-		${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx \
-		${PYTHON_PKGNAMEPREFIX}pinocchio>0:devel/py-pinocchio \
-		${PYTHON_PKGNAMEPREFIX}should_dsl>0:devel/py-should_dsl
+		${PYTHON_PKGNAMEPREFIX}nose>0:devel/py-nose@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}fudge>0:devel/py-fudge@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}sphinx>0:textproc/py-sphinx@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}pinocchio>0:devel/py-pinocchio@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}should_dsl>0:devel/py-should_dsl@${PY_FLAVOR}
 
-NO_ARCH=	yes
-USES=		python shebangfix
+USES=		python:2.7 shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	delfick
 GH_PROJECT=	nose-of-yeti
-GH_TAGNAME=	e8f3110
 USE_PYTHON=	autoplist distutils
+
+NO_ARCH=	yes
+
 SHEBANG_FILES=	test.sh
 PYTHON_OLD_CMD=	"/usr/bin/env python"
 
@@ -37,7 +42,7 @@ do-test:
 	cd ${WRKSRC} && ${PYTHON_CMD} test.sh
 
 post-build-DOCS-on:
-	(cd ${WRKSRC}/docs ; PYTHONPATH=${WRKSRC} ${MAKE_CMD} html)
+	(cd ${WRKSRC}/docs ; PYTHONPATH=${WRKSRC} ${MAKE_CMD} html SPHINXBUILD=sphinx-build-${PYTHON_VER})
 
 post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

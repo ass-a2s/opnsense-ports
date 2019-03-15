@@ -2,21 +2,27 @@
 # $FreeBSD$
 
 PORTNAME=	yabasic
-PORTVERSION=	2.769
+PORTVERSION=	2.82.1
+PORTEPOCH=	1
 CATEGORIES=	lang
-MASTER_SITES=	http://www.yabasic.de/download/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Yet another Basic for Unix and Windows
 
-LICENSE=	ART10 GPLv2
-LICENSE_COMB=	multi
+LICENSE=	MIT
+LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		bison ncurses
+USES=		autoreconf bison gmake ncurses
+USE_GITHUB=	yes
+GH_ACCOUNT=	marcIhm
+
 GNU_CONFIGURE=	yes
 USE_XORG=	ice sm x11
+TEST_TARGET=	check
 
-PORTDOCS=	yabasic.htm
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/unix/lang
+
+PORTDOCS=	ChangeLog README
 PLIST_FILES=	bin/yabasic man/man1/yabasic.1.gz
 
 OPTIONS_DEFINE=	DOCS
@@ -29,10 +35,7 @@ post-patch:
 	@${REINPLACE_CMD} -e \
 		'/Intrinsic.h/d' ${WRKSRC}/yabasic.h
 
-post-build test:
-	@(cd ${WRKSRC} && ${DO_MAKE_BUILD} check)
-
-post-install:
+post-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
 	(cd ${WRKSRC} && ${INSTALL_DATA} ${PORTDOCS} ${STAGEDIR}${DOCSDIR})
 

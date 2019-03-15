@@ -3,6 +3,7 @@
 
 PORTNAME=	wxglade
 PORTVERSION=	0.7.2
+PORTREVISION=	1
 CATEGORIES=	devel x11-toolkits python
 MASTER_SITES=	SF
 DISTNAME=	wxGlade-${PORTVERSION}
@@ -13,7 +14,7 @@ COMMENT=	GUI builder for wxPython/wxWidgets written in Python
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python
+USES=		python:2.7
 USE_WX=		3.0+
 WX_COMPS=	python
 

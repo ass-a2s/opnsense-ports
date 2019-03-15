@@ -3,7 +3,7 @@
 
 PORTNAME=	rhtvision
 PORTVERSION=	2.2.1.1
-PORTREVISION=	5
+PORTREVISION=	9
 CATEGORIES=	devel
 MASTER_SITES=	SF/tvision/UNIX/${PORTVERSION:R}%20CVS20100714%20Source%20and%20Debian%205.0
 DISTNAME=	${PORTNAME}_${PORTVERSION:R}-${PORTVERSION:E}
@@ -16,6 +16,8 @@ OPTIONS_SUB=	yes
 
 WRKSRC=		${WRKDIR}/tvision
 
+USE_HARDENING=	pie:off
+
 USES=		gmake perl5 shebangfix
 SHEBANG_FILES=	config.pl confignt.pl conflib.pl linux/compress
 USE_GCC=	yes
@@ -25,13 +27,11 @@ CONFIGURE_ARGS=	--prefix=${STAGEDIR}${PREFIX} \
 		--no-libs-here
 USE_LDCONFIG=	yes
 
-NOPIE_PORTS=	yes
-
 CFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
 
 # The port does not build with C++11 or later (bug 219275).
-USE_CXXSTD=     gnu++03
+USE_CXXSTD=     gnu++98
 
 PLIST_SUB=	VERSION="${PORTVERSION:R}"
 

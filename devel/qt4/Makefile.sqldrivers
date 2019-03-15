@@ -8,11 +8,13 @@ PKGNAMESUFFIX=	-plugin
 
 MAINTAINER=	kde@FreeBSD.org
 
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
 EXTRA_PATCHES=	# empty
 
-USE_QT4=	corelib sql moc_build qmake_build
-QT_DIST=	yes
-USES+=		qmake:outsource
+USE_QT=		corelib sql moc_build qmake_build
+USES+=		qmake:outsource qt-dist:4
 
 CXXFLAGS+=	-I${WRKSRC}/include  # For private QtSql headers.
 

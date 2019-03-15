@@ -1,15 +1,15 @@
 # $FreeBSD$
 
 PORTNAME=	ykclient
-PORTVERSION=	2.12
-PORTREVISION=	2
+PORTVERSION=	2.15
 CATEGORIES=	security
-MASTER_SITES=	http://opensource.yubico.com/yubico-c-client/releases/
+MASTER_SITES=	https://developers.yubico.com/yubico-c-client/Releases/
 
 MAINTAINER=	matt@mjslabs.com
 COMMENT=	Yubico C client library
 
 LICENSE=	BSD2CLAUSE
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libcurl.so:ftp/curl
 BUILD_DEPENDS=	curl-config:ftp/curl \
@@ -18,6 +18,7 @@ BUILD_DEPENDS=	curl-config:ftp/curl \
 GNU_CONFIGURE=	yes
 USES=		libtool pkgconfig
 USE_LDCONFIG=	yes
+TEST_TARGET=	check
 
 PLIST_FILES=	bin/ykclient \
 		include/ykclient.h \
@@ -26,7 +27,7 @@ PLIST_FILES=	bin/ykclient \
 		include/ykclient_version.h \
 		lib/libykclient.so \
 		lib/libykclient.so.3 \
-		lib/libykclient.so.3.5.2 \
+		lib/libykclient.so.3.6.0 \
 		man/man1/ykclient.1.gz
 
 OPTIONS_DEFINE=	STATIC
@@ -35,8 +36,5 @@ STATIC_CONFIGURE_ENABLE=	static
 STATIC_PLIST_FILES=		lib/libykclient.a
 
 MAKE_JOBS_UNSAFE=	yes
-
-regression-test: build
-	@(cd ${WRKSRC} && ${MAKE_CMD} check)
 
 .include <bsd.port.mk>

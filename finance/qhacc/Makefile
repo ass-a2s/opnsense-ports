@@ -3,7 +3,7 @@
 
 PORTNAME=	qhacc
 PORTVERSION=	4.3
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	finance
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-${PORTVERSION}
 
@@ -13,11 +13,14 @@ COMMENT=	Simple Qt-based financial manager
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-LIB_DEPENDS=	libgpgme.so:security/gpgme \
-		libqwt6.so:x11-toolkits/qwt6
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
 
-USES=		compiler:c++11-lib qmake:norecursive tar:tgz
-USE_QT4=	corelib gui sql moc_build rcc_build uic_build
+LIB_DEPENDS=	libgpgme.so:security/gpgme \
+		libqwt6.so:x11-toolkits/qwt6@qt4
+
+USES=		compiler:c++11-lib qmake:norecursive qt:4 tar:tgz
+USE_QT=		corelib gui sql moc_build rcc_build uic_build
 USE_CXXSTD=	c++11
 USE_LDCONFIG=	yes
 
@@ -28,8 +31,8 @@ OPTIONS_DEFINE=	DOCS
 post-patch:
 	@${REINPLACE_CMD} -e \
 		'/^INSTALLDIR/s|=.*|=${DATADIR}| ; \
-		 /^QWTINCS/s|=.*|=${LOCALBASE}/include/qwt6| ; \
-		 /^QWTLIBS/s|=.*|=${LOCALBASE}/lib -lqwt6| ; \
+		 /^QWTINCS/s|=.*|=${QT_INCDIR}/qwt6| ; \
+		 /^QWTLIBS/s|=.*|=${QT_LIBDIR} -lqwt6| ; \
 		 /+= debug/s|^|#| ; \
 		 /^QMAKE_CFLAGS/s|=.*|= $$$${GPGMEINCS}| ; \
 		 /^QMAKE_CXXFLAGS/s|=.*|= $$$${GPGMEINCS}| ; \

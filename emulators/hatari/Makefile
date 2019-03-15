@@ -2,36 +2,35 @@
 # $FreeBSD$
 
 PORTNAME=	hatari
-PORTVERSION=	2.0.0
-PORTREVISION=	2
+PORTVERSION=	2.1.0
 CATEGORIES=	emulators
 MASTER_SITES=	http://download.tuxfamily.org/hatari/${PORTVERSION}/
 
-MAINTAINER=	ports@FreeBSD.org
+MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Atari ST emulator
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl.txt
 
+BROKEN_aarch64=		fails to configure: error: unrecognized CPU type
+BROKEN_armv6=		fails to configure: CMake Error: Generator: execution of make failed
+
 LIB_DEPENDS=	libportaudio.so:audio/portaudio \
 		libpng.so:graphics/png
-BUILD_DEPENDS=	python:lang/python
-RUN_DEPENDS=	python:lang/python
 
-USES=		cmake desktop-file-utils python readline shared-mime-info \
+USES=		cmake desktop-file-utils python:2.7 readline shared-mime-info \
 		shebangfix tar:bzip2
+USE_GNOME=	pygtk2
+USE_XORG=	sm ice x11 xext
+
 SHEBANG_FILES=	python-ui/*.py tools/atari-convert-dir.py \
 		tools/debugger/hatari_profile.py tools/hconsole/*.py
-python_OLD_CMD=	/usr/bin/python2
-USE_GNOME=	pygtk2
+
 CMAKE_ARGS=	-DETCDIR:PATH="${PREFIX}/etc" \
 		-DMANDIR:PATH="man/man1" \
 		-DREADLINE_FOUND:BOOL=ON
-INSTALLS_ICONS=	yes
 
-BROKEN_aarch64=		fails to configure: error: unrecognized CPU type
-BROKEN_armv6=		fails to configure: CMake Error: Generator: execution of make failed
-BROKEN_powerpc64=	fails to compile: sysdeps.h: redefinition of typedef 'uae_u8'
+INSTALLS_ICONS=	yes
 
 OPTIONS_DEFINE=		DEBUG DOCS SDL2 WINUAE
 
@@ -53,6 +52,9 @@ post-patch:
 .endfor
 	@${REINPLACE_CMD} -e \
 		's|-Wno-maybe-uninitialized||' ${WRKSRC}/src/cpu/CMakeLists.txt
+	@${REINPLACE_CMD} -e \
+		's|%%PYTHON_CMD%%|${PYTHON_CMD}| ; \
+		 s|%%PYTHON_VERSION%%|${PYTHON_VERSION}|' ${WRKSRC}/tools/atari-hd-image.sh
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${MANPREFIX}/man/fr/man1

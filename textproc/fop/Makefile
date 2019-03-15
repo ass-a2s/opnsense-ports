@@ -2,10 +2,10 @@
 # $FreeBSD$
 
 PORTNAME=	fop
-PORTVERSION=	2.2
+DISTVERSION=	2.3
 CATEGORIES=	textproc java
 MASTER_SITES=	APACHE/xmlgraphics/fop/source/:fop \
-		SF/offo/offo-hyphenation/${PORTVERSION}:hyph
+		SF/offo/offo-hyphenation/2.2:hyph # offo-hyphenation doesn't provide the corresponding version 2.3, 2.2 should be good for fop-2.3
 DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 DISTFILES=	${DISTNAME}.tar.gz:fop offo-hyphenation.zip:hyph
 EXTRACT_ONLY=	${DISTNAME}.tar.gz
@@ -16,7 +16,7 @@ COMMENT=	Print formatter driven by XSL formatting
 LICENSE=	APACHE20
 LICENSE_FILE=	${LEGALDIR}/LICENSE
 
-EXTRACT_DEPENDS+=	${UNZIP_CMD}:archivers/unzip
+EXTRACT_DEPENDS=	${UNZIP_CMD}:archivers/unzip
 
 OPTIONS_DEFINE=	DOCS
 
@@ -28,6 +28,7 @@ PORTDOCS=	*
 USE_JAVA=	yes
 JAVA_VERSION=	1.6+
 USE_ANT=	yes
+
 NO_ARCH=	yes
 
 # Prevent out of memory error during build
@@ -47,9 +48,10 @@ do-install:
 	    ${INSTALL_DATA} conf/fop.xconf ${STAGEDIR}${DATADIR}/conf && \
 	    ${COPYTREE_SHARE} hyph ${STAGEDIR}${DATADIR}
 	${INSTALL_SCRIPT} ${WRKSRC}/${PORTNAME} ${STAGEDIR}${DATADIR}
-	${LN} -s ${DATADIR}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
+	${LN} -s ../${DATADIR_REL}/${PORTNAME} ${STAGEDIR}${PREFIX}/bin/${PORTNAME}
 
+do-install-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
-	cd ${LEGALDIR} && ${INSTALL_MAN} LICENSE README NOTICE KEYS ${STAGEDIR}${DOCSDIR}
+	cd ${LEGALDIR} && ${INSTALL_DATA} README NOTICE KEYS ${STAGEDIR}${DOCSDIR}
 
 .include <bsd.port.mk>

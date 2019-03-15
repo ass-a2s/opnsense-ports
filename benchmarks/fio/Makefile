@@ -2,14 +2,15 @@
 # $FreeBSD$
 
 PORTNAME=	fio
-PORTVERSION=	3.0
+PORTVERSION=	3.13
 CATEGORIES=	benchmarks
 MASTER_SITES=	http://brick.kernel.dk/snaps/
 
 MAINTAINER=	bapt@FreeBSD.org
-COMMENT=	FIO - flexible IO tester
+COMMENT=	Flexible IO tester
 
 LICENSE=	GPLv2
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		gmake tar:bzip2
 
@@ -17,10 +18,6 @@ OPTIONS_DEFINE=	GNUPLOT EXAMPLES
 GNUPLOT_DESC=	Support for plotting graphs
 
 GNUPLOT_BUILD_DEPENDS=	${LOCALBASE}/bin/gnuplot:math/gnuplot
-
-BROKEN_aarch64=		Fails to compile: error: sys/auxv.h file not found
-BROKEN_armv6=		Fails to compile: error: use of undeclared identifier nop
-BROKEN_powerpc64=	Fails to compile: verify.c:1574: undefined reference to bswap64
 
 do-install:
 	${INSTALL_PROGRAM} ${WRKSRC}/fio ${STAGEDIR}${PREFIX}/bin

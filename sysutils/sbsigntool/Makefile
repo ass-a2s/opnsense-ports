@@ -3,6 +3,7 @@
 
 PORTNAME=	sbsigntool
 PORTVERSION=	0.6
+PORTREVISION=	1
 CATEGORIES=	sysutils
 MASTER_SITES=	https://launchpad.net/ubuntu/+archive/primary/+files/
 DISTNAME=	${PORTNAME}_${PORTVERSION}.orig
@@ -11,6 +12,8 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Signing utility for UEFI secure boot
 
 LICENSE=	GPLv3
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/libgnuefi.a:devel/gnu-efi \
 		help2man:misc/help2man

@@ -1,6 +1,7 @@
 # $FreeBSD$
 
-PORTREVISION=	2
+PORTREVISION=	0
+
 PKGNAMESUFFIX=	-kmod
 MASTERDIR=	${.CURDIR}/../secadm
 
@@ -9,11 +10,11 @@ COMMENT=	HardenedBSD Security Administration - Kernel module
 USES=		kmod
 KMOD=		yes
 
-USE_GITHUB=	yes
+USE_HARDENING=	pie:off relro:off
+
 pre-build:
 	(cd ${WRKSRC}; make depend)
 
 PLIST=	${.CURDIR}/pkg-plist
 
-NOPIE_PORTS=	yes
 .include "${MASTERDIR}/Makefile"

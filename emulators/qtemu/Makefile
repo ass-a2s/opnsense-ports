@@ -12,8 +12,11 @@ COMMENT=	Qt 4 based frontend for QEMU
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-USES=		qmake tar:bzip2
-USE_QT4=	gui xml uic_build moc_build rcc_build
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake qt:4 tar:bzip2
+USE_QT=		gui xml uic_build moc_build rcc_build
 CONFIGURE_ENV=	LOCALBASE=${LOCALBASE}
 
 DESKTOP_ENTRIES="QtEmu" "QEMU frontend" "" \
@@ -22,7 +25,8 @@ DESKTOP_ENTRIES="QtEmu" "QEMU frontend" "" \
 OPTIONS_DEFINE=	DOCS NLS
 OPTIONS_SUB=	yes
 
-NLS_USE=	QT4=linguisttools_build
+NLS_USES=	qt:4
+NLS_USE=	QT=linguisttools_build
 
 post-configure-NLS-on:
 	(cd ${WRKSRC} && ${LRELEASE} qtemu.pro)

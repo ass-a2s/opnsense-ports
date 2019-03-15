@@ -3,21 +3,21 @@
 
 PORTNAME=	rss2email
 PORTVERSION=	2.71
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	mail python
 MASTER_SITES=	http://www.allthingsrss.com/rss2email/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	srg@guglielmo.us
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Emails posts from subscribed RSS/Atom newsfeeds
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}feedparser>=5.0.1:textproc/py-feedparser \
-		${PYTHON_PKGNAMEPREFIX}html2text>=3.0.1:textproc/py-html2text
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}feedparser>=5.0.1:textproc/py-feedparser@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}html2text>=3.0.1:textproc/py-html2text@${PY_FLAVOR}
 
-USES=		python:2 shebangfix
+USES=		python:2.7 shebangfix
 SHEBANG_FILES=	rss2email.py
 NO_ARCH=	yes
 NO_BUILD=	yes
@@ -45,12 +45,4 @@ do-install-EXAMPLES-on:
 	@${MKDIR} ${STAGEDIR}${EXAMPLESDIR}
 	${INSTALL_DATA} ${WRKSRC}/config.py.example ${STAGEDIR}${EXAMPLESDIR}
 
-.include <bsd.port.pre.mk>
-
-.if ${OPSYS} == FreeBSD && ${OSVERSION} < 1100077
-# chmod -R bug.
-post-extract:
-	@${CHMOD} 0755 ${WRKSRC}
-.endif
-
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>

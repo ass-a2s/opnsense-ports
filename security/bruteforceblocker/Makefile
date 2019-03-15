@@ -2,27 +2,29 @@
 # $FreeBSD$
 
 PORTNAME=	bruteforceblocker
-PORTVERSION=	1.2.4
+PORTVERSION=	1.2.6
+PORTREVISION=	2
 CATEGORIES=	security
-
-USE_GITHUB=	yes
-GH_ACCOUNT=	dgerzo
 
 MAINTAINER=	danger@FreeBSD.org
 COMMENT=	Checks for SSH bruteforce and blocks given IPs
+
+LICENSE=	NONE
 
 RUN_DEPENDS=	p5-Unix-Syslog>=0:sysutils/p5-Unix-Syslog \
 		p5-Sys-Hostname-Long>=0:sysutils/p5-Sys-Hostname-Long \
 		p5-libwww>=0:www/p5-libwww \
 		p5-Net-DNS>=0:dns/p5-Net-DNS
 
-NO_BUILD=	yes
 USES=		perl5 shebangfix
+USE_GITHUB=	yes
+GH_ACCOUNT=	dgerzo
 USE_PERL5=	run
+
+NO_BUILD=	yes
 
 OPTIONS_DEFINE=	DOCS
 
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 SUB_FILES=	pkg-message
 SHEBANG_FILES=	${PORTNAME}.pl
 

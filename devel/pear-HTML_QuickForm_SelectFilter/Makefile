@@ -9,8 +9,10 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}RC1
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Element for PEAR::HTML_QuickForm that defines dynamic filters
 
-BUILD_DEPENDS=	${PEARDIR}/HTML/QuickForm.php:devel/pear-HTML_QuickForm
-RUN_DEPENDS=	${PEARDIR}/HTML/QuickForm.php:devel/pear-HTML_QuickForm
+LICENSE=	PHP301
+
+BUILD_DEPENDS=	${PEARDIR}/HTML/QuickForm.php:devel/pear-HTML_QuickForm@${PHP_FLAVOR}
+RUN_DEPENDS=	${PEARDIR}/HTML/QuickForm.php:devel/pear-HTML_QuickForm@${PHP_FLAVOR}
 
 USES=		pear
 

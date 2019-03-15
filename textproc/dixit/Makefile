@@ -19,8 +19,11 @@ COMMENT=	Romanian dictionaries databases and query application
 
 LICENSE=	GPLv3+
 
-USES=		qmake
-USE_QT4=	corelib gui network moc_build rcc_build
+DEPRECATED=		Qt4 has been EOL since december 2015
+EXPIRATION_DATE=	2019-03-15
+
+USES=		qmake qt:4
+USE_QT=		corelib gui network moc_build rcc_build
 LDFLAGS+=	-lz
 
 PLIST_SUB=	_DB=${_DB} DB_DIR=${DB_DIR} _DB_F=${_DB_F} \

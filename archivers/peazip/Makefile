@@ -1,9 +1,9 @@
-# Created by: Alonso Cardenas Marquez <acm@FreeBSD.org>
 # $FreeBSD$
 
 PORTNAME=	peazip
-PORTVERSION=	6.4.1
+PORTVERSION=	6.7.0
 CATEGORIES=	archivers
+PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 MASTER_SITES=	https://github.com/giorgiotani/PeaZip/releases/download/${PORTVERSION}/
 DISTNAME=	${PORTNAME}-${PORTVERSION}.src
 
@@ -12,50 +12,39 @@ COMMENT=	Free archiver and file compressor
 
 LICENSE=	LGPL3
 
-BUILD_DEPENDS=	lazbuild:editors/lazarus \
-		fpcres:lang/fpc-utils
+USES=		dos2unix fpc lazarus:flavors zip
+USE_FPC=	cairo chm fcl-base fcl-image fcl-xml pasjpeg rtl-objpas x11
+USE_XORG=	x11
 
-USES=		dos2unix zip
-USE_FPC=	cairo fcl-base fcl-image pasjpeg rtl-objpas x11
-USE_GNOME=	#
-
-SUB_FILES=	pea pealauncher peazip
+SUB_FILES=	pea peazip
 
 DOS2UNIX_REGEX=		.*\.([txt]|pas|lpi|txt)
-LAZARUS_PROJECT_FILES=	project_pea.lpi project_peach.lpi project_gwrap.lpi
-LAZBUILD_CMD=		${LOCALBASE}/bin/lazbuild -d
-LCL_UNITS_DIR=		${LOCALBASE}/share/lazarus-${LAZARUS_VER}/lcl/units/${BUILDNAME}
-LAZARUS_VER=		1.6.4
-LAZARUS_DIR=		${LOCALBASE}/share/lazarus-${LAZARUS_VER}
+
+LAZARUS_PROJECT_FILES=	project_pea.lpi project_peach.lpi
+LAZBUILD_ARGS=		-d
+LLD_UNSAFE=		yes
+
+gtk2_CONFLICTS_INSTALL=	${PORTNAME}-qt4 ${PORTNAME}-qt5
+qt4_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt5
+qt5_CONFLICTS_INSTALL=	${PORTNAME}-gtk2 ${PORTNAME}-qt4
+
 ARCHIVER_FILES=		#
 
 OPTIONS_DEFINE=		7Z ARC ZPAQ UNACE
-OPTIONS_SINGLE=		LCL
-OPTIONS_SINGLE_LCL=	GTK2 QT4
 
 7Z_DESC=		7z file archiver support
 ARC_DESC=		Arc file archiver support
 ZPAQ_DESC=		Zpaq file archiver support
 UNACE_DESC=		Unace file archiver support
-GTK2_DESC=		Use gtk20 interface
-QT4_DESC=		Use qt4 interface
 
-OPTIONS_DEFAULT=	GTK2 7Z
+OPTIONS_DEFAULT=	7Z
 
-.include <bsd.port.pre.mk>
-
-.if ${PORT_OPTIONS:MGTK2}
-USE_FPC+=	gtk2
-USE_GNOME=	gtk20
-LCL_PLATFORM=	gtk2
-BUILD_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:editors/lazarus-lcl-gtk2
+.if ${FLAVOR:Ugtk2:Mgtk2}
+USES+=		gnome
+USE_GNOME+=	cairo
 .endif
 
-.if ${PORT_OPTIONS:MQT4}
-LIB_DEPENDS+=	libQt4Pas.so:x11-toolkits/qt4pas
-LCL_PLATFORM=	qt
-BUILD_DEPENDS+=	${LCL_UNITS_DIR}/${LCL_PLATFORM}/interfaces.ppu:editors/lazarus-lcl-qt
-.endif
+.include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:M7Z}
 RUN_DEPENDS+=	7z:archivers/p7zip
@@ -89,11 +78,8 @@ PLIST_SUB+=	UNACE=""
 PLIST_SUB+=	UNACE="@comment "
 .endif
 
-do-build:
-.for PROJECT_FILE in ${LAZARUS_PROJECT_FILES}
-	@cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
-		${LAZBUILD_CMD} --ws=${LCL_PLATFORM} --lazarusdir=${LAZARUS_DIR} ${PROJECT_FILE}
-.endfor
+post-patch:
+	${REINPLACE_CMD} 's|GetSelectedNodePath|Path|g' ${WRKSRC}/peach.pas
 
 pre-install:
 	@${ECHO_CMD} "#" > ${WRKSRC}/altconf.txt
@@ -107,11 +93,11 @@ do-install:
 .endfor
 	@cd ${WRKSRC}/res && ${COPYTREE_SHARE} "icons lang themes" ${STAGEDIR}${DATADIR}/res
 	@cd ${WRKSRC} && ${INSTALL_DATA} altconf.txt ${STAGEDIR}${DATADIR}/res && \
-			${INSTALL_PROGRAM} pea pealauncher ${STAGEDIR}${DATADIR}/res && \
+			${INSTALL_PROGRAM} pea ${STAGEDIR}${DATADIR}/res && \
 			${INSTALL_PROGRAM} peazip ${STAGEDIR}${DATADIR}
 	@cd ${WRKSRC}/FreeDesktop_integration && \
 		${INSTALL_DATA} peazip.desktop ${STAGEDIR}${DESKTOPDIR} && \
 		${INSTALL_DATA} peazip.png ${STAGEDIR}${PREFIX}/share/pixmaps/
-	${INSTALL_SCRIPT} ${WRKDIR}/pea ${WRKDIR}/pealauncher ${WRKDIR}/peazip ${STAGEDIR}${PREFIX}/bin/
+	${INSTALL_SCRIPT} ${WRKDIR}/pea ${WRKDIR}/peazip ${STAGEDIR}${PREFIX}/bin/
 
-.include <bsd.port.post.mk>
+.include <bsd.port.mk>
