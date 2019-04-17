@@ -2,6 +2,7 @@
 
 PORTNAME=	softether
 DISTVERSION=	4.29-9680
+PORTREVISION=	1
 CATEGORIES=	security
 MASTER_SITES=	https://www.softether-download.com/files/softether/v${DISTVERSION}-rtm-2019.02.28-tree/Source_Code/
 DISTNAME=	${PORTNAME}-src-v${DISTVERSION}-rtm
@@ -13,6 +14,7 @@ LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USE_HARDENING=	safestack
+MAKE_JOBS_UNSAFE=	yes
 
 ONLY_FOR_ARCHS=	amd64 i386
 ONLY_FOR_ARCHS_REASON=	Upstream only supports amd64 and i386: https://www.softether.org/3-spec

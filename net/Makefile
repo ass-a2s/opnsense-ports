@@ -42,7 +42,6 @@
     SUBDIR += avahi-gtk3
     SUBDIR += avahi-header
     SUBDIR += avahi-libdns
-    SUBDIR += avahi-qt4
     SUBDIR += avahi-qt5
     SUBDIR += avahi-sharp
     SUBDIR += axa
@@ -63,6 +62,7 @@
     SUBDIR += boclient
     SUBDIR += boinc-client
     SUBDIR += boinc_curses
+    SUBDIR += boringtun
     SUBDIR += bosh-bootloader
     SUBDIR += bosh-cli
     SUBDIR += bounce
@@ -73,7 +73,6 @@
     SUBDIR += bwn-firmware-kmod
     SUBDIR += bwping
     SUBDIR += c3270
-    SUBDIR += cagibi
     SUBDIR += calendarsupport
     SUBDIR += ccxstream
     SUBDIR += ceph12
@@ -168,10 +167,9 @@
     SUBDIR += freerdp1
     SUBDIR += freeswitch
     SUBDIR += freevrrpd
-    SUBDIR += frr3
-    SUBDIR += frr4
     SUBDIR += frr5
     SUBDIR += frr6
+    SUBDIR += frr7
     SUBDIR += fspclient
     SUBDIR += fspd
     SUBDIR += fsplib
@@ -193,13 +191,8 @@
     SUBDIR += gnome-online-miners
     SUBDIR += gnu-dico
     SUBDIR += gnu-radius
-    SUBDIR += go-amqp
     SUBDIR += go-bapu
     SUBDIR += go-cs
-    SUBDIR += go-httppath
-    SUBDIR += go-httptreemux
-    SUBDIR += go-nats
-    SUBDIR += go.net
     SUBDIR += gobgp
     SUBDIR += gofish
     SUBDIR += gogoc
@@ -237,6 +230,7 @@
     SUBDIR += haproxy
     SUBDIR += haproxy-devel
     SUBDIR += haproxy17
+    SUBDIR += haproxy18
     SUBDIR += hexinject
     SUBDIR += hidentd
     SUBDIR += hinfo
@@ -269,7 +263,6 @@
     SUBDIR += http_ping
     SUBDIR += httping
     SUBDIR += httpry
-    SUBDIR += hupnp
     SUBDIR += iaxmodem
     SUBDIR += icmpinfo
     SUBDIR += icpld
@@ -406,7 +399,6 @@
     SUBDIR += libproxy-mozjs
     SUBDIR += libproxy-perl
     SUBDIR += libproxy-python
-    SUBDIR += libproxy-webkit
     SUBDIR += libproxy-webkit3
     SUBDIR += librdkafka
     SUBDIR += librouteros
@@ -548,6 +540,7 @@
     SUBDIR += ocserv
     SUBDIR += olsrd
     SUBDIR += omnitty
+    SUBDIR += onedrive
     SUBDIR += onenetd
     SUBDIR += onioncat
     SUBDIR += opal
@@ -574,7 +567,6 @@
     SUBDIR += ortp
     SUBDIR += osrtspproxy
     SUBDIR += ossp-sa
-    SUBDIR += ostinato
     SUBDIR += owamp
     SUBDIR += p5-Acme-HTTP
     SUBDIR += p5-AddressBook
@@ -871,6 +863,7 @@
     SUBDIR += p5-Sort-Key-IPv4
     SUBDIR += p5-TFTP
     SUBDIR += p5-Test-URI
+    SUBDIR += p5-Text-Authinfo
     SUBDIR += p5-Twitter-API
     SUBDIR += p5-URI
     SUBDIR += p5-URI-FromHash
@@ -1105,7 +1098,6 @@
     SUBDIR += py-python-twitter
     SUBDIR += py-pyvmomi
     SUBDIR += py-pyzmq
-    SUBDIR += py-qt4-network
     SUBDIR += py-qt5-network
     SUBDIR += py-rabbitpy
     SUBDIR += py-radix
@@ -1145,6 +1137,7 @@
     SUBDIR += py-wolframalpha
     SUBDIR += py-wsproto
     SUBDIR += py-xmlrpc
+    SUBDIR += py-zeep
     SUBDIR += py-zeroconf
     SUBDIR += py-zope.proxy
     SUBDIR += py-zsi
@@ -1153,13 +1146,9 @@
     SUBDIR += pyrad
     SUBDIR += pythondirector
     SUBDIR += qadsl
-    SUBDIR += qjsonrpc
-    SUBDIR += qoauth
     SUBDIR += qoauth-qt5
-    SUBDIR += qt4-network
     SUBDIR += qt5-network
     SUBDIR += qt5-networkauth
-    SUBDIR += qtweetlib
     SUBDIR += quagga
     SUBDIR += queso
     SUBDIR += quiterss
@@ -1229,12 +1218,11 @@
     SUBDIR += rubygem-epp-client-secdns
     SUBDIR += rubygem-epp-client-smallregistry
     SUBDIR += rubygem-fog-aliyun
-    SUBDIR += rubygem-fog-aliyun02
     SUBDIR += rubygem-fog-atmos
     SUBDIR += rubygem-fog-aws
-    SUBDIR += rubygem-fog-aws2
     SUBDIR += rubygem-fog-azure
     SUBDIR += rubygem-fog-brightbox
+    SUBDIR += rubygem-fog-brightbox0
     SUBDIR += rubygem-fog-cloudatcost
     SUBDIR += rubygem-fog-digitalocean
     SUBDIR += rubygem-fog-dnsimple
@@ -1245,7 +1233,6 @@
     SUBDIR += rubygem-fog-joyent
     SUBDIR += rubygem-fog-local
     SUBDIR += rubygem-fog-openstack
-    SUBDIR += rubygem-fog-openstack02
     SUBDIR += rubygem-fog-ovirt
     SUBDIR += rubygem-fog-powerdns
     SUBDIR += rubygem-fog-profitbricks
@@ -1264,7 +1251,6 @@
     SUBDIR += rubygem-gitaly
     SUBDIR += rubygem-gitaly-proto
     SUBDIR += rubygem-gitlab_omniauth-ldap
-    SUBDIR += rubygem-gitlab_omniauth-ldap20
     SUBDIR += rubygem-google-cloud-core
     SUBDIR += rubygem-google-cloud-env
     SUBDIR += rubygem-grpc
@@ -1321,7 +1307,6 @@
     SUBDIR += rubygem-ruby-yadis
     SUBDIR += rubygem-ruby_smb
     SUBDIR += rubygem-rubyntlm
-    SUBDIR += rubygem-rubyntlm05
     SUBDIR += rubygem-rubytter
     SUBDIR += rubygem-rudy
     SUBDIR += rubygem-rye
@@ -1442,6 +1427,8 @@
     SUBDIR += thcrut
     SUBDIR += throttled
     SUBDIR += tigervnc
+    SUBDIR += tigervnc-server
+    SUBDIR += tigervnc-viewer
     SUBDIR += tightvnc
     SUBDIR += timed
     SUBDIR += tintin++

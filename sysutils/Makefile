@@ -35,7 +35,6 @@
     SUBDIR += anacron
     SUBDIR += and
     SUBDIR += android-file-transfer
-    SUBDIR += android-file-transfer-qt4
     SUBDIR += android-file-transfer-qt5
     SUBDIR += ansible
     SUBDIR += ansible1
@@ -57,8 +56,8 @@
     SUBDIR += asmon
     SUBDIR += asusoled
     SUBDIR += atf-master
-    SUBDIR += atf-sun50i_a64
     SUBDIR += atf-rk3399
+    SUBDIR += atf-sun50i_a64
     SUBDIR += atitvout
     SUBDIR += atop
     SUBDIR += auto-admin
@@ -75,7 +74,6 @@
     SUBDIR += backuppc-devel
     SUBDIR += backuppc4
     SUBDIR += backupuser
-    SUBDIR += bacula9-bat
     SUBDIR += bacula9-client
     SUBDIR += bacula9-client-static
     SUBDIR += bacula9-docs
@@ -86,12 +84,9 @@
     SUBDIR += bareos-client-static
     SUBDIR += bareos-docs
     SUBDIR += bareos-server
-    SUBDIR += bareos-traymonitor
-    SUBDIR += bareos16-bat
     SUBDIR += bareos16-client
     SUBDIR += bareos16-client-static
     SUBDIR += bareos16-server
-    SUBDIR += bareos16-traymonitor
     SUBDIR += bastille
     SUBDIR += batmon
     SUBDIR += battmond
@@ -122,6 +117,7 @@
     SUBDIR += btsixad
     SUBDIR += bulk_extractor
     SUBDIR += burp
+    SUBDIR += burp-devel
     SUBDIR += busybox
     SUBDIR += bvm
     SUBDIR += byobu
@@ -218,7 +214,6 @@
     SUBDIR += cronolog
     SUBDIR += cronolog-devel
     SUBDIR += ctop
-    SUBDIR += curly
     SUBDIR += currtime
     SUBDIR += cw
     SUBDIR += daa2iso
@@ -751,6 +746,7 @@
     SUBDIR += npadmin
     SUBDIR += nq
     SUBDIR += nrg2iso
+    SUBDIR += nsysctl
     SUBDIR += ntfy
     SUBDIR += nut
     SUBDIR += nvclock
@@ -917,7 +913,6 @@
     SUBDIR += pmt
     SUBDIR += policykit
     SUBDIR += policykit-gnome
-    SUBDIR += policykit-qt
     SUBDIR += polkit
     SUBDIR += polkit-gnome
     SUBDIR += polkit-qt
@@ -1013,6 +1008,7 @@
     SUBDIR += py-bcfg2
     SUBDIR += py-bitrot
     SUBDIR += py-cdmi
+    SUBDIR += py-cpuinfo
     SUBDIR += py-croniter
     SUBDIR += py-crontab
     SUBDIR += py-diffoscope
@@ -1072,15 +1068,12 @@
     SUBDIR += qdirstat
     SUBDIR += qjail
     SUBDIR += qlogtools
-    SUBDIR += qpxtool
     SUBDIR += qsudo
-    SUBDIR += qsynergy
     SUBDIR += qt5-qtdiag
     SUBDIR += qt5-qtpaths
     SUBDIR += qt5-qtplugininfo
     SUBDIR += qtpass
     SUBDIR += quicksynergy
-    SUBDIR += qzeitgeist
     SUBDIR += racktables
     SUBDIR += radeontool
     SUBDIR += radeontop
@@ -1237,7 +1230,6 @@
     SUBDIR += scterc
     SUBDIR += sd-agent
     SUBDIR += sdparm
-    SUBDIR += searchmonkey
     SUBDIR += seatools
     SUBDIR += sec
     SUBDIR += serf
@@ -1376,8 +1368,8 @@
     SUBDIR += u-boot-cubieboard2
     SUBDIR += u-boot-cubox-hummingboard
     SUBDIR += u-boot-duovero
-    SUBDIR += u-boot-imx-serial-loader
     SUBDIR += u-boot-firefly-rk3399
+    SUBDIR += u-boot-imx-serial-loader
     SUBDIR += u-boot-master
     SUBDIR += u-boot-nanopi-a64
     SUBDIR += u-boot-nanopi-m1plus

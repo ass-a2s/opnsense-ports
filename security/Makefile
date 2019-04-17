@@ -1,4 +1,5 @@
 # $FreeBSD$
+PORTREVISION=	1
 #
 
     COMMENT = Security tools
@@ -98,6 +99,7 @@
     SUBDIR += courierpassd
     SUBDIR += courierpasswd
     SUBDIR += courieruserinfo
+    SUBDIR += cowrie
     SUBDIR += cp2fwb
     SUBDIR += cracklib
     SUBDIR += crackpkcs12
@@ -186,10 +188,8 @@
     SUBDIR += gnupg1
     SUBDIR += gnutls
     SUBDIR += go-cve-dictionary
-    SUBDIR += go.crypto
     SUBDIR += gonepass
     SUBDIR += gopass
-    SUBDIR += goptlib
     SUBDIR += gorilla
     SUBDIR += govpn
     SUBDIR += gpa
@@ -289,7 +289,6 @@
     SUBDIR += isnprober
     SUBDIR += jbrofuzz
     SUBDIR += john
-    SUBDIR += kbfs
     SUBDIR += kbfsd
     SUBDIR += kc24
     SUBDIR += kdbx-viewer
@@ -297,7 +296,6 @@
     SUBDIR += keepass
     SUBDIR += keepass-plugin-keepassrpc
     SUBDIR += keepassx-devel
-    SUBDIR += keepassx2
     SUBDIR += keepassxc
     SUBDIR += keybase
     SUBDIR += keychain
@@ -312,7 +310,6 @@
     SUBDIR += knocker
     SUBDIR += kpcli
     SUBDIR += kpkpass
-    SUBDIR += kqoauth
     SUBDIR += kr
     SUBDIR += krb5
     SUBDIR += krb5-115
@@ -448,6 +445,7 @@
     SUBDIR += ocaml-ssl
     SUBDIR += oidentd
     SUBDIR += oinkmaster
+    SUBDIR += olm
     SUBDIR += onionscan
     SUBDIR += op
     SUBDIR += openbsm
@@ -858,7 +856,6 @@
     SUBDIR += pinentry-fltk
     SUBDIR += pinentry-gnome3
     SUBDIR += pinentry-gtk2
-    SUBDIR += pinentry-qt4
     SUBDIR += pinentry-qt5
     SUBDIR += pinentry-tty
     SUBDIR += pixiewps
@@ -934,6 +931,7 @@
     SUBDIR += py-cryptkit
     SUBDIR += py-cryptlib_py
     SUBDIR += py-cryptography
+    SUBDIR += py-cryptography-vectors
     SUBDIR += py-cybox
     SUBDIR += py-dfdatetime
     SUBDIR += py-dfvfs
@@ -1051,12 +1049,14 @@
     SUBDIR += py-tlslite
     SUBDIR += py-trezor
     SUBDIR += py-trustedpickle
+    SUBDIR += py-trustme
     SUBDIR += py-tuf
     SUBDIR += py-twofish
     SUBDIR += py-txtorcon
     SUBDIR += py-virustotal-api
     SUBDIR += py-volatility
     SUBDIR += py-vulndb
+    SUBDIR += py-xmlsec
     SUBDIR += py-yara
     SUBDIR += py-yubikey-manager
     SUBDIR += py-zope.app.authentication
@@ -1205,7 +1205,6 @@
     SUBDIR += rubygem-signet
     SUBDIR += rubygem-six
     SUBDIR += rubygem-sshkey
-    SUBDIR += rubygem-sshkey1
     SUBDIR += rubygem-sshkit
     SUBDIR += rubygem-timfel-krb5
     SUBDIR += rubygem-twitter_oauth
@@ -1319,7 +1318,6 @@
     SUBDIR += tor-capsicum
     SUBDIR += tor-devel
     SUBDIR += tpm-tools
-    SUBDIR += tpmmanager
     SUBDIR += trezord
     SUBDIR += trinokiller
     SUBDIR += tripwire
@@ -1367,7 +1365,6 @@
     SUBDIR += yubico-piv-tool
     SUBDIR += yubikey-manager-qt
     SUBDIR += yubikey-personalization-gui
-    SUBDIR += yubikey-piv-manager
     SUBDIR += yubioath-desktop
     SUBDIR += zebedee
     SUBDIR += zenmap

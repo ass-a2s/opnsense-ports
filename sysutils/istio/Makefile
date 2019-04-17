@@ -2,15 +2,13 @@
 # $FreeBSD$
 
 PORTNAME=	istio
-PORTVERSION=	1.0.6
+PORTVERSION=	1.1.1
 CATEGORIES=	sysutils
 
 MAINTAINER=	danilo@FreeBSD.org
 COMMENT=	Open platform to connect, manage, and secure microservices
 
 LICENSE=	APACHE20
-
-BROKEN=		fails to build
 
 RUN_DEPENDS=	kubectl:sysutils/kubectl
 

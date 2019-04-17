@@ -6,7 +6,6 @@
     SUBDIR += 2d-rewriter
     SUBDIR += ALPSCore
     SUBDIR += InsightToolkit
-    SUBDIR += MOOSE-neural-simulator
     SUBDIR += PETSc
     SUBDIR += R-cran-AMORE
     SUBDIR += R-cran-DCluster
@@ -29,7 +28,6 @@
     SUBDIR += antioch
     SUBDIR += atom
     SUBDIR += atompaw
-    SUBDIR += avogadro
     SUBDIR += avogadro2
     SUBDIR += avogadrolibs
     SUBDIR += bagel
@@ -56,6 +54,7 @@
     SUBDIR += coordgenlibs
     SUBDIR += coot
     SUBDIR += cp2k
+    SUBDIR += cp2k-data
     SUBDIR += crf++
     SUBDIR += dalton
     SUBDIR += datawarrior
@@ -172,7 +171,6 @@
     SUBDIR += openkim
     SUBDIR += openmx
     SUBDIR += opensim-core
-    SUBDIR += openstructure
     SUBDIR += opsin
     SUBDIR += p5-Algorithm-SVMLight
     SUBDIR += p5-Chemistry-3DBuilder
@@ -229,6 +227,7 @@
     SUBDIR += py-chempy
     SUBDIR += py-coards
     SUBDIR += py-dlib
+    SUBDIR += py-geometer
     SUBDIR += py-gpaw
     SUBDIR += py-gsd
     SUBDIR += py-h5py
@@ -257,6 +256,8 @@
     SUBDIR += py-pysal
     SUBDIR += py-pyteomics
     SUBDIR += py-pyteomics.biolccc
+    SUBDIR += py-qcelemental
+    SUBDIR += py-qcengine
     SUBDIR += py-qspin
     SUBDIR += py-quantities
     SUBDIR += py-rmf
@@ -276,7 +277,6 @@
     SUBDIR += qbox
     SUBDIR += qcl
     SUBDIR += qmcpack
-    SUBDIR += qtresistors
     SUBDIR += quantum-espresso
     SUBDIR += quantum-espresso-pseudopotentials
     SUBDIR += qwalk

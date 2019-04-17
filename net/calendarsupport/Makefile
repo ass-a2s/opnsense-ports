@@ -2,10 +2,11 @@
 
 PORTNAME=	calendarsupport
 DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+PORTREVISION=	1
 CATEGORIES=	net kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
-COMMENT=	Calendar support libriares for KDEPim
+COMMENT=	Calendar support libraries for KDEPim
 
 LICENSE=	LGPL21
 

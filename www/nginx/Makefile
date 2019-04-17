@@ -3,7 +3,7 @@
 
 PORTNAME=	nginx
 PORTVERSION=	1.14.2
-PORTREVISION?=	11
+PORTREVISION?=	13
 PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	http://nginx.org/download/ \
@@ -285,7 +285,7 @@ post-patch-MODSECURITY-on:
 		${WRKSRC_MODSECURITY}/configure
 
 post-patch-NJS-on: # OPNsense fixup
-	@${REINPLACE_CMD} 's!-Werror!!g' ${WRKSRC_njs}/nxt/auto/clang
+	@${REINPLACE_CMD} 's!-Werror!!g' ${WRKSRC_njs}/auto/clang
 
 post-patch-PASSENGER-on:
 	@${REINPLACE_CMD} \
